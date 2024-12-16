@@ -2024,6 +2024,10 @@ td>table>tbody>tr>td,
   max-width: 20rem;
 }
 
+.cbi-input-textarea {
+  min-width: 20rem;
+}
+
 .cbi-value input[type="text"],
 .cbi-value input[type="password"] {
   border-bottom-right-radius: 0;
@@ -3949,6 +3953,10 @@ pre.command-output {
     max-width: 17rem;
   }
 
+  .cbi-input-textarea {
+    min-width: 17rem;
+  }
+
   #cbi-firewall-zone .cbi-input-select {
     min-width: 9rem;
   }
@@ -4009,6 +4017,10 @@ pre.command-output {
     min-width: 17rem;
     max-width: 17rem;
     /* max-height: 2.35rem; */
+  }
+
+  .cbi-input-textarea {
+    min-width: 17rem;
   }
 
   [id^="cbid.wolplus."].cbi-dropdown {
