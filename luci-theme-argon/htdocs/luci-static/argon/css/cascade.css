@@ -4454,7 +4454,7 @@ pre.command-output {
   }
 
   .cbi-dropdown[open]>ul.dropdown {
-    left: 0.785rem !important;
+    left: 0 !important;
     right: 0 !important;
     margin-bottom: 1rem;
   }
