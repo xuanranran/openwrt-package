@@ -911,6 +911,7 @@ div[style="width:100%;height:300px;border:1px solid #000;background:#fff"] {
 
 .notice {
   background-color: #11cdef !important;
+  background-color: var(--primary) !important;
   color: #fff
 }
 
@@ -4507,6 +4508,12 @@ pre.command-output {
     border-bottom: white 1px solid;
     border-bottom: var(--white) 1px solid;
     border-radius: 0;
+  }
+}
+
+@media (max-height: 530px) {
+  .mobile-hide {
+    display: none !important;
   }
 }
 
