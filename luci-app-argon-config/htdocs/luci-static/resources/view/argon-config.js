@@ -72,7 +72,32 @@ return view.extend({
 				return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(value) ||
 					_('Expecting: %s').format(_('valid HEX color value'));
 			return true;
-		}
+		};
+		o.render = function(section_id, option_index, cfgvalue) {
+			var el = form.Value.prototype.render.apply(this, arguments);
+			setTimeout(function() {
+				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".primary"]');
+				const colorPicker = document.createElement('input');
+				colorPicker.type = 'color';
+				colorPicker.value = textInput.value;
+				colorPicker.style.width = '24px';
+				colorPicker.style.height = '24px';
+				colorPicker.style.padding = '0px';
+				colorPicker.style.marginLeft = '5px';
+				colorPicker.style.borderRadius = '4px';
+				colorPicker.style.border = '1px solid #d9d9d9';
+				colorPicker.style.justifyContent = 'center';
+				colorPicker.style.transition = 'all 0.2s';
+				textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
+				colorPicker.addEventListener('input', function() {
+					textInput.value = colorPicker.value;
+				});
+				textInput.addEventListener('input', function() {
+					colorPicker.value = textInput.value;
+				});
+			}, 0);
+			return el;
+		};
 
 		o = s.option(form.ListValue, 'transparency', _('[Light mode] Transparency'),
 			_('0 transparent - 1 opaque (suggest: transparent: 0 or translucent preset: 0.5).'));
@@ -88,7 +113,7 @@ return view.extend({
 		o.rmempty = false;
 
 		o = s.option(form.Value, 'dark_primary', _('[Dark mode] Primary Color'),
-			_('A HEX Color (default: #5e72e4).'))
+			_('A HEX Color (default: #483d8b).'))
 		o.default = '#483d8b';
 		o.rmempty = false;
 		o.validate = function(section_id, value) {
@@ -96,7 +121,32 @@ return view.extend({
 				return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(value) ||
 					_('Expecting: %s').format(_('valid HEX color value'));
 			return true;
-		}
+		};
+		o.render = function(section_id, option_index, cfgvalue) {
+			var el = form.Value.prototype.render.apply(this, arguments);
+			setTimeout(function() {
+				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".dark_primary"]');
+				const colorPicker = document.createElement('input');
+				colorPicker.type = 'color';
+				colorPicker.value = textInput.value;
+				colorPicker.style.width = '24px';
+				colorPicker.style.height = '24px';
+				colorPicker.style.padding = '0px';
+				colorPicker.style.marginLeft = '5px';
+				colorPicker.style.borderRadius = '4px';
+				colorPicker.style.border = '1px solid #d9d9d9';
+				colorPicker.style.justifyContent = 'center';
+				colorPicker.style.transition = 'all 0.2s';
+				textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
+				colorPicker.addEventListener('input', function() {
+					textInput.value = colorPicker.value;
+				});
+				textInput.addEventListener('input', function() {
+					colorPicker.value = textInput.value;
+				});
+			}, 0);
+			return el;
+		};
 
 		o = s.option(form.ListValue, 'transparency_dark', _('[Dark mode] Transparency'),
 			_('0 transparent - 1 opaque (suggest: black translucent preset: 0.5).'));
