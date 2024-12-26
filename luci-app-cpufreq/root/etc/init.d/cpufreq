@@ -1,0 +1,55 @@
+#!/bin/sh /etc/rc.common
+
+START=15
+USE_PROCD=1
+
+config_get_cpufreq() {
+	config_get "cpufreq" "$1"
+}
+
+start_service() {
+	config_load "cpufreq"
+
+	# Multi-Gen LRU
+	if [ -e /sys/kernel/mm/lru_gen/enabled ]; then
+		if [ "$(config_get_cpufreq "mglru_enabled")" = 1 ]; then
+			echo y >/sys/kernel/mm/lru_gen/enabled
+			config_get_cpufreq "mglru_min_ttl_ms" > /sys/kernel/mm/lru_gen/min_ttl_ms
+		else
+			echo n >/sys/kernel/mm/lru_gen/enabled
+		fi
+	fi
+
+	# cpufreq
+	for i in $(find /sys/devices/system/cpu/cpufreq/policy* -maxdepth 0 | grep -Eo '[0-9]+')
+	do
+		[ -z "$(config_get_cpufreq "governor$i")" ] && return
+
+		config_get_cpufreq "governor$i" > "/sys/devices/system/cpu/cpufreq/policy$i/scaling_governor"
+		config_get_cpufreq "minfreq$i" > "/sys/devices/system/cpu/cpufreq/policy$i/scaling_min_freq"
+		config_get_cpufreq "maxfreq$i" > "/sys/devices/system/cpu/cpufreq/policy$i/scaling_max_freq"
+		if [ "$(config_get_cpufreq "governor$i")" = "ondemand" ]; then
+			config_get_cpufreq "sdfactor$i" > "/sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor"
+			config_get_cpufreq "upthreshold$i" > "/sys/devices/system/cpu/cpufreq/ondemand/up_threshold"
+		fi
+	done
+
+	# pwm-fan
+	if [ "$(config_get_cpufreq "pwm_fan")" = 1 ]; then
+		procd_open_instance pwm-fan
+		procd_set_param command /usr/sbin/rockchip-pwm-fan
+		procd_append_param command -t "$(config_get_cpufreq "pwm_fan_threshold")"
+		[ "$(config_get_cpufreq "pwm_fan_strict")" != 1 ] && procd_append_param command -s
+		[ -n "$(config_get_cpufreq "pwm_fan_enforce_level")" ] && [ "$(config_get_cpufreq "pwm_fan_enforce_level")" != "auto" ] && procd_append_param command -k "$(config_get_cpufreq "pwm_fan_enforce_level")"
+		procd_set_param stdout 0
+		procd_set_param stderr 0
+		procd_set_param respawn
+		procd_close_instance pwm-fan
+	else
+		echo 0 > /sys/devices/virtual/thermal/cooling_device0/cur_state
+	fi
+}
+
+service_triggers() {
+    procd_add_reload_trigger "cpufreq"
+}

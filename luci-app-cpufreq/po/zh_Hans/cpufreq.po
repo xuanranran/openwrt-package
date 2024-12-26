@@ -1,0 +1,107 @@
+msgid "CPU Freq"
+msgstr "CPU 性能调节"
+
+msgid "CPU Freq Settings"
+msgstr "CPU 性能调节设置"
+
+msgid "CPU Setting"
+msgstr "CPU 设置"
+
+msgid "Set CPU Scaling Governor to Max Performance or Balance Mode"
+msgstr "设置路由器的 CPU 性能模式（省电/性能/均衡）"
+
+msgid "CPU Scaling Governor"
+msgstr "CPU 工作模式"
+
+msgid "CPU Freq from 48000 to 716000 (Khz)"
+msgstr "CPU 频率范围为 48000 到 716000 (Khz)"
+
+msgid "Min Idle CPU Freq"
+msgstr "待机 CPU 最小频率"
+
+msgid "Max Turbo Boost CPU Freq"
+msgstr "最大 Turbo Boost CPU 频率"
+
+msgid "CPU Switching Sampling rate"
+msgstr "CPU 切换周期"
+
+msgid "The sampling rate determines how frequently the governor checks to tune the CPU (ms)"
+msgstr "CPU 检查切换的周期 (ms)。注意：过于频繁的切换频率会引起网络延迟抖动"
+
+msgid "CPU Switching Threshold"
+msgstr "CPU 切换频率触发阈值"
+
+msgid "Kernel make a decision on whether it should increase the frequency (%)"
+msgstr "当 CPU 占用率超过 (%) 的情况下触发内核切换频率"
+
+msgid "PWM Fan Controller"
+msgstr "PWM 风扇控制"
+
+msgid "Smart control PWM fan start/stop and fan speed based on CPU temperature."
+msgstr "通过 CPU 温度值智能控制 PWM 风扇启停、转速。"
+
+msgid "Fan temperature activation (°C)"
+msgstr "风扇启停温度 (°C)"
+
+msgid "Fan always on"
+msgstr "风扇常转"
+
+msgid "Fan speed"
+msgstr "风扇转速"
+
+msgid "Auto"
+msgstr "自动"
+
+msgid "Level 1"
+msgstr "等级 1"
+
+msgid "Level 2"
+msgstr "等级 2"
+
+msgid "Level 3"
+msgstr "等级 3"
+
+msgid "Level 4"
+msgstr "等级 4"
+
+msgid "Irqbalance"
+msgstr "中断均衡器"
+
+msgid "<b><font color=\"green\">RUNNING</font></b>"
+msgstr "<b><font color=\"green\">运行中</font></b>"
+
+msgid "<b><font color=\"red\">NOT RUNNING</font></b>"
+msgstr "<b><font color=\"red\">未运行</font></b>"
+
+msgid "No data."
+msgstr "没有数据。"
+
+msgid "Read error, please refresh or wait."
+msgstr "读取错误，请刷新或稍等。"
+
+msgid "Irqbalance is a Linux daemon that distributes interrupts over multiple logical CPUs. This design intent being to improve overall performance which can result in a balanced load and power consumption.</br>For more information, visiting: https://openwrt.org/docs/guide-user/services/irqbalance"
+msgstr "Irqbalance 是一个 Linux 守护进程，它在多个逻辑 CPU 上分配中断。此设计旨在提高整体性能，从而实现平衡的负载和功耗。访问 https://openwrt.org/docs/guide-user/services/irqbalance 可获取更多信息。"
+
+msgid "Level at which irqbalance partitions cache domains"
+msgstr "缓存域级别"
+
+msgid "Interval (Seconds)"
+msgstr "间隔（秒）"
+
+msgid "Ignore (ID of irq)"
+msgstr "忽略（中断ID）"
+
+msgid "Multi-Gen LRU"
+msgstr "Multi-Gen LRU"
+
+msgid "The multi-gen LRU is an alternative LRU implementation that optimizes page reclaim and improves performance under memory pressure. Page reclaim decides the kernel's caching policy and ability to overcommit memory. It directly impacts the kswapd CPU usage and RAM efficiency."
+msgstr "Multi-Gen LRU 是一种替代 LRU 实现，优化页面回收并在内存压力下提高性能，页面回收决定内核的缓存策略和超额提交内存的能力，它直接影响 kswapd CPU 使用率和 RAM 效率。"
+
+msgid "Enabled"
+msgstr "启用"
+
+msgid "Thrashing prevention (ms)"
+msgstr "预防颠簸（毫秒）"
+
+msgid "Set the thrashing prevention vaule to prevent the working set of N milliseconds from getting evicted. The OOM killer is triggered if this working set cannot be kept in memory. (0 means disabled, Default value 1000)"
+msgstr "设置预防颠簸值以防止 N 毫秒的工作集被驱逐，如果无法将此工作集保留在内存中，则会触发 OOM killer。（0 表示禁用，默认值 1000）"
