@@ -1,8 +1,0 @@
-
-config settings 'cpufreq'
-	option mglru_enabled '1'
-	option mglru_min_ttl_ms '1000'
-	option pwm_fan '1'
-	option pwm_fan_threshold '35'
-	option pwm_fan_strict '1'
-	option pwm_fan_enforce_level 'auto'
