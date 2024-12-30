@@ -188,5 +188,14 @@ msgstr "[亮色模式] 透明度"
 
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:73
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:97
+#: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:166
 msgid "valid HEX color value"
 msgstr "有效十六进制颜色值"
+
+#: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:160
+msgid "Progress bar Font Color"
+msgstr "进度条字体颜色"
+
+#: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:160
+msgid "A HEX color (default: #2e2b60)."
+msgstr "十六进制颜色值（预设为：#2e2b60）。"

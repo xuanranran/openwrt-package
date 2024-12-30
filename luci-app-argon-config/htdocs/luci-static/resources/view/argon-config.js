@@ -86,8 +86,6 @@ return view.extend({
 				colorPicker.style.marginLeft = '5px';
 				colorPicker.style.borderRadius = '4px';
 				colorPicker.style.border = '1px solid #d9d9d9';
-				colorPicker.style.justifyContent = 'center';
-				colorPicker.style.transition = 'all 0.2s';
 				textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
 				colorPicker.addEventListener('input', function() {
 					textInput.value = colorPicker.value;
@@ -135,8 +133,6 @@ return view.extend({
 				colorPicker.style.marginLeft = '5px';
 				colorPicker.style.borderRadius = '4px';
 				colorPicker.style.border = '1px solid #d9d9d9';
-				colorPicker.style.justifyContent = 'center';
-				colorPicker.style.transition = 'all 0.2s';
 				textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
 				colorPicker.addEventListener('input', function() {
 					textInput.value = colorPicker.value;
@@ -160,6 +156,39 @@ return view.extend({
 		o.datatype = 'ufloat';
 		o.default = '10';
 		o.rmempty = false;
+
+		o = s.option(form.Value, 'progressbar_font', _('Progress bar Font Color'), _('A HEX color (default: #2e2b60).'))
+		o.default = '#2e2b60';
+		o.rmempty = false;
+		o.validate = function(section_id, value) {
+			if (section_id)
+				return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(value) ||
+					_('Expecting: %s').format(_('valid HEX color value'));
+			return true;
+		};
+		o.render = function(section_id, option_index, cfgvalue) {
+			var el = form.Value.prototype.render.apply(this, arguments);
+			setTimeout(function() {
+				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".progressbar_font"]');
+				const colorPicker = document.createElement('input');
+				colorPicker.type = 'color';
+				colorPicker.value = textInput.value;
+				colorPicker.style.width = '24px';
+				colorPicker.style.height = '24px';
+				colorPicker.style.padding = '0px';
+				colorPicker.style.marginLeft = '5px';
+				colorPicker.style.borderRadius = '4px';
+				colorPicker.style.border = '1px solid #d9d9d9';
+				textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
+				colorPicker.addEventListener('input', function() {
+					textInput.value = colorPicker.value;
+				});
+				textInput.addEventListener('input', function() {
+					colorPicker.value = textInput.value;
+				});
+			}, 0);
+			return el;
+		};
 
 		o = s.option(form.Button, '_save', _('Save settings'));
 		o.inputstyle = 'apply';

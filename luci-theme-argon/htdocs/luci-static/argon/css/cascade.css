@@ -2542,6 +2542,7 @@ td>table>tbody>tr>td,
   border-radius: 12px;
   overflow: hidden;
   color: #2e2b60;
+  color: var(--progressbar-font-color);
 }
 
 .cbi-progressbar>div {
