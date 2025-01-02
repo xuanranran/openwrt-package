@@ -1,18 +1,16 @@
+# SPDX-License-Identifier: GPL-3.0-only
 #
-# Copyright (C) 2008-2014 The LuCI Team <luci@lists.subsignal.org>
-#
-# This is free software, licensed under the Apache License, Version 2.0 .
-#
+# Copyright (C) 2022 ImmortalWrt.org
 
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI for Zerotier
-LUCI_DEPENDS:=+zerotier
+LUCI_DEPENDS:=+zerotier +jsonfilter +ucode
 LUCI_PKGARCH:=all
 
-PKG_NAME:=luci-app-zerotier
-PKG_VERSION:=1.0
-PKG_RELEASE:=20
+define Package/$(PKG_NAME)/conffiles
+/etc/zerotier/
+endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

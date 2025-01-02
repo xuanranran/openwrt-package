@@ -26,14 +26,13 @@ start_instance() {
 		echo "disabled in config"
 		return 1
 	fi
-  
-  [ -d /etc/config/zero ] || mkdir -p /etc/config/zero
-  config_path=/etc/config/zero
-  
+
 	config_get_bool port $cfg 'port'
 	config_get secret $cfg 'secret'
 
 	# Remove existing link or folder
+	[ -d /etc/config/zero ] || mkdir -p /etc/config/zero
+	config_path=/etc/config/zero
 	rm -rf $CONFIG_PATH
 
 	# Create link from CONFIG_PATH to config_path
@@ -92,7 +91,7 @@ start_service() {
 }
 
 stop_instance() {
-  rm -f /tmp/zero.log
+	rm -f /tmp/zero.log
 	local cfg="$1"
 
 	/etc/zerotier.stop > /tmp/zero.log 2>&1 &

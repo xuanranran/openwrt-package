@@ -5,9 +5,9 @@ zero_enable="$(uci get zerotier.sample_config.enabled)"
 [ "${zero_enable}" -ne "1" ] && exit 0
 
 [ -f "/tmp/zero.log" ] && {
-	while [ "$(ifconfig | grep 'zt' | awk '{print $1}')" = "" ]
+	while [ -z "$(ifconfig | grep 'zt' | awk '{print $1}')" ]
 	do
-		sleep 1
+		sleep 2
 	done
 }
 
