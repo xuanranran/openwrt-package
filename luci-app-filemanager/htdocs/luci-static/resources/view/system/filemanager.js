@@ -717,7 +717,7 @@ return view.extend({
 					'id': 'go-button',
 					'click': this.handleGoButtonClick.bind(this),
 					'style': 'margin-left: 10px;'
-				}, _('Go'))
+				}, _('➜'))
 			]),
 
 			// Tab Panels

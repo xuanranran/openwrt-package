@@ -4650,3 +4650,7 @@ div#add_link_div {
   box-shadow: darkgrey 1px 5px 20px 0px;
   border-radius: 9px;
 }
+
+#file-manager-container button#go-button {
+  cursor: pointer;
+}
