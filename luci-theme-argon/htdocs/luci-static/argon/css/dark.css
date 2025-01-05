@@ -968,6 +968,7 @@ table,
 
 #file-list-container th {
   background-color: #1c2027 !important;
+  border-right: 1px solid #515151 !important;
 }
 
 #file-list-container td {
@@ -982,4 +983,8 @@ table,
 #file-manager-container select, #file-manager-container input,
 #file-manager-container .cbi-dropdown {
   border: 1px solid #646464 !important;
+}
+
+#file-manager-container .resizer::after {
+  background: none !important;
 }

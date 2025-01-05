@@ -4654,3 +4654,13 @@ div#add_link_div {
 #file-manager-container button#go-button {
   cursor: pointer;
 }
+
+#file-manager-container .file-manager-header {
+    padding: 4px;
+}
+
+@media screen and (max-width: 600px) {
+  div#content-filemanager {
+    overflow-x: auto;
+  }
+}
