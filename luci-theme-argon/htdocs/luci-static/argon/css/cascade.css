@@ -3353,7 +3353,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
 }
 
 div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body .cbi-tooltip-container {
-  font-size: inherit !important
+  font-size: inherit !important;
+  white-space: nowrap
 }
 
 @media screen and (max-width:484px) {
