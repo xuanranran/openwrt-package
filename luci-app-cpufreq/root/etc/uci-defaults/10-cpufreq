@@ -23,73 +23,12 @@ CPU_FREQS="$(cat '/sys/devices/system/cpu/cpufreq/policy0/scaling_available_freq
 CPU_POLICYS="$(find '/sys/devices/system/cpu/cpufreq/policy'* -maxdepth 0 | grep -Eo '[0-9]+')"
 source "/etc/openwrt_release"
 case "$DISTRIB_TARGET" in
-	"bcm27xx/bcm2710")
-		uci_write_config 0 ondemand 600000 1200000 10 50
-		;;
-	"bcm27xx/bcm2711")
-		uci_write_config 0 ondemand 600000 1500000 10 50
-		;;
-	"ipq40xx/generic")
-		uci_write_config 0 ondemand 200000 716000 10 50
-		;;
-	"ipq60xx/generic")
-		if echo "$CPU_FREQS" | grep -q "1800000"; then
-			# IPQ6010/18/28
-			uci_write_config 0 ondemand 864000 1800000 10 50
-		else
-			# IPQ6000
-			uci_write_config 0 ondemand 864000 1200000 10 50
-		fi
-		;;
-	"ipq806x/generic")
-		if echo "$CPU_FREQS" | grep -q "1725000"; then
-			# IPQ8065
-			CPU_MAX_FREQ="1725000"
-		elif echo "$CPU_FREQS" | grep -q "1400000"; then
-			# IPQ8064
-			CPU_MAX_FREQ="1400000"
-		else
-			# IPQ8062
-			CPU_MAX_FREQ="1000000"
-		fi
-		uci_write_config 0 ondemand 600000 $CPU_MAX_FREQ 10 50
-		# IPQ8064/5
-		echo "$CPU_POLICYS" | grep -q "1" && uci_write_config 1 ondemand 600000 1200000 10 50
-		;;
-	"ipq807x/generic")
-		if echo "$CPU_FREQS" | grep -q "2208000"; then
-			# IPQ8072/4/6/8A
-			CPU_MAX_FREQ="2208000"
-		else
-			# IPQ8071A
-			CPU_MAX_FREQ="1382400"
-		fi
-		uci_write_config 0 schedutil 1017600 $CPU_MAX_FREQ
-		;;
-	"mediatek/mt7622")
-		uci_write_config 0 ondemand 600000 1350000 10 50
-		;;
 	"rockchip/armv8")
+		uci_write_config 0 schedutil $(echo $CPU_FREQS | awk '{print $2}') $(echo $CPU_FREQS | awk '{print $NF}')
+		# big.Little
 		if echo "$CPU_POLICYS" | grep -q "4"; then
-			# RK3399
 			CPU_FREQS_PERFORMANCE="$(cat "/sys/devices/system/cpu/cpufreq/policy${CPU_POLICYS}/scaling_available_frequencies")"
-			uci_write_config 0 schedutil $(echo $CPU_FREQS | awk '{print $2}') $(echo $CPU_FREQS | awk '{print $NF}')
 			uci_write_config 4 schedutil $(echo $CPU_FREQS_PERFORMANCE | awk '{print $2}') $(echo $CPU_FREQS_PERFORMANCE | awk '{print $NF}')
-		elif echo "$CPU_FREQS" | grep -q "1992000"; then
-			# RK3568
-			uci_write_config 0 schedutil $(echo $CPU_FREQS | awk '{print $2}') $(echo $CPU_FREQS | awk '{print $NF}')
-		else
-			# RK3328
-			uci_write_config 0 schedutil $(echo $CPU_FREQS | awk '{print $2}') $(echo $CPU_FREQS | awk '{print $NF}')
-		fi
-		;;
-	"sunxi/cortexa53")
-		if echo "$CPU_FREQS" | grep -q "1800000"; then
-			# H6
-			uci_write_config 0 schedutil 816000 1800000
-		else
-			# H5
-			uci_write_config 0 ondemand 648000 1200000 10 50
 		fi
 		;;
 esac
