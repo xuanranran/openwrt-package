@@ -582,7 +582,6 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox {
 
 .ifacebox-head {
   padding: 0.25em;
-  background: var(--dark-primary) !important;
   border-radius: 5px 5px 0px 0px;
   color: #fff;
 }
