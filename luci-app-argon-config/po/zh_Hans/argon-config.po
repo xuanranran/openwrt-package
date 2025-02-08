@@ -193,8 +193,8 @@ msgid "valid HEX color value"
 msgstr "有效十六进制颜色值"
 
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:160
-msgid "Progress bar Font Color"
-msgstr "进度条字体颜色"
+msgid "[Light mode] Progress bar Font Color"
+msgstr "[亮色模式] 进度条字体颜色"
 
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:160
 msgid "A HEX color (default: #2e2b60)."

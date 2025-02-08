@@ -30,6 +30,25 @@ var bg_path = '/www/luci-static/argon/background/';
 var trans_set = [0, 0.1, 0.2, 0.3, 0.4,
 	0.5, 0.6, 0.7, 0.8, 0.9, 1 ];
 
+function createColorPicker(textInput) {
+	const colorPicker = document.createElement('input');
+	colorPicker.type = 'color';
+	colorPicker.value = textInput.value;
+	colorPicker.style.width = '24px';
+	colorPicker.style.height = '24px';
+	colorPicker.style.padding = '0px';
+	colorPicker.style.marginLeft = '5px';
+	colorPicker.style.borderRadius = '4px';
+	colorPicker.style.border = '1px solid #d9d9d9';
+	textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
+	colorPicker.addEventListener('input', function() {
+		textInput.value = colorPicker.value;
+	});
+	textInput.addEventListener('input', function() {
+		colorPicker.value = textInput.value;
+	});
+}
+
 return view.extend({
 	load: function() {
 		return Promise.all([
@@ -77,22 +96,7 @@ return view.extend({
 			var el = form.Value.prototype.render.apply(this, arguments);
 			setTimeout(function() {
 				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".primary"]');
-				const colorPicker = document.createElement('input');
-				colorPicker.type = 'color';
-				colorPicker.value = textInput.value;
-				colorPicker.style.width = '24px';
-				colorPicker.style.height = '24px';
-				colorPicker.style.padding = '0px';
-				colorPicker.style.marginLeft = '5px';
-				colorPicker.style.borderRadius = '4px';
-				colorPicker.style.border = '1px solid #d9d9d9';
-				textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
-				colorPicker.addEventListener('input', function() {
-					textInput.value = colorPicker.value;
-				});
-				textInput.addEventListener('input', function() {
-					colorPicker.value = textInput.value;
-				});
+				createColorPicker(textInput);
 			}, 0);
 			return el;
 		};
@@ -124,22 +128,7 @@ return view.extend({
 			var el = form.Value.prototype.render.apply(this, arguments);
 			setTimeout(function() {
 				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".dark_primary"]');
-				const colorPicker = document.createElement('input');
-				colorPicker.type = 'color';
-				colorPicker.value = textInput.value;
-				colorPicker.style.width = '24px';
-				colorPicker.style.height = '24px';
-				colorPicker.style.padding = '0px';
-				colorPicker.style.marginLeft = '5px';
-				colorPicker.style.borderRadius = '4px';
-				colorPicker.style.border = '1px solid #d9d9d9';
-				textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
-				colorPicker.addEventListener('input', function() {
-					textInput.value = colorPicker.value;
-				});
-				textInput.addEventListener('input', function() {
-					colorPicker.value = textInput.value;
-				});
+				createColorPicker(textInput);
 			}, 0);
 			return el;
 		};
@@ -157,7 +146,7 @@ return view.extend({
 		o.default = '10';
 		o.rmempty = false;
 
-		o = s.option(form.Value, 'progressbar_font', _('Progress bar Font Color'), _('A HEX color (default: #2e2b60).'))
+		o = s.option(form.Value, 'progressbar_font', _('[Light mode] Progress bar Font Color'), _('A HEX color (default: #2e2b60).'))
 		o.default = '#2e2b60';
 		o.rmempty = false;
 		o.validate = function(section_id, value) {
@@ -170,22 +159,7 @@ return view.extend({
 			var el = form.Value.prototype.render.apply(this, arguments);
 			setTimeout(function() {
 				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".progressbar_font"]');
-				const colorPicker = document.createElement('input');
-				colorPicker.type = 'color';
-				colorPicker.value = textInput.value;
-				colorPicker.style.width = '24px';
-				colorPicker.style.height = '24px';
-				colorPicker.style.padding = '0px';
-				colorPicker.style.marginLeft = '5px';
-				colorPicker.style.borderRadius = '4px';
-				colorPicker.style.border = '1px solid #d9d9d9';
-				textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
-				colorPicker.addEventListener('input', function() {
-					textInput.value = colorPicker.value;
-				});
-				textInput.addEventListener('input', function() {
-					colorPicker.value = textInput.value;
-				});
+				createColorPicker(textInput);
 			}, 0);
 			return el;
 		};
