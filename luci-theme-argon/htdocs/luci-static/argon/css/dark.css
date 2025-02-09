@@ -590,6 +590,10 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox {
   background-color: var(--dark-primary) !important;
 }
 
+.ifacebox-head:not(#cbi-network-interface .ifacebox-head) {
+  background: var(--dark-primary) !important;
+}
+
 header .fill .status span[data-style="active"] {
   color: #ccc !important;
   background-color: #242424 !important;
