@@ -1,0 +1,99 @@
+#!/bin/sh /etc/rc.common
+# Copyright (c) 2011-2015 OpenWrt.org
+
+START=99
+USE_PROCD=1
+PROG=/usr/bin/vlmcsd
+
+get_config() {
+	config_get_bool enabled $1 enabled 0
+	config_get autoactivate $1 autoactivate 0
+	config_get firewall $1 firewall 0
+}
+
+add_vlmcs_entry() {
+	local new_hostname="$1"
+
+	uci -q batch <<-EOF >/dev/null
+		add dhcp srvhost
+		set dhcp.@srvhost[-1].srv=_vlmcs._tcp
+		set dhcp.@srvhost[-1].target=$new_hostname
+		set dhcp.@srvhost[-1].port=1688
+		set dhcp.@srvhost[-1].class=0
+		set dhcp.@srvhost[-1].weight=100
+		commit dhcp
+	EOF
+
+	/etc/init.d/dnsmasq restart
+	exit 0
+}
+
+set_firewall() {
+	if [ "$external_access" = "allow" ]; then
+		uci -q delete firewall.vlmcsd
+		uci set firewall.vlmcsd=rule
+		uci set firewall.vlmcsd.name="vlmcsd"
+		uci set firewall.vlmcsd.target="ACCEPT"
+		uci set firewall.vlmcsd.src="wan"
+		uci set firewall.vlmcsd.proto="tcp"
+		uci set firewall.vlmcsd.dest_port="1688"
+		uci set firewall.vlmcsd.enabled="1"
+		uci commit firewall
+		/etc/init.d/firewall reload >/dev/null 2>&1
+	elif [ "$external_access" = "deny" ]; then
+		uci -q delete firewall.vlmcsd
+		uci commit firewall
+		/etc/init.d/firewall reload >/dev/null 2>&1
+	fi
+}
+
+start_service() {
+	config_load vlmcsd
+	config_foreach get_config vlmcsd
+
+	[ $enabled -eq 0 ] && return 0
+
+	[ "$firewall" -eq "1" ] && external_access="allow" || external_access="deny"
+	set_firewall
+
+	procd_open_instance vlmcsd
+	procd_set_param command $PROG
+	procd_append_param command -D
+	procd_append_param command -i /etc/vlmcsd/vlmcsd.ini
+	procd_append_param command -L [::]:1688
+	procd_set_param stdout 1
+	procd_set_param stderr 1
+	procd_set_param respawn
+	procd_close_instance vlmcsd
+
+	if [ $autoactivate -eq 1 ]; then
+		local HOSTNAME=`uci get system.@system[0].hostname`
+
+		local index=$(uci -q show dhcp |grep "].srv='_vlmcs._tcp'") \
+			|| add_vlmcs_entry $HOSTNAME
+		index=${index#*[}
+		index=${index%]*}
+
+		local host_name=$(uci -q get dhcp.@srvhost[$index].target)
+
+		if [ "$HOSTNAME" != "$host_name" ]; then
+			uci delete dhcp.@srvhost[$index]
+			add_vlmcs_entry $HOSTNAME
+		fi
+	fi
+}
+
+service_triggers() {
+	procd_add_reload_trigger "vlmcsd"
+}
+
+stop_service() {
+	external_access="deny"
+	set_firewall
+}
+
+reload_service() {
+	stop
+	sleep 1
+	start
+}
