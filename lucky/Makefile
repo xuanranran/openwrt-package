@@ -97,6 +97,9 @@ define Package/$(PKG_NAME)/postrm
 rmdir $(LUCKY_CONF_DIR) 2>/dev/null || true
 endef 
 
+define Build/Compile
+endef
+
 define Package/$(PKG_NAME)/conffiles
 /etc/config/lucky.daji/
 endef
