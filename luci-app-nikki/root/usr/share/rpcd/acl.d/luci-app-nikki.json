@@ -36,7 +36,8 @@
                 "/etc/nikki/run/providers/rule/*": ["write"],
                 "/etc/nikki/run/providers/proxy/*": ["write"],
                 "/etc/nikki/nftables/reserved_ip.nft": ["write"],
-                "/etc/nikki/nftables/reserved_ip6.nft": ["write"]
+                "/etc/nikki/nftables/reserved_ip6.nft": ["write"],
+                "/var/log/nikki/*.log": ["write"]
             }
         }
     }
