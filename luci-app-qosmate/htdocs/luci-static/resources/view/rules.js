@@ -15,6 +15,28 @@ var callInitAction = rpc.declare({
 });
 
 return view.extend({
+    handleSaveApply: function(ev) {
+        return this.handleSave(ev)
+            .then(() => ui.changes.apply())
+            .then(() => uci.load('qosmate'))
+            .then(() => uci.get_first('qosmate', 'global', 'enabled'))
+            .then(enabled => {
+                if (enabled === '0') {
+                    return fs.exec_direct('/etc/init.d/qosmate', ['stop']);
+                } else {
+                    return fs.exec_direct('/etc/init.d/qosmate', ['restart']);
+                }
+            })
+            .then(() => {
+                ui.hideModal();
+                window.location.reload();
+            })
+            .catch(err => {
+                ui.hideModal();
+                ui.addNotification(null, E('p', _('Failed to save settings or update QoSmate service: ') + err.message));
+            });
+    },
+
     render: function() {
         var m, s, o;
 
@@ -62,11 +84,11 @@ return view.extend({
                 ]),
                 E('tr', { 'class': 'tr' }, [
                     E('td', { 'class': 'td left' }, _('Video')),
-                    E('td', { 'class': 'td left' }, 'CS3, AF4x, AF3x, CS2, TOS1')
+                    E('td', { 'class': 'td left' }, 'CS3, AF4x, AF3x, AF2x, CS2, TOS1')
                 ]),
                 E('tr', { 'class': 'tr' }, [
                     E('td', { 'class': 'td left' }, _('Best Effort')),
-                    E('td', { 'class': 'td left' }, 'CS0, AF1x, AF2x, TOS0')
+                    E('td', { 'class': 'td left' }, 'CS0, AF1x, TOS0')
                 ]),
                 E('tr', { 'class': 'tr' }, [
                     E('td', { 'class': 'td left' }, _('Bulk (Lowest Priority)')),
@@ -88,7 +110,7 @@ return view.extend({
             }
             return _('Any');
         };
-
+              
         o = s.taboption('general', form.MultiValue, 'proto', _('Protocol'));
         o.value('tcp', _('TCP'));
         o.value('udp', _('UDP'));
@@ -96,7 +118,7 @@ return view.extend({
         o.rmempty = true;
         o.default = 'tcp udp';
         o.modalonly = true;
-
+        
         o.cfgvalue = function(section_id) {
             var value = uci.get('qosmate', section_id, 'proto');
             if (Array.isArray(value)) {
@@ -106,7 +128,7 @@ return view.extend({
             }
             return [];
         };
-
+        
         o.write = function(section_id, value) {
             if (value && value.length) {
                 uci.set('qosmate', section_id, 'proto', value.join(' '));
@@ -114,15 +136,15 @@ return view.extend({
                 uci.unset('qosmate', section_id, 'proto');
             }
         };
-
+        
         o.validate = function(section_id, value) {
             if (!value || value.length === 0) {
                 return true;
             }
-
+            
             var valid = ['tcp', 'udp', 'icmp'];
             var toValidate = Array.isArray(value) ? value : value.split(/\s+/);
-
+            
             for (var i = 0; i < toValidate.length; i++) {
                 if (valid.indexOf(toValidate[i]) === -1) {
                     return _('Invalid protocol: %s').format(toValidate[i]);
@@ -130,70 +152,90 @@ return view.extend({
             }
             return true;
         };
-
+        
         o.remove = function(section_id) {
             uci.unset('qosmate', section_id, 'proto');
         };
 
         o = s.taboption('general', form.DynamicList, 'src_ip', _('Source IP'));
-        o.datatype = 'or(ip4addr, ip6addr, string)';
-        o.placeholder = _('any');
+        o.datatype = 'string';
+        o.placeholder = _('IP address or @setname');
         o.rmempty = true;
-        o.write = function(section_id, formvalue) {
-            var values = formvalue.map(function(v) {
-                return v.replace(/^!(?!=)/, '!=');
-            });
-            return this.super('write', [section_id, values]);
-        };
         o.validate = function(section_id, value) {
-            if (value === '')
+            if (!value || value.length === 0) {
                 return true;
-
-            if (!value.match(/^(!|!=)?((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})?)|([0-9a-fA-F:]{2,}(::)?[0-9a-fA-F:]*(%\w+)?(\/\d{1,3})?)|[a-zA-Z0-9_]+)$/))
-                return _('Invalid IP address or hostname');
-            return true;
-        };
-
-        o = s.taboption('general', form.DynamicList, 'src_port', _('Source port'));
-        o.datatype = 'or(port, portrange, string)';
-        o.placeholder = _('any');
-        o.rmempty = true;
-        o.write = function(section_id, formvalue) {
-            var values = formvalue.map(function(v) {
-                return v.replace(/^!(?!=)/, '!=');
-            });
-            return this.super('write', [section_id, values]);
-        };
-        o.validate = function(section_id, value) {
-            if (value === '')
-                return true;
+            }
             
-            if (!value.match(/^(!|!=)?(\d+(-\d+)?|[a-zA-Z0-9]+)$/))
-                return _('Invalid port or port range');
+            var values = Array.isArray(value) ? value : value.split(/\s+/);
+            var ipCidrRegex = /^(?:(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d\d?)){3})(?:\/(?:[0-9]|[1-2]\d|3[0-2]))?|(?:(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,7}:|(?:[A-Fa-f0-9]{1,4}:){1,6}:[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,5}(?::[A-Fa-f0-9]{1,4}){1,2}|(?:[A-Fa-f0-9]{1,4}:){1,4}(?::[A-Fa-f0-9]{1,4}){1,3}|(?:[A-Fa-f0-9]{1,4}:){1,3}(?::[A-Fa-f0-9]{1,4}){1,4}|(?:[A-Fa-f0-9]{1,4}:){1,2}(?::[A-Fa-f0-9]{1,4}){1,5}|[A-Fa-f0-9]{1,4}:(?:(?::[A-Fa-f0-9]{1,4}){1,6})|:(?:(?::[A-Fa-f0-9]{1,4}){1,7}|:))(?:\/(?:[0-9]|[1-9]\d|1[0-1]\d|12[0-8]))?)$/;
+            
+            for (var i = 0; i < values.length; i++) {
+                var v = values[i].replace(/^!(?!=)/, '!=');
+                if (v.startsWith('@')) {
+                    if (!/^@[a-zA-Z0-9_]+$/.test(v)) {
+                        return _('Invalid set name format. Must start with @ followed by letters, numbers, or underscore');
+                    }
+                } else {
+                    if (!ipCidrRegex.test(v)) {
+                        return _('Invalid IP address or CIDR format: ') + v;
+                    }
+                }
+            }
             return true;
         };
-
+        o.write = function(section_id, formvalue) {
+            var values = formvalue.map(function(v) {
+                return v.replace(/^!(?!=)/, '!=');
+            });
+            return this.super('write', [section_id, values]);
+        };
+        
+        o = s.taboption('general', form.DynamicList, 'src_port', _('Source port'));
+		o.datatype = 'list(neg(portrange))';
+        o.placeholder = _('any');
+        o.rmempty = true;
+        o.write = function(section_id, formvalue) {
+            var values = formvalue.map(function(v) {
+                return v.replace(/^!(?!=)/, '!=');
+            });
+            return this.super('write', [section_id, values]);
+        };
+        
         o = s.taboption('general', form.DynamicList, 'dest_ip', _('Destination IP'));
-        o.datatype = 'or(ip4addr, ip6addr, string)';
-        o.placeholder = _('any');
+        o.datatype = 'string';
+        o.placeholder = _('IP address or @setname');
         o.rmempty = true;
+        o.validate = function(section_id, value) {
+            if (!value || value.length === 0) {
+                return true;
+            }
+            
+            var values = Array.isArray(value) ? value : value.split(/\s+/);
+            var ipCidrRegex = /^(?:(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d\d?)){3})(?:\/(?:[0-9]|[1-2]\d|3[0-2]))?|(?:(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,7}:|(?:[A-Fa-f0-9]{1,4}:){1,6}:[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,5}(?::[A-Fa-f0-9]{1,4}){1,2}|(?:[A-Fa-f0-9]{1,4}:){1,4}(?::[A-Fa-f0-9]{1,4}){1,3}|(?:[A-Fa-f0-9]{1,4}:){1,3}(?::[A-Fa-f0-9]{1,4}){1,4}|(?:[A-Fa-f0-9]{1,4}:){1,2}(?::[A-Fa-f0-9]{1,4}){1,5}|[A-Fa-f0-9]{1,4}:(?:(?::[A-Fa-f0-9]{1,4}){1,6})|:(?:(?::[A-Fa-f0-9]{1,4}){1,7}|:))(?:\/(?:[0-9]|[1-9]\d|1[0-1]\d|12[0-8]))?)$/;
+            
+            for (var i = 0; i < values.length; i++) {
+                var v = values[i].replace(/^!(?!=)/, '!=');
+                if (v.startsWith('@')) {
+                    if (!/^@[a-zA-Z0-9_]+$/.test(v)) {
+                        return _('Invalid set name format. Must start with @ followed by letters, numbers, or underscore');
+                    }
+                } else {
+                    if (!ipCidrRegex.test(v)) {
+                        return _('Invalid IP address or CIDR format: ') + v;
+                    }
+                }
+            }
+            return true;
+        };
         o.write = function(section_id, formvalue) {
             var values = formvalue.map(function(v) {
                 return v.replace(/^!(?!=)/, '!=');
             });
             return this.super('write', [section_id, values]);
         };
-        o.validate = function(section_id, value) {
-            if (value === '')
-                return true;
-
-            if (!value.match(/^(!|!=)?((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2})?)|([0-9a-fA-F:]{2,}(::)?[0-9a-fA-F:]*(%\w+)?(\/\d{1,3})?)|[a-zA-Z0-9_]+)$/))
-                return _('Invalid IP address or hostname');
-            return true;
-        };
-
+        
         o = s.taboption('general', form.DynamicList, 'dest_port', _('Destination port'));
-        o.datatype = 'or(port, portrange, string)';
+		o.datatype = 'list(neg(portrange))';
         o.placeholder = _('any');
         o.rmempty = true;
         o.write = function(section_id, formvalue) {
@@ -201,14 +243,6 @@ return view.extend({
                 return v.replace(/^!(?!=)/, '!=');
             });
             return this.super('write', [section_id, values]);
-        };
-        o.validate = function(section_id, value) {
-            if (value === '')
-                return true;
-
-            if (!value.match(/^(!|!=)?(\d+(-\d+)?|[a-zA-Z0-9]+)$/))
-                return _('Invalid port or port range');
-            return true;
         };
 
         o = s.taboption('general', form.ListValue, 'class', _('DSCP Class'));
