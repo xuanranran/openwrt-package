@@ -38,20 +38,17 @@ msgstr "服务状态"
 msgid "Running"
 msgstr "运行中"
 
-msgid "Stopped"
+msgid "Not Running"
 msgstr "已停止"
 
 msgid "Service Control"
 msgstr "服务控制"
 
-msgid "Start"
-msgstr "启动"
+msgid "Reload"
+msgstr "重载"
 
 msgid "Restart"
 msgstr "重启"
-
-msgid "Stop"
-msgstr "停止"
 
 msgid "Auto Setup"
 msgstr "自动设置"
@@ -88,24 +85,6 @@ msgstr "停止 QoSmate 失败"
 
 msgid "Version Information"
 msgstr "版本信息"
-
-msgid "Unable to fetch"
-msgstr "获取失败"
-
-msgid "Current Version"
-msgstr "当前版本"
-
-msgid "Latest Version"
-msgstr "最新版本"
-
-msgid "A new version is available!"
-msgstr "有新版本可用！"
-
-msgid "QoSmate is up to date."
-msgstr "QoSmate 已是最新"
-
-msgid "Unable to check for updates."
-msgstr "检查更新失败"
 
 msgid "Enable"
 msgstr "启用"
