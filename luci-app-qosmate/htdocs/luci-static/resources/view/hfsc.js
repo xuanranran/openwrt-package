@@ -14,6 +14,28 @@ var callInitAction = rpc.declare({
 });
 
 return view.extend({
+    handleSaveApply: function(ev) {
+        return this.handleSave(ev)
+            .then(() => ui.changes.apply())
+            .then(() => uci.load('qosmate'))
+            .then(() => uci.get_first('qosmate', 'global', 'enabled'))
+            .then(enabled => {
+                if (enabled === '0') {
+                    return fs.exec_direct('/etc/init.d/qosmate', ['stop']);
+                } else {
+                    return fs.exec_direct('/etc/init.d/qosmate', ['restart']);
+                }
+            })
+            .then(() => {
+                ui.hideModal();
+                window.location.reload();
+            })
+            .catch(err => {
+                ui.hideModal();
+                ui.addNotification(null, E('p', _('Failed to save settings or update QoSmate service: ') + err.message));
+            });
+    },
+
     render: function() {
         var m, s, o;
 
@@ -69,6 +91,13 @@ return view.extend({
         createOption('netemdelayms', _('NETEM Delay (ms)'), _('NETEM delay in milliseconds'), _('Default: 30'), 'uinteger');
         createOption('netemjitterms', _('NETEM Jitter (ms)'), _('NETEM jitter in milliseconds'), _('Default: 7'), 'uinteger');
 
+        o = s.option(form.ListValue, 'netem_direction', _('NETEM Direction'), _('Select which direction to apply the NETEM delay/jitter settings'));
+        o.depends('gameqdisc', 'netem');
+        o.value('both', _('Both Directions'));
+        o.value('egress', _('Egress Only'));
+        o.value('ingress', _('Ingress Only'));
+        o.default = 'both';     
+        
         o = s.option(form.ListValue, 'netemdist', _('NETEM Distribution'), _('NETEM delay distribution'));
         o.value('experimental', _('Experimental'));
         o.value('normal', _('Normal'));

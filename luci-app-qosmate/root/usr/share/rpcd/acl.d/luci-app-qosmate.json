@@ -4,16 +4,18 @@
         "description": "Grant access to QoSmate configuration",
         "read": {
             "ubus": {
-                "luci": [ "getInitList", "setInitAction", "getInitActionStatus", "exec" ],
-                "luci.qosmate": [ "getConntrackDSCP" ]
+                "luci.qosmate": [ "getConntrackDSCP" ],
+                "luci": [ "getInitList", "setInitAction", "getInitActionStatus", "exec" ]
             },
             "uci": [ "qosmate" ],
             "file": {
-                "/etc/init.d/qosmate": [ "exec" ],
-                "/etc/qosmate.sh": [ "read" ],
-                "/etc/qosmate.d/custom_rules.nft": [ "read" ],
+                "/etc/qosmate.sh": [ "read" ],         
+                "/etc/init.d/qosmate": [ "read", "exec" ],
+                "/etc/hotplug.d/iface/13-qosmateHotplug": [ "read" ],
+                "/etc/config/qosmate": [ "read" ],   
                 "/tmp/qosmate_auto_setup_output.txt": [ "read" ],
-                "/tmp/qosmate_custom_rules_validation.txt": [ "read" ]
+                "/etc/qosmate.d/custom_rules.nft": [ "read" ],
+                "/tmp/qosmate_custom_rules_validation.txt": [ "read" ]                                                                          
             }
         },
         "write": {
@@ -22,7 +24,10 @@
             },
             "uci": [ "qosmate" ],
             "file": {
-                "/etc/qosmate.d/custom_rules.nft": [ "write" ]
+                "/etc/qosmate.sh": [ "write" ],
+                "/etc/init.d/qosmate": [ "write" ],                   
+                "/etc/hotplug.d/iface/13-qosmateHotplug": [ "write" ],
+                "/etc/qosmate.d/custom_rules.nft": [ "write" ]   
             }
         }
     }
