@@ -4667,12 +4667,45 @@ div#add_link_div {
   border-radius: 9px;
 }
 
+/* luci-app-filemanager */
+
 #file-manager-container button#go-button {
   cursor: pointer;
 }
 
 #file-manager-container .file-manager-header {
     padding: 4px;
+}
+
+/* luci-mod-dashboard */
+.Dashboard .dashboard-bg {
+  background-color: #ffffff !important;
+}
+
+.Dashboard h3 {
+  color: #69758c !important;
+  border-radius: 0 0 16px 16px;
+}
+
+.Dashboard:not(.some-other-class) {
+  color: #666a88 !important;
+}
+
+.Dashboard .title {
+  background-color: var(--primary) !important;
+  border-radius: 16px;
+}
+
+.Dashboard span.label.label-success {
+  background-color: #55bb55;
+}
+
+.Dashboard .cbi-rowstyle-1 {
+  background-color: #ffffff;
+}
+
+.Dashboard .devices-list .devices-info, .Dashboard .router-status-wifi .wifi-info > hr:last-child {
+  margin-top: 0.575rem;
 }
 
 @media screen and (max-width: 600px) {

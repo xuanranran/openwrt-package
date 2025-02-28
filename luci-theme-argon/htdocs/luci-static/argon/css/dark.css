@@ -100,6 +100,16 @@ header::after {
   color: #cccccc !important;
 }
 
+.main .main-left .nav>li>a:first-child.active {
+  background: #483d8b;
+  background: var(--dark-primary)
+}
+
+.main .main-left .nav li.slide .slide-menu li::after {
+  background: #483d8b;
+  background: var(--dark-primary)
+}
+
 .main .main-left .nav .slide .menu.active a::after {
   background-color: #cccccc !important;
 }
@@ -952,6 +962,7 @@ table,
   background-color: #242424
 }
 
+/* luci-app-filemanager */
 #file-manager-container button#go-button {
   background-color: #242424 !important;
 }
@@ -990,4 +1001,27 @@ table,
 
 #file-manager-container .resizer::after {
   background: none !important;
+}
+
+/* luci-mod-dashboard */
+.Dashboard .dashboard-bg {
+  background-color: #1b212a !important;
+}
+
+.Dashboard h3 {
+  color: #cccccc !important;
+  border-radius: 0 0 16px 16px;
+}
+
+.Dashboard:not(.some-other-class) {
+  color: #cccccc !important;
+}
+
+.Dashboard .title {
+  background-color: #000000 !important;
+  border-radius: 16px;
+}
+
+.Dashboard .cbi-rowstyle-1 {
+  background-color: #1b212a;
 }
