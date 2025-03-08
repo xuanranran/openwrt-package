@@ -240,8 +240,14 @@ main() {
 			ip_changes getip && exit $?
 		}
 		silent_run read_config
-		[ $1 == "send" ] && send && exit $?
-		[ $1 == "test" ] && send test && exit $?
+		[ "$1" == "send" ] && {
+			send
+			exit $?
+		}
+		[ "$1" == "test" ] && {
+			send test
+			exit $?
+		}
 	else
 		silent_run read_config
 	fi
@@ -1035,27 +1041,33 @@ cpu_load() {
 		[ -z "$temp_last_overload_time" ] && temp_last_overload_time=$(date +%s)
 		local cpu_temp=$(soc_temp)
 
-		if [ -n "$cpu_temp" ] && [ $(expr $cpu_temp \> $temperature_threshold) -eq "1" ]; then
+		if [ -n "$cpu_temp" ] && awk -v t="$cpu_temp" -v th="$temperature_threshold" 'BEGIN { exit !(t > th) }'; then
 			log_change "【！！警报！！】 CPU 温度过高: ${cpu_temp}"
+
+			# 检查是否达到持续时间阈值
+			if [ "$cpu_threshold_duration" -eq 0 ] || [ "$(($(date +%s) - $temp_last_overload_time))" -ge "$cpu_threshold_duration" ]; then
+				# 检查是否达到推送间隔阈值
+				if [ -z "$temperaturecd_time" ] || [ "$(($(date +%s) - $temperaturecd_time))" -ge "$cpu_notification_delay" ]; then
+					if [ -n "$title" ] && (echo "$title" | grep -q "过高"); then
+						title="设备报警！"
+					else
+						title="CPU 温度过高！"
+					fi
+
+					temperaturecd_time=$(date +%s) # 记录本次推送的时间戳
+					log_change "${disturb_text} CPU 温度过高: ${cpu_temp}"
+
+					local cpu_overload_duration=$(time_for_humans $(($(date +%s) - $temp_last_overload_time)))
+					local cpu_overload_info="${str_splitline}${str_title_start} CPU 温度过高${str_title_end}"
+					cpu_overload_info="${cpu_overload_info}${str_linefeed}${str_tab}CPU 温度已连续 ${cpu_overload_duration} 超过预设"
+					cpu_overload_info="${cpu_overload_info}${str_linefeed}${str_tab}接下来 ${cpu_notification_duration} 不再提示"
+					cpu_overload_info="${cpu_overload_info}${str_linefeed}${str_tab}当前温度：${cpu_temp}℃"
+					content="${content}${cpu_overload_info}"
+				fi
+			fi
 		else
+			# 温度正常，重置计时器
 			temp_last_overload_time=$(date +%s)
-		fi
-
-		if [ -n "$cpu_temp" ] && [ "$(($(date +%s) - $temp_last_overload_time))" -ge "$cpu_threshold_duration" ] && [ -z "$temperaturecd_time" ]; then
-			title="CPU 温度过高！"
-			temperaturecd_time=$(date +%s)
-			log_change "${disturb_text} CPU 温度过高: ${cpu_temp}"
-
-			local cpu_overload_duration=$(time_for_humans $(($(date +%s) - $cpu_last_overload_time)))
-
-			local cpu_overload_info="${str_splitline}${str_title_start} CPU 温度过高${str_title_end}"
-			local cpu_overload_info="${cpu_overload_info}${str_linefeed}${str_tab}CPU 温度已连续 ${cpu_overload_duration} 超过预设"
-			local cpu_overload_info="${cpu_overload_info}${str_linefeed}${str_tab}接下来 ${cpu_notification_duration} 不再提示"
-			local cpu_overload_info="${cpu_overload_info}${str_linefeed}${str_tab}当前温度：${cpu_temp}℃"
-
-			content="${content}${cpu_overload_info}"
-		elif [ -n "$temperaturecd_time" ] && [ "$(($(date +%s) - $temperaturecd_time))" -ge "$cpu_notification_delay" ]; then
-			unset temperaturecd_time
 		fi
 	fi
 
@@ -1063,37 +1075,36 @@ cpu_load() {
 		[ -z "$cpu_last_overload_time" ] && cpu_last_overload_time=$(date +%s)
 		local cpu_fuzai=$(cat /proc/loadavg | awk '{print $1}') 2>/dev/null
 
-		if [ -n "$cpu_fuzai" ] && [ $(expr $cpu_fuzai \> $cpu_load_threshold) -eq "1" ]; then
+		if [ -n "$cpu_fuzai" ] && awk -v t="$cpu_fuzai" -v th="$cpu_load_threshold" 'BEGIN { exit !(t > th) }'; then
 			log_change "【！！警报！！】 CPU 负载过高: ${cpu_fuzai}"
 			cputop log
-		elif [ -n "$cpu_fuzai" ]; then
-			cpu_last_overload_time=$(date +%s)
-		fi
 
-		if [ -n "$cpu_fuzai" ] && [ "$(($(date +%s) - $cpu_last_overload_time))" -ge "$cpu_threshold_duration" ] && [ -z "$cpucd_time" ]; then
-			unset getlogtop
+			# 检查是否达到持续时间阈值
+			if [ "$cpu_threshold_duration" -eq 0 ] || [ "$(($(date +%s) - $cpu_last_overload_time))" -ge "$cpu_threshold_duration" ]; then
+				# 检查是否达到推送间隔阈值
+				if [ -z "$cpucd_time" ] || [ "$(($(date +%s) - $cpucd_time))" -ge "$cpu_notification_delay" ]; then
+					if [ -n "$title" ] && (echo "$title" | grep -q "过高"); then
+						title="设备报警！"
+					else
+						title="CPU 负载过高！"
+					fi
 
-			if [ -n "$title" ] && (echo "$title" | grep -q "过高"); then
-				title="设备报警！"
-			else
-				title="CPU 负载过高！"
+					cpucd_time=$(date +%s) # 记录本次推送的时间戳
+					log_change "${disturb_text} CPU 负载过高: ${cpu_fuzai}"
+
+					local cpu_load_duration=$(time_for_humans $(($(date +%s) - $cpu_last_overload_time)))
+					local cpu_load_info="${str_splitline}${str_title_start} CPU 负载过高${str_title_end}"
+					cpu_load_info="${cpu_load_info}${str_linefeed}${str_tab}CPU 负载已连续 ${cpu_load_duration} 超过预设"
+					cpu_load_info="${cpu_load_info}${str_linefeed}${str_tab}接下来 ${cpu_notification_duration} 不再提示"
+					cpu_load_info="${cpu_load_info}${str_linefeed}${str_tab}当前负载：${cpu_fuzai}"
+					content="${content}${cpu_load_info}"
+
+					cputop
+				fi
 			fi
-
-			cpucd_time=$(date +%s)
-			log_change "${disturb_text} CPU 负载过高: ${cpu_fuzai}"
-
-			local cpu_load_duration=$(time_for_humans $(($(date +%s) - $cpu_last_overload_time)))
-
-			local cpu_load_info="${str_splitline}${str_title_start} CPU 负载过高${str_title_end}"
-			local cpu_load_info="${cpu_load_info}${str_linefeed}${str_tab}CPU 负载已连续 ${cpu_load_duration} 超过预设"
-			local cpu_load_info="${cpu_load_info}${str_linefeed}${str_tab}接下来 ${cpu_notification_duration} 不再提示"
-			local cpu_load_info="${cpu_load_info}${str_linefeed}${str_tab}当前负载：${cpu_fuzai}"
-
-			content="${content}${cpu_load_info}"
-
-			cputop
-		elif [ -n "$cpucd_time" ] && [ "$(($(date +%s) - $cpucd_time))" -ge "$cpu_notification_delay" ]; then
-			unset cpucd_time
+		else
+			# 负载正常，重置计时器
+			cpu_last_overload_time=$(date +%s)
 		fi
 	fi
 }
@@ -1222,7 +1233,7 @@ get_disk() {
 			}
 			# 如果获取到了多个分区，屏蔽使用空间为 0% 的分区
 			[ -n "$disk_use" ] && [ $(echo "$disk_use" | wc -l) -ne "1" ] && disk_use=$(echo "$disk_use" | grep -v -w "0%")
-			[ -n "$disk_use" ] && disk_use=$(echo "$disk_use" | sed ':a;N;$!ba;s/\n/'"${str_linefeed}${str_tab}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}"'/g')
+			[ -n "$disk_use" ] && disk_use=$(echo "$disk_use" | sed ':a;N;$!ba;s/\n/'"${str_linefeed}${str_tab}${str_space}${str_tab}${str_space}${str_space}"'/g')
 			[ -n "$disk_use" ] && [ -n "${disk_use// /}" ] && echo -e -n "${str_linefeed}${str_tab}空间使用：${disk_use}" >>"$output_dir/get_disk"
 			# 寿命使用
 			local disk_health=$(jq -r .nvme_smart_health_information_log.percentage_used ${file_path})
@@ -1486,10 +1497,10 @@ current_device() {
 	local logrow=$(jq '.devices | map(select(.status == "online")) | length' "$devices_json")
 	[ $logrow -eq "0" ] && return
 
-	[ -f "${dir}/usage.db" ] && local ip_total_db="总计流量${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}"
+	[ -f "${dir}/usage.db" ] && local ip_total_db="总计流量${str_space}${str_tab}${str_space}${str_space}${str_space}"
 	local explain="${str_splitline}${str_title_start} 现有在线设备 ${logrow} 台，具体如下${str_title_end}"
 	[ $logrow -eq "0" ] && local explain="${send_content}${str_splitline}${str_title_start} 当前无在线设备${str_title_end}"
-	local header="${str_linefeed}${str_tab}IP 地址${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${ip_total_db}${str_space}${str_space}${str_space}${str_space}在线时间${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}${str_space}客户端名"
+	local header="${str_linefeed}${str_space}IP 地址${str_space}${str_tab}${str_space}${ip_total_db}${str_space}${str_tab}${str_space}${str_space}在线时间${str_space}${str_tab}${str_space}${str_space}${str_space}${str_space}客户端名"
 
 	content="${content}${explain}${header}"
 
@@ -1526,9 +1537,9 @@ current_device() {
 				total="${total}${str_space}"
 			done
 			unset i n
-			total="${total}${str_space}|${str_space}"
+			total="${total}${str_space}${str_tab}${str_space}"
 		fi
-		content="${content}${str_linefeed}${str_space}${ip}${str_space}|${str_space}${total}${time_online}${str_space}|${str_space}${name}"
+		content="${content}${str_linefeed}${str_space}${ip}${str_space}${str_tab}${str_space}${total}${time_online}${str_space}${str_tab}${str_space}${name}"
 	done
 	[ -f "${dir}/send_pid" ] && echo "$content" >"$output_dir/current_device" && unset content
 }
@@ -1715,13 +1726,13 @@ init_ip_black() {
 # 添加黑名单
 add_ip_black() {
 	local login_ip=$1
-	[ -z "$login_ip" ] && return 1
+	[ -z "$login_ip" ] && return 0
 	echo "$login_ip_white_list" | grep -w -q "$login_ip" && return 1
 	# 检查 IP 版本
 	unset ipset_name
 	(echo "$login_ip" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$') && ipset_name="wechatpush_blacklist"
 	(echo "$login_ip" | grep -Eq '^([\da-fA-F0-9]{1,4}(:{1,2})){1,15}[\da-fA-F0-9]{1,4}$') && ipset_name="wechatpush_blacklistv6"
-	[ -z "$ipset_name" ] && log_change "【！！！】黑名单添加失败，IP 格式错误" && return 1
+	[ -z "$ipset_name" ] && sed -i "/^$login_ip /d" "$ip_blacklist_path" && log_change "【！！！】黑名单添加失败，IP $login_ip 格式错误，已从列表中移除" && return 1
 
 	! cat "$ip_blacklist_path" | grep -q -w -i $login_ip && echo "$login_ip timeout $login_ip_black_timeout" >>"$ip_blacklist_path"
 
@@ -1742,7 +1753,7 @@ del_ip_black() {
 	unset ipset_name
 	(echo "$1" | grep -Eq '^([0-9]{1,3}\.){3}[0-9]{1,3}$') && ipset_name="wechatpush_blacklist"
 	(echo "$1" | grep -Eq '^([\da-fA-F0-9]{1,4}(:{1,2})){1,15}[\da-fA-F0-9]{1,4}$') && ipset_name="wechatpush_blacklistv6"
-	[ -z "$ipset_name" ] && log_change "【！！！】黑名单删除失败，IP 格式错误" && return
+	[ -z "$ipset_name" ] && return
 
 	[ -n "$nftables_version" ] && {
 		nft delete element inet fw4 ${ipset_name} { $1 } >/dev/null 2>&1
@@ -1888,6 +1899,7 @@ send() {
 	>"${dir}/send_enable.lock"
 	disturb
 	disturb_RETVAL=$?
+	[ "$disturb_RETVAL" -ne "0" ] && log_change "${disturb_text}免打扰时间，退出定时推送" && return
 	get_config "send_title" "send_notification"
 
 	[ -z "$1" ] && cpuload=$(getcpu)
@@ -1978,9 +1990,9 @@ send() {
 
 	[ -n "$device_name" ] && send_title="【$device_name】${send_title}"
 	[ -z "$send_content" ] && send_content="${str_splitline}${str_title_start} 我遇到了一个难题${str_title_end}${str_linefeed}${str_tab}定时发送选项错误，你没有选择需要发送的项目，该怎么办呢${str_splitline}"
-	[ "$disturb_RETVAL" -eq "0" ] && diy_send "${send_title}" "${send_content}" "${jsonpath}" "$1" >/dev/null 2>&1
+	diy_send "${send_title}" "${send_content}" "${jsonpath}" "$1" >/dev/null 2>&1
 	RETVAL=$?
-	[ $RETVAL -eq 1 ] && [ "$send_disturb" -eq "0" ] && log_change "【！！！】定时推送失败，请检查网络或设置信息" || log_change "${disturb_text}定时推送任务完成"
+	[ $RETVAL -eq 1 ] && log_change "【！！！】定时推送失败，请检查网络或设置信息" || log_change "${disturb_text}定时推送任务完成"
 	deltemp
 	rm -f "${dir}/send_pid"
 	return $RETVAL
@@ -2001,12 +2013,16 @@ login_send() {
 	echo "$login_ip_white_list" | grep -w -q "$login_ip" && [ -n "$login_log_enable" ] && return
 
 	[[ "$log_type" == "web"* ]] && local log_type_short="Web" || local log_type_short="SSH"
-	if [ -n "$login_disturb" ] && [ "$login_disturb" -eq 2 ]; then
+	if [ -n "$login_disturb" ]; then
 		[ -f "$logfile" ] && login_log=$(grep -w "$login_ip" "$logfile" | grep -v "\【info\】" | tail -n 1)
 		[ -n "$login_log" ] && log_timestamp=$(date -d "$(echo "$login_log" | awk '{print $1, $2}')" +%s) || log_timestamp=0
-		[ $(($(date +%s) - log_timestamp)) -lt $login_notification_delay ] && local log_only="1" && [ -n "$login_log_enable" ] && return
+		if [ "$login_disturb" -eq 1 ]; then
+			log_change "【info】设备 ${login_ip} 通过 ${log_type_short} 登录了路由器 " && return
+		fi
+		if [ "$login_disturb" -eq 2 ]; then
+			[ $(($(date +%s) - log_timestamp)) -lt $login_notification_delay ] && [ -n "$login_log_enable" ] && return
+		fi
 	fi
-	[ -n "$log_only" ] && log_change "【info】设备 ${login_ip} 通过 ${log_type_short} 登录了路由器 " && return
 
 	# 查询 IP 归属地
 	local login_ip_attribution=$(get_ip_attribution "${login_ip}")
