@@ -2,6 +2,7 @@ config global
 	option primary '#5e72e4'
 	option dark_primary '#483d8b'
 	option progressbar_font '#2e2b60'
+	option font_weight '600'
 	option blur '10'
 	option blur_dark '10'
 	option transparency '0.2'

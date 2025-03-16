@@ -199,3 +199,15 @@ msgstr "[亮色模式] 进度条字体颜色"
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:160
 msgid "A HEX color (default: #2e2b60)."
 msgstr "十六进制颜色值（预设为：#2e2b60）。"
+
+#: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:86
+msgid "Font"
+msgstr "字体"
+
+#: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:87
+msgid "Normal"
+msgstr "正常"
+
+#: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:88
+msgid "Bold"
+msgstr "粗体"

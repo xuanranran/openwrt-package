@@ -1046,8 +1046,8 @@ div[style="width:100%;height:300px;border:1px solid #000;background:#fff"] {
 
 .main .main-left .nav li a {
   display: block;
-  color: #69758c;
-  font-weight: bolder
+  color: var(--main-left-font-color);
+  font-weight: var(--font-weight)
 }
 
 .main .main-left .nav li.slide {
@@ -1395,7 +1395,7 @@ h5 {
 [data-page^="admin-system-admin"]:not(.node-main-login) .cbi-map:not(#cbi-dropbear),
 [data-page="admin-system-opkg"] #maincontent>.container {
   font-family: -apple-system,BlinkMacSystemFont,PingFang SC,Segoe UI,Microsoft YaHei,wenquanyi micro hei,Hiragino Sans GB,Hiragino Sans GB W3,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
-  font-weight: 600;
+  font-weight: var(--font-weight);
   font-style: normal;
   line-height: normal;
   min-width: inherit;
@@ -1422,7 +1422,7 @@ h5 {
 .cbi-map-descr,
 .cbi-section-descr {
   font-size: small;
-  font-weight: bolder;
+  font-weight: var(--font-weight);
   line-height: 1.42857143;
   padding: 0.5rem 1.5rem;
 }
@@ -1855,7 +1855,7 @@ td>table>tbody>tr>td,
   text-decoration: none;
   color: #5e6795;
   padding: .5rem .8rem;
-  font-weight: bold
+  font-weight: var(--font-weight)
 }
 
 .tabs li:hover {
@@ -4648,7 +4648,7 @@ div#service_status {
 
 /* 接口名字 */
 .cbi-section.cbi-tblsection strong {
-  font-weight: bold;
+  font-weight: var(--font-weight);
 }
 
 /* passwall faq */

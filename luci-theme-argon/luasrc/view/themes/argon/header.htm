@@ -38,12 +38,14 @@
 
 	-- Custom settings
 	local mode = 'normal'
+	local font_weight = '600'
 	local dark_css = fs.readfile('/www/luci-static/argon/css/dark.css')
 	local bar_color = '#5e72e4'
 	local primary, dark_primary, blur_radius, blur_radius_dark, blur_opacity
 	if fs.access('/etc/config/argon') then
 		primary = uci:get_first('argon', 'global', 'primary')
 		dark_primary = uci:get_first('argon', 'global', 'dark_primary')
+		font_weight = uci:get_first('argon', 'global', 'font_weight')
 		blur_radius = uci:get_first('argon', 'global', 'blur')
 		blur_radius_dark = uci:get_first('argon', 'global', 'blur_dark')
 		blur_opacity = uci:get_first('argon', 'global', 'transparency')
@@ -53,6 +55,11 @@
 		bar_color = mode == 'dark' and dark_primary or primary
 		if not progressbar_font then
 			progressbar_font = "#2e2b60"
+		end
+		if font_weight == "normal" then
+			main_left_font_color = "#5f6368"
+		else
+			main_left_font_color = "#69758c"
 		end
 	end
 
@@ -116,11 +123,13 @@
         :root {
             --primary: <%=primary%>;
             --dark-primary: <%=dark_primary%>;
+            --font-weight: <%=font_weight%>;
             --progressbar-font-color: <%=progressbar_font%>;
             --blur-radius:<%=blur_radius%>px;
             --blur-opacity:<%=blur_opacity%>;
             --blur-radius-dark:<%=blur_radius_dark%>px;
             --blur-opacity-dark:<%=blur_opacity_dark%>;
+            --main-left-font-color:<%=main_left_font_color%>;
         }
         <% end -%>
     </style>
