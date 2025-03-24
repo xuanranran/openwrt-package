@@ -11,8 +11,8 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://www.github.com/pymumu/smartdns.git
-PKG_SOURCE_VERSION:=15a8d5c0be5002760c983fca66fc9beb1818297b
-PKG_MIRROR_HASH:=780753629a050b66bccd337264d15c1d7b4512f07aca3f1bd96fcdeb702e0e34
+PKG_SOURCE_VERSION:=f522ce969dd648c855a6fa7e79f4b3a8467973ff
+PKG_MIRROR_HASH:=33cc0dc1673b66d101ac86ea283e7a791bf18c7bcebff28ad121d468faf07354
 
 PKG_MAINTAINER:=Nick Peng <pymumu@gmail.com>
 PKG_LICENSE:=GPL-3.0-or-later
@@ -87,15 +87,13 @@ endef
 define Package/smartdns-ui/install
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(INSTALL_DIR) $(1)/etc/smartdns/conf.d/
-	$(INSTALL_BIN) $(shell find $(PKG_BUILD_DIR)/plugin/smartdns-ui/target -name libsmartdns_ui.so -not -path "*/deps/*") $(1)/usr/lib/libsmartdns_ui.so
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/plugin/smartdns-ui/target/libsmartdns_ui.so $(1)/usr/lib/libsmartdns_ui.so
 endef
 
 define Build/Compile/smartdns-ui
-	+$(CARGO_PKG_VARS) \
-	cargo build \
-		$(if $(strip $(RUST_PKG_FEATURES)),--features "$(strip $(RUST_PKG_FEATURES))") \
-		--profile $(CARGO_PKG_PROFILE) \
-		--manifest-path $(PKG_BUILD_DIR)/plugin/smartdns-ui/Cargo.toml
+	CARGO_BUILD_ARGS="$(if $(strip $(RUST_PKG_FEATURES)),--features "$(strip $(RUST_PKG_FEATURES))") --profile $(CARGO_PKG_PROFILE)"
+	+$(CARGO_PKG_VARS) CARGO_BUILD_ARGS="$(CARGO_BUILD_ARGS)" CC=$(TARGET_CC) \
+	make -C $(PKG_BUILD_DIR)/plugin/smartdns-ui 
 endef
 
 define Build/Compile
