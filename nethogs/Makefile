@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=nethogs
-PKG_VERSION:=0.8.7
+PKG_VERSION:=0.8.8
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/raboof/nethogs/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=957d6afcc220dfbba44c819162f44818051c5b4fb793c47ba98294393986617d
+PKG_HASH:=111ade20cc545e8dfd7ce4e293bd6b31cd1678a989b6a730bd2fa2acc6254818
 
 PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
@@ -30,6 +30,9 @@ define Package/mentohust/description
   protocol or per subnet, like most tools do, it groups bandwidth by process.
   NetHogs does not rely on a special kernel module to be loaded.
 endef
+
+TARGET_CXXFLAGS += -std=c++17 -fpermissive
+TARGET_LDFLAGS += -Wl,--unresolved-symbols=ignore-in-object-files
 
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/sbin
