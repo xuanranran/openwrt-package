@@ -346,8 +346,8 @@ threads << Thread.new {
       Value['bind-address']='*';
       Value['external-ui']='/usr/share/openclash/ui';
       Value['external-ui-name']='zashboard';
-      if Value.key?('external-ui-url') then
-         Value.delete('external-ui-url');
+      if Value.key?('external-ui-url1') then
+         Value.delete('external-ui-url1');
       end;
       if not Value.key?('keep-alive-interval') and not Value.key?('keep-alive-idle') then
          Value['keep-alive-interval']=15;
