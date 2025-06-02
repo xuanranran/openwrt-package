@@ -4239,7 +4239,7 @@ pre.command-output {
   .cbi-section-table-cell {
     display: inline-block;
     flex: 10 10 auto;
-    flex-basis: 50%;
+    /* flex-basis: 50%; */
     text-align: center;
   }
 
@@ -4310,6 +4310,12 @@ pre.command-output {
   .btn:not(button),
   .cbi-button {
     font-size: 0.8rem;
+  }
+}
+
+@media screen and (min-width: 1281px) and (max-width: 1500px) {
+  tr>td, tr>th, .tr>.td, .tr>.th {
+    padding: 0.5rem;
   }
 }
 
