@@ -368,11 +368,15 @@ div>.table>.tbody>.tr:nth-of-type(2n) {
 
 .cbi-tabmenu li[class~="cbi-tab"] a {
   color: #ccc;
+  background-color: #000000;
+  border-radius: 6px 6px 0 0;
+  border-bottom: .18751rem solid var(--dark-primary);
 }
 
 .cbi-tabmenu>li:hover {
   color: #ccc;
-  background: #2d2d2d;
+  background: #000000;
+  border-bottom: .18751rem solid var(--dark-primary);
 }
 
 .cbi-tabmenu>li[class~="cbi-tab"] {
@@ -962,6 +966,12 @@ table,
   background-color: #242424
 }
 
+/* admin/status/channel_analysis */
+div#channel_graph {
+  border: 1px solid #292c31 !important;
+  background: #242424 !important;
+}
+
 /* luci-app-filemanager */
 #file-manager-container button#go-button {
   background-color: #242424 !important;
@@ -1024,4 +1034,24 @@ table,
 
 .Dashboard .cbi-rowstyle-1 {
   background-color: #1b212a;
+}
+
+/* admin/system/crontab */
+[data-page="admin-system-crontab"] #view p textarea {
+  background: #242424;
+  border: unset;
+}
+
+/* admin/network/diagnostics */
+[data-page="admin-network-diagnostics"] .tr>.td {
+  background-color: #242424 !important;
+  border-bottom: unset !important;
+}
+
+[data-page="admin-network-diagnostics"] .cbi-section {
+  background: #242424 !important;
+}
+
+[data-page="admin-network-diagnostics"] textarea {
+  border: 1px solid #3d424b;
 }

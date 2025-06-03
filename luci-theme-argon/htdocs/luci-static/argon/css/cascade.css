@@ -169,7 +169,7 @@ li {
   padding: 0.5em;
   text-align: center;
   vertical-align: middle;
-  max-width: 375px;
+  max-width: 100%;
   word-wrap: break-word;
 }
 
@@ -3369,7 +3369,11 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
 
 div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body .cbi-tooltip-container {
   font-size: inherit !important;
-  white-space: nowrap
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.5em !important;
+  white-space: nowrap !important;
 }
 
 @media screen and (max-width:484px) {
@@ -4314,7 +4318,11 @@ pre.command-output {
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1500px) {
-  tr>td, tr>th, .tr>.td, .tr>.th {
+  /* admin/system/diskman */
+  #cbi-diskman tr>td,
+  #cbi-diskman tr>th,
+  #cbi-diskman .tr>.td,
+  #cbi-diskman .tr>.th {
     padding: 0.5rem;
   }
 }
