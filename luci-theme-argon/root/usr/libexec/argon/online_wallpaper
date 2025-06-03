@@ -28,11 +28,6 @@ fetch_pic_url() {
             "https://api.unsplash.com/photos/random?count=1&orientation=landscape" |
             jsonfilter -e "@[0]['urls']['regular']"
         ;;
-    wallhaven)
-        curl -fks --max-time 3 \
-            "https://wallhaven.cc/api/v1/search?resolutions=1920x1080&sorting=random" |
-            jsonfilter -qe '@.data[0].path'
-        ;;
     esac
 }
 
