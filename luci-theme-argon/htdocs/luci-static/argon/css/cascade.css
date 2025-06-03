@@ -4681,6 +4681,21 @@ div#add_link_div {
   border-radius: 9px;
 }
 
+/* luci-app-ddns logs */
+[data-page="admin-services-ddns"] {
+  #syslog {
+    overflow: auto;
+    font-size: 12px!important;
+  }
+  .modal p {
+    margin-left: unset;
+  }
+  [data-tab-title] p {
+    margin-left: unset;
+    margin-bottom: unset;
+  }
+}
+
 /* luci-app-filemanager */
 
 #file-manager-container button#go-button {
