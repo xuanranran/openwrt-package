@@ -1,0 +1,38 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2017 lean <coolsnowwolf@gmail.com>
+
+START=99
+
+start() {
+	echo 1 > /proc/sys/net/core/backlog_threaded
+	echo 1 > /proc/sys/net/ipv4/conf/br-lan/proxy_arp
+	#echo 1 > /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal
+	#echo 1 > /proc/sys/net/netfilter/nf_conntrack_tcp_no_window_check
+
+	echo 65535 > /proc/sys/net/core/somaxconn
+	echo 8192 > /proc/sys/net/ipv4/tcp_max_syn_backlog
+	echo 7500000 > /proc/sys/net/core/rmem_max
+	echo 7500000 > /proc/sys/net/core/wmem_max
+
+	for i in $(ip address | awk -F ': ' '/eth[0-9]+/ {print $2}' | xargs)
+	do
+		{
+			ethtool -K "$i" rx-checksum on
+			ethtool -K "$i" tx-checksum-ip-generic on || {
+				ethtool -K "$i" tx-checksum-ipv4 on
+				ethtool -K "$i" tx-checksum-ipv6 on
+			}
+			ethtool -K "$i" tx-scatter-gather on
+			ethtool -K "$i" rx on
+			ethtool -K "$i" tx on
+			ethtool -K "$i" sg on
+			ethtool -K "$i" gso on
+			ethtool -K "$i" gro on
+			ethtool -K "$i" rx-gro-list on
+			ethtool -K "$i" tso on
+			ethtool -K "$i" ufo on
+			ethtool -K "$i" rxvlan on
+			ethtool -K "$i" txvlan on
+		}
+	done
+} >"/dev/null" 2>&1
