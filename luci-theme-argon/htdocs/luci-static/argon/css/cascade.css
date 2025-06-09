@@ -3609,11 +3609,16 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
 
 [data-page="admin-system-flash"] .modal .btn {
   white-space: normal !important;
+  text-align: left !important;
 }
 
 [data-page="admin-system-flash"] .modal label.btn {
-  background-color: #5e72e4;
-  background-color: var(--primary);
+  background-color: hsl(from var(--primary) h s l / 20%);
+  color: var(--primary) !important;
+}
+
+[data-page="admin-system-flash"] input[type="checkbox"] {
+  border: 1px solid hsl(from var(--primary) h s l / 60%) !important;
 }
 
 /* wireless overview */
@@ -4735,6 +4740,12 @@ div#add_link_div {
 
 .Dashboard .devices-list .devices-info, .Dashboard .router-status-wifi .wifi-info > hr:last-child {
   margin-top: 0.575rem;
+}
+
+/* luci-app-mwan3 */
+#mwan3-service-status > .alert-message {
+  height: 6rem !important;
+  min-height: 8rem !important;
 }
 
 @media screen and (max-width: 600px) {
