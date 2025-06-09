@@ -2053,11 +2053,13 @@ td>table>tbody>tr>td,
 
 .cbi-value input[type="text"]+.cbi-button-neutral,
 .cbi-value input[type="password"]+.cbi-button-neutral {
-  height: 42px;
+  height: 41.5px;
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
   margin-left: 0;
   border: 0;
+  position: relative;
+  top: -0.8px;
 }
 
 #cbi-firewall-zone .cbi-input-select,
@@ -4136,7 +4138,7 @@ pre.command-output {
   }
 
   .cbi-value-title {
-    width: 14rem;
+    width: 11rem;
     padding-right: 1rem;
   }
 
