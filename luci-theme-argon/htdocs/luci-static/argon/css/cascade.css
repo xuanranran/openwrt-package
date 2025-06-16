@@ -1,24 +1,24 @@
 /**
- *  Argon is a clean HTML5 theme for LuCI. It is based on luci-theme-material and Argon Template
+ * Argon is a clean HTML5 theme for LuCI. It is based on luci-theme-material and Argon Template
  *
- *  luci-theme-argon
- *      Copyright 2023 Jerrykuku <jerrykuku@qq.com>
+ * luci-theme-argon
+ * Copyright 2023 Jerrykuku <jerrykuku@qq.com>
  *
- *  Have a bug? Please create an issue here on GitHub!
- *      https://github.com/jerrykuku/luci-theme-argon/issues
+ * Have a bug? Please create an issue here on GitHub!
+ * https://github.com/jerrykuku/luci-theme-argon/issues
  *
- *  luci-theme-material:
- *      Copyright 2015 Lutty Yang <lutty@wcan.in>
+ * luci-theme-material:
+ * Copyright 2015 Lutty Yang <lutty@wcan.in>
  *		https://github.com/LuttyYang/luci-theme-material/
  *
- *  Agron Theme
+ * Agron Theme
  *	    https://demos.creative-tim.com/argon-dashboard/index.html
  *
- *  Login background
- *      https://unsplash.com/
- *  Font generate by Icomoon<icomoon.io>
+ * Login background
+ * https://unsplash.com/
+ * Font generate by Icomoon<icomoon.io>
  *
- *  Licensed to the public under the Apache License 2.0
+ * Licensed to the public under the Apache License 2.0
  */
 /*
  *	Include base and custom css
@@ -514,7 +514,7 @@ h5 {
   -webkit-box-align: center;
   align-items: center;
   margin: 50px auto 100px 50px;
-  color: #4d1919;
+  color: #525461;
   color: var(--default);
   justify-content: center
 }
@@ -563,7 +563,7 @@ h5 {
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #4d1919;
+  color: #525461;
   color: var(--default);
   font-size: 1.5rem;
   position: absolute;
@@ -592,7 +592,7 @@ h5 {
   margin: .825rem 0;
   box-sizing: border-box;
   transition: all .3s cubic-bezier(.68, -0.55, .265, 1.55);
-  color: #4d1919;
+  color: #525461;
   color: var(--default);
   border: 0;
   border-radius: 0;
@@ -661,7 +661,7 @@ h5 {
   margin-top: auto;
   padding: 0px 0px 30px;
   z-index: 10;
-  color: #4d1919;
+  color: #525461;
   color: var(--default);
   position: absolute;
   bottom: 0
@@ -2768,7 +2768,7 @@ body.modal-overlay-active #modal_overlay {
   left: .2em;
   width: 32px;
   content: "";
-  background: url(/luci-static/resources/icons/loading.gif) no-repeat center;
+  background: url(/luci-static/resources/icons/loading.svg) no-repeat center, url(/luci-static/resources/icons/loading.png) no-repeat center, url(/luci-static/resources/icons/loading.gif) no-repeat center;
   background-size: 16px
 }
 
@@ -4538,11 +4538,11 @@ pre.command-output {
   }
 
   .login-page .login-container .login-form .form-login .input-group::before {
-    color: #4d1919;
+    color: #525461;
   }
 
   .login-page .login-container .login-form .form-login .input-group input {
-    color: #4d1919;
+    color: #525461;
     border-bottom: white 1px solid;
     border-bottom: var(--white) 1px solid;
     border-radius: 0;
