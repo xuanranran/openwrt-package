@@ -68,6 +68,64 @@ function parseIPv6Suffix(value) {
     };
 }
 
+// Common IP validation function for src_ip and dest_ip fields
+function validateIPField(section_id, value) {
+    if (!value || value.length === 0) {
+        return true;
+    }
+    
+    var values = Array.isArray(value) ? value : value.split(/\s+/);
+    var ipCidrRegex = /^(?:(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d\d?)){3})(?:\/(?:[0-9]|[1-2]\d|3[0-2]))?|(?:(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,7}:|(?:[A-Fa-f0-9]{1,4}:){1,6}:[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,5}(?::[A-Fa-f0-9]{1,4}){1,2}|(?:[A-Fa-f0-9]{1,4}:){1,4}(?::[A-Fa-f0-9]{1,4}){1,3}|(?:[A-Fa-f0-9]{1,4}:){1,3}(?::[A-Fa-f0-9]{1,4}){1,4}|(?:[A-Fa-f0-9]{1,4}:){1,2}(?::[A-Fa-f0-9]{1,4}){1,5}|[A-Fa-f0-9]{1,4}:(?:(?::[A-Fa-f0-9]{1,4}){1,6})|:(?:(?::[A-Fa-f0-9]{1,4}){1,7}|:))(?:\/(?:[0-9]|[1-9]\d|1[0-1]\d|12[0-8]))?)$/;
+    
+    // Check for mixed IPv4/IPv6 within this field
+    var hasIPv4 = false;
+    var hasIPv6 = false;
+    
+    for (var i = 0; i < values.length; i++) {
+        var v = values[i].replace(/^!(?!=)/, '!=');
+        
+        // Check for set reference
+        if (v.startsWith('@') || v.startsWith('!=@')) {
+            var setName = v.replace(/^(!=)?@/, '');
+            if (!/^[a-zA-Z0-9_]+$/.test(setName)) {
+                return _('Invalid set name format. Must start with @ followed by letters, numbers, or underscore');
+            }
+            continue; // Don't check IP version for sets
+        } 
+        
+        // Strip != prefix for validation
+        var isNegated = v.startsWith('!=');
+        var valueToValidate = isNegated ? v.substring(2) : v;
+        
+        // Check for IPv6 suffix format
+        if (isIPv6SuffixFormat(valueToValidate)) {
+            var suffixData = parseIPv6Suffix(valueToValidate);
+            if (!suffixData) {
+                return _('Invalid IPv6 suffix format. Use ::suffix/::mask with valid IPv6 segments (e.g. ::1234:5678/::ffff:ffff)');
+            }
+            hasIPv6 = true;
+        }
+        else {
+            if (!ipCidrRegex.test(valueToValidate)) {
+                return _('Invalid IP address or CIDR format: ') + v;
+            }
+            // Detect IP version
+            if (valueToValidate.indexOf(':') !== -1) {
+                hasIPv6 = true;
+            } else {
+                hasIPv4 = true;
+            }
+        }
+    }
+    
+    // Check for mixed IP versions
+    if (hasIPv4 && hasIPv6) {
+        return _('Cannot mix IPv4 and IPv6 addresses in the same field. This will cause the rule to be skipped.');
+    }
+    
+    return true;
+}
+
 return view.extend({
     handleSaveApply: function(ev) {
         return this.handleSave(ev)
@@ -225,60 +283,13 @@ return view.extend({
         src_ip_warning.rawhtml = true;
         src_ip_warning.modalonly = true;
         src_ip_warning.cfgvalue = function() {
-            return '<div style="color: #d63031; font-size: 0.9em; margin: 0px 0 0px 0; margin-left: 20em; padding: 0;">' +
+            return '<div style="color:rgb(133, 126, 126); font-size: 0.9em; margin: 0px 0 0px 0; margin-left: 17em; padding: 0;">' +
                    '<strong><i class="cbi-icon cbi-icon-warning" style="margin-right: 5px;"></i>' +
                    _('Warning: Do not mix IPv4 and IPv6 addresses in the same rule. Mixed IP versions will cause the rule to be skipped.') + '</strong>' +
                    '</div>';
         };
         o.validate = function(section_id, value) {
-            if (!value || value.length === 0) {
-                return true;
-            }
-            
-            var values = Array.isArray(value) ? value : value.split(/\s+/);
-            var ipCidrRegex = /^(?:(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d\d?)){3})(?:\/(?:[0-9]|[1-2]\d|3[0-2]))?|(?:(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,7}:|(?:[A-Fa-f0-9]{1,4}:){1,6}:[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,5}(?::[A-Fa-f0-9]{1,4}){1,2}|(?:[A-Fa-f0-9]{1,4}:){1,4}(?::[A-Fa-f0-9]{1,4}){1,3}|(?:[A-Fa-f0-9]{1,4}:){1,3}(?::[A-Fa-f0-9]{1,4}){1,4}|(?:[A-Fa-f0-9]{1,4}:){1,2}(?::[A-Fa-f0-9]{1,4}){1,5}|[A-Fa-f0-9]{1,4}:(?:(?::[A-Fa-f0-9]{1,4}){1,6})|:(?:(?::[A-Fa-f0-9]{1,4}){1,7}|:))(?:\/(?:[0-9]|[1-9]\d|1[0-1]\d|12[0-8]))?)$/;
-            
-            // Check for mixed IPv4/IPv6 within this field
-            var hasIPv4 = false;
-            var hasIPv6 = false;
-            
-            for (var i = 0; i < values.length; i++) {
-                var v = values[i].replace(/^!(?!=)/, '!=');
-                
-                // Check for set reference
-                if (v.startsWith('@')) {
-                    if (!/^@[a-zA-Z0-9_]+$/.test(v)) {
-                        return _('Invalid set name format. Must start with @ followed by letters, numbers, or underscore');
-                    }
-                    continue; // Don't check IP version for sets
-                } 
-                // Check for IPv6 suffix format
-                else if (isIPv6SuffixFormat(v)) {
-                    var suffixData = parseIPv6Suffix(v);
-                    if (!suffixData) {
-                        return _('Invalid IPv6 suffix format. Use ::suffix/::mask with valid IPv6 segments (e.g. ::1234:5678/::ffff:ffff)');
-                    }
-                    hasIPv6 = true;
-                }
-                else {
-                    if (!ipCidrRegex.test(v)) {
-                        return _('Invalid IP address or CIDR format: ') + v;
-                    }
-                    // Detect IP version
-                    if (v.indexOf(':') !== -1) {
-                        hasIPv6 = true;
-                    } else {
-                        hasIPv4 = true;
-                    }
-                }
-            }
-            
-            // Check for mixed IP versions
-            if (hasIPv4 && hasIPv6) {
-                return _('Cannot mix IPv4 and IPv6 addresses in the same field. This will cause the rule to be skipped.');
-            }
-            
-            return true;
+            return validateIPField(section_id, value);
         };
         o.write = function(section_id, formvalue) {
             var values = formvalue.map(function(v) {
@@ -292,9 +303,26 @@ return view.extend({
         o.placeholder = _('any');
         o.rmempty = true;
         o.write = function(section_id, formvalue) {
-            var values = formvalue.map(function(v) {
-                return v.replace(/^!(?!=)/, '!=');
-            });
+            var values;
+            // Handle array and string inputs
+            if (Array.isArray(formvalue)) {
+                values = formvalue.map(function(v) {
+                    // Also handle if individual values contain spaces
+                    if (typeof v === 'string' && v.indexOf(' ') !== -1) {
+                        return v.split(/\s+/).map(function(part) {
+                            return part.replace(/^!(?!=)/, '!=');
+                        }).join(' ');
+                    }
+                    return typeof v === 'string' ? v.replace(/^!(?!=)/, '!=') : v;
+                });
+            } else if (typeof formvalue === 'string') {
+                // If it's a string, split by spaces and process each part
+                values = formvalue.split(/\s+/).map(function(v) {
+                    return v.replace(/^!(?!=)/, '!=');
+                });
+            } else {
+                values = formvalue;
+            }
             return this.super('write', [section_id, values]);
         };
         
@@ -308,60 +336,13 @@ return view.extend({
         dest_ip_warning.rawhtml = true;
         dest_ip_warning.modalonly = true;
         dest_ip_warning.cfgvalue = function() {
-            return '<div style="color: #d63031; font-size: 0.9em; margin: 0px 0 0px 0; margin-left: 20em; padding: 0;">' +
+            return '<div style="color:rgb(133, 126, 126); font-size: 0.9em; margin: 0px 0 0px 0; margin-left: 17em; padding: 0;">' +
                    '<strong><i class="cbi-icon cbi-icon-warning" style="margin-right: 5px;"></i>' +
                    _('Warning: Do not mix IPv4 and IPv6 addresses in the same rule. Mixed IP versions will cause the rule to be skipped.') + '</strong>' +
                    '</div>';
         };
         o.validate = function(section_id, value) {
-            if (!value || value.length === 0) {
-                return true;
-            }
-            
-            var values = Array.isArray(value) ? value : value.split(/\s+/);
-            var ipCidrRegex = /^(?:(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d\d?)){3})(?:\/(?:[0-9]|[1-2]\d|3[0-2]))?|(?:(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,7}:|(?:[A-Fa-f0-9]{1,4}:){1,6}:[A-Fa-f0-9]{1,4}|(?:[A-Fa-f0-9]{1,4}:){1,5}(?::[A-Fa-f0-9]{1,4}){1,2}|(?:[A-Fa-f0-9]{1,4}:){1,4}(?::[A-Fa-f0-9]{1,4}){1,3}|(?:[A-Fa-f0-9]{1,4}:){1,3}(?::[A-Fa-f0-9]{1,4}){1,4}|(?:[A-Fa-f0-9]{1,4}:){1,2}(?::[A-Fa-f0-9]{1,4}){1,5}|[A-Fa-f0-9]{1,4}:(?:(?::[A-Fa-f0-9]{1,4}){1,6})|:(?:(?::[A-Fa-f0-9]{1,4}){1,7}|:))(?:\/(?:[0-9]|[1-9]\d|1[0-1]\d|12[0-8]))?)$/;
-            
-            // Check for mixed IPv4/IPv6 within this field
-            var hasIPv4 = false;
-            var hasIPv6 = false;
-            
-            for (var i = 0; i < values.length; i++) {
-                var v = values[i].replace(/^!(?!=)/, '!=');
-                
-                // Check for set reference
-                if (v.startsWith('@')) {
-                    if (!/^@[a-zA-Z0-9_]+$/.test(v)) {
-                        return _('Invalid set name format. Must start with @ followed by letters, numbers, or underscore');
-                    }
-                    continue; // Don't check IP version for sets
-                } 
-                // Check for IPv6 suffix format
-                else if (isIPv6SuffixFormat(v)) {
-                    var suffixData = parseIPv6Suffix(v);
-                    if (!suffixData) {
-                        return _('Invalid IPv6 suffix format. Use ::suffix/::mask with valid IPv6 segments (e.g. ::1234:5678/::ffff:ffff)');
-                    }
-                    hasIPv6 = true;
-                }
-                else {
-                    if (!ipCidrRegex.test(v)) {
-                        return _('Invalid IP address or CIDR format: ') + v;
-                    }
-                    // Detect IP version
-                    if (v.indexOf(':') !== -1) {
-                        hasIPv6 = true;
-                    } else {
-                        hasIPv4 = true;
-                    }
-                }
-            }
-            
-            // Check for mixed IP versions
-            if (hasIPv4 && hasIPv6) {
-                return _('Cannot mix IPv4 and IPv6 addresses in the same field. This will cause the rule to be skipped.');
-            }
-            
-            return true;
+            return validateIPField(section_id, value);
         };
         o.write = function(section_id, formvalue) {
             var values = formvalue.map(function(v) {
@@ -375,9 +356,26 @@ return view.extend({
         o.placeholder = _('any');
         o.rmempty = true;
         o.write = function(section_id, formvalue) {
-            var values = formvalue.map(function(v) {
-                return v.replace(/^!(?!=)/, '!=');
-            });
+            var values;
+            // Handle array and string inputs
+            if (Array.isArray(formvalue)) {
+                values = formvalue.map(function(v) {
+                    // Also handle if individual values contain spaces
+                    if (typeof v === 'string' && v.indexOf(' ') !== -1) {
+                        return v.split(/\s+/).map(function(part) {
+                            return part.replace(/^!(?!=)/, '!=');
+                        }).join(' ');
+                    }
+                    return typeof v === 'string' ? v.replace(/^!(?!=)/, '!=') : v;
+                });
+            } else if (typeof formvalue === 'string') {
+                // If it's a string, split by spaces and process each part
+                values = formvalue.split(/\s+/).map(function(v) {
+                    return v.replace(/^!(?!=)/, '!=');
+                });
+            } else {
+                values = formvalue;
+            }
             return this.super('write', [section_id, values]);
         };
 
