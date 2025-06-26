@@ -2608,7 +2608,7 @@ td>table>tbody>tr>td,
   flex-wrap: wrap;
   width: 90%;
   min-width: 270px;
-  max-width: 600px;
+  max-width: 800px;
   min-height: 32px;
   margin: 5em auto;
   padding: 1em;
@@ -2626,13 +2626,13 @@ td>table>tbody>tr>td,
 
 .modal>pre,
 .modal>textarea {
-  font-size: 1.22rem;
-  font-size-adjust: 0.35;
+  font-size: 1.1rem;
+  font-size-adjust: 0.41;
   overflow: auto;
   margin-bottom: 0.5em;
   padding: 8.5px;
   cursor: auto;
-  white-space: pre-wrap;
+  /* white-space: pre-wrap; */
   color: #ffc100;
   outline: 0;
   background-color: #101010;
@@ -4408,7 +4408,7 @@ pre.command-output {
 @media screen and (max-width: 600px) {
   .modal>pre,
   .modal>textarea {
-    font-size: 0.8rem;
+    font-size: 0.98rem;
   }
 
   .mobile-hide {
@@ -4753,5 +4753,111 @@ div#add_link_div {
 @media screen and (max-width: 600px) {
   div#content-filemanager {
     overflow-x: auto;
+  }
+}
+
+/* admin/system/admin/repokeys */
+[data-page="admin-system-admin-repokeys"] .cbi-section-node {
+  padding: 9px;
+  background: var(--cbi-bg, #f8f9fa);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px 0 rgba(60, 60, 60, 0.08);
+  margin: 32px auto;
+  font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans', Arial, sans-serif;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .item {
+  background: var(--item-bg, #fff);
+  border-radius: 8px;
+  border: 1px solid #e2e3e7;
+  padding: 18px 20px;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 1px 4px 0 rgba(60,60,60,0.04);
+  position: relative;
+  word-break: break-all;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .item:hover {
+  box-shadow: 0 4px 18px 0 rgba(0,0,0,0.11);
+  border-color: #b6b7bb;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .item strong {
+  font-size: 1.1rem;
+  color: #276ef1;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .item code {
+  display: block;
+  background: #f2f5fa;
+  color: #3d4852;
+  padding: 5px 8px;
+  border-radius: 4px;
+  margin-bottom: 3px;
+  font-size: 0.98em;
+  font-family: 'Fira Mono', 'Menlo', 'Consolas', monospace;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist>.item {
+  max-width: 39rem;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .item code:last-child {
+  margin-bottom: 0;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item textarea.cbi-input-text {
+  flex: 1;
+  min-height: 46px;
+  max-width: 500px;
+  padding: 12px;
+  border: 1.5px solid #d7dae5;
+  border-radius: 6px;
+  background: #fcfcfd;
+  font-size: 1em;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item textarea.cbi-input-text:focus {
+  border-color: #276ef1;
+  outline: none;
+  background: #f2f7ff;
+}
+
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item .cbi-button {
+  border-radius: 6px;
+  padding: 14px 22px;
+  font-size: 1.06em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.16s, box-shadow 0.16s;
+  box-shadow: 0 2px 6px 0 rgba(39,110,241,0.10);
+}
+
+@media (max-width: 600px) {
+  [data-page="admin-system-admin-repokeys"] .cbi-section-node {
+    padding: 8px;
+    max-width: 100vw;
+  }
+  [data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item textarea.cbi-input-text {
+    max-width: 100vw;
   }
 }

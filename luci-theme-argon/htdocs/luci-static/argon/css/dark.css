@@ -1055,3 +1055,27 @@ div#channel_graph {
 [data-page="admin-network-diagnostics"] textarea {
   border: 1px solid #3d424b;
 }
+
+/* admin/system/admin/repokeys */
+[data-page="admin-system-admin-repokeys"] .cbi-section-node {
+  background: #23272e;
+  color: #f3f6f8;
+}
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .item {
+  background: #2f3742;
+  border-color: #444a5a;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.22);
+}
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .item code {
+  background: #1e2229;
+  color: #95caff;
+}
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item textarea.cbi-input-text {
+  background: #22242a;
+  border-color: #444a5a;
+  color: #e6eaf3;
+}
+[data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item textarea.cbi-input-text:focus {
+  background: #24304a;
+  border-color: #276ef1;
+}
