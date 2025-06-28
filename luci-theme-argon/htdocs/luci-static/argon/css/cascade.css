@@ -3437,15 +3437,6 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03)
 }
 
-#cbi-samba [data-tab="template"] .cbi-value-field {
-  display: block
-}
-
-#cbi-samba [data-tab="template"] .cbi-value-title {
-  width: auto;
-  padding-bottom: 0.6rem;
-}
-
 /* admin-system-admin-password */
 [data-page="admin-system-admin"] .cbi-map h2,
 [data-page="admin-system-admin-password"] .cbi-map h2,
@@ -4233,11 +4224,49 @@ pre.command-output {
     /* box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 2px 0 rgba(0, 0, 0, 0.12); */
   }
 
+  [id*="samba"].cbi-section-table,
+  [id*="samba"].cbi-section-table thead,
+  [id*="samba"].cbi-section-table tbody,
+  [id*="samba"].cbi-section-table-row,
+  [id*="samba"].cbi-section-table-titles {
+    display: block !important;
+    width: 100% !important;
+  }
+  [id*="samba"].cbi-section-table-titles {
+    display: none !important;
+  }
   [id*="samba"].cbi-section-table-row {
+    display: flex !important;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.03);
+    padding: 6px 3px;
+  }
+  [id*="samba"].cbi-section-table-row .td {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    min-width: max-content;
+    align-items: center;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 6px 5px;
+    font-size: 15px;
+    border: none !important;
+  }
+  [id*="samba"].cbi-section-table-row .td[data-title]:before {
+    margin-right: 8px;
+    font-size: 14px;
+    min-width: 70px;
+    display: inline-block;
+  }
+  [id*="samba"].cbi-section-actions {
+    width: 100% !important;
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  [id*="samba"] tr.tr.cbi-section-table-titles.anonymous {
+    display: none;
   }
 
   .tr.cbi-section-table-row[id*="wolplus"],
