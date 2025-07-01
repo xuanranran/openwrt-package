@@ -22,9 +22,9 @@ PKG_LICENSE_FILE:=LICENSE
 PKG_MAINTAINER:=sbwml <admin@cooluc.com>
 
 define Download/openlist-frontend
-  FILE:=openlist-frontend-dist-v$(PKG_WEB_VERSION).tar.gz
+  FILE:=openlist-frontend-dist-lite-v$(PKG_WEB_VERSION).tar.gz
   URL:=https://github.com/OpenListTeam/OpenList-Frontend/releases/download/v$(PKG_WEB_VERSION)/
-  HASH:=0b755542c660ac66c86689957cd0d5c783ad5dac64222f764988f1c26c51d55a
+  HASH:=c0bb4f7cb95a32f81f159b011c7982627376ec60f463d4322c510b27137abb8e
 endef
 
 PKG_BUILD_DEPENDS:=golang/host
@@ -79,7 +79,7 @@ endif
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
-	$(TAR) --strip-components=1 -C $(PKG_BUILD_DIR)/public/dist -xzf $(DL_DIR)/openlist-frontend-dist-v$(PKG_WEB_VERSION).tar.gz
+	$(TAR) --strip-components=1 -C $(PKG_BUILD_DIR)/public/dist -xzf $(DL_DIR)/openlist-frontend-dist-lite-v$(PKG_WEB_VERSION).tar.gz
 	$(SED) 's_https://docs.oplist.org/logo.png_/assets/logo.png_g' $(PKG_BUILD_DIR)/public/dist/index.html
 	$(SED) 's_https://docs.oplist.org/logo.svg_/assets/logo.svg_g' $(PKG_BUILD_DIR)/public/dist/index.html
 	$(SED) 's_https://docs.oplist.org/logo.png_/assets/logo.png_g' $(PKG_BUILD_DIR)/public/dist/static/manifest.json
