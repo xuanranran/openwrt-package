@@ -16,7 +16,7 @@ module YAML
       yaml_content = temp_io.string
       processed_content = fix_short_id_quotes(yaml_content)
       io.write(processed_content)
-      processed_content
+      io
     else
       yaml_content = original_dump(obj, **options)
       fix_short_id_quotes(yaml_content)
@@ -25,17 +25,18 @@ module YAML
 
   private
 
-  SHORT_ID_REGEX = /(\s+short-id:\s*)([^"\s\n]+)/.freeze
+  SHORT_ID_REGEX = /(\s*short-id:\s*)([^"'\s,}\n]+)/.freeze
   QUOTED_VALUE_REGEX = /^["'].*["']$/.freeze
 
   def self.fix_short_id_quotes(yaml_content)
     return yaml_content unless yaml_content.include?('short-id:')
     
     yaml_content.gsub(SHORT_ID_REGEX) do
-      prefix = $1
+      field_name = $1
       value = $2.strip
+      
       if value !~ QUOTED_VALUE_REGEX
-        "#{prefix}\"#{value}\""
+        "#{field_name}\"#{value}\""
       else
         $&
       end
