@@ -5,7 +5,7 @@
 
 return view.extend({
 	render: function () {
-		const m = new form.Map('system', _('Quick File Manager'));
+		const m = new form.Map('system', '');
 		const s = m.section(form.NamedSection, 'iframe_section', 'settings');
 		s.anonymous = true;
 
@@ -19,7 +19,7 @@ return view.extend({
 					flex-direction: column;
 					width: 100%;
 					max-width: 1600px;
-					height: 700px;
+					height: 800px;
 					overflow: hidden;
 					border: 2px solid #ccc;
 					border-radius: 10px;
@@ -45,6 +45,4 @@ return view.extend({
 	handleSave: null,
 	handleSaveApply: null,
 	handleReset: null
-
 });
-
