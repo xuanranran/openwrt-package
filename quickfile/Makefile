@@ -7,12 +7,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=quickfile
-PKG_VERSION:=1.0.2
+PKG_VERSION:=1.0.3
 PKG_RELEASE:=1
 
 PKG_SOURCE:=quickfile-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://down.cooluc.com/bin/quickfile/openwrt
-PKG_HASH:=7e066ce7b49b6b0a4fc70b3303cc3491b83a15bbdaa8659c804cfd24cbe13145
+PKG_HASH:=cbe5acf1d0351fbd38edd0c2aa688ae0d4b005884c711be9a64a8717c4344f7a
 
 include $(INCLUDE_DIR)/package.mk
 
