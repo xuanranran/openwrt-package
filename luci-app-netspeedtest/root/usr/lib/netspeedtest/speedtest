@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
-mkdir -p /etc/speedtest
+CT_ID=""
+CMCC_ID=""
+CU_ID=""
 
 export HOME='/etc/speedtest'
 SPEEDTEST_CLI='/usr/bin/speedtest'
@@ -8,51 +10,99 @@ SPEEDTEST_RESULT='/etc/speedtest/speedtest_result'
 
 pgrep -fx "$SPEEDTEST_CLI" && exit 1
 
-LOCAL_IP=$(curl -s -4 --connect-timeout 3 http://ip.3322.net || echo "")
+# 中国大陆 Server ID 列表
+csv_data=$(curl -s -4 --connect-timeout 3 "http://ip.cooluc.com/speedtest-cn.csv" || echo "")
 
-BAIDU_SK=(
-    "0kKZnWWhXEPfzIkklmzAa3dZ"
-    "3GGtGlCtbAGa1GYK70XFX2Rb"
-    "08fadd5a7e397b10f4599c325ee55b9c"
-    "8139d029b1608c4f6f6ff182318debb5"
-    "CDa36173b7623105124eaf21e6c07569"
-    "Er8iGG4UMfSd3Ckuc6w8C56peI4ge1Ih"
-    "fepE9S7tmruLPt5Z6vqNCNzRk1n9EGe8"
-    "hYCENCEx1nXO0Nt46ldexfG9oI49xBGh"
-    "odPxy2gZZ8ABQizuNkZvhUshjIwtml98"
-    "R6l3LOp0hMYGpxw0nZGHXWymNP9Y6kIH"
-    "yG5PPp07M54yW2Qb1ZUIXhjR22V13TOw"
-)
+IFS='
+'
+for line in $(echo "$csv_data" | tail -n +2); do
+    id=$(echo "$line" | cut -d',' -f1)
+    ip=$(echo "$line" | cut -d',' -f5)
 
-status=1
-arg=""
-if [[ -n "$LOCAL_IP" ]]; then
-    for SK in "${BAIDU_SK[@]}"; do
-        INFO=$(curl -sk --connect-timeout 3 "https://api.map.baidu.com/location/ip?ip=$LOCAL_IP&coor=bd09ll&ak=$SK")
-        if [[ "$(echo "$INFO" | jsonfilter -e "@['status']")" = 0 ]]; then
-            status=0
-            break
-        fi
-    done
-    if [[ "$status" = 0 ]]; then
-        lon=$(echo "$INFO" | jsonfilter -e "@['content']['point']['x']")
-        lat=$(echo "$INFO" | jsonfilter -e "@['content']['point']['y']")
-        server_id=$(curl -sk --connect-timeout 3 "https://www.speedtest.net/api/ios-config.php?lon=$lon&lat=$lat" | grep 'server url' | head -n1 | sed 's/.*id="//;s/".*//')
-        [[ -n "$server_id" ]] && arg="-s $server_id"
-    fi
-fi
+    len=$(expr length "$id")
+    [ "$len" -lt 5 ] && continue
 
+    result=$(curl -s "http://ip.cooluc.com/$ip")
+    cc=$(echo "$result" | jsonfilter -e "@.country_code")
+    isp=$(echo "$result" | jsonfilter -e "@.isp")
+
+    [ "$cc" != "CN" ] && continue
+
+    case "$isp" in
+        中国电信)
+            CT_ID="${CT_ID}${CT_ID:+ }$id"
+            ;;
+        中国移动)
+            CMCC_ID="${CMCC_ID}${CMCC_ID:+ }$id"
+            ;;
+        中国联通)
+            CU_ID="${CU_ID}${CU_ID:+ }$id"
+            ;;
+    esac
+done
+
+# 获取本地公网 IP 信息
+self_info=$(curl -s -4 --connect-timeout 3 https://ip.cooluc.com || echo "")
+self_isp=$(echo "$self_info" | jsonfilter -e "@.isp")
+
+# 随机选择 Server ID
+choose_random_id() {
+    list="$1"
+    set -- $list
+    count=$#
+    [ "$count" -eq 0 ] && return
+    index=$(hexdump -n2 -e '1/2 "%u\n"' /dev/urandom | awk -v mod=$count '{print ($1 % mod) + 1}')
+    eval echo \$$index
+}
+
+# 按 ISP 优先级选择 Server ID
+selected_id=""
+
+case "$self_isp" in
+    中国电信)
+        selected_id=$(choose_random_id "$CT_ID")
+        [ -z "$selected_id" ] && selected_id=$(choose_random_id "$CMCC_ID")
+        [ -z "$selected_id" ] && selected_id=$(choose_random_id "$CU_ID")
+        ;;
+    中国移动)
+        selected_id=$(choose_random_id "$CMCC_ID")
+        [ -z "$selected_id" ] && selected_id=$(choose_random_id "$CT_ID")
+        [ -z "$selected_id" ] && selected_id=$(choose_random_id "$CU_ID")
+        ;;
+    中国联通)
+        selected_id=$(choose_random_id "$CU_ID")
+        [ -z "$selected_id" ] && selected_id=$(choose_random_id "$CT_ID")
+        [ -z "$selected_id" ] && selected_id=$(choose_random_id "$CMCC_ID")
+        ;;
+    *)
+        # 如果 ISP 不属于三大运营商，则按 CT → CMCC → CU 优先级尝试
+        selected_id=$(choose_random_id "$CT_ID")
+        [ -z "$selected_id" ] && selected_id=$(choose_random_id "$CMCC_ID")
+        [ -z "$selected_id" ] && selected_id=$(choose_random_id "$CU_ID")
+        ;;
+esac
+
+echo "本地 ISP：$self_isp"
+
+# 触发 LuCI 测速开始
 echo "Testing" > "$SPEEDTEST_RESULT"
 
-RUNTEST=$($SPEEDTEST_CLI --accept-gdpr --accept-license --progress=no $arg 2>&1 || true)
-if echo "$RUNTEST" | egrep -q "No servers defined|error"; then
-    RUNTEST=$($SPEEDTEST_CLI --accept-gdpr --accept-license --progress=no 2>&1 || true)
+# 执行测速
+if [ -n "$selected_id" ]; then
+    echo "测速节点：$selected_id"
+    output=$($SPEEDTEST_CLI --accept-gdpr --accept-license --progress=no -s "$selected_id" 2>&1)
+else
+    echo "测速节点：❌ 没有找到任何可用国内测速节点"
+    output=$($SPEEDTEST_CLI --accept-gdpr --accept-license --progress=no 2>&1)
 fi
 
-RESULT=$(echo "$RUNTEST" | grep "Result URL" | awk '{print $NF}')
+# 提取测速结果链接
+url=$(echo "$output" | grep "Result URL" | awk '{print $NF}')
 
-if [[ "$RESULT" =~ ^https?:// ]]; then
-    echo "$RESULT" > "$SPEEDTEST_RESULT"
+if [ -n "$url" ]; then
+    echo "$url" > "$SPEEDTEST_RESULT"
 else
     echo "Test failed" > "$SPEEDTEST_RESULT"
 fi
+
+echo "$output"
