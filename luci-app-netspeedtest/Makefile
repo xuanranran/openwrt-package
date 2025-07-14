@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_NAME:=luci-app-netspeedtest
-PKG_VERSION:=1.0
+PKG_VERSION:=1.1
 
 LUCI_TITLE:=LuCI Net Speedtest
 LUCI_DEPENDS:=+iperf3 +speedtest-cli +curl +jsonfilter +taskset

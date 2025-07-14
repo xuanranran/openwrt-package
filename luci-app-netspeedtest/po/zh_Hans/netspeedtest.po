@@ -23,25 +23,10 @@ msgid "Enable"
 msgstr "启用"
 
 msgid "No result."
-msgstr "无结果."
-
-msgid "Ookla SpeedTest"
-msgstr ""
+msgstr "无结果..."
 
 msgid "Speedtest by Ookla"
 msgstr ""
-
-msgid "Speedtest CLI"
-msgstr ""
-
-msgid "Speedtest® CLI"
-msgstr ""
-
-msgid "Installed"
-msgstr "已安装"
-
-msgid "Not Installed"
-msgstr "未安装"
 
 msgid "SpeedTest"
 msgstr "网速测试"
@@ -49,11 +34,32 @@ msgstr "网速测试"
 msgid "Internet Speedtest"
 msgstr "互联网测速"
 
+msgid "Speedtest Node"
+msgstr "测速节点"
+
+msgid "Default"
+msgstr "默认"
+
+msgid "Fetch Nodes"
+msgstr "获取节点"
+
+msgid "JSON parse failed"
+msgstr "JSON 解析失败"
+
+msgid "Dropdown DOM node not found"
+msgstr "找不到下拉框 DOM 节点"
+
+msgid "Nodes fetched successfully"
+msgstr "节点获取成功"
+
+msgid "Node fetch failed: "
+msgstr "节点获取失败："
+
 msgid "Start Test"
-msgstr "启动测试"
+msgstr "开始测试"
 
 msgid "Test failed."
-msgstr "测试失败."
+msgstr "测试失败..."
 
 msgid "Testing in progress..."
 msgstr "测试进行中..."
