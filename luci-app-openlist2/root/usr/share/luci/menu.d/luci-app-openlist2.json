@@ -1,5 +1,5 @@
 {
-	"admin/services/openlist2": {
+	"admin/nas/openlist2": {
 		"title": "OpenList",
 		"action": {
 			"type": "firstchild"
@@ -9,7 +9,7 @@
 			"uci": { "openlist2": true }
 		}
 	},
-	"admin/services/openlist2/basic": {
+	"admin/nas/openlist2/basic": {
 		"title": "Setting",
 		"order": 10,
 		"action": {
@@ -17,7 +17,7 @@
 			"path": "openlist2/basic"
 		}
 	},
-	"admin/services/openlist2/logs": {
+	"admin/nas/openlist2/logs": {
 		"title": "Logs",
 		"order": 20,
 		"action": {
