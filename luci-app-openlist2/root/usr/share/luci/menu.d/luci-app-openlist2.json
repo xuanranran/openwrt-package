@@ -6,7 +6,7 @@
 		},
 		"depends": {
 			"acl": [ "luci-app-openlist2" ],
-			"uci": { "openlist": true }
+			"uci": { "openlist2": true }
 		}
 	},
 	"admin/services/openlist2/basic": {
