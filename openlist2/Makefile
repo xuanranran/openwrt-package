@@ -57,7 +57,7 @@ define Package/openlist2
 endef
 
 define Package/openlist2/conffiles
-/etc/openlist2
+/etc/openlist
 /etc/config/openlist2
 endef
 
