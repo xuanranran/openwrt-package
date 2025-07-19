@@ -20,7 +20,7 @@ uci_write_config() {
 }
 
 CPU_FREQS="$(cat '/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies')"
-CPU_POLICYS="$(find '/sys/devices/system/cpu/cpufreq/policy'* -maxdepth 0 | grep -Eo '[0-9]+')"
+CPU_POLICYS="$(find /sys/devices/system/cpu/cpufreq/policy* -maxdepth 0 | sed 's/[^0-9]*\([0-9]\+\).*/\1/' | tail -1)"
 source "/etc/openwrt_release"
 case "$DISTRIB_TARGET" in
 	"rockchip/armv8")
