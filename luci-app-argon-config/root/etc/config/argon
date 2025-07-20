@@ -5,8 +5,8 @@ config global
 	option font_weight '600'
 	option blur '10'
 	option blur_dark '10'
-	option transparency '0.2'
-	option transparency_dark '0.2'
+	option transparency '0.5'
+	option transparency_dark '0.5'
 	option mode 'normal'
 	option online_wallpaper 'none'
 
