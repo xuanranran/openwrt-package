@@ -655,7 +655,7 @@ h5 {
   box-sizing: border-box;
   width: 100%;
   text-align: center;
-  line-height: 1.6rem;
+  line-height: 1.4;
   display: flex;
   justify-content: space-evenly;
   margin-top: auto;
@@ -664,6 +664,7 @@ h5 {
   color: #4d1919;
   color: var(--default);
   position: absolute;
+  white-space: normal;
   bottom: 0
 }
 
