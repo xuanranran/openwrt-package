@@ -506,13 +506,14 @@ void   cJSON_AddItemToArray(cJSON *array, cJSON *item)						{cJSON *c=array->chi
 void   cJSON_AddItemToObject(cJSON *object,const char *string,cJSON *item)	{if (item->string) cJSON_free(item->string);item->string=cJSON_strdup(string);cJSON_AddItemToArray(object,item);}
 
 // Create basic types:
-cJSON *cJSON_CreateNull()						{cJSON *item=cJSON_New_Item();item->type=cJSON_NULL;return item;}
-cJSON *cJSON_CreateTrue()						{cJSON *item=cJSON_New_Item();item->type=cJSON_True;return item;}
-cJSON *cJSON_CreateFalse()						{cJSON *item=cJSON_New_Item();item->type=cJSON_False;return item;}
-cJSON *cJSON_CreateNumber(int num)			{cJSON *item=cJSON_New_Item();item->type=cJSON_Number;item->valueint=(int)num;return item;}
-cJSON *cJSON_CreateString(const char *string)	{cJSON *item=cJSON_New_Item();item->type=cJSON_String;item->valuestring=cJSON_strdup(string);return item;}
-cJSON *cJSON_CreateArray()						{cJSON *item=cJSON_New_Item();item->type=cJSON_Array;return item;}
-cJSON *cJSON_CreateObject()						{cJSON *item=cJSON_New_Item();item->type=cJSON_Object;return item;}
+cJSON *cJSON_CreateNull(void)						{ cJSON *item = cJSON_New_Item(); item->type = cJSON_NULL; return item; }
+cJSON *cJSON_CreateTrue(void)						{ cJSON *item = cJSON_New_Item(); item->type = cJSON_True; return item; }
+cJSON *cJSON_CreateFalse(void)						{ cJSON *item = cJSON_New_Item(); item->type = cJSON_False; return item; }
+cJSON *cJSON_CreateNumber(int num)					{ cJSON *item = cJSON_New_Item(); item->type = cJSON_Number; item->valueint = (int)num; return item; }
+cJSON *cJSON_CreateString(const char *string)		{ cJSON *item = cJSON_New_Item(); item->type = cJSON_String; item->valuestring = cJSON_strdup(string); return item; }
+cJSON *cJSON_CreateArray(void)						{ cJSON *item = cJSON_New_Item(); item->type = cJSON_Array; return item; }
+cJSON *cJSON_CreateObject(void)						{ cJSON *item = cJSON_New_Item(); item->type = cJSON_Object; return item; }
+
 
 // Create Arrays:
 cJSON *cJSON_CreateIntArray(int *numbers,int count)				{int i;cJSON *n=0,*p=0,*a=cJSON_CreateArray();for(i=0;i<count;i++){n=cJSON_CreateNumber(numbers[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}

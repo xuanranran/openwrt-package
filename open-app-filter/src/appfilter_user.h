@@ -19,6 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+#include <sys/types.h>
 #ifndef __FILTER_USER_H__
 #define __FILTER_USER_H__
 #define MAX_IP_LEN 32
@@ -36,9 +37,8 @@ THE SOFTWARE.
 #define MAX_APP_ID_NUM 128
 #define MAX_SUPPORT_DEV_NUM 64
 #define SECONDS_PER_DAY (24 * 3600)
-
-int check_same_network(const char* lan_ip, const char* lan_mask, const char* ip_buf);
-void exec_with_result_line(const char* command, char* result, size_t result_size);
+#define MAX_NICKNAME_SIZE 64
+#define MAX_REPORT_URL_LEN 64
 
 //extern dev_node_t *dev_hash_table[MAX_DEV_NODE_HASH_SIZE];
 
@@ -61,11 +61,12 @@ void exec_with_result_line(const char* command, char* result, size_t result_size
 typedef struct visit_info
 {
     int appid;
-    int first_time;
-    int latest_time;
+    u_int32_t first_time;
+    u_int32_t latest_time;
     int action;
     int expire; /*定期清除无效数据*/
     struct visit_info *next;
+
 } visit_info_t;
 
 /* 用于记录某个app总时间和总流量 */
@@ -81,13 +82,17 @@ typedef struct dev_node
     char mac[MAX_MAC_LEN];
     char ip[MAX_IP_LEN];
     char hostname[MAX_HOSTNAME_SIZE];
+    char nickname[MAX_NICKNAME_SIZE];
     int online;
     int expire;
-    int offline_time;
-    int online_time;
+    u_int32_t offline_time;
+    u_int32_t online_time;
     visit_info_t *visit_htable[MAX_VISIT_HASH_SIZE];
     visit_stat_t stat[MAX_APP_TYPE][MAX_APP_ID_NUM];
+    char visiting_url[MAX_REPORT_URL_LEN];
+    int visiting_app;
     struct dev_node *next;
+
 } dev_node_t;
 
 struct app_visit_info
@@ -118,4 +123,8 @@ void flush_expire_visit_info();
 int check_dev_expire(void);
 void flush_dev_expire_node(void);
 void flush_expire_visit_info(void);
+void update_dev_list(void);
+void update_dev_nickname(void);
+void update_dev_visiting_info(void);
+
 #endif

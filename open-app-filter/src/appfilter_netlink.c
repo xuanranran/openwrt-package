@@ -33,9 +33,11 @@ THE SOFTWARE.
 #include <json-c/json.h>
 #include "appfilter_user.h"
 #include "appfilter_netlink.h"
+#include "appfilter.h"
 #define MAX_NL_RCV_BUF_SIZE 4096
 
 #define REPORT_INTERVAL_SECS 60
+extern int hash_appid(int appid);
 void appfilter_nl_handler(struct uloop_fd *u, unsigned int ev)
 {
     int ret;
@@ -78,6 +80,7 @@ void appfilter_nl_handler(struct uloop_fd *u, unsigned int ev)
         printf("magic error %x\n", af_hdr->magic);
         return;
     }
+
     if (af_hdr->len <= 0 || af_hdr->len >= MAX_OAF_NETLINK_MSG_LEN)
     {
         printf("data len error\n");
@@ -125,6 +128,7 @@ void appfilter_nl_handler(struct uloop_fd *u, unsigned int ev)
         json_object_put(root);
         return;
     }
+
     for (i = 0; i < json_object_array_length(visit_array); i++)
     {
         struct json_object *visit_obj = json_object_array_get_idx(visit_array, i);
@@ -147,25 +151,29 @@ void appfilter_nl_handler(struct uloop_fd *u, unsigned int ev)
         //	node->stat[type - 1][id - 1].total_down_bytes += json_object_get_int(down_obj);
         //	node->stat[type - 1][id - 1].total_up_bytes += json_object_get_int(up_obj);
 
-        int hash = hash_appid((const char*)appid);
+        int hash = hash_appid(appid);
         visit_info_t *head = node->visit_htable[hash];
-
-        if (head && (cur_time.tv_sec - head->latest_time) < 300)
-        {
-            head->latest_time = cur_time.tv_sec;
+        visit_info_t *p = head;
+        while(p){
+            LOG_DEBUG("appid = %d, p->appid = %d, p->latest_time = %d, cur_time.tv_sec = %d, cur_time.tv_sec - p->latest_time = %d\n",
+                 appid, p->appid, p->latest_time, cur_time.tv_sec, cur_time.tv_sec - p->latest_time);
+            if((p->appid == appid) && ((cur_time.tv_sec - p->latest_time) < 300)){
+                LOG_DEBUG("match appid = %d\n", appid, cur_time.tv_sec - p->latest_time);
+                break;
+            }
+ 
+            p = p->next;
         }
-        else
-        {
-            visit_info_t *visit_node = (visit_info_t *)calloc(1, sizeof(visit_info_t));
-            visit_node->action = action;
-            visit_node->appid = appid;
-            visit_node->latest_time = cur_time.tv_sec;
-            visit_node->first_time = cur_time.tv_sec - MIN_VISIT_TIME;
-            visit_node->next = NULL;
-            add_visit_info_node(&node->visit_htable[hash], visit_node);
+        if (!p){
+            p = (visit_info_t *)calloc(1, sizeof(visit_info_t));
+            p->appid = appid;
+            p->next = NULL;
+            p->first_time = cur_time.tv_sec - MIN_VISIT_TIME;
+            add_visit_info_node(&node->visit_htable[hash], p);
         }
+        p->action = action;
+        p->latest_time = cur_time.tv_sec;
     }
-
     json_object_put(root);
 }
 
@@ -212,8 +220,8 @@ int appfilter_nl_init(void)
     fd = socket(AF_NETLINK, SOCK_RAW, OAF_NETLINK_ID);
     if (fd < 0)
     {
-        printf("Connect netlink %d failed %s", OAF_NETLINK_ID, strerror(errno));
-        exit(1);
+        LOG_DEBUG("Connect netlink %d failed %s\n", OAF_NETLINK_ID, strerror(errno));
+        return -1;
     }
     memset(&nls, 0, sizeof(struct sockaddr_nl));
     nls.nl_pid = DEFAULT_USR_NL_PID;
@@ -222,8 +230,8 @@ int appfilter_nl_init(void)
 
     if (bind(fd, (void *)&nls, sizeof(struct sockaddr_nl)))
     {
-        printf("Bind failed %s\n", strerror(errno));
-        exit(1);
+        LOG_DEBUG("Bind failed %s\n", strerror(errno));
+        return -1;
     }
 
     return fd;

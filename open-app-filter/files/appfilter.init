@@ -1,99 +1,44 @@
 #!/bin/sh /etc/rc.common
 
-. /usr/share/libubox/jshn.sh
-. /lib/functions.sh
-
 START=96
 USE_PROCD=1
 OAFD_BIN="/usr/bin/oafd"
 FEATURE_FILE="/tmp/feature.cfg"
-CLASS_FILE="/tmp/app_class.txt"
-
-disable_offload_nat6()
-{
-	if [ $(uci -q show firewall.@defaults[0] | grep -c flow_offloading) -ge 1 ]; then
-		echo flow_offloading > /etc/appfilter/offload_mode
-		uci -q del firewall.@defaults[0].flow_offloading
-		uci commit firewall
-		/etc/init.d/firewall reload >/dev/null 2>&1
-	elif [ $(uci -q show firewall.@defaults[0] | grep -c shortcut_fe) -ge 1 ]; then
-		uci -q get firewall.@defaults[0].shortcut_fe_module > /etc/appfilter/offload_mode
-		uci -q del firewall.@defaults[0].shortcut_fe
-		uci -q del firewall.@defaults[0].shortcut_fe_module
-		uci commit firewall
-		/etc/init.d/firewall reload >/dev/null 2>&1
-		/etc/init.d/shortcut-fe restart
-	fi
-	if [ $(uci -q show firewall.@defaults[0] | grep -c nat6) -ge 1 ]; then
-		true > /etc/appfilter/firewall_nat6
-		uci -q del firewall.@defaults[0].nat6
-		uci commit firewall
-		/etc/init.d/nat6 reload >/dev/null 2>&1
-	fi
-}
 
 enable_offload()
 {
-	offload_mode=$(cat /etc/appfilter/offload_mode)
-	rm -f /etc/appfilter/offload_mode
+	rm -f /etc/appfilter/flow_offloading
+	uci -q set firewall.@defaults[0].flow_offloading='1'
+	uci commit firewall
+}
 
-	if [ "$offload_mode" = "flow_offloading" ]; then
-		uci set firewall.@defaults[0].flow_offloading='1'
-		uci commit firewall
-		/etc/init.d/firewall reload >/dev/null 2>&1
-	else
-		uci set firewall.@defaults[0].shortcut_fe='1'
-		uci set firewall.@defaults[0].shortcut_fe_module="$offload_mode"
-		uci commit firewall
-		/etc/init.d/firewall reload >/dev/null 2>&1
-		/etc/init.d/shortcut-fe restart
-	fi
+enable_offload_hw()
+{
+	rm -f /etc/appfilter/flow_offloading_hw
+	uci -q set firewall.@defaults[0].flow_offloading='1'
+	uci commit firewall
 }
 
 enable_nat6()
 {
 	rm -f /etc/appfilter/firewall_nat6
-	uci set firewall.@defaults[0].nat6='1'
+	uci -q set firewall.@defaults[0].nat6='1'
 	uci commit firewall
 	/etc/init.d/nat6 reload >/dev/null 2>&1
 }
 
-service_triggers()
-{
-	procd_add_reload_trigger "appfilter"
-}
-
 stop_service(){
-	killall -9 oafd >/dev/null 2>&1
-	rmmod oaf >/dev/null 2>&1
-	[ -f "/etc/appfilter/offload_mode" ] && enable_offload
+	killall -9 oafd
+	[ -f "/etc/appfilter/flow_offloading" ] && enable_offload
+	[ -f "/etc/appfilter/flow_offloading_hw" ] && enable_offload_hw
 	[ -f "/etc/appfilter/firewall_nat6" ] && enable_nat6
 }
 
 start_service(){
-	local update
-	rm -f $FEATURE_FILE
-
-	update=`uci get appfilter.feature.update`
-	if [ x"1" == x"$update" ];then
-		ln -s /etc/appfilter/feature.cfg $FEATURE_FILE
-	else
-		uci get luci.languages.zh_cn >/dev/null 2>&1
-		if [ $? -eq 0 ];then
-			test -f $FEATURE_FILE && rm $FEATURE_FILE
-			ln -s /etc/appfilter/feature_cn.cfg $FEATURE_FILE
-		else
-			ln -s /etc/appfilter/feature_en.cfg $FEATURE_FILE
-		fi
-	fi
-	gen_class.sh /tmp/feature.cfg
-	if [ "$(uci -q get appfilter.global.enable)" != 1 ]; then
-		stop_service
-		return 1
-	fi
-	disable_offload_nat6
-	insmod oaf
-	/usr/bin/oaf_rule reload
+	test -f $FEATURE_FILE &&{
+		rm $FEATURE_FILE
+	}
+	ln -s /etc/appfilter/feature.cfg $FEATURE_FILE
 	procd_open_instance
 	procd_set_param respawn 60 5 5
 	procd_set_param stderr 1

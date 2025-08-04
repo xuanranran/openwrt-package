@@ -34,14 +34,16 @@ days:value("4", translate("Thur"));
 days:value("5", translate("Fri"));
 days:value("6", translate("Sat"));
 
-hv = s:option(Value, "start_time", translate("Start Time1"), translate("Format 01:00"))
+hv = s:option(Value, "start_time", translate("Start Time1"),translate("xx:xx"))
 hv.optional = false
 hv = s:option(Value, "end_time", translate("End Time1"))
 hv.optional = false
 
-hv = s:option(Value, "start_time2", translate("Start Time2"), translate("Format 01:00"))
+hv = s:option(Value, "start_time2", translate("Start Time2"))
 hv.optional = false
 hv = s:option(Value, "end_time2", translate("End Time2"))
 hv.optional = false
+
+
 
 return m

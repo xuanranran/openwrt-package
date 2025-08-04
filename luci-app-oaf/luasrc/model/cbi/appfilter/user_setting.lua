@@ -12,7 +12,7 @@ local http = luci.http
 local SYS = require "luci.sys"
 local m, s
 
-m = Map("appfilter", translate(""), translate(""))
+m = Map("appfilter", translate("App Filter"), translate(""))
 
 function get_hostname_by_mac(dst_mac)
     leasefile = "/tmp/dhcp.leases"
