@@ -3982,6 +3982,16 @@ pre.command-output {
     color: #EEFFFF;
 }
 
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button {
+    background: #242424;
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
+}
+
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button label {
+    background: #000000;
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
+}
+
 /* IE hacks */
 @media all and (-ms-high-contrast: none) {
   .main>.main-left>.nav>.slide>.menu::before {
