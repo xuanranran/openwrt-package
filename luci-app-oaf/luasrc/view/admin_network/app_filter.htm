@@ -539,7 +539,7 @@
 </div>
 
 <div class="cbi-section cbi-tblsection">
-    <div style="max-width: 1000px; margin-left: 5px;padding: 5px;">
+    <div style="max-width: 1000px; margin-left: 10px;padding: 10px;">
 
         <div class="app_filter_status">
             <label><%:Running Status%>:</label>
@@ -578,17 +578,17 @@
         <div style="display: flex; justify-content: flex-start; align-items: center;width: 600px;margin-top: 10px;">
             <div style="width: 280px; display: inline-block;">
                 <label><%:Effective Time%>:</label> 
-                <button type="button" class="button-check" onclick="redirectToTimeConfig()"><%:View%></button>
+                <button type="button" class="btn cbi-button-action" onclick="redirectToTimeConfig()"><%:View%></button>
             </div>
 
             <div style="width: 280px; display: inline-block; margin-left: 10px;">
                 <label><%:Effective User%>:</label> 
                 <!-- <span style="color: green;">5个</span> -->
-                <button type="button" class="button-check" onclick="redirectToUserConfig()"><%:View%></button>
+                <button type="button" class="btn cbi-button-action" onclick="redirectToUserConfig()"><%:View%></button>
             </div>
         </div>
         <div class="button-container">
-            <button type="button" class="submit-button" onclick="submitHandle()"><%:Save%></button>
+            <button type="button" class="cbi-button cbi-button-save" onclick="submitHandle()"><%:Save%></button>
         </div>
     </div>
 </div>

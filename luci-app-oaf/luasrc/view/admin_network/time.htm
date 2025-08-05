@@ -24,23 +24,6 @@
         border: 1px solid #ddd;
         text-align: center;
     }
-    .add-time-btn {
-        margin-top: 10px;
-        padding: 5px 15px;
-        background-color: #2885e8;
-        color: white;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-    .delete-time-btn {
-        padding: 3px 8px;
-        background-color: #ff4444;
-        color: white;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
     .whitelist-settings {
         margin-top: 20px;
     }
@@ -198,7 +181,7 @@
             row.innerHTML = `
                 <td><input type="time" class="start-time" required></td>
                 <td><input type="time" class="end-time" required></td>
-                <td><button type="button" class="delete-time-btn" onclick="deleteTimeRow(this)"><%:Delete%></button></td>
+                <td><button type="button" class="btn cbi-button cbi-button-remove" onclick="deleteTimeRow(this)"><%:Delete%></button></td>
             `;
             tbody.appendChild(row);
 
@@ -333,7 +316,7 @@
                     row.innerHTML = `
                         <td><input type="time" class="start-time" value="${timeRange.start}" required></td>
                         <td><input type="time" class="end-time" value="${timeRange.end}" required></td>
-                        <td><button type="button" class="delete-time-btn" onclick="deleteTimeRow(this)"><%:Delete%></button></td>
+                        <td><button type="button" class="btn cbi-button cbi-button-remove" onclick="deleteTimeRow(this)"><%:Delete%></button></td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -449,7 +432,7 @@
                
             </table>
             <div id="errorContainer" style="color: red; font-size: 12px; margin-top: 10px;"></div>
-            <button class="add-time-btn" onclick="addTimeRow()"><%:Add Time Period%></button>
+            <button class="btn cbi-button-action" onclick="addTimeRow()"><%:Add Time Period%></button>
         </div>
 
         <!-- 动态时间模式内容 -->
@@ -505,7 +488,7 @@
     </div>
 
     <div class="button-container">
-        <button type="button" class="submit-button" onclick="submitHandle()"><%:Save%></button>
+        <button type="button" class="cbi-button cbi-button-save" onclick="submitHandle()"><%:Save%></button>
     </div>
 
     </div>
