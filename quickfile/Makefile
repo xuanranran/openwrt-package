@@ -11,7 +11,7 @@ PKG_VERSION:=1.0.5
 PKG_RELEASE:=1
 
 PKG_SOURCE:=quickfile-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://down.cooluc.com/bin/quickfile/openwrt
+PKG_SOURCE_URL:=https://r2.cooluc.com/source
 PKG_HASH:=95eddfc98baee63804f89475e392fa022e1d9a212f593d1c871c1a465617d96d
 
 include $(INCLUDE_DIR)/package.mk

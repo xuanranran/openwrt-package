@@ -26,17 +26,17 @@ test -f /etc/config/turboacc && {
 
 disable_offload_nat6()
 {
-	if [ $(uci -q get firewall.@defaults[0].flow_offloading) -ge 1 ]; then
+	if [ "$(uci -q get firewall.@defaults[0].flow_offloading)" = 1 ]; then
 		touch /etc/appfilter/flow_offloading
 		uci -q del firewall.@defaults[0].flow_offloading
 		uci commit firewall
 	fi
-	if [ $(uci -q get firewall.@defaults[0].flow_offloading_hw) -ge 1 ]; then
+	if [ "$(uci -q get firewall.@defaults[0].flow_offloading_hw)" = 1 ]; then
 		touch /etc/appfilter/flow_offloading_hw
 		uci -q del firewall.@defaults[0].flow_offloading_hw
 		uci commit firewall
 	fi
-	if [ $(uci -q get firewall.@defaults[0].nat6) -ge 1 ]; then
+	if [ "$(uci -q get firewall.@defaults[0].nat6)" = 1 ]; then
 		touch /etc/appfilter/firewall_nat6
 		uci -q del firewall.@defaults[0].nat6
 		uci commit firewall
