@@ -4053,14 +4053,6 @@ pre.command-output {
   }
 }
 
-@media screen and (max-width: 1366px) {
-  [data-page^="admin-services-openclash"] table {
-      display: flex;
-      font-size: 0.835rem !important;
-      width: 100% !important;
-  }
-}
-
 /* IE hacks */
 @media all and (-ms-high-contrast: none) {
   .main>.main-left>.nav>.slide>.menu::before {
