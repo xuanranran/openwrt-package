@@ -3983,7 +3983,7 @@ pre.command-output {
   background-color: #242424;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #diag-rc-output > pre {
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #diag-rc-output > pre,
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #dns-rc-output > pre {
   background-color: #000000;
   color: #ffffff;
@@ -3995,13 +3995,13 @@ pre.command-output {
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button {
-  background: #242424;
-  box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
+    background: #242424;
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button label {
-  background: #000000;
-  box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
+    background: #000000;
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu {
