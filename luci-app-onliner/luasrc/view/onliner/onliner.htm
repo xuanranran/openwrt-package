@@ -8,17 +8,43 @@
 local util = require "luci.util"
 local function online_data()
 	local rv = { }
-	local fd = util.execi('/usr/bin/awk \'BEGIN{while ((getline < "/tmp/dhcp.leases") > 0){a[$2]=$4;}while ((getline < "/proc/net/arp") > 0){if (!a[$4]){a[$4]="\?";}if (match($3,"0x[26]")){"ping -q -c 1 "$1" &";if (b[$4]){b[$4]=b[$4]"/"$1;}else{b[$4]=$1;}c[$4]=$6;}}while (("ip -6 neighbor show | grep -v fe80" | getline) > 0){if (b[$5]) {"ping -q -c 1 "$1" &";b[$5]=b[$5]"/"$1;}}for (mac in b){print(a[mac],b[mac],mac,c[mac]);}}\' ')
+	-- Simplified awk script focusing only on IPv4 data for maximum compatibility.
+	local script = [[
+		BEGIN {
+			# Read DHCPv4 leases to get hostnames (MAC is $2, hostname is $4)
+			while ((getline < "/tmp/dhcp.leases") > 0) {
+				host[$2] = $4;
+			}
+
+			# Read ARP table for active IPv4 clients (Flags is $3, MAC is $4, IP is $1, Device is $6)
+			while ((getline < "/proc/net/arp") > 0) {
+				if ($3 == "0x2" && $4 != "00:00:00:00:00:00") {
+					mac = $4;
+					macs[mac] = 1;
+					iface[mac] = $6;
+					ipv4[mac] = $1;
+				}
+			}
+
+			# Print combined results for every MAC found in the active ARP table
+			for (mac in macs) {
+				hostname = host[mac] ? host[mac] : "?";
+				print hostname, ipv4[mac], mac, iface[mac];
+			}
+		}
+	]]
+	local fd = util.execi('/usr/bin/awk \'' .. script:gsub('\'', '\'\\\'\'') .. '\'')
+
 	while true do
 		local ln = fd()
 		if ln == nil then break end
-		local name,ip,mac,dev = ln:match("^(%S+) (%S+) (%S+) (%S+)")
-		if mac and ip and name and dev then
+		local name,ipv4,mac,dev = ln:match("^(%S+) (%S+) (%S+) (%S+)")
+		if mac then
 			rv[#rv+1] = {
 				hostname = name,
 				device  = dev,
 				macaddr  = mac,
-				ipaddr   = ip
+				ipaddr   = ipv4
 			}
 		end
 	end
@@ -35,8 +61,138 @@ if luci.http.formvalue("status") == "1" then
 	return
 end	
 -%>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <%+header%>
+
+<style type="text/css">
+/* --- 基础及桌面端默认样式 (> 1280px) --- */
+body {
+	background-color: #f4f6f9;
+	font-family: 'Google Sans', sans-serif;
+	font-size: 16px;
+	line-height: 1.6;
+	overflow-wrap: break-word;
+	word-break: break-all;
+}
+
+h2[name="content"] {
+	font-size: 28px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+	font-weight: 800;
+}
+
+.cbi-section {
+	background-color: #ffffff;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+	margin-bottom: 30px;
+	padding: 25px;
+}
+
+.cbi-section > legend {
+	font-size: 20px;
+	font-weight: 800;
+	padding: 0 10px;
+	margin-left: 10px;
+}
+
+table.cbi-section-table {
+	border-collapse: collapse;
+	border: none;
+	width: 100%;
+}
+
+table.cbi-section-table th {
+	background-color: #f8f9fa;
+	border: none;
+	border-bottom: 2px solid #dee2e6;
+	padding: 14px 18px;
+	text-align: left;
+	font-weight: 800;
+	white-space: nowrap;
+}
+
+table.cbi-section-table td {
+	border: none;
+	border-top: 1px solid #dee2e6;
+	padding: 14px 18px;
+	text-align: left;
+	vertical-align: middle;
+}
+
+table.cbi-section-table tbody tr:hover {
+	background-color: #f1f3f5;
+}
+
+/* --- 平板端优化 (769px to 1280px) --- */
+@media (min-width: 769px) and (max-width: 1280px) {
+	body {
+		font-size: 15px;
+	}
+	
+	h2[name="content"] {
+		font-size: 24px;
+	}
+	
+	.cbi-section {
+		padding: 20px;
+	}
+
+	table.cbi-section-table th,
+	table.cbi-section-table td {
+		padding: 10px 12px; /* 减小内边距 */
+	}
+}
+
+
+/* --- 手机端优化 (< 768px) --- */
+@media (max-width: 768px) {
+  /* --- 新增：隐藏手机版顶部的表格标题行 --- */
+  #online_status_table .cbi-section-table-titles {
+    display: none;
+  }
+
+  #online_status_table tr {
+    display: block;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  
+  #online_status_table tr:hover {
+	background-color: transparent; /* 在卡片模式下禁用行高亮 */
+  }
+
+  #online_status_table td {
+    display: block;
+    text-align: right;
+    position: relative;
+    padding-left: 50%;
+    border: none;
+	border-bottom: 1px dotted #ccc;
+    min-height: 22px;
+  }
+  
+  #online_status_table td:last-child {
+    border-bottom: none;
+  }
+
+  #online_status_table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: 800;
+    text-align: left;
+    padding-right: 10px;
+	width: 45%;
+	white-space: nowrap;
+  }
+}
+</style>
 
 <script type="text/javascript" src="<%=resource%>/cbi.js?v=git-19.271.33176-b099749"></script>
 <script type="text/javascript">//<![CDATA[
@@ -46,7 +202,7 @@ end
 		function(x, info)
 		{
 			var ls = document.getElementById('online_status_table');
-			if (ls)
+			if (ls && info && info.onlines)
 			{
 				/* clear all rows */
 				while( ls.rows.length > 1 )
@@ -54,14 +210,24 @@ end
 
 				for( var i = 0; i < info.onlines.length; i++ )
 				{
-
 					var tr = ls.rows[0].parentNode.insertRow(-1);
 						tr.className = 'cbi-section-table-row cbi-rowstyle-' + ((i % 2) + 1);
 
-					tr.insertCell(-1).innerHTML = info.onlines[i].hostname ? info.onlines[i].hostname : '?';
-					tr.insertCell(-1).innerHTML = info.onlines[i].ipaddr.split("/").join("<br>");
-					tr.insertCell(-1).innerHTML = info.onlines[i].macaddr;
-					tr.insertCell(-1).innerHTML = info.onlines[i].device;
+					var cell1 = tr.insertCell(-1);
+					cell1.setAttribute('data-label', '<%:Hostname%>');
+					cell1.innerHTML = info.onlines[i].hostname ? info.onlines[i].hostname : '?';
+
+					var cell2 = tr.insertCell(-1);
+					cell2.setAttribute('data-label', '<%:IPv4-Address%>');
+					cell2.innerHTML = info.onlines[i].ipaddr;
+
+					var cell3 = tr.insertCell(-1);
+					cell3.setAttribute('data-label', '<%:MAC-Address%>');
+					cell3.innerHTML = info.onlines[i].macaddr;
+
+					var cell4 = tr.insertCell(-1);
+					cell4.setAttribute('data-label', '<%:Interface%>');
+					cell4.innerHTML = info.onlines[i].device;
 				}
 
 				if( ls.rows.length == 1 )
