@@ -4051,6 +4051,15 @@ pre.command-output {
     font-family: 'Google Sans' !important;
 }
 
+[data-page^="admin-services-openclash"] .oc .version-display .version-text {
+    font-weight: 700;
+}
+
+[data-page^="admin-services-openclash"] .oc .dashboard-btn {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+}
+
 /* IE hacks */
 @media all and (-ms-high-contrast: none) {
   .main>.main-left>.nav>.slide>.menu::before {
