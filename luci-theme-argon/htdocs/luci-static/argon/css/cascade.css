@@ -4046,11 +4046,9 @@ pre.command-output {
   }
 }
 
-@media screen and (max-width: 1600px) {
-  [data-page^="admin-services-openclash"] .cbi-input-textarea {
-      font-size: 14px !important;
-      font-family: 'Google Sans' !important;
-  }
+[data-page^="admin-services-openclash"] .cbi-input-textarea {
+    font-size: 14px !important;
+    font-family: 'Google Sans' !important;
 }
 
 /* IE hacks */
