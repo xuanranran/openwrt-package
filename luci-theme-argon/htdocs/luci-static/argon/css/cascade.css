@@ -4060,6 +4060,10 @@ pre.command-output {
     font-weight: 600 !important;
 }
 
+[data-page^="admin-services-openclash"] .oc .subscription-info-text {
+    white-space: normal;
+}
+
 /* IE hacks */
 @media all and (-ms-high-contrast: none) {
   .main>.main-left>.nav>.slide>.menu::before {
