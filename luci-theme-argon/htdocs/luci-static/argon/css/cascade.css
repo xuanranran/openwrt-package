@@ -3940,14 +3940,14 @@ pre.command-output {
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled {
-  color: #1f2937;
-  background: #000000;
-  opacity: 0.7;
+    color: #1f2937;
+    background: #000000;
+    opacity: 0.7;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header {
-  background: #242424;
-  border-bottom: 1px solid #242424;
+    background: #242424;
+    border-bottom: 1px solid #242424;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu {
@@ -3980,13 +3980,13 @@ pre.command-output {
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .diag-style {
-  background-color: #242424;
+    background-color: #242424;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #diag-rc-output > pre,
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #dns-rc-output > pre {
-  background-color: #000000;
-  color: #ffffff;
+    background-color: #000000;
+    color: #ffffff;
 }
 
 [data-page^="admin-services-openclash"] .cm-s-material.CodeMirror {
@@ -4005,7 +4005,7 @@ pre.command-output {
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu {
-  font-family: 'Google Sans' !important;
+    font-family: 'Google Sans' !important;
 }
 
 [data-page^="admin-services-openclash"] .cbi-value-description,
@@ -4015,6 +4015,15 @@ pre.command-output {
 [data-page^="admin-services-openclash"] .tool_label_span,
 [data-page^="admin-services-openclash"] b, strong {
   font-family: 'Google Sans' !important;
+}
+
+[data-page^="admin-services-openclash"] .btn-group {
+    display: flex;
+    width: 100%;
+    margin: 0px auto;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 @media (prefers-color-scheme: dark) {
