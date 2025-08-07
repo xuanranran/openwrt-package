@@ -18,7 +18,8 @@ local function online_data()
 
 			# Read ARP table for active IPv4 clients (Flags is $3, MAC is $4, IP is $1, Device is $6)
 			while ((getline < "/proc/net/arp") > 0) {
-				if ($3 == "0x2" && $4 != "00:00:00:00:00:00") {
+				# ADDED FILTER: Only process lines where device is 'br-lan' or starts with 'eth'
+				if ($3 == "0x2" && $4 != "00:00:00:00:00:00" && ($6 == "br-lan" || $6 ~ /^eth/)) {
 					mac = $4;
 					macs[mac] = 1;
 					iface[mac] = $6;
@@ -127,6 +128,78 @@ table.cbi-section-table tbody tr:hover {
 	background-color: #f1f3f5;
 }
 
+/* 桌面端排序功能样式 */
+th.sortable {
+	cursor: pointer;
+	position: relative;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+th.sortable:hover {
+	background-color: #e9ecef;
+}
+
+.sort-arrow {
+	font-size: 12px;
+	position: absolute;
+	right: 18px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #6c757d;
+	display: inline-block;
+	width: 1em;
+}
+
+/* 默认隐藏手机版排序栏 */
+.mobile-sorter {
+	display: none;
+}
+
+/* --- Argon 暗黑模式适配 --- */
+body.dark {
+	background-color: #000000;
+	color: #cccccc;
+}
+body.dark h2[name="content"] {
+	color: #ccc;
+	background: #242424;
+	border-radius: 0.575rem;
+	border-bottom: none;
+}
+body.dark .cbi-section {
+	background: #242424 !important;
+	border: 1px solid #3a3a3a;
+	box-shadow: unset;
+}
+body.dark .cbi-section > legend {
+	color: #ccc;
+}
+body.dark table.cbi-section-table {
+	background-color: #242424;
+	border-radius: 0.575rem;
+}
+body.dark table.cbi-section-table th {
+	background-color: #1e1e1f;
+	border-bottom-color: #444;
+	color: #f1f1f1;
+}
+body.dark table.cbi-section-table td {
+	border-top-color: #3a3a3a;
+}
+body.dark table.cbi-section-table tbody tr:hover {
+	background-color: #2c2c2c;
+}
+body.dark th.sortable:hover {
+	background-color: #333;
+}
+body.dark .sort-arrow {
+	color: #aaa;
+}
+
+
 /* --- 平板端优化 (769px to 1280px) --- */
 @media (min-width: 769px) and (max-width: 1280px) {
 	body {
@@ -143,16 +216,50 @@ table.cbi-section-table tbody tr:hover {
 
 	table.cbi-section-table th,
 	table.cbi-section-table td {
-		padding: 10px 12px; /* 减小内边距 */
+		padding: 10px 12px;
+	}
+
+	.sort-arrow {
+		right: 12px;
 	}
 }
 
 
 /* --- 手机端优化 (< 768px) --- */
 @media (max-width: 768px) {
-  /* --- 新增：隐藏手机版顶部的表格标题行 --- */
   #online_status_table .cbi-section-table-titles {
     display: none;
+  }
+
+  .mobile-sorter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    align-items: center;
+  }
+
+  .mobile-sorter strong {
+	font-weight: 800;
+	margin-right: 8px;
+  }
+
+  .mobile-sorter .sort-control {
+    padding: 6px 10px;
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .mobile-sorter .sort-control.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
   }
 
   #online_status_table tr {
@@ -164,7 +271,7 @@ table.cbi-section-table tbody tr:hover {
   }
   
   #online_status_table tr:hover {
-	background-color: transparent; /* 在卡片模式下禁用行高亮 */
+	background-color: transparent;
   }
 
   #online_status_table td {
@@ -191,70 +298,181 @@ table.cbi-section-table tbody tr:hover {
 	width: 45%;
 	white-space: nowrap;
   }
+  
+  /* Argon 暗黑模式手机版适配 */
+  body.dark .mobile-sorter {
+    background-color: #242424;
+	border-radius: 0.575rem;
+  }
+  body.dark .mobile-sorter strong {
+    color: #cccccc;
+  }
+  body.dark .mobile-sorter .sort-control {
+    background-color: #3c3c3c;
+    color: #cccccc;
+    border: 1px solid #555;
+  }
+  body.dark .mobile-sorter .sort-control.active {
+    background-color: var(--dark-primary, #483d8b);
+    border-color: var(--dark-primary, #483d8b);
+    color: #ffffff;
+  }
+  body.dark #online_status_table tr {
+	background-color: #242424;
+	border-color: #3a3a3a;
+  }
+  body.dark #online_status_table td {
+	border-bottom-color: #3a3a3a;
+  }
 }
 </style>
 
-<script type="text/javascript" src="<%=resource%>/cbi.js?v=git-19.271.33176-b099749"></script>
+<script type="text/javascript" src="<%=resource%>/cbi.js?v=git-19.271.33176-b_E9_80_9A_E7_94_A8_E5_BA_93"></script>
 <script type="text/javascript">//<![CDATA[
-	var npoll = 1;
+	var sortColumn = 'hostname';
+	var sortDirection = 'asc';
+	var latestInfo = {};
+
+	function ipToNum(ip) {
+		if (!ip || typeof(ip) !== 'string' || ip === '-') return 0;
+		return ip.split('.').reduce(function(num, octet) {
+			return (num << 8) + parseInt(octet, 10);
+		}, 0);
+	}
+
+	function setSort(column) {
+		if (sortColumn === column) {
+			sortDirection = (sortDirection === 'asc') ? 'desc' : 'asc';
+		} else {
+			sortColumn = column;
+			sortDirection = 'asc';
+		}
+		renderTable(latestInfo);
+	}
+
+	function renderTable(info) {
+		var ls = document.getElementById('online_status_table');
+		if (!ls || !info || !info.onlines) return;
+		
+		latestInfo = info;
+
+		info.onlines.sort(function(a, b) {
+			var valA, valB;
+
+			if (sortColumn === 'ipaddr') {
+				valA = ipToNum(a.ipaddr);
+				valB = ipToNum(b.ipaddr);
+			} else {
+				valA = a[sortColumn] ? a[sortColumn].toString().toLowerCase() : '';
+				valB = b[sortColumn] ? b[sortColumn].toString().toLowerCase() : '';
+			}
+
+			var comparison = 0;
+			if (valA > valB) {
+				comparison = 1;
+			} else if (valA < valB) {
+				comparison = -1;
+			}
+			
+			return (sortDirection === 'asc') ? comparison : (comparison * -1);
+		});
+
+		// --- 更新桌面端排序箭头 ---
+		var allArrows = document.querySelectorAll('.sort-arrow');
+		allArrows.forEach(function(span) { span.innerHTML = ''; });
+		var activeArrow = document.getElementById('sort-arrow-' + sortColumn);
+		if (activeArrow) {
+			activeArrow.innerHTML = (sortDirection === 'asc') ? '&#9650;' : '&#9660;';
+		}
+		
+		// --- 更新手机端排序按钮状态 ---
+		var allMobileControls = document.querySelectorAll('.sort-control');
+		allMobileControls.forEach(function(span) {
+			span.classList.remove('active');
+			span.innerHTML = span.getAttribute('data-label-short');
+		});
+		var activeMobileControl = document.querySelector('.sort-control[data-sort="' + sortColumn + '"]');
+		if (activeMobileControl) {
+			activeMobileControl.classList.add('active');
+			activeMobileControl.innerHTML = activeMobileControl.getAttribute('data-label-short') + ((sortDirection === 'asc') ? ' &#9650;' : ' &#9660;');
+		}
+
+
+		// --- DOM渲染逻辑 ---
+		while (ls.rows.length > 1) {
+			ls.deleteRow(1);
+		}
+
+		if (info.onlines.length > 0) {
+			info.onlines.forEach(function(device, i) {
+				var tr = ls.insertRow(-1);
+				tr.className = 'cbi-section-table-row cbi-rowstyle-' + ((i % 2) + 1);
+
+				var cell1 = tr.insertCell(-1);
+				cell1.setAttribute('data-label', '<%:Hostname%>');
+				cell1.innerHTML = device.hostname ? device.hostname : '?';
+
+				var cell2 = tr.insertCell(-1);
+				cell2.setAttribute('data-label', '<%:IPv4-Address%>');
+				cell2.innerHTML = device.ipaddr;
+
+				var cell3 = tr.insertCell(-1);
+				cell3.setAttribute('data-label', '<%:MAC-Address%>');
+				cell3.innerHTML = device.macaddr;
+
+				var cell4 = tr.insertCell(-1);
+				cell4.setAttribute('data-label', '<%:Interface%>');
+				cell4.innerHTML = device.device;
+			});
+		} else {
+			var tr = ls.insertRow(-1);
+			tr.className = 'cbi-section-table-row';
+			var td = tr.insertCell(-1);
+			td.colSpan = 4;
+			td.innerHTML = '<em><br /><%:There is no one online now.%></em>';
+		}
+	}
 
 	XHR.poll(5, '<%=REQUEST_URI%>', { status: 1 },
-		function(x, info)
-		{
-			var ls = document.getElementById('online_status_table');
-			if (ls && info && info.onlines)
-			{
-				/* clear all rows */
-				while( ls.rows.length > 1 )
-					ls.rows[0].parentNode.deleteRow(1);
-
-				for( var i = 0; i < info.onlines.length; i++ )
-				{
-					var tr = ls.rows[0].parentNode.insertRow(-1);
-						tr.className = 'cbi-section-table-row cbi-rowstyle-' + ((i % 2) + 1);
-
-					var cell1 = tr.insertCell(-1);
-					cell1.setAttribute('data-label', '<%:Hostname%>');
-					cell1.innerHTML = info.onlines[i].hostname ? info.onlines[i].hostname : '?';
-
-					var cell2 = tr.insertCell(-1);
-					cell2.setAttribute('data-label', '<%:IPv4-Address%>');
-					cell2.innerHTML = info.onlines[i].ipaddr;
-
-					var cell3 = tr.insertCell(-1);
-					cell3.setAttribute('data-label', '<%:MAC-Address%>');
-					cell3.innerHTML = info.onlines[i].macaddr;
-
-					var cell4 = tr.insertCell(-1);
-					cell4.setAttribute('data-label', '<%:Interface%>');
-					cell4.innerHTML = info.onlines[i].device;
-				}
-
-				if( ls.rows.length == 1 )
-				{
-					var tr = ls.rows[0].parentNode.insertRow(-1);
-						tr.className = 'cbi-section-table-row';
-
-					var td = tr.insertCell(-1);
-						td.colSpan = 4;
-						td.innerHTML = '<em><br /><%:There is no one online now.%></em>';
-				}
-			}
+		function(x, info) {
+			renderTable(info);
 		}
 	);
+	
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelectorAll('th.sortable').forEach(function(th) {
+			th.addEventListener('click', function() {
+				setSort(th.getAttribute('data-sort'));
+			});
+		});
+		
+		document.querySelectorAll('.sort-control').forEach(function(span) {
+			span.addEventListener('click', function() {
+				setSort(span.getAttribute('data-sort'));
+			});
+		});
+	});
 //]]></script>
 
 <h2 name="content"><%:Status%></h2>
 
 <fieldset class="cbi-section">
 	<legend><%:user online%></legend>
+	
+	<div class="mobile-sorter">
+		<strong><%:Sort by:%></strong>
+		<span class="sort-control" data-sort="hostname" data-label-short="<%:Hostname%>"><%:Hostname%></span>
+		<span class="sort-control" data-sort="ipaddr" data-label-short="<%:IP%>"><%:IP%></span>
+		<span class="sort-control" data-sort="macaddr" data-label-short="<%:MAC%>"><%:MAC%></span>
+		<span class="sort-control" data-sort="device" data-label-short="<%:Interface%>"><%:Interface%></span>
+	</div>
 
 	<table class="cbi-section-table" id="online_status_table">
 		<tr class="cbi-section-table-titles">
-			<th class="cbi-section-table-cell"><%:Hostname%></th>
-			<th class="cbi-section-table-cell"><%:IPv4-Address%></th>
-			<th class="cbi-section-table-cell"><%:MAC-Address%></th>
-			<th class="cbi-section-table-cell"><%:Interface%></th>
+			<th class="cbi-section-table-cell sortable" data-sort="hostname"><%:Hostname%><span class="sort-arrow" id="sort-arrow-hostname"></span></th>
+			<th class="cbi-section-table-cell sortable" data-sort="ipaddr"><%:IPv4-Address%><span class="sort-arrow" id="sort-arrow-ipaddr"></span></th>
+			<th class="cbi-section-table-cell sortable" data-sort="macaddr"><%:MAC-Address%><span class="sort-arrow" id="sort-arrow-macaddr"></span></th>
+			<th class="cbi-section-table-cell sortable" data-sort="device"><%:Interface%><span class="sort-arrow" id="sort-arrow-device"></span></th>
 		</tr>
 		<tr class="cbi-section-table-row">
 			<td colspan="4"><em><br /><%:Collecting data...%></em></td>
