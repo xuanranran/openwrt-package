@@ -1,6 +1,7 @@
 <%#
  Copyright 2008 Steven Barth <steven@midlink.org>
  Copyright 2008-2011 Jo-Philipp Wich <jow@openwrt.org>
+ Copyright 2025 Lovin Yarn <juanshengyuan@gmail.com>
  Licensed to the public under the Apache License 2.0.
 -%>
 
@@ -18,8 +19,8 @@ local function online_data()
 
 			# Read ARP table for active IPv4 clients (Flags is $3, MAC is $4, IP is $1, Device is $6)
 			while ((getline < "/proc/net/arp") > 0) {
-				# ADDED FILTER: Only process lines where device is 'br-lan' or starts with 'eth'
-				if ($3 == "0x2" && $4 != "00:00:00:00:00:00" && ($6 == "br-lan" || $6 ~ /^eth/)) {
+				# MODIFIED FILTER: Only process lines where device is 'br-lan', starts with 'eth', or starts with 'wlan'
+				if ($3 == "0x2" && $4 != "00:00:00:00:00:00" && ($6 == "br-lan" || $6 ~ /^eth/ || $6 ~ /^wlan/)) {
 					mac = $4;
 					macs[mac] = 1;
 					iface[mac] = $6;
@@ -66,7 +67,6 @@ end
 <%+header%>
 
 <style type="text/css">
-/* --- 基础及桌面端默认样式 (> 1280px) --- */
 body {
 	background-color: #f4f6f9;
 	font-family: 'Google Sans', sans-serif;
@@ -79,7 +79,7 @@ body {
 h2[name="content"] {
 	font-size: 28px;
 	margin-bottom: 20px;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 0px solid #ddd;
 	padding-bottom: 10px;
 	font-weight: 800;
 }
@@ -128,7 +128,6 @@ table.cbi-section-table tbody tr:hover {
 	background-color: #f1f3f5;
 }
 
-/* 桌面端排序功能样式 */
 th.sortable {
 	cursor: pointer;
 	position: relative;
@@ -153,54 +152,43 @@ th.sortable:hover {
 	width: 1em;
 }
 
-/* 默认隐藏手机版排序栏 */
 .mobile-sorter {
 	display: none;
 }
 
-/* --- Argon 暗黑模式适配 --- */
-body.dark {
-	background-color: #000000;
-	color: #cccccc;
+[data-darkmode="true"] body {
+	background-color: #121212;
+	color: #e0e0e0;
 }
-body.dark h2[name="content"] {
-	color: #ccc;
-	background: #242424;
-	border-radius: 0.575rem;
-	border-bottom: none;
-}
-body.dark .cbi-section {
-	background: #242424 !important;
-	border: 1px solid #3a3a3a;
-	box-shadow: unset;
-}
-body.dark .cbi-section > legend {
-	color: #ccc;
-}
-body.dark table.cbi-section-table {
-	background-color: #242424;
-	border-radius: 0.575rem;
-}
-body.dark table.cbi-section-table th {
-	background-color: #1e1e1f;
+[data-darkmode="true"] h2[name="content"] {
 	border-bottom-color: #444;
-	color: #f1f1f1;
 }
-body.dark table.cbi-section-table td {
+[data-darkmode="true"] .cbi-section {
+	background-color: #1e1e1e;
+	border-color: #333;
+}
+[data-darkmode="true"] .cbi-section > legend {
+	color: #eee;
+}
+[data-darkmode="true"] table.cbi-section-table th {
+	background-color: #2a2a2a;
+	border-bottom-color: #555;
+	color: #f5f5f5;
+}
+[data-darkmode="true"] table.cbi-section-table td {
 	border-top-color: #3a3a3a;
 }
-body.dark table.cbi-section-table tbody tr:hover {
+[data-darkmode="true"] table.cbi-section-table tbody tr:hover {
 	background-color: #2c2c2c;
 }
-body.dark th.sortable:hover {
+[data-darkmode="true"] th.sortable:hover {
 	background-color: #333;
 }
-body.dark .sort-arrow {
+[data-darkmode="true"] .sort-arrow {
 	color: #aaa;
 }
 
 
-/* --- 平板端优化 (769px to 1280px) --- */
 @media (min-width: 769px) and (max-width: 1280px) {
 	body {
 		font-size: 15px;
@@ -225,7 +213,6 @@ body.dark .sort-arrow {
 }
 
 
-/* --- 手机端优化 (< 768px) --- */
 @media (max-width: 768px) {
   #online_status_table .cbi-section-table-titles {
     display: none;
@@ -237,7 +224,7 @@ body.dark .sort-arrow {
     gap: 8px;
     margin-bottom: 15px;
     padding: 10px;
-    background-color: #f8f9fa;
+    background-color: rgb(136 152 170 / 15%);
     border-radius: 4px;
     align-items: center;
   }
@@ -249,7 +236,7 @@ body.dark .sort-arrow {
 
   .mobile-sorter .sort-control {
     padding: 6px 10px;
-    background-color: #e9ecef;
+    background-color: #e9ecef00;
     border: 1px solid #dee2e6;
     border-radius: 4px;
     cursor: pointer;
@@ -299,29 +286,26 @@ body.dark .sort-arrow {
 	white-space: nowrap;
   }
   
-  /* Argon 暗黑模式手机版适配 */
-  body.dark .mobile-sorter {
-    background-color: #242424;
-	border-radius: 0.575rem;
+  [data-darkmode="true"] .mobile-sorter {
+    background-color: #2a2a2a;
   }
-  body.dark .mobile-sorter strong {
-    color: #cccccc;
+  [data-darkmode="true"] .mobile-sorter strong {
+    color: #f1f1f1;
   }
-  body.dark .mobile-sorter .sort-control {
+  [data-darkmode="true"] .mobile-sorter .sort-control {
     background-color: #3c3c3c;
-    color: #cccccc;
-    border: 1px solid #555;
+    color: #f1f1f1;
+    border-color: #555;
   }
-  body.dark .mobile-sorter .sort-control.active {
-    background-color: var(--dark-primary, #483d8b);
-    border-color: var(--dark-primary, #483d8b);
+  [data-darkmode="true"] .mobile-sorter .sort-control.active {
+    background-color: #3399ff;
+    border-color: #3399ff;
     color: #ffffff;
   }
-  body.dark #online_status_table tr {
-	background-color: #242424;
+  [data-darkmode="true"] #online_status_table tr {
 	border-color: #3a3a3a;
   }
-  body.dark #online_status_table td {
+  [data-darkmode="true"] #online_status_table td {
 	border-bottom-color: #3a3a3a;
   }
 }
@@ -377,7 +361,6 @@ body.dark .sort-arrow {
 			return (sortDirection === 'asc') ? comparison : (comparison * -1);
 		});
 
-		// --- 更新桌面端排序箭头 ---
 		var allArrows = document.querySelectorAll('.sort-arrow');
 		allArrows.forEach(function(span) { span.innerHTML = ''; });
 		var activeArrow = document.getElementById('sort-arrow-' + sortColumn);
@@ -385,7 +368,6 @@ body.dark .sort-arrow {
 			activeArrow.innerHTML = (sortDirection === 'asc') ? '&#9650;' : '&#9660;';
 		}
 		
-		// --- 更新手机端排序按钮状态 ---
 		var allMobileControls = document.querySelectorAll('.sort-control');
 		allMobileControls.forEach(function(span) {
 			span.classList.remove('active');
@@ -398,7 +380,6 @@ body.dark .sort-arrow {
 		}
 
 
-		// --- DOM渲染逻辑 ---
 		while (ls.rows.length > 1) {
 			ls.deleteRow(1);
 		}
