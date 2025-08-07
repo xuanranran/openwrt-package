@@ -4064,6 +4064,14 @@ pre.command-output {
     white-space: normal;
 }
 
+[data-page^="admin-services-openclash"] .form-group label, .status-item .label {
+    font-family: 'Google Sans' !important;
+}
+
+[data-page^="admin-services-openclash"] .status-item .value b {
+    font-family: 'Google Sans' !important;
+}
+
 /* IE hacks */
 @media all and (-ms-high-contrast: none) {
   .main>.main-left>.nav>.slide>.menu::before {
