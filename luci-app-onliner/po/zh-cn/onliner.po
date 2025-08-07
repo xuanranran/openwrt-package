@@ -9,3 +9,6 @@ msgstr "网速监控"
 
 msgid "There is no one online now."
 msgstr "当前无任何设备在线"
+
+msgid "Sort by:"
+msgstr "排序:"
