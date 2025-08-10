@@ -1,13 +1,13 @@
 ![hello](https://views.whatilearened.today/views/github/sirpdboy/deplives.svg) [![](https://img.shields.io/badge/TG群-点击加入-FFFFFF.svg)](https://t.me/joinchat/AAAAAEpRF88NfOK5vBXGBQ)
 
 <h1 align="center">
-  <br>Net Speed Test<br>
+  <br>luci-app-partexp<br>
 </h1>
 
   <p align="center">
 
-  <a target="_blank" href="https://github.com/sirpdboy/luci-app-netspeedtest/releases">
-    <img src="https://img.shields.io/github/release/sirpdboy/luci-app-netspeedtest.svg?style=flat-square&label=NetSpeedTest&colorB=green">
+  <a target="_blank" href="https://github.com/sirpdboy/luci-app-partexp/releases">
+    <img src="https://img.shields.io/github/release/sirpdboy/luci-app-partexp.svg?style=flat-square&label=luci-app-partexp&colorB=green">
   </a>
 </p>
 
@@ -17,30 +17,23 @@
 
 Please read this page carefully, which includes precautions and instructions on how to use it.
 
-Luci app netspeedtest network speed diagnostic test (including: intranet web version speed test, intranet iperf3 throughput speed test, intranet speedtest.net network speed test, specific server port latency speed test)
 
+#### One click automatic formatting of partitions, expansion, and automatic mounting of plugins, designed specifically for OPENWRT to simplify the tedious operation of partition mounting for OPENWRT. This plugin requires a lot of effort from Sirpdboy to create and test. Please do not delete the creator's information!!
 
-## Write it in front
+## Version
 
-- I have been looking for a plugin to test speed on OPENWRT, but I couldn't find it, so I came up with it! This plugin can perform internal and external network speed testing.
-- TG group members said that the plugin hasn't been updated for 2 years, and it took a few days to upgrade the network testing function to version 2.0 based on current needs.
+- Latest update version number: V1.3.1
+- Update Date: March 26, 2025
+- Update content:
+- Reorganize the partition expansion code and address some unreasonable areas.
+- Add the format for the target partition, which can be specified as ext4, ntfs, Btrfs, or no format.
+- When used as a root directory/or/overlay, it will be formatted in ext4 format.
+- At present, the testing on X86 machines is completely normal, and it has not been tested on other routing devices. Please submit the hard disk partition status and error message if there are any issues.
 
-
-## Function Description
-- Internal network web version speed measurement plugin: Based on the HomeBox web version, enable it and then click start to perform speed measurement. After the web version is launched, the program will reside in memory. It is not recommended to enable the service due to slow speed.
-- Internal iperf3 throughput test, if the server router is not installed, please install this iperf3 plugin first.
-- The external network speed measurement uses the speedtest.net speed measurement kernel, based on speedtest cli, and cancels the old Python 3.
-- The port delay speed measurement of a specific server is to test the delay situation of the specified server's port.
-
-
-## Precautions for iperf3 throughput testing
-- The terminal for speed measurement must be on the same local area network as the speed measurement server!
-- Client usage steps: Start the speed measurement server -->Download the test client -->Run the speed measurement client -->Enter the server IP address -->View the results.
-- The client is running, and there is a "iperf3 speed measurement client" available for download on the domestic end. Simply enter the server IP to run it.
-The original version from abroad requires manually entering CMD command mode and then entering the command: iperf3.exe - c server IP
-- Download link for iperf3 client for network speed measurement: https://sipdboy.lanzoui.com/b01c3esih Password: cpd6
-- Need to rely on: speedtest cli
-
+ 
+ 
+## Characteristics
+Luci app parexp automatically obtains formatted partition expansion and automatically mounts plugins
 
 
 
@@ -48,46 +41,39 @@ The original version from abroad requires manually entering CMD command mode and
 
  ```Brach
     # downloading
-    rm -rf  ./feeds/packages/net/speedtest-cli   
-    git clone https://github.com/sirpdboy/luci-app-netspeedtest package/netspeedtest
+    git clone https://github.com/sirpdboy/luci-app-partexp.git package/luci-app-partexp
     make menuconfig
 	
  ``` 
 ### Configuration Menu
  ```Brach
     make menuconfig
-	# find LuCI -> Applications, select luci-app-netspeedtest, save and exit
+	# find LuCI -> Applications, select luci-app-partexp, save and exit
  ``` 
 ### compile
 
  ```Brach 
     # compile
-    make package/netspeedtest/luci-app-netspeedtest/compile V=s
+    make package/luci-app-partexp/compile V=s
  ```
 
 
 
 ## describe
 
-- luci-app-netspeedtest：https://github.com/sirpdboy/luci-app-netspeedtest
-- homebox：https://github.com/hay-kot/homebox
-- speedtest-cli: https://github.com/sbwml/openwrt_pkgs
-
+- luci-app-partexp：https://github.com/sirpdboy/luci-app-partexp
 
 ![screenshots](https://raw.githubusercontent.com/sirpdboy/openwrt/master/doc/说明2.jpg)
 
 
 ## interface
 
-![screenshots](./演示.gif)
+![screenshots](./doc/partexp0.png)
 
-![screenshots](https://raw.githubusercontent.com/sirpdboy/openwrt/master/doc/netspeedtest1.png)
+![screenshots](./doc/partexp1.png)
 
-![screenshots](https://raw.githubusercontent.com/sirpdboy/openwrt/master/doc/netspeedtest2.png)
+![screenshots](./doc/partexp2.png)
 
-![screenshots](https://raw.githubusercontent.com/sirpdboy/openwrt/master/doc/netspeedtest3.png)
-
-![screenshots](https://raw.githubusercontent.com/sirpdboy/openwrt/master/doc/netspeedtest4.png)
 
 # My other project
 

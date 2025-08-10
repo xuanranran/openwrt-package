@@ -1,7 +1,7 @@
 ![hello](https://views.whatilearened.today/views/github/sirpdboy/deplives.svg) [![](https://img.shields.io/badge/TG群-点击加入-FFFFFF.svg)](https://t.me/joinchat/AAAAAEpRF88NfOK5vBXGBQ)
 
 <h1 align="center">
-  <br>Part Exp<br>
+  <br>Partexp<br>
 </h1>
 
   <p align="center">
@@ -15,14 +15,8 @@
 
 ![screenshots](https://raw.githubusercontent.com/sirpdboy/openwrt/master/doc/说明1.jpg)
 
-=
-# luci-app-partexp
 
-luci-app-partexp 一键自动格式化分区、扩容、自动挂载插件
-[![若部分图片无法正常显示，请挂上机场浏览或点这里到末尾看修复教程](https://visitor-badge.glitch.me/badge?page_id=sirpdboy-visitor-badge)](#解决-github-网页上图片显示失败的问题) [![](https://img.shields.io/badge/TG群-点击加入-FFFFFF.svg)](https://t.me/joinchat/AAAAAEpRF88NfOK5vBXGBQ)
-
-[luci-app-partexp](https://github.com/sirpdboy/luci-app-partexp)
-======================
+[luci-app-partexp](https://github.com/sirpdboy/luci-app-partexp) 一键自动格式化分区、扩容、自动挂载插件
 
 
 请 **认真阅读完毕** 本页面，本页面包含注意事项和如何使用。
@@ -89,7 +83,6 @@ luci-app-partexp 一键自动格式化分区、扩容、自动挂载插件
 
 ![screenshots](https://raw.githubusercontent.com/sirpdboy/openwrt/master/doc/说明2.jpg)
 
-
 ## 界面
 
 ![screenshots](./doc/partexp1.png)
@@ -101,6 +94,8 @@ luci-app-partexp 一键自动格式化分区、扩容、自动挂载插件
 ## 使用与授权相关说明
  
 - 本人开源的所有源码，任何引用需注明本处出处，如需修改二次发布必告之本人，未经许可不得做于任何商用用途。
+
+
 
 
 # My other project
