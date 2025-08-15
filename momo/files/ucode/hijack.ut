@@ -457,11 +457,11 @@ table inet momo {
 		{% endif %}
 		{% if (fake_ip_ping_hijack): %}
 		{% if (fake_ip_range ): %}
-		ip protocol icmp icmp type echo-request ip daddr {{ fake_ip_range }} counter redirect
+		icmp type echo-request ip daddr {{ fake_ip_range }} counter redirect
 
 		{% endif %}
 		{% if (fake_ip6_range ): %}
-		ip6 protocol icmp icmp type echo-request ip6 daddr {{ fake_ip6_range }} counter redirect
+		icmpv6 type echo-request ip6 daddr {{ fake_ip6_range }} counter redirect
 
 		{% endif %}
 		{% endif %}
@@ -531,11 +531,11 @@ table inet momo {
 		{% endif %}
 		{% if (fake_ip_ping_hijack): %}
 		{% if (fake_ip_range ): %}
-		ip protocol icmp icmp type echo-request ip daddr {{ fake_ip_range }} counter redirect
+		icmp type echo-request ip daddr {{ fake_ip_range }} counter redirect
 
 		{% endif %}
 		{% if (fake_ip6_range ): %}
-		ip6 protocol icmp icmp type echo-request ip6 daddr {{ fake_ip6_range }} counter redirect
+		icmpv6 type echo-request ip6 daddr {{ fake_ip6_range }} counter redirect
 
 		{% endif %}
 		{% endif %}
