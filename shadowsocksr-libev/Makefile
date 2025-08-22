@@ -8,13 +8,19 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shadowsocksr-libev
 PKG_VERSION:=2.5.6
-PKG_RELEASE:=12
+PKG_RELEASE:=11
+
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=https://github.com/shadowsocksrr/shadowsocksr-libev
+PKG_SOURCE_DATE:=2018-03-07
+PKG_SOURCE_VERSION:=d63ff863800a5645aca4309d5dd5962bd1e95543
+PKG_MIRROR_HASH:=146fa4511a52da2aaa1e11ea0294cfb450e62643156c5da3b10e037ef43961f6
 
 PKG_LICENSE:=GPL-3.0
 PKG_LICENSE_FILES:=LICENSE
 
 PKG_FIXUP:=autoreconf
-PKG_MIRROR_HASH:=146fa4511a52da2aaa1e11ea0294cfb450e62643156c5da3b10e037ef43961f6
+PKG_USE_MIPS16:=0
 PKG_BUILD_FLAGS:=no-mips16
 PKG_BUILD_PARALLEL:=1
 PKG_INSTALL:=1
@@ -28,7 +34,7 @@ define Package/shadowsocksr-libev/Default
     SUBMENU:=Web Servers/Proxies
     TITLE:=shadowsocksr-libev ssr-$(1)
     URL:=https://github.com/shadowsocksrr/shadowsocksr-libev
-    DEPENDS:=+libev +libsodium +libopenssl +libpthread +libpcre2 +libudns +zlib
+    DEPENDS:=+libev +libsodium +libopenssl +libpthread +libpcre2 +libudns +zlib +libopenssl-legacy
   endef
 
   define Package/shadowsocksr-libev-ssr-$(1)/install
