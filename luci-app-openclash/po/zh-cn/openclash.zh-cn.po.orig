@@ -1374,11 +1374,8 @@ msgstr "当前内核版本"
 msgid "Latest Core"
 msgstr "最新内核版本"
 
-msgid "View Core Path"
-msgstr "查看内核路径"
-
-msgid "Core Path:"
-msgstr "内核路径:"
+msgid "Core path:"
+msgstr "内核路径："
 
 msgid "Update Core"
 msgstr "更新内核"

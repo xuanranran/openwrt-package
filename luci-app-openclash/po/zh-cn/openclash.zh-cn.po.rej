@@ -1,0 +1,31 @@
+--- luci-app-openclash/po/zh-cn/openclash.zh-cn.po
++++ luci-app-openclash/po/zh-cn/openclash.zh-cn.po
+@@ -4075,4 +4078,28 @@ msgid "Middle Version"
+ msgstr "中等版"
+ 
+ msgid "Large Version"
+-msgstr "完整版"+msgstr "完整版"
++
++msgid "Settings have been saved..."
++msgstr "配置已保存..."
++
++msgid "Core Settings"
++msgstr "核心设置"
++
++msgid "View Core Path"
++msgstr "查看内核路径"
++
++msgid "Core Path:"
++msgstr "内核路径:"
++
++msgid "Enable"
++msgstr "启用"
++
++msgid "Disable"
++msgstr "停用"
++
++msgid "Core Status"
++msgstr "核心状态"
++
++msgid "Shortcuts"
++msgstr "快捷方式"
