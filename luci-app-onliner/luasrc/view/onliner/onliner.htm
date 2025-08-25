@@ -54,14 +54,14 @@ local function online_data()
 end
 
 
-if luci.http.formvalue("status") == "1" then
+if luci.http.formvalue("user online") == "1" then
 	local rv = {
 		onlines   = online_data()
-	}	
+	}
 	luci.http.prepare_content("application/json")
 	luci.http.write_json(rv)
 	return
-end	
+end
 -%>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <%+header%>
@@ -98,6 +98,16 @@ h2[name="content"] {
 	font-weight: 800;
 	padding: 0 10px;
 	margin-left: 10px;
+}
+
+#search_box {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
 table.cbi-section-table {
@@ -170,6 +180,11 @@ th.sortable:hover {
 [data-darkmode="true"] .cbi-section > legend {
 	color: #eee;
 }
+[data-darkmode="true"] #search_box {
+    background-color: #2a2a2a !important;
+    border-color: #555 !important;
+    color: #f5f5f5 !important;
+}
 [data-darkmode="true"] table.cbi-section-table th {
 	background-color: #2a2a2a;
 	border-bottom-color: #555;
@@ -190,25 +205,44 @@ th.sortable:hover {
 
 
 @media (min-width: 769px) and (max-width: 1280px) {
-	body {
-		font-size: 15px;
-	}
-	
-	h2[name="content"] {
-		font-size: 24px;
-	}
-	
 	.cbi-section {
-		padding: 20px;
+		padding: 20px !important;
+		max-width: 1024px !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
+
+    #search_box {
+        display: block !important;
+        float: none !important;
+        width: 100% !important;
+    }
+
+	table.cbi-section-table {
+		table-layout: fixed !important;
+		width: 100% !important;
+		margin-top: 15px !important;
 	}
 
 	table.cbi-section-table th,
-	table.cbi-section-table td {
-		padding: 10px 12px;
+    table.cbi-section-table td {
+        box-sizing: border-box !important;
+		padding: 15px 20px !important;
+		word-wrap: break-word !important;
+    }
+
+	table.cbi-section-table th {
+		font-weight: 600 !important;
+		letter-spacing: 0.5px !important;
 	}
 
+	.cbi-section-table th:nth-of-type(1), .cbi-section-table td:nth-of-type(1) { width: 25% !important; }
+	.cbi-section-table th:nth-of-type(2), .cbi-section-table td:nth-of-type(2) { width: 25% !important; }
+	.cbi-section-table th:nth-of-type(3), .cbi-section-table td:nth-of-type(3) { width: 30% !important; }
+	.cbi-section-table th:nth-of-type(4), .cbi-section-table td:nth-of-type(4) { width: 20% !important; }
+
 	.sort-arrow {
-		right: 12px;
+		right: 15px !important;
 	}
 }
 
@@ -316,6 +350,7 @@ th.sortable:hover {
 	var sortColumn = 'hostname';
 	var sortDirection = 'asc';
 	var latestInfo = {};
+	var searchQuery = '';
 
 	function ipToNum(ip) {
 		if (!ip || typeof(ip) !== 'string' || ip === '-') return 0;
@@ -334,13 +369,33 @@ th.sortable:hover {
 		renderTable(latestInfo);
 	}
 
+	function handleSearch() {
+		var searchBox = document.getElementById('search_box');
+		if (searchBox) {
+			searchQuery = searchBox.value.toLowerCase();
+		}
+		renderTable(latestInfo);
+	}
+
 	function renderTable(info) {
 		var ls = document.getElementById('online_status_table');
 		if (!ls || !info || !info.onlines) return;
 		
 		latestInfo = info;
 
-		info.onlines.sort(function(a, b) {
+		var onlineUsers = info.onlines || [];
+
+		var filteredOnlines = onlineUsers.filter(function(device) {
+			if (!searchQuery) {
+				return true;
+			}
+			var hostname = (device.hostname || '').toLowerCase();
+			var ipaddr = (device.ipaddr || '').toLowerCase();
+			var macaddr = (device.macaddr || '').toLowerCase();
+			return hostname.includes(searchQuery) || ipaddr.includes(searchQuery) || macaddr.includes(searchQuery);
+		});
+
+		filteredOnlines.sort(function(a, b) {
 			var valA, valB;
 
 			if (sortColumn === 'ipaddr') {
@@ -384,8 +439,8 @@ th.sortable:hover {
 			ls.deleteRow(1);
 		}
 
-		if (info.onlines.length > 0) {
-			info.onlines.forEach(function(device, i) {
+		if (filteredOnlines.length > 0) {
+			filteredOnlines.forEach(function(device, i) {
 				var tr = ls.insertRow(-1);
 				tr.className = 'cbi-section-table-row cbi-rowstyle-' + ((i % 2) + 1);
 
@@ -410,13 +465,19 @@ th.sortable:hover {
 			tr.className = 'cbi-section-table-row';
 			var td = tr.insertCell(-1);
 			td.colSpan = 4;
-			td.innerHTML = '<em><br /><%:There is no one online now.%></em>';
+			if (searchQuery) {
+				td.innerHTML = '<em><br />未找到匹配的设备。</em>';
+			} else {
+				td.innerHTML = '<em><br /><%:There is no one online now.%></em>';
+			}
 		}
 	}
 
-	XHR.poll(5, '<%=REQUEST_URI%>', { status: 1 },
+	XHR.poll(5, '<%=REQUEST_URI%>', { "user online": 1 },
 		function(x, info) {
-			renderTable(info);
+			if (info) {
+				renderTable(info);
+			}
 		}
 	);
 	
@@ -432,6 +493,11 @@ th.sortable:hover {
 				setSort(span.getAttribute('data-sort'));
 			});
 		});
+
+		var searchBox = document.getElementById('search_box');
+		if (searchBox) {
+			searchBox.addEventListener('keyup', handleSearch);
+		}
 	});
 //]]></script>
 
@@ -440,6 +506,8 @@ th.sortable:hover {
 <fieldset class="cbi-section">
 	<legend><%:user online%></legend>
 	
+	<input type="text" id="search_box" placeholder="Search by hostname, IPv4 address, or MAC address...">
+
 	<div class="mobile-sorter">
 		<strong><%:Sort by:%></strong>
 		<span class="sort-control" data-sort="hostname" data-label-short="<%:Hostname%>"><%:Hostname%></span>

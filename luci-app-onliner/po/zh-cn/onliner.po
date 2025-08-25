@@ -12,3 +12,18 @@ msgstr "当前无任何设备在线"
 
 msgid "Sort by:"
 msgstr "排序:"
+
+msgid "Search by hostname, IPv4 address, or MAC address..."
+msgstr "搜索主机名、IPv4 地址或 MAC 地址..."
+
+msgid "Hostname"
+msgstr "主机名"
+
+msgid "IPv4-Address"
+msgstr "IPv4 地址"
+
+msgid "MAC-Address"
+msgstr "MAC 地址"
+
+msgid "Interface"
+msgstr "接口"
