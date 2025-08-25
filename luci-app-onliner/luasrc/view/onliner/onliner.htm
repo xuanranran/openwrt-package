@@ -224,6 +224,16 @@ th.sortable:hover {
 		margin-top: 15px !important;
 	}
 
+	/* Argon Theme Fix: Force table layout to prevent misalignment */
+	#online_status_table tr {
+		display: table-row !important;
+	}
+	#online_status_table th,
+	#online_status_table td {
+		display: table-cell !important;
+	}
+
+
 	table.cbi-section-table th,
     table.cbi-section-table td {
         box-sizing: border-box !important;
@@ -466,7 +476,7 @@ th.sortable:hover {
 			var td = tr.insertCell(-1);
 			td.colSpan = 4;
 			if (searchQuery) {
-				td.innerHTML = '<em><br />未找到匹配的设备。</em>';
+				td.innerHTML = '<em><br />No matching devices found.</em>';
 			} else {
 				td.innerHTML = '<em><br /><%:There is no one online now.%></em>';
 			}
