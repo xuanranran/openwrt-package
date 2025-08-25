@@ -9,17 +9,12 @@
 local util = require "luci.util"
 local function online_data()
 	local rv = { }
-	-- Simplified awk script focusing only on IPv4 data for maximum compatibility.
 	local script = [[
 		BEGIN {
-			# Read DHCPv4 leases to get hostnames (MAC is $2, hostname is $4)
 			while ((getline < "/tmp/dhcp.leases") > 0) {
 				host[$2] = $4;
 			}
-
-			# Read ARP table for active IPv4 clients (Flags is $3, MAC is $4, IP is $1, Device is $6)
 			while ((getline < "/proc/net/arp") > 0) {
-				# MODIFIED FILTER: Only process lines where device is 'br-lan', starts with 'eth', or starts with 'wlan'
 				if ($3 == "0x2" && $4 != "00:00:00:00:00:00" && ($6 == "br-lan" || $6 ~ /^eth/ || $6 ~ /^wlan/)) {
 					mac = $4;
 					macs[mac] = 1;
@@ -27,8 +22,6 @@ local function online_data()
 					ipv4[mac] = $1;
 				}
 			}
-
-			# Print combined results for every MAC found in the active ARP table
 			for (mac in macs) {
 				hostname = host[mac] ? host[mac] : "?";
 				print hostname, ipv4[mac], mac, iface[mac];
@@ -53,8 +46,7 @@ local function online_data()
 	return rv
 end
 
-
-if luci.http.formvalue("user online") == "1" then
+if luci.http.formvalue("user_online") == "1" then
 	local rv = {
 		onlines   = online_data()
 	}
@@ -75,7 +67,6 @@ body {
 	overflow-wrap: break-word;
 	word-break: break-all;
 }
-
 h2[name="content"] {
 	font-size: 28px;
 	margin-bottom: 20px;
@@ -83,7 +74,6 @@ h2[name="content"] {
 	padding-bottom: 10px;
 	font-weight: 800;
 }
-
 .cbi-section {
 	background-color: #ffffff;
 	border: 1px solid #e0e0e0;
@@ -92,14 +82,12 @@ h2[name="content"] {
 	margin-bottom: 30px;
 	padding: 25px;
 }
-
 .cbi-section > legend {
 	font-size: 20px;
 	font-weight: 800;
 	padding: 0 10px;
 	margin-left: 10px;
 }
-
 #search_box {
     width: 100%;
     padding: 10px;
@@ -109,13 +97,11 @@ h2[name="content"] {
     font-size: 16px;
     box-sizing: border-box;
 }
-
 table.cbi-section-table {
 	border-collapse: collapse;
 	border: none;
 	width: 100%;
 }
-
 table.cbi-section-table th {
 	background-color: #f8f9fa;
 	border: none;
@@ -125,7 +111,6 @@ table.cbi-section-table th {
 	font-weight: 800;
 	white-space: nowrap;
 }
-
 table.cbi-section-table td {
 	border: none;
 	border-top: 1px solid #dee2e6;
@@ -133,11 +118,9 @@ table.cbi-section-table td {
 	text-align: left;
 	vertical-align: middle;
 }
-
 table.cbi-section-table tbody tr:hover {
 	background-color: #f1f3f5;
 }
-
 th.sortable {
 	cursor: pointer;
 	position: relative;
@@ -146,11 +129,9 @@ th.sortable {
 	-ms-user-select: none;
 	user-select: none;
 }
-
 th.sortable:hover {
 	background-color: #e9ecef;
 }
-
 .sort-arrow {
 	font-size: 12px;
 	position: absolute;
@@ -161,11 +142,9 @@ th.sortable:hover {
 	display: inline-block;
 	width: 1em;
 }
-
 .mobile-sorter {
 	display: none;
 }
-
 [data-darkmode="true"] body {
 	background-color: #121212;
 	color: #e0e0e0;
@@ -202,8 +181,6 @@ th.sortable:hover {
 [data-darkmode="true"] .sort-arrow {
 	color: #aaa;
 }
-
-
 @media (min-width: 769px) and (max-width: 1280px) {
 	.cbi-section {
 		padding: 20px !important;
@@ -211,20 +188,16 @@ th.sortable:hover {
 		margin-left: auto !important;
 		margin-right: auto !important;
 	}
-
     #search_box {
         display: block !important;
         float: none !important;
         width: 100% !important;
     }
-
 	table.cbi-section-table {
 		table-layout: fixed !important;
 		width: 100% !important;
 		margin-top: 15px !important;
 	}
-
-	/* Argon Theme Fix: Force table layout to prevent misalignment */
 	#online_status_table tr {
 		display: table-row !important;
 	}
@@ -232,36 +205,28 @@ th.sortable:hover {
 	#online_status_table td {
 		display: table-cell !important;
 	}
-
-
 	table.cbi-section-table th,
     table.cbi-section-table td {
         box-sizing: border-box !important;
 		padding: 15px 20px !important;
 		word-wrap: break-word !important;
     }
-
 	table.cbi-section-table th {
 		font-weight: 600 !important;
 		letter-spacing: 0.5px !important;
 	}
-
 	.cbi-section-table th:nth-of-type(1), .cbi-section-table td:nth-of-type(1) { width: 25% !important; }
 	.cbi-section-table th:nth-of-type(2), .cbi-section-table td:nth-of-type(2) { width: 25% !important; }
 	.cbi-section-table th:nth-of-type(3), .cbi-section-table td:nth-of-type(3) { width: 30% !important; }
 	.cbi-section-table th:nth-of-type(4), .cbi-section-table td:nth-of-type(4) { width: 20% !important; }
-
 	.sort-arrow {
 		right: 15px !important;
 	}
 }
-
-
 @media (max-width: 768px) {
   #online_status_table .cbi-section-table-titles {
     display: none;
   }
-
   .mobile-sorter {
     display: flex;
     flex-wrap: wrap;
@@ -272,12 +237,10 @@ th.sortable:hover {
     border-radius: 4px;
     align-items: center;
   }
-
   .mobile-sorter strong {
 	font-weight: 800;
 	margin-right: 8px;
   }
-
   .mobile-sorter .sort-control {
     padding: 6px 10px;
     background-color: #e9ecef00;
@@ -286,13 +249,11 @@ th.sortable:hover {
     cursor: pointer;
     font-size: 14px;
   }
-
   .mobile-sorter .sort-control.active {
     background-color: #007bff;
     color: white;
     border-color: #007bff;
   }
-
   #online_status_table tr {
     display: block;
     margin-bottom: 15px;
@@ -300,11 +261,9 @@ th.sortable:hover {
     border-radius: 4px;
     padding: 10px;
   }
-  
   #online_status_table tr:hover {
 	background-color: transparent;
   }
-
   #online_status_table td {
     display: block;
     text-align: right;
@@ -314,11 +273,9 @@ th.sortable:hover {
 	border-bottom: 1px dotted #ccc;
     min-height: 22px;
   }
-  
   #online_status_table td:last-child {
     border-bottom: none;
   }
-
   #online_status_table td:before {
     content: attr(data-label);
     position: absolute;
@@ -329,7 +286,6 @@ th.sortable:hover {
 	width: 45%;
 	white-space: nowrap;
   }
-  
   [data-darkmode="true"] .mobile-sorter {
     background-color: #2a2a2a;
   }
@@ -355,7 +311,7 @@ th.sortable:hover {
 }
 </style>
 
-<script type="text/javascript" src="<%=resource%>/cbi.js?v=git-19.271.33176-b_E9_80_9A_E7_94_A8_E5_BA_93"></script>
+<script type="text/javascript" src="<%=resource%>/cbi.js"></script>
 <script type="text/javascript">//<![CDATA[
 	var sortColumn = 'hostname';
 	var sortDirection = 'asc';
@@ -444,7 +400,6 @@ th.sortable:hover {
 			activeMobileControl.innerHTML = activeMobileControl.getAttribute('data-label-short') + ((sortDirection === 'asc') ? ' &#9650;' : ' &#9660;');
 		}
 
-
 		while (ls.rows.length > 1) {
 			ls.deleteRow(1);
 		}
@@ -459,11 +414,11 @@ th.sortable:hover {
 				cell1.innerHTML = device.hostname ? device.hostname : '?';
 
 				var cell2 = tr.insertCell(-1);
-				cell2.setAttribute('data-label', '<%:IPv4-Address%>');
+				cell2.setAttribute('data-label', '<%:IPv4 Address%>');
 				cell2.innerHTML = device.ipaddr;
 
 				var cell3 = tr.insertCell(-1);
-				cell3.setAttribute('data-label', '<%:MAC-Address%>');
+				cell3.setAttribute('data-label', '<%:MAC Address%>');
 				cell3.innerHTML = device.macaddr;
 
 				var cell4 = tr.insertCell(-1);
@@ -476,14 +431,14 @@ th.sortable:hover {
 			var td = tr.insertCell(-1);
 			td.colSpan = 4;
 			if (searchQuery) {
-				td.innerHTML = '<em><br />No matching devices found.</em>';
+				td.innerHTML = '<em><br /><%:No matching devices found.%></em>';
 			} else {
 				td.innerHTML = '<em><br /><%:There is no one online now.%></em>';
 			}
 		}
 	}
 
-	XHR.poll(5, '<%=REQUEST_URI%>', { "user online": 1 },
+	XHR.poll(5, '<%=REQUEST_URI%>', { "user_online": 1 },
 		function(x, info) {
 			if (info) {
 				renderTable(info);
@@ -514,9 +469,9 @@ th.sortable:hover {
 <h2 name="content"><%:Status%></h2>
 
 <fieldset class="cbi-section">
-	<legend><%:user online%></legend>
+	<legend><%:Online User List%></legend>
 	
-	<input type="text" id="search_box" placeholder="Search by hostname, IPv4 address, or MAC address...">
+	<input type="text" id="search_box" placeholder="<%:Search by hostname, IPv4 address, or MAC address...%>">
 
 	<div class="mobile-sorter">
 		<strong><%:Sort by:%></strong>
@@ -529,8 +484,8 @@ th.sortable:hover {
 	<table class="cbi-section-table" id="online_status_table">
 		<tr class="cbi-section-table-titles">
 			<th class="cbi-section-table-cell sortable" data-sort="hostname"><%:Hostname%><span class="sort-arrow" id="sort-arrow-hostname"></span></th>
-			<th class="cbi-section-table-cell sortable" data-sort="ipaddr"><%:IPv4-Address%><span class="sort-arrow" id="sort-arrow-ipaddr"></span></th>
-			<th class="cbi-section-table-cell sortable" data-sort="macaddr"><%:MAC-Address%><span class="sort-arrow" id="sort-arrow-macaddr"></span></th>
+			<th class="cbi-section-table-cell sortable" data-sort="ipaddr"><%:IPv4 Address%><span class="sort-arrow" id="sort-arrow-ipaddr"></span></th>
+			<th class="cbi-section-table-cell sortable" data-sort="macaddr"><%:MAC Address%><span class="sort-arrow" id="sort-arrow-macaddr"></span></th>
 			<th class="cbi-section-table-cell sortable" data-sort="device"><%:Interface%><span class="sort-arrow" id="sort-arrow-device"></span></th>
 		</tr>
 		<tr class="cbi-section-table-row">

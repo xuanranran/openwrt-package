@@ -1,17 +1,14 @@
 msgid "Online User"
 msgstr "在线用户"
 
-msgid "user online"
-msgstr "用户列表"
-
 msgid "Speed Monitor"
 msgstr "网速监控"
 
-msgid "There is no one online now."
-msgstr "当前无任何设备在线"
+msgid "Online User List"
+msgstr "用户列表"
 
-msgid "No matching devices found."
-msgstr "未找到匹配的设备"
+msgid "Status"
+msgstr "状态"
 
 msgid "Sort by:"
 msgstr "排序:"
@@ -22,11 +19,26 @@ msgstr "搜索主机名、IPv4 地址或 MAC 地址..."
 msgid "Hostname"
 msgstr "主机名"
 
-msgid "IPv4-Address"
-msgstr "IPv4 地址"
+msgid "IP"
+msgstr "IP"
 
-msgid "MAC-Address"
-msgstr "MAC 地址"
+msgid "MAC"
+msgstr "MAC"
 
 msgid "Interface"
 msgstr "接口"
+
+msgid "IPv4 Address"
+msgstr "IPv4 地址"
+
+msgid "MAC Address"
+msgstr "MAC 地址"
+
+msgid "Collecting data..."
+msgstr "正在收集数据..."
+
+msgid "No matching devices found."
+msgstr "未找到匹配的设备。"
+
+msgid "There is no one online now."
+msgstr "当前无任何设备在线。"
