@@ -1,0 +1,25 @@
+--- luci-app-openclash/po/zh-cn/openclash.zh-cn.po
++++ luci-app-openclash/po/zh-cn/openclash.zh-cn.po
+@@ -4168,4 +4171,22 @@ msgid "Overwrite Module Edit"
+ msgstr "覆写模块编辑"
+ 
+ msgid "Nodes Weight Priority, <1 Means Lower Priority, >1 Means Higher Priority, The Default is 1, Pattern Support Regex and String"
+-msgstr "节点权重加成，<1 表示较低优先级，>1 表示较高优先级，默认为 1，匹配模式支持 Regex 和字符串"+msgstr "节点权重加成，<1 表示较低优先级，>1 表示较高优先级，默认为 1，匹配模式支持 Regex 和字符串"
++
++msgid "Settings have been saved..."
++msgstr "配置已保存..."
++
++msgid "Core Settings"
++msgstr "核心设置"
++
++msgid "Enable"
++msgstr "启用"
++
++msgid "Disable"
++msgstr "停用"
++
++msgid "Core Status"
++msgstr "核心状态"
++
++msgid "Shortcuts"
++msgstr "快捷方式"
