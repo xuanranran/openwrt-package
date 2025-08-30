@@ -9,10 +9,28 @@
 local util = require "luci.util"
 local function online_data()
 	local rv = { }
+	local static_hosts = ""
+	local uci = io.popen("uci -q show dhcp | grep '.mac=' | sed -e 's/dhcp\\.\\(.*\\)\\.mac=\\(.*\\)/\\1 \\2/'")
+	if uci then
+		for line in uci:lines() do
+			local section, mac = line:match("^(%S+) '([^']+)'$")
+			if section and mac then
+				local name = util.trim(luci.sys.exec("uci -q get dhcp.%s.name" % section))
+				if name and name ~= "" then
+					static_hosts = static_hosts .. "host[\"" .. mac:lower() .. "\"] = \"" .. name:gsub("[\"\\]", "\\&") .. "\";"
+				end
+			end
+		end
+		uci:close()
+	end
+
 	local script = [[
 		BEGIN {
+			%s
 			while ((getline < "/tmp/dhcp.leases") > 0) {
-				host[$2] = $4;
+				if (!host[$2]) {
+					host[$2] = $4;
+				}
 			}
 			while ((getline < "/proc/net/arp") > 0) {
 				if ($3 == "0x2" && $4 != "00:00:00:00:00:00" && ($6 == "br-lan" || $6 ~ /^eth/ || $6 ~ /^wlan/)) {
@@ -28,6 +46,7 @@ local function online_data()
 			}
 		}
 	]]
+	script = string.format(script, static_hosts)
 	local fd = util.execi('/usr/bin/awk \'' .. script:gsub('\'', '\'\\\'\'') .. '\'')
 
 	while true do
