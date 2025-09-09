@@ -238,8 +238,8 @@ msgstr "如果oaf驱动无法手动卸载或者当前驱动不稳定，可以关
 msgid "LAN Interface"
 msgstr "LAN接口"
 
-msgid "The name of the LAN interface, used for detecting terminal information. The system default is bridge interface (br-lan). If the LAN port has been modified to a physical interface, please modify it to the corresponding name, such as eth0."
-msgstr "LAN接口的名称，用于探测终端信息，系统默认都是桥接口(br-lan)，如果将lan口修改成了物理接口，请修改为对应的名称，比如eth0。"
+msgid "The name of the LAN interface, used for detecting terminal information. The system default is bridge interface (br-lan). If the LAN port has been modified to a physical interface, please modify it to the corresponding name, such as eth0, support fuzzy matching, For example, you can setup lan to match br-lan and br-lan2."
+msgstr "LAN接口的名称，用于探测终端信息，系统默认都是桥接口(br-lan)，如果将lan口修改成了物理接口，请修改为对应的名称，比如eth0，支持模糊匹配，比如可以设置lan用来匹配br-lan和br-lan2"
 
 msgid "Save"
 msgstr "保存"
@@ -487,12 +487,8 @@ msgstr "请设置开始和结束时间"
 msgid "Unknown App"
 msgstr "未知App"
 
-
 msgid "OAF Version"
 msgstr "OAF版本"
 
 msgid "OAF Driver Version"
 msgstr "OAF驱动版本"
-
-
-
