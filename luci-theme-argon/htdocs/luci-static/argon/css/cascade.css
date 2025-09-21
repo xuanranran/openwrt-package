@@ -2444,11 +2444,15 @@ td>table>tbody>tr>td,
 .cbi-dropdown>ul>li img {
   margin-right: .25em;
   vertical-align: middle;
-  max-width: 1.375rem
+  max-width: 1.275rem
 }
 
 .table.cbi-section-table img.middle {
-  max-width: 1.375rem
+  max-width: 1.275rem
+}
+
+.cbi-page-actions .cbi-dropdown {
+  min-height: 2.495rem !important
 }
 
 .cbi-dropdown>ul>li>form>input[type="checkbox"] {
@@ -2869,7 +2873,7 @@ td>.ifacebadge,
 .ifacebadge>img {
   display: inline-block;
   margin: 0 .75rem;
-  max-width: 1.375rem
+  max-width: 1.275rem
 }
 
 .ifacebadge>img+img {
