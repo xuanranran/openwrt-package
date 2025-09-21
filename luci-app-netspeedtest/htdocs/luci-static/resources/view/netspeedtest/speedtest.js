@@ -63,7 +63,7 @@ return view.extend({
 			if (result_content.length) {
 				if (result_content[0] == 'Testing') {
 					return E('div', { 'id': 'speedtest_result' }, [E('span', { 'style': 'color:yellow;font-weight:bold' }, [
-						E('img', { 'src': L.resource(['../../../argon/icon/loading.svg']), 'height': '20', 'style': 'vertical-align:middle' }),
+						E('img', { 'src': L.resource(['icons/loading.svg']), 'height': '20', 'style': 'vertical-align:middle' }),
 						'&emsp;',
 						_('Testing in progress...')
 					])]);

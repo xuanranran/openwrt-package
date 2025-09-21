@@ -2332,7 +2332,7 @@ td>table>tbody>tr>td,
 .cbi-dropdown {
   position: relative;
   display: inline-flex;
-  min-height: 2.1875rem;
+  min-height: 3.1rem;
 }
 
 [id^="cbid."][id$=".interface"].cbi-dropdown,
@@ -2443,7 +2443,12 @@ td>table>tbody>tr>td,
 
 .cbi-dropdown>ul>li img {
   margin-right: .25em;
-  vertical-align: middle
+  vertical-align: middle;
+  max-width: 1.375rem
+}
+
+.table.cbi-section-table img.middle {
+  max-width: 1.375rem
 }
 
 .cbi-dropdown>ul>li>form>input[type="checkbox"] {
@@ -2863,7 +2868,8 @@ td>.ifacebadge,
 .ifacebadge>em,
 .ifacebadge>img {
   display: inline-block;
-  margin: 0 .75rem
+  margin: 0 .75rem;
+  max-width: 1.375rem
 }
 
 .ifacebadge>img+img {
