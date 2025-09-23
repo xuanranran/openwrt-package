@@ -1362,38 +1362,59 @@ msgstr "注意：以下选项在点击更新或下载时将自动保存"
 msgid "CPU Architecture"
 msgstr "处理器架构"
 
-msgid "Last Check Update"
-msgstr "上次检查更新时间"
-
 msgid "Current Core"
 msgstr "当前内核版本"
 
 msgid "Latest Core"
 msgstr "最新内核版本"
 
-msgid "Core path:"
-msgstr "内核路径："
+msgid "View Core Path"
+msgstr "查看内核路径"
+
+msgid "Core Path:"
+msgstr "内核路径:"
 
 msgid "Update Core"
 msgstr "更新内核"
 
-msgid "Download Latest Core"
-msgstr "下载最新版本内核"
+msgid "Settings have been saved..."
+msgstr "配置已保存..."
 
-msgid "Client Update"
-msgstr "客户端版本更新"
+msgid "Core Settings"
+msgstr "核心设置"
 
-msgid "Current Client"
-msgstr "当前客户端版本"
+msgid "Enable"
+msgstr "启用"
 
-msgid "Update Client"
-msgstr "更新客户端"
+msgid "Disable"
+msgstr "停用"
 
-msgid "Latest Client"
-msgstr "最新客户端版本"
+msgid "Core"
+msgstr "内核"
 
-msgid "Download Latest Client"
-msgstr "下载最新版本客户端"
+msgid "Client"
+msgstr "客户端"
+
+msgid "Execute"
+msgstr "执行"
+
+msgid "Quick Actions"
+msgstr "快捷操作"
+
+msgid "Shortcuts"
+msgstr "快捷方式"
+
+msgid "Update Core"
+msgstr "更新内核"
+
+msgid "Download Core"
+msgstr "下载内核"
+
+msgid "Download Client"
+msgstr "下载客户端"
+
+msgid "Backing up..."
+msgstr "正在备份..."
 
 msgid "Restore Default Config"
 msgstr "还原默认配置"
