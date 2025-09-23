@@ -490,7 +490,7 @@
                                 <option value="backup_only_rule"><%:Backup Rule Provider%></option>
                                 <option value="backup_only_proxy"><%:Backup Proxy Provider%></option>
                             </select>
-                            <button id="backup-execute" class="dashboard-btn"><%:Execute%></button>
+                            <button id="backup-execute" data-backing-up="<%:Backing up...%>" class="dashboard-btn"><%:Execute%></button>
                         </div>
                     </div>
                 </div>
@@ -897,7 +897,7 @@
         var originalText = button.textContent;
 
         button.disabled = true;
-        button.textContent = 'Backing up...';
+        button.textContent = button.dataset.backingUp;
 
         setTimeout(function() {
             button.disabled = false;
