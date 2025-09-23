@@ -1407,6 +1407,9 @@ msgstr "快捷方式"
 msgid "Update Core"
 msgstr "更新内核"
 
+msgid "Update Client"
+msgstr "更新客户端"
+
 msgid "Download Core"
 msgstr "下载内核"
 
