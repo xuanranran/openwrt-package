@@ -1413,6 +1413,9 @@ msgstr "下载内核"
 msgid "Download Client"
 msgstr "下载客户端"
 
+msgid "Backing up..."
+msgstr "正在备份..."
+
 msgid "Restore Default Config"
 msgstr "还原默认配置"
 

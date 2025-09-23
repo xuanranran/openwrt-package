@@ -842,12 +842,22 @@
         });
     }
     
-    function backup_all_file() { window.location.href='<%="backup"%>'; }
-    function backup_no_core() { window.location.href='<%="backup_ex_core"%>'; }
-    function backup_only_core() { window.location.href='<%="backup_only_core"%>'; }
-    function backup_only_config() { window.location.href='<%="backup_only_config"%>'; }
-    function backup_only_rule() { window.location.href='<%="backup_only_rule"%>'; }
-    function backup_only_proxy() { window.location.href='<%="backup_only_proxy"%>'; }
+    function triggerDownload(url) {
+        var a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.setAttribute('download', '');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+    
+    function backup_all_file() { triggerDownload('<%="backup"%>'); }
+    function backup_no_core() { triggerDownload('<%="backup_ex_core"%>'); }
+    function backup_only_core() { triggerDownload('<%="backup_only_core"%>'); }
+    function backup_only_config() { triggerDownload('<%="backup_only_config"%>'); }
+    function backup_only_rule() { triggerDownload('<%="backup_only_rule"%>'); }
+    function backup_only_proxy() { triggerDownload('<%="backup_only_proxy"%>'); }
 
 	function all_one_key_update_cdn(btn) {
     	var v = coreVersionSelect.value, r = release_branch.value, s = smart_enable.value;
@@ -883,6 +893,16 @@
     document.getElementById('backup-execute').addEventListener('click', function() {
         var select = document.getElementById('backup-select');
         var selectedAction = select.value;
+        var button = this;
+        var originalText = button.textContent;
+
+        button.disabled = true;
+        button.textContent = 'Backing up...';
+
+        setTimeout(function() {
+            button.disabled = false;
+            button.textContent = originalText;
+        }, 8000);
 
         switch (selectedAction) {
             case 'backup_all':
