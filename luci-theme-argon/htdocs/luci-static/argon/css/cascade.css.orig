@@ -2451,6 +2451,7 @@ td>table>tbody>tr>td,
   max-width: 1.275rem
 }
 
+.cbi-section .cbi-dropdown,
 .cbi-page-actions .cbi-dropdown {
   min-height: 2.495rem !important
 }
