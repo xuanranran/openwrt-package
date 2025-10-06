@@ -4029,13 +4029,12 @@ pre.command-output {
     font-family: 'Google Sans' !important;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id*="tab-header-openclash"] {
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] :is([id^="tab-header-openclash-"], [id^="tab-header-openclash-"] ul) {
     background: #242424 !important;
-    border-bottom: 1px solid #242424 !important;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id^="tab-header-openclash-"] ul {
-    background: #242424 !important;
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id^="tab-header-openclash-"] {
+    border-bottom: 1px solid #242424 !important;
 }
 
 [data-page^="admin-services-openclash"] .cbi-value-description,
