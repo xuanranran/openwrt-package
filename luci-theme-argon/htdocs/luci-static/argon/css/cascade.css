@@ -3958,7 +3958,8 @@ pre.command-output {
   color: #EEFFFF;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled {
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled,
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header-openclash-dns_servers ul li.cbi-tab-disabled {
     color: #1f2937;
     background: #000000;
     opacity: 0.7;
@@ -4023,8 +4024,15 @@ pre.command-output {
     box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu {
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu,
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header-openclash-dns_servers {
     font-family: 'Google Sans' !important;
+}
+
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header-openclash-dns_servers,
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header-openclash-dns_servers ul {
+    background: #242424;
+    border-bottom: 1px solid #242424;
 }
 
 [data-page^="admin-services-openclash"] .cbi-value-description,
