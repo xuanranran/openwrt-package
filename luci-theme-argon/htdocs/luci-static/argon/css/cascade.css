@@ -3959,6 +3959,7 @@ pre.command-output {
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled,
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id^="tab-header-openclash-"] ul li.cbi-tab-disabled {
     color: #1f2937;
     background: #000000;
     opacity: 0.7;
@@ -4031,6 +4032,10 @@ pre.command-output {
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id*="tab-header-openclash"] {
     background: #242424 !important;
     border-bottom: 1px solid #242424 !important;
+}
+
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id^="tab-header-openclash-"] ul {
+    background: #242424 !important;
 }
 
 [data-page^="admin-services-openclash"] .cbi-value-description,
