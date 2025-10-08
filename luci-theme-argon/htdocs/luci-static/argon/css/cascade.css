@@ -2145,6 +2145,32 @@ td>table>tbody>tr>td,
   vertical-align: middle;
 }
 
+.cbi-section.fade-in {
+    .cbi-title {
+        position: relative;
+        >div:last-child {
+            position: absolute;
+            right: 1.25rem;
+            top: 0;
+            span {
+                font-size: 0;
+                &:after {
+                    transition: all .3s;
+                    font-family: 'argon' !important;
+                    content: '\e90f';
+                    font-size: 1.1rem;
+                    padding: .8755rem 0;
+                    position: absolute;
+                    right: 0;
+                }
+                &[data-style=inactive]:after {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+    }
+}
+
 @media screen and (min-width: 1280px) {
   .td.cbi-section-actions {
     text-align: center !important;
