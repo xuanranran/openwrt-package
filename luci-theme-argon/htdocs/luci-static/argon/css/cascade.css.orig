@@ -2145,30 +2145,36 @@ td>table>tbody>tr>td,
   vertical-align: middle;
 }
 
-.cbi-section.fade-in {
-    .cbi-title {
-        position: relative;
-        >div:last-child {
-            position: absolute;
-            right: 1.25rem;
-            top: 0;
-            span {
-                font-size: 0;
-                &:after {
-                    transition: all .3s;
-                    font-family: 'argon' !important;
-                    content: '\e90f';
-                    font-size: 1.1rem;
-                    padding: .8755rem 0;
-                    position: absolute;
-                    right: 0;
-                }
-                &[data-style=inactive]:after {
-                    transform: rotate(90deg);
-                }
-            }
-        }
-    }
+.cbi-section.fade-in .cbi-title {
+  position: relative;
+  min-height: 2.765rem;
+  display: flex;
+  align-items: center
+}
+
+.cbi-section.fade-in .cbi-title>div:last-child {
+  position: absolute;
+  right: 1rem
+}
+
+.cbi-section.fade-in .cbi-title>div:last-child span {
+  display: inline-block;
+  position: relative;
+  font-size: 0
+}
+
+.cbi-section.fade-in .cbi-title>div:last-child span::after {
+  content: "\e90f";
+  font-family: 'argon' !important;
+  font-size: 1.1rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1
+}
+
+.cbi-section.fade-in .cbi-title>div:last-child span[data-style='inactive']::after {
+  transform: rotate(90deg);
 }
 
 @media screen and (min-width: 1280px) {
