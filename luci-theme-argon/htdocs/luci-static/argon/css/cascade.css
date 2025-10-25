@@ -3311,8 +3311,8 @@ span[data-tooltip] .label {
   text-decoration: none;
   text-transform: uppercase;
   color: #fff !important;
-  border-radius: 3px;
-  background-color: #bfbfbf;
+  border-radius: 6px;
+  background-color: var(--dark-primary) !important;
   text-shadow: none;
 }
 
