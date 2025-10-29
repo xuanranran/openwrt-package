@@ -1885,7 +1885,7 @@ td>table>tbody>tr>td,
 
 .cbi-tabmenu {
   color: white;
-  padding: .5rem 1rem 0 1rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   white-space: nowrap;
   overflow-x: auto
 }
@@ -4218,7 +4218,7 @@ pre.command-output {
 
   .tabs>li>a,
   .cbi-tabmenu>li>a {
-    padding: 0.2rem 0.8rem;
+    /* padding: 0.2rem 0.8rem; */
   }
 
   .panel-title {
