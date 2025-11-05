@@ -132,11 +132,6 @@
     color: #9ca3af !important;
 }
 
-.oc[data-darkmode="true"] .qucik-action-btn:disabled {
-    background: #4b5563 !important;
-    color: #9ca3af !important;
-}
-
 .oc[data-darkmode="true"] .config-select {
     background: var(--bg-white) !important;
     border-color: var(--border-light) !important;
@@ -749,37 +744,6 @@
     background: #2563eb !important;
 }
 
-.oc .qucik-action-btn {
-    font-size: 12px !important;
-    font-weight: 500 !important;
-    color: white !important;
-    cursor: pointer !important;
-    border-radius: var(--radius-md) !important;
-    border: none !important;
-    background: #1473e6;
-    background-color: var(--primary-color) !important;
-    transition: all var(--transition-fast) !important;
-    white-space: normal !important;
-    text-align: center !important;
-    text-decoration: none !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    line-height: 1.2 !important;
-    flex: 1 !important;
-    height: 42px !important;
-    outline: none !important;
-    padding: 2px 2px !important;
-    min-width: 45px;
-    margin: 0 !important;
-    word-break: normal;
-    overflow-wrap: break-word;
-}
-
-.oc .qucik-action-btn:hover {
-    background: #2563eb !important;
-}
-
 .oc .stat-label {
     font-size: 12px;
     font-weight: 600;
@@ -1343,11 +1307,6 @@
         height: 40px !important;
     }
 
-    .oc .qucik-action-btn {
-        font-size: 10px !important;
-        height: 40px !important;
-    }
-
     .oc .card-value {
         font-size: 13px;
     }
@@ -1495,11 +1454,6 @@
     }
 
     .oc .dashboard-btn {
-        font-size: 9px !important;
-        height: 25px !important;
-    }
-
-    .oc .qucik-action-btn {
         font-size: 9px !important;
         height: 25px !important;
     }
@@ -1947,10 +1901,10 @@
                             <div class="sub-card quick-actions-container">
                                 <div class="card-title"><%:Quick Action%></div>
                                 <div class="quick-actions-buttons">
-                                    <button class="qucik-action-btn" id="_close_all_connection_btn"><%:Collecting data...%></button>
-                                    <button class="qucik-action-btn" id="_reload_firewall_btn"><%:Collecting data...%></button>
-                                    <button class="qucik-action-btn" id="_flush_dns_cache_btn"><%:Collecting data...%></button>
-                                    <button class="qucik-action-btn" id="_one_key_update_btn"><%:Collecting data...%></button>
+                                    <button class="dashboard-btn" id="_close_all_connection_btn"><%:Collecting data...%></button>
+                                    <button class="dashboard-btn" id="_reload_firewall_btn"><%:Collecting data...%></button>
+                                    <button class="dashboard-btn" id="_flush_dns_cache_btn"><%:Collecting data...%></button>
+                                    <button class="dashboard-btn" id="_one_key_update_btn"><%:Collecting data...%></button>
                                 </div>
                             </div>
                         </div>
@@ -3728,8 +3682,6 @@
 			get_run_mode();
             get_rule_mode();
             get_oc_settings();
-            
-            
 
             var webContent = status.clash ? '<input type="button" class="dashboard-btn" value="<%:Yacd%>" onclick="return ycad_dashboard(this)"/>' : '<input type="button" class="dashboard-btn" value="<%:Yacd%>" onclick="event.preventDefault(); event.stopPropagation(); return false;"/>';
             updates.push({element: DOMCache.web, content: webContent});
@@ -3744,16 +3696,16 @@
             updates.push({element: DOMCache.webz, content: webzContent});
 
 
-            var closeConnContent = status.clash ? '<input type="button" class="qucik-action-btn" value="<%:Close Connect%>" onclick="return b_close_all_connection(this)"/>' : '<input type="button" class="qucik-action-btn" value="<%:Close Connect%>" onclick="event.preventDefault(); event.stopPropagation(); return false;"/>';
+            var closeConnContent = status.clash ? '<input type="button" class="dashboard-btn" value="<%:Close Connect%>" onclick="return b_close_all_connection(this)"/>' : '<input type="button" class="dashboard-btn" value="<%:Close Connect%>" onclick="event.preventDefault(); event.stopPropagation(); return false;"/>';
             updates.push({element: document.getElementById('_close_all_connection_btn'), content: closeConnContent});
 
-            var reloadFwContent = status.clash ? '<input type="button" class="qucik-action-btn" value="<%:Reload Firewall%>" onclick="return b_reload_firewall(this)"/>' : '<input type="button" class="qucik-action-btn" value="<%:Reload Firewall%>" onclick="event.preventDefault(); event.stopPropagation(); return false;"/>';
+            var reloadFwContent = status.clash ? '<input type="button" class="dashboard-btn" value="<%:Reload Firewall%>" onclick="return b_reload_firewall(this)"/>' : '<input type="button" class="dashboard-btn" value="<%:Reload Firewall%>" onclick="event.preventDefault(); event.stopPropagation(); return false;"/>';
             updates.push({element: document.getElementById('_reload_firewall_btn'), content: reloadFwContent});
 
-            var flushCacheContent = status.clash ? '<input type="button" class="qucik-action-btn" value="<%:Flush DNS%>" onclick="return b_flush_dns_cache(this)"/>' : '<input type="button" class="qucik-action-btn" value="<%:Flush DNS Cache%>" onclick="event.preventDefault(); event.stopPropagation(); return false;"/>';
+            var flushCacheContent = status.clash ? '<input type="button" class="dashboard-btn" value="<%:Flush DNS%>" onclick="return b_flush_dns_cache(this)"/>' : '<input type="button" class="dashboard-btn" value="<%:Flush DNS Cache%>" onclick="event.preventDefault(); event.stopPropagation(); return false;"/>';
             updates.push({element: document.getElementById('_flush_dns_cache_btn'), content: flushCacheContent});
 
-            var oneKeyUpdateContent = '<input type="button" class="qucik-action-btn" value="<%:Check Update%>" onclick="return all_one_key_update(this)"/>';
+            var oneKeyUpdateContent = '<input type="button" class="dashboard-btn" value="<%:Check Update%>" onclick="return all_one_key_update(this)"/>';
             updates.push({element: document.getElementById('_one_key_update_btn'), content: oneKeyUpdateContent});
 
             StateManager.batchUpdateDOM(updates);
