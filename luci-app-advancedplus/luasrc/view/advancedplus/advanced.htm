@@ -1,5 +1,5 @@
 <%#
-Copyright (C)  2022-2024  sirpdboy  <herboy2008@gmail.com>
+Copyright (C)  2022-2024  sirpdboy  <herboy2008@gmail.com> 
 -%>
 <%+cbi/valueheader%>
 <%local fs=require"nixio.fs"%>
@@ -52,10 +52,10 @@ function apply_run(btn){
 	}
 	btn.value='<%:Waiting,(executing)...%>';
 	btn.disabled=true;
-	var select_ipk=opt.get("select_ipk").value;
+    var select_ipk=opt.get("select_ipk").value;
 	console.log(select_ipk);
 	XHR.get('<%=url([[admin]], [[system]], [[advancedplus]], [[advancedrun]])%>',{
-			select_ipk: select_ipk
+            select_ipk: select_ipk
 			},function(x){});
 	poll_check();
 	return
@@ -77,7 +77,7 @@ XHR.poll(3, '<%=url([[admin]], [[system]], [[advancedplus]], [[check]])%>', null
 						break;
 					}
 				}
-				return
+				return	
 			}
 			lv.innerHTML += x.responseText;
 		}
