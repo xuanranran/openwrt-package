@@ -404,4 +404,26 @@ end
 end
 end
 
+if nixio.fs.access("/etc/config/homeproxy")then
+s:tab("homeproxyconf",translate("HomeProxy"),translate("This page is about configuration")..translate("/etc/config/homeproxy")..translate("Document content. Automatic restart takes effect after saving the application"))
+conf=s:taboption("homeproxyconf",Value,"homeproxyconf",nil,translate("The starting number symbol (#) or each line of the semicolon (;) is considered a comment; Remove (;) and enable the specified option."))
+conf.template="cbi/tvalue"
+conf.rows=20
+conf.wrap="off"
+conf.cfgvalue=function(t,t)
+return e.readfile("/etc/config/homeproxy")or""
+end
+conf.write=function(a,a,t)
+if t then
+t=t:gsub("\r\n?","\n")
+e.writefile("/tmp/homeproxy",t)
+if(luci.sys.call("cmp -s /tmp/homeproxy /etc/config/homeproxy")==1)then
+e.writefile("/etc/config/homeproxy",t)
+luci.sys.call("/etc/init.d/homeproxy restart >/dev/null")
+end
+e.remove("/tmp/homeproxy")
+end
+end
+end
+
 return m
