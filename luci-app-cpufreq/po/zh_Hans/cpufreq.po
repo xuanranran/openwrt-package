@@ -67,6 +67,9 @@ msgstr "等级 4"
 msgid "Irqbalance"
 msgstr "中断均衡器"
 
+msgid "Running Status"
+msgstr "运行状态"
+
 msgid "<b><font color=\"green\">RUNNING</font></b>"
 msgstr "<b><font color=\"green\">运行中</font></b>"
 
