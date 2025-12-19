@@ -1,0 +1,50 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: luasrc/controller/reconya.lua:8
+msgid "Reconya"
+msgstr "Reconya 网络侦察"
+
+#: luasrc/controller/reconya.lua:9
+msgid "Settings"
+msgstr "设置"
+
+#: luasrc/controller/reconya.lua:11
+msgid "Open Dashboard"
+msgstr "打开控制面板"
+
+#: luasrc/model/cbi/reconya.lua:1
+msgid "Network reconnaissance and asset discovery tool"
+msgstr "网络侦察与资产发现工具"
+
+#: luasrc/model/cbi/reconya.lua:2
+msgid "General Settings"
+msgstr "常规设置"
+
+#: luasrc/model/cbi/reconya.lua:5
+msgid "Enable Service"
+msgstr "启用服务"
+
+#: luasrc/model/cbi/reconya.lua:6
+msgid "Listening Port"
+msgstr "监听端口"
+
+#: luasrc/model/cbi/reconya.lua:7
+msgid "Admin Username"
+msgstr "管理员用户名"
+
+#: luasrc/model/cbi/reconya.lua:8
+msgid "Admin Password"
+msgstr "管理员密码"
+
+#: luasrc/view/reconya/main.htm:3
+msgid "Reconya Dashboard"
+msgstr "Reconya 控制面板"
+
+#: luasrc/view/reconya/main.htm:5
+msgid "You can access the full Reconya interface via the link below."
+msgstr "您可以通过下方的链接访问完整的 Reconya 交互界面。"
+
+#: luasrc/view/reconya/main.htm:9
+msgid "Go to Dashboard"
+msgstr "前往控制面板"
