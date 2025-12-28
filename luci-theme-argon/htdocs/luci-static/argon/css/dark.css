@@ -1090,3 +1090,10 @@ div#channel_graph {
   background: #24304a;
   border-color: #276ef1;
 }
+
+/* luci-app-openclash */
+#cbi-openclash .cbi-section > legend{
+  background: #242424 !important;
+  border-bottom: 1px solid #242424;
+  line-height: 2.4;
+}
