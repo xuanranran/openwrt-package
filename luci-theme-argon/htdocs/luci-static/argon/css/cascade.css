@@ -5135,8 +5135,8 @@ div#add_link_div {
   position: relative;
   background: #fff;
   border: 0;
-  border-radius: 6px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 6px;
   padding-top: 12px;
   box-sizing: border-box;
 }
