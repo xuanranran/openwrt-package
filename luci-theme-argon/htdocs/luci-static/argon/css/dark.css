@@ -600,7 +600,7 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox {
 
 .cbi-tooltip {
   box-shadow: 0 0 2px #8b8b8b;
-  border-radius: 3px;
+  border-radius: 6px;
   background: #242424;
   color: #c0c0c0;
 }

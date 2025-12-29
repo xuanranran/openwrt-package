@@ -3272,24 +3272,31 @@ span[data-tooltip] .label {
   cursor: help !important
 }
 
+.cbi-tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
 .cbi-tooltip {
   position: absolute;
   z-index: 1000;
-  left: -10000px;
-  box-shadow: 0 0 2px #8b8b8b;
-  border-radius: 3px;
-  background: #fff;
-  white-space: pre;
-  padding: 2px 5px;
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, 25px);
   opacity: 0;
-  transition: opacity .25s ease-in;
-  transform: translate(0%, 60%);
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: pre;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  transition: opacity .25s ease-out, transform .25s ease-out;
+
+  pointer-events: none;
 }
 
 .cbi-tooltip-container:hover .cbi-tooltip:not(:empty) {
-  left: auto;
   opacity: 1;
-  transition: opacity .25s ease-in;
+  transform: translate(-50%, 0);
 }
 
 .zonebadge .cbi-tooltip {
