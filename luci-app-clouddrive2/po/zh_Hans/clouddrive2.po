@@ -30,3 +30,9 @@ msgstr "CloudDrive2 正在运行"
 
 msgid "CloudDrive2 is not running"
 msgstr "CloudDrive2 未运行"
+
+msgid "Web UI"
+msgstr "Web 界面"
+
+msgid "Open Web UI"
+msgstr "打开 Web 界面"
