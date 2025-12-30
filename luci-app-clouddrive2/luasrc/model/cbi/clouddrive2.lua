@@ -20,11 +20,4 @@ o = s:option(Value, "mount_point", translate("Mount Point"))
 o.default = "/mnt/clouddrive"
 o.rmempty = false
 
-o = s:option(Button, "_webui", translate("Web UI"))
-o.inputtitle = translate("Open Web UI")
-o.write = function(self, section)
-	local port = m.uci:get("clouddrive2", section, "port") or "19798"
-	luci.http.redirect("http://" .. luci.http.getenv("SERVER_NAME") .. ":" .. port)
-end
-
 return m

@@ -17,17 +17,11 @@ include $(INCLUDE_DIR)/package.mk
 ifeq ($(ARCH),x86_64)
   PKG_ARCH_Ctl:=x86_64
 endif
-ifeq ($(ARCH),i386)
-  PKG_ARCH_Ctl:=i386
-endif
 ifeq ($(ARCH),aarch64)
   PKG_ARCH_Ctl:=aarch64
 endif
 ifeq ($(ARCH),arm)
   PKG_ARCH_Ctl:=armv7
-endif
-ifeq ($(ARCH),mipsel)
-  PKG_ARCH_Ctl:=mipsel
 endif
 
 define Package/clouddrive2
@@ -36,7 +30,7 @@ define Package/clouddrive2
   SUBMENU:=Cloud Manager
   TITLE:=CloudDrive2
   URL:=https://www.clouddrive2.com/
-  DEPENDS:=@(arm||aarch64||i386||x86_64||mipsel) +fuse-utils +ca-bundle
+  DEPENDS:=@(arm||aarch64||x86_64) +fuse-utils +ca-bundle
 endef
 
 define Package/clouddrive2/description

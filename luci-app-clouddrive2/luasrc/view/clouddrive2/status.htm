@@ -14,7 +14,7 @@ XHR.poll(3, '<%=url([[admin]], [[nas]], [[clouddrive2]], [[status]])%>', null,
 );
 
 function openwebui(){
-	var url = window.location.host+":<%=luci.sys.exec("uci -q get clouddrive2.main.port"):gsub("^%s*(.-)%s*$", "%1")%>";
+	var url = window.location.hostname+":<%=luci.sys.exec("uci -q get clouddrive2.main.port"):gsub("^%s*(.-)%s*$", "%1")%>";
 	window.open('http://'+url,'target','');
 };
 //]]>
