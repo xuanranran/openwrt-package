@@ -51,8 +51,14 @@ define Download/clouddrive2
 endef
 
 define Build/Prepare
-	$(call Build/Prepare/Default)
-	tar -xzvf $(DL_DIR)/clouddrive-2-linux-$(PKG_ARCH_Ctl)-$(PKG_VERSION).tgz -C $(PKG_BUILD_DIR)/ --strip-components=1
+	mkdir -p $(PKG_BUILD_DIR)
+	tar -xzvf $(DL_DIR)/clouddrive-2-linux-$(PKG_ARCH_Ctl)-$(PKG_VERSION).tgz -C $(PKG_BUILD_DIR)/
+	# Move files from subfolder to root if they exist in a subfolder
+	if [ -d "$(PKG_BUILD_DIR)/clouddrive-2-linux-$(PKG_ARCH_Ctl)-$(PKG_VERSION)" ]; then \
+		mv $(PKG_BUILD_DIR)/clouddrive-2-linux-$(PKG_ARCH_Ctl)-$(PKG_VERSION)/* $(PKG_BUILD_DIR)/; \
+		rmdir $(PKG_BUILD_DIR)/clouddrive-2-linux-$(PKG_ARCH_Ctl)-$(PKG_VERSION); \
+	fi
+	ls -al $(PKG_BUILD_DIR)/
 endef
 
 define Build/Compile
