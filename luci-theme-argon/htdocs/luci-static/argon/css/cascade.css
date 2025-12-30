@@ -4244,7 +4244,7 @@ pre.command-output {
 
   .tabs>li>a,
   .cbi-tabmenu>li>a {
-    padding: 0.2rem 0.8rem;
+    /* padding: 0.2rem 0.8rem; */
   }
 
   .panel-title {
@@ -5135,16 +5135,16 @@ div#add_link_div {
 #tab-header-openclash-game_config,
 #tab-header-openclash-rule_provider_config,
 #tab-header-openclash-rule_providers {
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 #cbi-openclash .cbi-section {
   position: relative;
   background: #fff;
   border: 0;
-  border-radius: 6px;
-  padding: 16px;
-  padding-top: 56px;
+  border-radius: 10px;
+  padding: 0px;
+  padding-top: 0px;
   box-sizing: border-box;
 }
 
