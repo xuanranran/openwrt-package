@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=clouddrive2
-PKG_VERSION:=0.9.20
+PKG_VERSION:=0.9.21
 PKG_RELEASE:=1
 
 PKG_MAINTAINER:=Hannibal
