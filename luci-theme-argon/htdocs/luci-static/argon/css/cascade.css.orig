@@ -3299,6 +3299,10 @@ span[data-tooltip] .label {
   transform: translate(-50%, 0);
 }
 
+.qr-code-display {
+  flex-direction: column
+}
+
 .zonebadge .cbi-tooltip {
   margin: -1.5rem 0 0 -0.5rem;
   padding: .25rem;
