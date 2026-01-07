@@ -2,16 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rtp2httpd
 
-# Extract version from git tags only if current commit is tagged and clean
-RELEASE_VERSION:=$(if $(DUMP),unknown,$(shell \
-	cd $(CURDIR)/../.. 2>/dev/null && \
-	if git describe --tags --exact-match --match 'v*' 2>/dev/null >/dev/null && \
-	   git diff --quiet 2>/dev/null && \
-	   git diff --cached --quiet 2>/dev/null; then \
-		git describe --tags --exact-match --match 'v*' 2>/dev/null | sed 's/^v//'; \
-	else \
-		echo "$$(date +%Y%m%d)"; \
-	fi))
+RELEASE_VERSION:=3.6.1
 
 PKG_VERSION:=$(shell echo "$(RELEASE_VERSION)" | sed 's/-\([a-z]*\)\.\([0-9]*\)/_\1\2/g')
 PKG_RELEASE:=1
@@ -21,15 +12,15 @@ PKG_LICENSE_FILES:=LICENSE
 
 PKG_FIXUP:=autoreconf
 
+PKG_SOURCE:=rtp2httpd-v$(RELEASE_VERSION).tar.gz
+PKG_SOURCE_URL:=https://codeload.github.com/stackia/rtp2httpd/tar.gz/v$(RELEASE_VERSION)?
+PKG_HASH:=skip
+
 include $(INCLUDE_DIR)/package.mk
 
 # Export RELEASE_VERSION to autoreconf and configure
 export RELEASE_VERSION
 
-define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) $(CURDIR)/../../* $(PKG_BUILD_DIR)/
-endef
 
 define Package/rtp2httpd
 	SECTION:=net
