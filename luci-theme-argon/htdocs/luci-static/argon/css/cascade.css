@@ -3343,8 +3343,8 @@ span[data-tooltip] .label {
   text-decoration: none;
   text-transform: uppercase;
   color: #fff !important;
-  border-radius: 3px;
-  background-color: #bfbfbf;
+  border-radius: 6px;
+  background-color: var(--primary) !important;
   text-shadow: none;
 }
 
@@ -4248,7 +4248,7 @@ pre.command-output {
 
   .tabs>li>a,
   .cbi-tabmenu>li>a {
-    padding: 0.2rem 0.8rem;
+    /* padding: 0.2rem 0.8rem; */
   }
 
   .panel-title {
@@ -5146,9 +5146,9 @@ div#add_link_div {
   position: relative;
   background: #fff;
   border: 0;
-  border-radius: 6px;
-  padding: 16px;
-  padding-top: 56px;
+  border-radius: 10px;
+  padding: 0px;
+  padding-top: 0px;
   box-sizing: border-box;
 }
 
