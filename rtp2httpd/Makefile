@@ -2,18 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rtp2httpd
 
-# Extract version from git tags only if current commit is tagged and clean
-RELEASE_VERSION:=$(if $(DUMP),unknown,$(shell \
-	cd $(CURDIR)/../.. 2>/dev/null && \
-	if git describe --tags --exact-match --match 'v*' 2>/dev/null >/dev/null && \
-	   git diff --quiet 2>/dev/null && \
-	   git diff --cached --quiet 2>/dev/null; then \
-		git describe --tags --exact-match --match 'v*' 2>/dev/null | sed 's/^v//'; \
-	else \
-		echo "$$(date +%Y%m%d)"; \
-	fi))
-
-PKG_VERSION:=$(shell echo "$(RELEASE_VERSION)" | sed 's/-\([a-z]*\)\.\([0-9]*\)/_\1\2/g')
+PKG_VERSION:=3.6.1
 PKG_RELEASE:=1
 PKG_MAINTAINER:=Stackie Jia <jsq2627@gmail.com>
 PKG_LICENSE:=GPL-2.0-or-later
@@ -21,20 +10,16 @@ PKG_LICENSE_FILES:=LICENSE
 
 PKG_FIXUP:=autoreconf
 
+PKG_SOURCE:=rtp2httpd-v$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://codeload.github.com/stackia/rtp2httpd/tar.gz/v$(PKG_VERSION)?
+PKG_HASH:=592917bd784f146a19072eb4943592068fda67ecc41c9a56712ea93a90cff39a
+
 include $(INCLUDE_DIR)/package.mk
-
-# Export RELEASE_VERSION to autoreconf and configure
-export RELEASE_VERSION
-
-define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) $(CURDIR)/../../* $(PKG_BUILD_DIR)/
-endef
 
 define Package/rtp2httpd
 	SECTION:=net
 	CATEGORY:=Network
-	TITLE:=Multicast RTP/RTSP to Unicast HTTP stream converter, optimized for China IPTV
+	TITLE:=Convert RTP/UDP/RTSP streams into HTTP streams with FCC support
 	URL:=https://github.com/stackia/rtp2httpd
 endef
 
@@ -46,8 +31,8 @@ define Package/rtp2httpd/description
 	incoming RTP data to HTTP stream.
 endef
 
-CONFIGURE_ARGS += \
-	--enable-optimization=-O3
+CONFIGURE_VARS += \
+	RELEASE_VERSION="$(PKG_VERSION)"
 
 define Package/rtp2httpd/conffiles
 /etc/config/rtp2httpd
