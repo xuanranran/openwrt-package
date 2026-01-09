@@ -34,6 +34,15 @@ endef
 CONFIGURE_VARS += \
 	RELEASE_VERSION="$(PKG_VERSION)"
 
+define Build/Prepare
+	$(call Build/Prepare/Default)
+	find $(PKG_BUILD_DIR) -name 'Makefile.am' -exec touch {} +
+	find $(PKG_BUILD_DIR) -name 'configure.ac' -exec touch {} +
+	find $(PKG_BUILD_DIR) -name 'aclocal.m4' -exec touch {} +
+	find $(PKG_BUILD_DIR) -name 'Makefile.in' -exec touch {} +
+	find $(PKG_BUILD_DIR) -name 'configure' -exec touch {} +
+endef
+
 define Package/rtp2httpd/conffiles
 /etc/config/rtp2httpd
 /etc/rtp2httpd.conf
