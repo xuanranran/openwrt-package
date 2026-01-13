@@ -16,12 +16,15 @@ include $(INCLUDE_DIR)/package.mk
 
 ifeq ($(ARCH),x86_64)
   PKG_ARCH_Ctl:=x86_64
+  PKG_HASH:=6e48aca69b713a808aa27d198d6f94e4cfa48e93c3584aebdd3a5928fb50c4d6
 endif
 ifeq ($(ARCH),aarch64)
   PKG_ARCH_Ctl:=aarch64
+  PKG_HASH:=f7245ddfdf362fc7d1a30a5bf8877adc2532c1ed65e6cf3fd3b5a69401add088
 endif
 ifeq ($(ARCH),arm)
   PKG_ARCH_Ctl:=armv7
+  PKG_HASH:=34ee71c10f8d5cc6333cb2041ebe9464bfb17a585dab0be72c945cfa49611c84
 endif
 
 define Package/clouddrive2
@@ -41,7 +44,7 @@ define Download/clouddrive2
   URL:=https://github.com/cloud-fs/cloud-fs.github.io/releases/download/v$(PKG_VERSION)
   URL_FILE:=clouddrive-2-linux-$(PKG_ARCH_Ctl)-$(PKG_VERSION).tgz
   FILE:=clouddrive-2-linux-$(PKG_ARCH_Ctl)-$(PKG_VERSION).tgz
-  HASH:=skip
+  HASH:=$(PKG_HASH)
 endef
 
 define Build/Prepare
