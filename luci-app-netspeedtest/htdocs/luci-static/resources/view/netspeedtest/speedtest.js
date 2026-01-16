@@ -32,7 +32,7 @@ return view.extend({
 		if (result_content.length) {
 			if (result_content[0] == 'Testing') {
 				result_stat.innerHTML = "<span style='color:green;font-weight:bold'>" +
-					"&emsp;<img src='" + L.resource(['icons/loading.gif']) + "' height='17' style='vertical-align:middle'/>" +
+					"&emsp;<img src='" + L.resource(['icons/loading.svg']) + "' height='17' style='vertical-align:middle'/>" +
 					"&emsp;" + _('Testing in progress...') + "</span>";
 			} else if (result_content[0].match(/https?:\S+/)) {
 				result_stat.innerHTML = "<div style='max-width:500px'><a href='" + result_content[0] + "' target='_blank'><img src='" + result_content[0] + '.png' + "' style='max-width:100%;max-height:100%;vertical-align:middle'></a></div>";
