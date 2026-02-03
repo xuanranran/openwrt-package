@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:564
+#: htdocs/luci-static/resources/view/rtp2httpd.js:589
 msgid ""
 "Additional FFmpeg arguments for snapshot generation. Common options: -"
 "hwaccel none, -hwaccel auto, -hwaccel vaapi (for Intel GPU)"
@@ -28,7 +28,7 @@ msgstr "程序崩溃后自动重启"
 msgid "Basic Settings"
 msgstr "基础设置"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:344
+#: htdocs/luci-static/resources/view/rtp2httpd.js:357
 msgid "Buffer Pool Max Size"
 msgstr "缓冲池最大容量"
 
@@ -50,14 +50,14 @@ msgstr "所有上游流量（组播、FCC 和 RTSP）使用的默认接口。留
 msgid "Edit the content of /etc/rtp2httpd.conf"
 msgstr "编辑 /etc/rtp2httpd.conf 的内容"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:540
+#: htdocs/luci-static/resources/view/rtp2httpd.js:565
 msgid ""
 "Enable video snapshot feature. When enabled, clients can request snapshots "
 "with snapshot=1 query parameter"
 msgstr ""
 "启用视频快照功能。启用后，客户端可以通过 snapshot=1 查询参数请求视频快照"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:397
+#: htdocs/luci-static/resources/view/rtp2httpd.js:410
 msgid ""
 "Enable zero-copy send with MSG_ZEROCOPY for better performance. Requires "
 "kernel 4.14+ (MSG_ZEROCOPY support). On supported devices, this can improve "
@@ -72,34 +72,34 @@ msgstr ""
 msgid "Enabled"
 msgstr "启用"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:408
+#: htdocs/luci-static/resources/view/rtp2httpd.js:433
 msgid "External M3U"
 msgstr "外部 M3U"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:420
+#: htdocs/luci-static/resources/view/rtp2httpd.js:445
 msgid "External M3U Update Interval"
 msgstr "外部 M3U 更新间隔"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:422
+#: htdocs/luci-static/resources/view/rtp2httpd.js:447
 msgid ""
 "External M3U automatic update interval in seconds (default: 7200 = 2 hours). "
 "Set to 0 to disable automatic updates."
 msgstr ""
 "外部 M3U 自动更新间隔（秒），默认 7200（2 小时）。设为 0 禁用自动更新。"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:383
+#: htdocs/luci-static/resources/view/rtp2httpd.js:396
 msgid "FCC Listen Port Range"
 msgstr "FCC 监听端口范围"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:562
+#: htdocs/luci-static/resources/view/rtp2httpd.js:587
 msgid "FFmpeg Arguments"
 msgstr "FFmpeg 参数"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:550
+#: htdocs/luci-static/resources/view/rtp2httpd.js:575
 msgid "FFmpeg Path"
 msgstr "FFmpeg 路径"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:410
+#: htdocs/luci-static/resources/view/rtp2httpd.js:435
 msgid ""
 "Fetch M3U playlist from a URL (file://, http://, https:// supported). "
 "Example: https://example.com/playlist.m3u or file:///path/to/playlist.m3u"
@@ -111,11 +111,11 @@ msgstr ""
 msgid "Grant UCI access for luci-app-rtp2httpd"
 msgstr "为 luci-app-rtp2httpd 授予 UCI 的访问权限"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:504
+#: htdocs/luci-static/resources/view/rtp2httpd.js:529
 msgid "Hostname"
 msgstr "主机名/域名"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:517
+#: htdocs/luci-static/resources/view/rtp2httpd.js:542
 msgid ""
 "If set, all HTTP requests must include r2h-token query parameter with "
 "matching value (e.g., http://server:port/rtp/ip:port?fcc=ip:port&r2h-"
@@ -154,11 +154,11 @@ msgstr ""
 msgid "Logging level"
 msgstr "日志级别"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:321
+#: htdocs/luci-static/resources/view/rtp2httpd.js:334
 msgid "Max clients allowed"
 msgstr "最大客户端数"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:346
+#: htdocs/luci-static/resources/view/rtp2httpd.js:359
 msgid ""
 "Maximum number of buffers in zero-copy pool. Each buffer is 1536 bytes. "
 "Default is 16384 (~24MB). Increase to improve throughput for multi-client "
@@ -179,26 +179,26 @@ msgstr "组播周期性重新加入间隔"
 msgid "Network & Performance"
 msgstr "网络与性能"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:445
+#: htdocs/luci-static/resources/view/rtp2httpd.js:470
 msgid "Note: The player page requires External M3U URL to be configured first."
 msgstr "注意：播放器页面需要先配置外部 M3U URL 才能使用。"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:333
+#: htdocs/luci-static/resources/view/rtp2httpd.js:346
 msgid ""
 "Number of worker processes. Set to 1 for resource-constrained devices, or "
 "CPU cores for best performance."
 msgstr ""
 "工作进程数量。资源紧凑设备建议设置为 1，最佳吞吐量可以设置为 CPU 核心数。"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:452
+#: htdocs/luci-static/resources/view/rtp2httpd.js:477
 msgid "Open Player Page"
 msgstr "打开播放器页面"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:484
+#: htdocs/luci-static/resources/view/rtp2httpd.js:509
 msgid "Open Status Dashboard"
 msgstr "打开状态面板"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:552
+#: htdocs/luci-static/resources/view/rtp2httpd.js:577
 msgid ""
 "Path to FFmpeg executable. Leave empty to use system PATH (default: ffmpeg)"
 msgstr "FFmpeg 可执行文件的路径。留空则使用系统 PATH（默认：ffmpeg）"
@@ -218,15 +218,15 @@ msgstr ""
 msgid "Player & M3U"
 msgstr "播放器与 M3U"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:451
+#: htdocs/luci-static/resources/view/rtp2httpd.js:476
 msgid "Player Page"
 msgstr "播放器页面"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:433
+#: htdocs/luci-static/resources/view/rtp2httpd.js:458
 msgid "Player Page Path"
 msgstr "播放器页面路径"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:470
+#: htdocs/luci-static/resources/view/rtp2httpd.js:495
 msgid "Please configure External M3U URL first"
 msgstr "请先配置外部 M3U URL"
 
@@ -234,7 +234,7 @@ msgstr "请先配置外部 M3U URL"
 msgid "Port"
 msgstr "端口"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:515
+#: htdocs/luci-static/resources/view/rtp2httpd.js:540
 msgid "R2H Token"
 msgstr "HTTP 请求认证令牌"
 
@@ -242,19 +242,19 @@ msgstr "HTTP 请求认证令牌"
 msgid "Respawn"
 msgstr "自动重启"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:482
+#: htdocs/luci-static/resources/view/rtp2httpd.js:507
 msgid "Status Dashboard"
 msgstr "状态面板"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:494
+#: htdocs/luci-static/resources/view/rtp2httpd.js:519
 msgid "Status Page Path"
 msgstr "状态页面路径"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:357
+#: htdocs/luci-static/resources/view/rtp2httpd.js:370
 msgid "UDP Receive Buffer Size"
 msgstr "UDP 接收缓冲区大小"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:359
+#: htdocs/luci-static/resources/view/rtp2httpd.js:372
 msgid ""
 "UDP socket receive buffer size in bytes. Applies to multicast, FCC, and RTSP "
 "sockets. Default is 524288 (512KB). For 4K IPTV streams at ~30 Mbps, 512KB "
@@ -265,11 +265,11 @@ msgstr ""
 "（512KB）。对于 30 Mbps 的 4K IPTV 流，512KB 可提供约 140ms 的缓冲。增大此值"
 "以减少丢包。注意：实际大小可能受内核参数 net.core.rmem_max 限制。"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:434
+#: htdocs/luci-static/resources/view/rtp2httpd.js:459
 msgid "URL path for the player page (default: /player)"
 msgstr "播放器页面的 URL 路径（默认：/player）"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:495
+#: htdocs/luci-static/resources/view/rtp2httpd.js:520
 msgid "URL path for the status page (default: /status)"
 msgstr "状态页面的 URL 路径（默认：/status）"
 
@@ -297,11 +297,11 @@ msgstr "使用配置文件"
 msgid "Use config file instead of individual options"
 msgstr "使用配置文件而不是单独的选项"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:538
+#: htdocs/luci-static/resources/view/rtp2httpd.js:563
 msgid "Video Snapshot"
 msgstr "视频快照"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:506
+#: htdocs/luci-static/resources/view/rtp2httpd.js:531
 msgid ""
 "When configured, HTTP Host header will be checked and must match this value "
 "to allow access. This value is also used as the hostname in M3U playlist "
@@ -314,7 +314,7 @@ msgstr ""
 "问地址（包括 http(s):// 和路径前缀），例如 https://my-domain.com/rtp2httpd，"
 "并且需要反向代理透传 Host 头。"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:528
+#: htdocs/luci-static/resources/view/rtp2httpd.js:553
 msgid ""
 "When enabled, uses HTTP X-Forwarded-For header as client address for status "
 "page display. Only enable when running behind a reverse proxy."
@@ -322,15 +322,15 @@ msgstr ""
 "启用后，将使用 HTTP X-Forwarded-For 头作为客户端地址，用于显示在状态面板上。"
 "建议仅在使用反向代理时启用。"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:331
+#: htdocs/luci-static/resources/view/rtp2httpd.js:344
 msgid "Workers"
 msgstr "工作进程数"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:526
+#: htdocs/luci-static/resources/view/rtp2httpd.js:551
 msgid "X-Forwarded-For"
 msgstr "X-Forwarded-For"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:395
+#: htdocs/luci-static/resources/view/rtp2httpd.js:408
 msgid "Zero-Copy on Send"
 msgstr "启用零拷贝发送"
 
@@ -344,3 +344,27 @@ msgid ""
 "rtp2httpd converts RTP/UDP/RTSP media into http stream. Here you can "
 "configure the settings."
 msgstr "rtp2httpd 用于将 RTP/UDP/RTSP 媒体流转换为 HTTP 流。在这里进行配置。"
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:321
+msgid "Upstream HTTP Interface"
+msgstr "上游 HTTP 接口"
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:323
+msgid ""
+"Interface to use for HTTP reverse proxy upstream requests (default: use "
+"routing table)"
+msgstr "用于 HTTP 反向代理上游请求的接口（默认：使用路由表）"
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:419
+msgid "RTSP STUN Server"
+msgstr "RTSP STUN 服务器"
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:421
+msgid ""
+"When RTSP server only supports UDP transport and client is behind NAT, try "
+"using STUN for NAT traversal (may not always succeed). Format: host:port or "
+"host (default port 3478). Example: stun.miwifi.com"
+msgstr ""
+"当 RTSP 服务器仅支持 UDP 传输且客户端位于 NAT 后面时，尝试使用 STUN 进行 NAT "
+"穿透（可能不总是成功）。格式：host:port 或 host（默认端口 3478）。示例："
+"stun.miwifi.com"

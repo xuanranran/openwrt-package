@@ -43,6 +43,7 @@ start_instance() {
             append_arg "$cfg" upstream_interface_multicast "--upstream-interface-multicast"
             append_arg "$cfg" upstream_interface_fcc "--upstream-interface-fcc"
             append_arg "$cfg" upstream_interface_rtsp "--upstream-interface-rtsp"
+            append_arg "$cfg" upstream_interface_http "--upstream-interface-http"
         else
             # Simple mode - use default interface for all
             append_arg "$cfg" upstream_interface "--upstream-interface"
@@ -51,6 +52,7 @@ start_instance() {
         append_arg "$cfg" maxclients "--maxclients"
         append_arg "$cfg" workers "--workers"
         append_arg "$cfg" buffer_pool_max_size "--buffer-pool-max-size"
+        append_arg "$cfg" udp_rcvbuf_size "--udp-rcvbuf-size"
         append_arg "$cfg" hostname "--hostname"
         append_arg "$cfg" status_page_path "--status-page-path"
         append_arg "$cfg" player_page_path "--player-page-path"
@@ -59,6 +61,7 @@ start_instance() {
         append_arg "$cfg" external_m3u_update_interval "--external-m3u-update-interval"
         append_arg "$cfg" mcast_rejoin_interval "--mcast-rejoin-interval"
         append_arg "$cfg" fcc_listen_port_range "--fcc-listen-port-range"
+        append_arg "$cfg" rtsp_stun_server "--rtsp-stun-server"
         append_arg "$cfg" ffmpeg_path "--ffmpeg-path"
         append_arg "$cfg" ffmpeg_args "--ffmpeg-args"
 
