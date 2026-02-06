@@ -747,7 +747,6 @@ check_core_status()
          while ( [ -n "$(pidof clash)" ] && [ -z "$($ip_ route list |grep utun)" ] && [ "$TUN_RESTART" -le 3 ] )
          do
             LOG_OUT "Warning: TUN Interface Start Failed, Try to Restart Again..."
-            kill_clash
             start_run_core
             sleep 120
             let TUN_RESTART++
@@ -2230,9 +2229,8 @@ if [ -n "$FW4" ]; then
 
    #icmp
    if [ "$en_mode" = "fake-ip" ]; then
-      nft insert rule inet fw4 input position 0 ip protocol icmp icmp type echo-request ip daddr { $fakeip_range } counter reject comment \"OpenClash ICMP INPUT REJECT\"
-      nft insert rule inet fw4 forward position 0 ip protocol icmp icmp type echo-request ip daddr { $fakeip_range } counter reject comment \"OpenClash ICMP FORWARD REJECT\"
-      nft insert rule inet fw4 output position 0 ip protocol icmp icmp type echo-request ip daddr { $fakeip_range } $noowner counter reject comment \"OpenClash ICMP OUTPUT REJECT\"
+      nft insert rule inet fw4 raw_prerouting position 0 ip protocol icmp icmp type echo-request ip daddr { $fakeip_range } counter reject with icmp admin-prohibited comment \"OpenClash ICMP INPUT REJECT\"
+      nft insert rule inet fw4 output position 0 ip protocol icmp icmp type echo-request ip daddr { $fakeip_range } $noowner counter reject with icmp admin-prohibited comment \"OpenClash ICMP OUTPUT REJECT\"
    fi
 fi
 
@@ -3010,8 +3008,7 @@ if [ -z "$FW4" ]; then
 
    #icmp
    if [ "$en_mode" = "fake-ip" ]; then
-      iptables -t filter -I INPUT   -p icmp --icmp-type echo-request -d "$fakeip_range" -j REJECT --reject-with icmp-admin-prohibited -m comment --comment "OpenClash ICMP INPUT REJECT"
-      iptables -t filter -I FORWARD -p icmp --icmp-type echo-request -d "$fakeip_range" -j REJECT --reject-with icmp-admin-prohibited -m comment --comment "OpenClash ICMP FORWARD REJECT"
+      iptables -t raw -I PREROUTING -p icmp --icmp-type echo-request -d "$fakeip_range" -j REJECT --reject-with icmp-admin-prohibited -m comment --comment "OpenClash ICMP INPUT REJECT"
       iptables -t filter -I OUTPUT  -p icmp --icmp-type echo-request -d "$fakeip_range" $noowner -j REJECT --reject-with icmp-admin-prohibited -m comment --comment "OpenClash ICMP OUTPUT REJECT"
    fi
 fi
@@ -3619,8 +3616,9 @@ start_service()
    enable=$(uci_get_config "enable")
    [ "$enable" != "1" ] && LOG_OUT "Warning: OpenClash Now Disabled, Need Start From Luci Page, Exit..." && SLOG_CLEAN && exit 0
 
-   if pidof clash >/dev/null 2>&1; then
-      stop
+   if /etc/init.d/openclash status >/dev/null 2>&1; then
+      echo "OpenClash Already Running, Exit!"
+      exit 0
    fi
 
    LOG_OUT "Tip: OpenClash Start Running..."
