@@ -12,7 +12,8 @@ fetch_pic_url() {
     bing)
         local picpath=$(curl -fks --max-time 3 \
             "https://www.bing.com/HPImageArchive.aspx?format=js&n=1" |
-            jsonfilter -qe '@.images[0].url')
+            jsonfilter -qe '@.images[0].url' |
+            sed 's/1920x1080/UHD/g')
         [ -n "${picpath}" ] && echo "//www.bing.com${picpath}"
         ;;
     unsplash)

@@ -971,6 +971,15 @@ div[style="width:100%;height:300px;border:1px solid #000;background:#fff"] {
   margin-top: 0rem
 }
 
+.alert-message {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out
+}
+
+.alert-message.fade-out {
+  opacity: 0
+}
+
 .main .main-left {
   transition: all .2s
 }
@@ -1395,7 +1404,7 @@ h5 {
 [data-tab-title],
 [data-page^="admin-system-admin"]:not(.node-main-login) .cbi-map:not(#cbi-dropbear),
 [data-page="admin-system-opkg"] #maincontent>.container {
-  font-family: -apple-system,BlinkMacSystemFont,PingFang SC,Segoe UI,Microsoft YaHei,wenquanyi micro hei,Hiragino Sans GB,Hiragino Sans GB W3,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, PingFang SC, Segoe UI, Microsoft YaHei, wenquanyi micro hei, Hiragino Sans GB, Hiragino Sans GB W3, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: var(--font-weight);
   font-style: normal;
   line-height: normal;
@@ -1597,7 +1606,8 @@ td>table>tbody>tr>td,
   border: 0;
 }
 
-.table .th, .table .td {
+.table .th,
+.table .td {
   display: table-cell;
 }
 
@@ -2152,12 +2162,12 @@ td>table>tbody>tr>td,
   align-items: center
 }
 
-.cbi-section.fade-in .cbi-title > div:last-child {
+.cbi-section.fade-in .cbi-title>div:last-child {
   position: absolute;
   right: 1rem
 }
 
-.cbi-section.fade-in .cbi-title > div:last-child span.label {
+.cbi-section.fade-in .cbi-title>div:last-child span.label {
   background: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -2169,14 +2179,14 @@ td>table>tbody>tr>td,
   -webkit-tap-highlight-color: transparent
 }
 
-.cbi-section.fade-in .cbi-title > div:last-child span {
+.cbi-section.fade-in .cbi-title>div:last-child span {
   font-size: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center
 }
 
-.cbi-section.fade-in .cbi-title > div:last-child span::after {
+.cbi-section.fade-in .cbi-title>div:last-child span::after {
   content: "\e90f";
   font-family: 'argon' !important;
   font-size: 1.1rem;
@@ -2186,14 +2196,12 @@ td>table>tbody>tr>td,
   -webkit-font-smoothing: antialiased
 }
 
-.cbi-section.fade-in
-.cbi-title > div:last-child
-span[data-style='inactive']::after {
+.cbi-section.fade-in .cbi-title>div:last-child span[data-style='inactive']::after {
   transform: rotate(90deg);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .cbi-section.fade-in .cbi-title > div:last-child span:hover::after {
+  .cbi-section.fade-in .cbi-title>div:last-child span:hover::after {
     color: var(--primary)
   }
 }
@@ -2242,23 +2250,23 @@ span[data-style='inactive']::after {
   user-select: text;
 }
 
-.cbi-dynlist > .item.drag-over { 
+.cbi-dynlist>.item.drag-over {
   border-top: 1px solid var(--primary);
 }
 
-.cbi-dynlist > .item.dragging {
+.cbi-dynlist>.item.dragging {
   opacity: 0.5;
 }
 
-.cbi-dynlist > .item > span {
+.cbi-dynlist>.item>span {
   pointer-events: none;
 }
 
-.cbi-dynlist > .add-item > .cbi-input-text.drag-over {
+.cbi-dynlist>.add-item>.cbi-input-text.drag-over {
   border-top: 1px solid var(--primary);
 }
 
-.cbi-dynlist > .add-item > .cbi-button-add.drag-over {
+.cbi-dynlist>.add-item>.cbi-button-add.drag-over {
   border-top: 1px solid var(--primary);
 }
 
@@ -2578,7 +2586,8 @@ span[data-style='inactive']::after {
 }
 
 .cbi-dropdown[open]>ul.dropdown>li:hover {
-  background-color: #f0f0f0; /* 鼠标悬停时的背景色块 */
+  background-color: #f0f0f0;
+  /* 鼠标悬停时的背景色块 */
 }
 
 .cbi-dropdown[open]>ul.dropdown>li label {
@@ -2806,14 +2815,16 @@ span[data-style='inactive']::after {
   }
 }
 
-.modal > .button-row {
+.modal>.button-row {
   display: flex;
   justify-content: space-between;
 }
-.modal > .button-row > button:not(:last-of-type) {
+
+.modal>.button-row>button:not(:last-of-type) {
   margin-right: .5em;
 }
-.modal > .button-row > button:first-of-type {
+
+.modal>.button-row>button:first-of-type {
   margin-right: auto;
 }
 
@@ -3288,7 +3299,7 @@ span[data-tooltip] .label {
   padding: 4px 8px;
   border-radius: 6px;
   white-space: pre;
-  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
   transition: opacity .25s ease-out, transform .25s ease-out;
 
   pointer-events: none;
@@ -4022,14 +4033,14 @@ pre.command-output {
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled,
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id^="tab-header-openclash-"] ul li.cbi-tab-disabled {
-    color: #1f2937 !important;
-    background: #000000 !important;
-    opacity: 0.7 !important;
+  color: #1f2937 !important;
+  background: #000000 !important;
+  opacity: 0.7 !important;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header {
-    background: #242424;
-    border-bottom: 1px solid #242424;
+  background: #242424;
+  border-bottom: 1px solid #242424;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu {
@@ -4062,13 +4073,13 @@ pre.command-output {
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .diag-style {
-    background-color: #242424;
+  background-color: #242424;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #diag-rc-output > pre,
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #dns-rc-output > pre {
-    background-color: #000000;
-    color: #ffffff;
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #diag-rc-output>pre,
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #dns-rc-output>pre {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 [data-page^="admin-services-openclash"] .cm-s-material.CodeMirror {
@@ -4077,26 +4088,26 @@ pre.command-output {
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button {
-    background: #242424;
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
+  background: #242424;
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.15);
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button label {
-    background: #000000;
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.15);
+  background: #000000;
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.15);
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu,
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id*="tab-header-openclash"] {
-    font-family: 'Google Sans' !important;
+  font-family: 'Google Sans' !important;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] :is([id^="tab-header-openclash-"], [id^="tab-header-openclash-"] ul) {
-    background: #242424 !important;
+  background: #242424 !important;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id^="tab-header-openclash-"] {
-    border-bottom: 1px solid #242424 !important;
+  border-bottom: 1px solid #242424 !important;
 }
 
 [data-page^="admin-services-openclash"] .cbi-value-description,
@@ -4104,62 +4115,67 @@ pre.command-output {
 [data-page^="admin-services-openclash"] .oc,
 [data-page^="admin-services-openclash"] .cbi-section p,
 [data-page^="admin-services-openclash"] .tool_label_span,
-[data-page^="admin-services-openclash"] b, strong,
-[data-page^="admin-services-openclash"] .form-group label, .status-item .label,
+[data-page^="admin-services-openclash"] b,
+strong,
+[data-page^="admin-services-openclash"] .form-group label,
+.status-item .label,
 [data-page^="admin-services-openclash"] [class^="info-cell"],
 [data-page^="admin-services-openclash"] [class^="info-cell"] *,
 [data-page^="admin-services-openclash"] .settings-cell,
-[data-page^="admin-services-openclash"] .settings-cell *
-[data-page^="admin-services-openclash"] .sub_div {
+[data-page^="admin-services-openclash"] .settings-cell * [data-page^="admin-services-openclash"] .sub_div {
   font-family: 'Google Sans' !important;
 }
 
 [data-page^="admin-services-openclash"] .btn-group {
-    display: flex;
-    width: 100%;
-    margin: 0px auto;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-around;
+  display: flex;
+  width: 100%;
+  margin: 0px auto;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 @media (prefers-color-scheme: dark) {
   [data-page^="admin-services-openclash"] {
-      font-family: 'Google Sans' !important;
+    font-family: 'Google Sans' !important;
   }
 
   [data-page^="admin-services-openclash"] .cbi-input-textarea,
-  [data-page^="admin-services-openclash"] .btn, button, select, input, .cbi-dropdown {
-      font-family: 'Google Sans' !important;
-      font-size: 14px !important;
+  [data-page^="admin-services-openclash"] .btn,
+  button,
+  select,
+  input,
+  .cbi-dropdown {
+    font-family: 'Google Sans' !important;
+    font-size: 14px !important;
   }
 
   [data-page^="admin-services-openclash"] .cbi-section-descr {
-      font-family: 'Google Sans' !important;
+    font-family: 'Google Sans' !important;
   }
 }
 
 [data-page^="admin-services-openclash"] .cbi-input-textarea {
-    font-size: 14px !important;
-    font-family: 'Google Sans' !important;
+  font-size: 14px !important;
+  font-family: 'Google Sans' !important;
 }
 
 [data-page^="admin-services-openclash"] .oc .version-display .version-text {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 [data-page^="admin-services-openclash"] .oc .dashboard-btn {
-    font-size: 11px !important;
-    font-weight: 600 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
 }
 
 [data-page^="admin-services-openclash"] .oc .subscription-info-text {
-    white-space: normal;
+  white-space: normal;
 }
 
 [data-page^="admin-services-openclash"] .status-item .value b {
-    font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-    font-weight: 700;
+  font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-weight: 700;
 }
 
 /* IE hacks */
@@ -4472,18 +4488,21 @@ pre.command-output {
     display: block !important;
     width: 100% !important;
   }
+
   [id*="samba"].cbi-section-table-titles {
     display: none !important;
   }
+
   [id*="samba"].cbi-section-table-row {
     display: flex !important;
     flex-wrap: wrap;
     margin-bottom: 12px;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.03);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
     padding: 6px 3px;
   }
+
   [id*="samba"].cbi-section-table-row .td {
     display: flex;
     align-items: center;
@@ -4493,18 +4512,21 @@ pre.command-output {
     font-size: 15px;
     border: none !important;
   }
+
   [id*="samba"].cbi-section-table-row .td[data-title]:before {
     margin-right: 8px;
     font-size: 14px;
     min-width: 70px;
     display: inline-block;
   }
+
   [id*="samba"].cbi-section-actions {
     width: 100% !important;
     margin-top: 8px;
     display: flex;
     justify-content: flex-end;
   }
+
   [id*="samba"] tr.tr.cbi-section-table-titles.anonymous {
     display: none;
   }
@@ -4594,6 +4616,7 @@ pre.command-output {
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1500px) {
+
   /* admin/system/diskman */
   #cbi-diskman tr>td,
   #cbi-diskman tr>th,
@@ -4665,6 +4688,7 @@ pre.command-output {
 }
 
 @media screen and (max-width: 450px) {
+
   tr>td,
   tr>th,
   .tr>.td,
@@ -4676,6 +4700,7 @@ pre.command-output {
 }
 
 @media screen and (max-width: 600px) {
+
   .modal>pre,
   .modal>textarea {
     font-size: 0.98rem;
@@ -4962,11 +4987,13 @@ div#add_link_div {
 [data-page="admin-services-ddns"] {
   #syslog {
     overflow: auto;
-    font-size: 12px!important;
+    font-size: 12px !important;
   }
+
   .modal p {
     margin-left: unset;
   }
+
   [data-tab-title] p {
     margin-left: unset;
     margin-bottom: unset;
@@ -4980,7 +5007,7 @@ div#add_link_div {
 }
 
 #file-manager-container .file-manager-header {
-    padding: 4px;
+  padding: 4px;
 }
 
 /* luci-mod-dashboard */
@@ -5010,12 +5037,13 @@ div#add_link_div {
   background-color: #ffffff;
 }
 
-.Dashboard .devices-list .devices-info, .Dashboard .router-status-wifi .wifi-info > hr:last-child {
+.Dashboard .devices-list .devices-info,
+.Dashboard .router-status-wifi .wifi-info>hr:last-child {
   margin-top: 0.575rem;
 }
 
 /* luci-app-mwan3 */
-#mwan3-service-status > .alert-message {
+#mwan3-service-status>.alert-message {
   height: 6rem !important;
   min-height: 8rem !important;
 }
@@ -5049,13 +5077,13 @@ div#add_link_div {
   border: 1px solid #e2e3e7;
   padding: 18px 20px;
   transition: box-shadow 0.2s;
-  box-shadow: 0 1px 4px 0 rgba(60,60,60,0.04);
+  box-shadow: 0 1px 4px 0 rgba(60, 60, 60, 0.04);
   position: relative;
   word-break: break-all;
 }
 
 [data-page="admin-system-admin-repokeys"] .cbi-dynlist .item:hover {
-  box-shadow: 0 4px 18px 0 rgba(0,0,0,0.11);
+  box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.11);
   border-color: #b6b7bb;
 }
 
@@ -5119,7 +5147,7 @@ div#add_link_div {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.16s, box-shadow 0.16s;
-  box-shadow: 0 2px 6px 0 rgba(39,110,241,0.10);
+  box-shadow: 0 2px 6px 0 rgba(39, 110, 241, 0.10);
 }
 
 @media (max-width: 600px) {
@@ -5127,6 +5155,7 @@ div#add_link_div {
     padding: 8px;
     max-width: 100vw;
   }
+
   [data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item textarea.cbi-input-text {
     max-width: 100vw;
   }
@@ -5152,7 +5181,7 @@ div#add_link_div {
   box-sizing: border-box;
 }
 
-#cbi-openclash .cbi-section > legend {
+#cbi-openclash .cbi-section>legend {
   position: absolute;
   top: 0;
   left: 0;
@@ -5167,4 +5196,17 @@ div#add_link_div {
   border-radius: 6px 6px 0 0;
   box-sizing: border-box;
   border-bottom: 1px solid #eef0f6;
+}
+
+#cbi-openclash .announcement-card {
+  width: auto !important;
+  margin: 10px !important
+}
+
+#cbi-smartdns #service_status {
+  padding: 16px
+}
+
+#cbi-smartdns .cbi-section-node {
+  padding: 16px
 }
