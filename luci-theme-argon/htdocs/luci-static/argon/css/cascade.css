@@ -88,6 +88,7 @@ body {
   height: 100%;
   font-size: 16px;
   font-family: var(--font-family-sans-serif);
+  scrollbar-width: none;
 }
 
 html {
@@ -100,6 +101,10 @@ body {
   background-color: #f4f5f7;
   background-color: var(--background-color);
   color: #666a88;
+}
+
+#mainmenu {
+  scrollbar-width: none;
 }
 
 span {
@@ -2155,19 +2160,14 @@ td>table>tbody>tr>td,
   vertical-align: middle;
 }
 
-.cbi-section.fade-in .cbi-title {
+.cbi-section.fade-in .cbi-title h3 {
   position: relative;
-  min-height: 2.765rem;
   display: flex;
-  align-items: center
+  align-items: center;
+  justify-content: space-between;
 }
 
-.cbi-section.fade-in .cbi-title>div:last-child {
-  position: absolute;
-  right: 1rem
-}
-
-.cbi-section.fade-in .cbi-title>div:last-child span.label {
+.cbi-section.fade-in .cbi-title h3 span.label {
   background: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -2176,33 +2176,30 @@ td>table>tbody>tr>td,
   border-radius: 0;
   min-width: auto;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent
-}
-
-.cbi-section.fade-in .cbi-title>div:last-child span {
   font-size: 0;
   display: inline-flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.cbi-section.fade-in .cbi-title>div:last-child span::after {
+.cbi-section.fade-in .cbi-title h3 span.label::after {
   content: "\e90f";
   font-family: 'argon' !important;
   font-size: 1.1rem;
   line-height: 1;
   color: #888;
-  transition: transform 0.25s ease, color 0.2s ease;
-  -webkit-font-smoothing: antialiased
+  transition: transform .25s ease, color .2s ease;
+  -webkit-font-smoothing: antialiased;
 }
 
-.cbi-section.fade-in .cbi-title>div:last-child span[data-style='inactive']::after {
+.cbi-section.fade-in .cbi-title h3 span.label[data-style='inactive']::after {
   transform: rotate(90deg);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .cbi-section.fade-in .cbi-title>div:last-child span:hover::after {
-    color: var(--primary)
+@media (hover:hover) and (pointer:fine) {
+  .cbi-section.fade-in .cbi-title h3 span.label:hover::after {
+    color: var(--primary);
   }
 }
 
