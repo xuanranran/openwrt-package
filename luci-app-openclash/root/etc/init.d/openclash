@@ -1649,7 +1649,7 @@ if [ -n "$FW4" ]; then
       nft 'add rule inet fw4 openclash ct direction reply counter return'
       nft add rule inet fw4 openclash ip protocol tcp ip daddr { "$fakeip_range" } counter redirect to "$proxy_port"
       nft 'add rule inet fw4 openclash ip daddr @wan_ac_black_ips counter return'
-      nft 'add rule inet fw4 openclash ip dport @wan_ac_black_ports counter return'
+      nft 'add rule inet fw4 openclash th dport @wan_ac_black_ports counter return'
       nft 'add rule inet fw4 openclash ip saddr @lan_ac_black_ips counter return'
       nft 'add rule inet fw4 openclash ether saddr @lan_ac_black_macs counter return'
       if [ "$lan_ac_mode" = "1" ] && [ -n "$(uci_get_config "lan_ac_white_ips")" ] && [ -n "$(uci_get_config "lan_ac_white_macs")" ]; then
@@ -1692,7 +1692,7 @@ if [ -n "$FW4" ]; then
                nft add rule inet fw4 openclash_mangle meta l4proto { udp } ip daddr { "$fakeip_range" } mark set "$PROXY_FWMARK" tproxy ip to 127.0.0.1:"$tproxy_port" counter accept
             fi
             nft 'add rule inet fw4 openclash_mangle ip daddr @wan_ac_black_ips counter return'
-            nft 'add rule inet fw4 openclash_mangle ip dport @wan_ac_black_ports counter return'
+            nft 'add rule inet fw4 openclash_mangle th dport @wan_ac_black_ports counter return'
             nft 'add rule inet fw4 openclash_mangle ip saddr @lan_ac_black_ips counter return'
             nft 'add rule inet fw4 openclash_mangle ether saddr @lan_ac_black_macs counter return'
             if [ "$lan_ac_mode" = "1" ] && [ -n "$(uci_get_config "lan_ac_white_ips")" ] && [ -n "$(uci_get_config "lan_ac_white_macs")" ]; then
@@ -1737,7 +1737,7 @@ if [ -n "$FW4" ]; then
             nft 'add rule inet fw4 openclash_mangle_output ip daddr @localnetwork counter return'
             nft 'add rule inet fw4 openclash_mangle_output ct direction reply counter return'
             nft 'add rule inet fw4 openclash_mangle_output ip daddr @wan_ac_black_ips counter return'
-            nft 'add rule inet fw4 openclash_mangle_output ip dport @wan_ac_black_ports counter return'
+            nft 'add rule inet fw4 openclash_mangle_output th dport @wan_ac_black_ports counter return'
             if [ "$en_mode" = "redir-host" ]; then
                nft add rule inet fw4 openclash_mangle_output th dport != @common_ports counter return
             fi
@@ -1781,7 +1781,7 @@ if [ -n "$FW4" ]; then
          fi
          if [ "$router_self_proxy" = "1" ]; then
             nft 'add rule inet fw4 openclash_output ip daddr @wan_ac_black_ips counter return'
-            nft 'add rule inet fw4 openclash_output ip dport @wan_ac_black_ports counter return'
+            nft 'add rule inet fw4 openclash_output th dport @wan_ac_black_ports counter return'
             if [ "$en_mode" = "redir-host" ]; then
                nft add rule inet fw4 openclash_output th dport != @common_ports counter return
             fi
@@ -1824,7 +1824,7 @@ if [ -n "$FW4" ]; then
          fi
          if [ "$router_self_proxy" = "1" ]; then
             nft 'add rule inet fw4 openclash_mangle_output ip daddr @wan_ac_black_ips counter return'
-            nft 'add rule inet fw4 openclash_mangle_output ip dport @wan_ac_black_ports counter return'
+            nft 'add rule inet fw4 openclash_mangle_output th dport @wan_ac_black_ports counter return'
             if [ "$china_ip_route" != "0" ]; then
                if [ "$china_ip_route" = "1" ]; then
                   rule="ip daddr @china_ip_route"
@@ -1861,7 +1861,7 @@ if [ -n "$FW4" ]; then
       #icmp
       nft add rule inet fw4 openclash_mangle meta nfproto {ipv4} ip protocol icmp icmp type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMP Mark\"
       nft 'add rule inet fw4 openclash_mangle ip daddr @wan_ac_black_ips counter return'
-      nft 'add rule inet fw4 openclash_mangle ip dport @wan_ac_black_ports counter return'
+      nft 'add rule inet fw4 openclash_mangle th dport @wan_ac_black_ports counter return'
       nft 'add rule inet fw4 openclash_mangle ip saddr @lan_ac_black_ips counter return'
       nft 'add rule inet fw4 openclash_mangle ether saddr @lan_ac_black_macs counter return'
       if [ "$lan_ac_mode" = "1" ] && [ -n "$(uci_get_config "lan_ac_white_ips")" ] && [ -n "$(uci_get_config "lan_ac_white_macs")" ]; then
@@ -2012,7 +2012,7 @@ if [ -n "$FW4" ]; then
          nft 'add rule inet fw4 openclash_v6 ip6 daddr @localnetwork6 counter return'
          nft 'add rule inet fw4 openclash_v6 ct direction reply counter return'
          nft 'add rule inet fw4 openclash_v6 ip6 daddr @wan_ac_black_ipv6s counter return'
-         nft 'add rule inet fw4 openclash_v6 ip6 dport @wan_ac_black_ports counter return'
+         nft 'add rule inet fw4 openclash_v6 th dport @wan_ac_black_ports counter return'
          nft 'add rule inet fw4 openclash_v6 ip6 saddr @lan_ac_black_ipv6s counter return'
          nft 'add rule inet fw4 openclash_v6 ether saddr @lan_ac_black_macs counter return'
          if [ "$lan_ac_mode" = "1" ] && [ -n "$(uci_get_config "lan_ac_white_ips")" ] && [ -n "$(uci_get_config "lan_ac_white_macs")" ]; then
@@ -2063,7 +2063,7 @@ if [ -n "$FW4" ]; then
             fi
          fi
          nft 'add rule inet fw4 openclash_mangle_v6 ip6 daddr @wan_ac_black_ipv6s counter return'
-         nft 'add rule inet fw4 openclash_mangle_v6 ip6 dport @wan_ac_black_ports counter return'
+         nft 'add rule inet fw4 openclash_mangle_v6 th dport @wan_ac_black_ports counter return'
          if [ "$en_mode" == "redir-host" ]; then
             nft 'add rule inet fw4 openclash_mangle_v6 th dport != @common_ports counter return'
          fi
@@ -2133,7 +2133,7 @@ if [ -n "$FW4" ]; then
             nft 'add rule inet fw4 openclash_output_v6 ip6 daddr @localnetwork6 counter return'
             nft 'add rule inet fw4 openclash_output_v6 ct direction reply counter return'
             nft 'add rule inet fw4 openclash_output_v6 ip6 daddr @wan_ac_black_ipv6s counter return'
-            nft 'add rule inet fw4 openclash_output_v6 ip6 dport @wan_ac_black_ports counter return'
+            nft 'add rule inet fw4 openclash_output_v6 th dport @wan_ac_black_ports counter return'
             if [ "$en_mode" = "redir-host" ]; then
                nft 'add rule inet fw4 openclash_output_v6 th dport != @common_ports counter return'
             fi
@@ -2177,7 +2177,7 @@ if [ -n "$FW4" ]; then
             nft add rule inet fw4 openclash_mangle_output_v6 meta nfproto {ipv6} ip6 nexthdr icmpv6 icmpv6 type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMPv6 Redirect\"
          fi
          nft 'add rule inet fw4 openclash_mangle_output_v6 ip6 daddr @wan_ac_black_ipv6s counter return'
-         nft 'add rule inet fw4 openclash_mangle_output_v6 ip6 dport @wan_ac_black_ports counter return'
+         nft 'add rule inet fw4 openclash_mangle_output_v6 th dport @wan_ac_black_ports counter return'
          if [ "$en_mode" = "redir-host" ]; then
             nft 'add rule inet fw4 openclash_mangle_output_v6 th dport != @common_ports counter return'
          fi
