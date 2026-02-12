@@ -1106,6 +1106,9 @@ msgstr "IPs LAN con proxy"
 msgid "WAN Bypassed Host List"
 msgstr "IPs WAN sin proxy"
 
+msgid "WAN Bypassed Port List"
+msgstr "Ports WAN sin proxy"
+
 msgid "LAN Bypassed Mac List"
 msgstr "MAC LAN sin proxy"
 
@@ -3461,6 +3464,9 @@ msgstr "Directo"
 msgid "Error: Config File Overwrite Failed,"
 msgstr "Error: falla al sobrescribir el archivo de configuración,"
 
+msgid "Error: Config File params checked Failed,"
+msgstr "Error: fallo en la verificación de parámetros del archivo de configuración,"
+
 msgid "Edit"
 msgstr "Editar"
 
@@ -4249,3 +4255,9 @@ msgstr "Error: fallo al escribir el archivo:"
 
 msgid "Error: Fix short-id values type failed:"
 msgstr "Error: fallo al modificar el tipo de valores short-id:"
+
+msgid "Interface"
+msgstr "Interfaz"
+
+msgid "User"
+msgstr "Usuario"
