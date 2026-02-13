@@ -1816,9 +1816,6 @@ if [ -n "$FW4" ]; then
          else
             nft add rule inet fw4 openclash_mangle_output meta l4proto { udp } ip daddr { "$fakeip_range" } mark set "$PROXY_FWMARK" counter
          fi
-         #icmp
-         nft add rule inet fw4  openclash_mangle_output meta nfproto {ipv4} ip protocol icmp icmp type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMP Mark\"
-
          if [ "$en_mode" = "redir-host" ]; then
             nft 'add rule inet fw4 openclash_mangle_output th dport != @common_ports counter return'
          fi
@@ -1834,13 +1831,17 @@ if [ -n "$FW4" ]; then
                [ "$enable_redirect_dns" != "2" ] && rule="$rule ip daddr != @china_ip_route_pass"
                nft "add rule inet fw4 openclash_mangle_output $rule counter return"
             fi
+
+            #icmp
+            nft add rule inet fw4  openclash_mangle_output meta nfproto {ipv4} ip protocol icmp icmp type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMP Mark\"
+
             if [ "$en_mode_tun" -eq 1 ]; then
                nft add rule inet fw4 openclash_mangle_output meta l4proto {tcp,udp} meta mark set "$PROXY_FWMARK" counter
             else
                nft add rule inet fw4 openclash_mangle_output meta l4proto { udp } meta mark set "$PROXY_FWMARK" counter
             fi
          fi
-         nft 'add rule inet fw4 mangle_output meta nfproto {ipv4} meta l4proto {tcp,udp} counter jump openclash_mangle_output'
+         nft 'add rule inet fw4 mangle_output meta nfproto {ipv4} counter jump openclash_mangle_output'
       fi
 
       nft 'add chain inet fw4 openclash_mangle'
@@ -1858,8 +1859,6 @@ if [ -n "$FW4" ]; then
       else
          nft add rule inet fw4 openclash_mangle meta l4proto { udp } ip daddr { "$fakeip_range" } mark set "$PROXY_FWMARK" counter
       fi
-      #icmp
-      nft add rule inet fw4 openclash_mangle meta nfproto {ipv4} ip protocol icmp icmp type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMP Mark\"
       nft 'add rule inet fw4 openclash_mangle ip daddr @wan_ac_black_ips counter return'
       nft 'add rule inet fw4 openclash_mangle th dport @wan_ac_black_ports counter return'
       nft 'add rule inet fw4 openclash_mangle ip saddr @lan_ac_black_ips counter return'
@@ -1883,6 +1882,10 @@ if [ -n "$FW4" ]; then
          [ "$enable_redirect_dns" != "2" ] && rule="$rule ip daddr != @china_ip_route_pass"
          nft "add rule inet fw4 openclash_mangle $rule counter return"
       fi
+
+      #icmp
+      nft add rule inet fw4 openclash_mangle meta nfproto {ipv4} ip protocol icmp icmp type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMP Mark\"
+
       nft 'add rule inet fw4 openclash_mangle ip protocol udp counter jump openclash_upnp'
 
       if [ "$en_mode_tun" -eq 1 ]; then
@@ -1891,7 +1894,7 @@ if [ -n "$FW4" ]; then
          nft add rule inet fw4 openclash_mangle meta l4proto { udp } mark set "$PROXY_FWMARK" counter
       fi
 
-      nft 'add rule inet fw4 mangle_prerouting meta nfproto {ipv4} meta l4proto {tcp,udp} counter jump openclash_mangle'
+      nft 'add rule inet fw4 mangle_prerouting meta nfproto {ipv4} counter jump openclash_mangle'
 
       #TUN FORWORD
       nft insert rule inet fw4 forward position 0 meta nfproto {ipv4} oifname utun counter accept comment \"OpenClash TUN Forward\"
@@ -2055,8 +2058,6 @@ if [ -n "$FW4" ]; then
 
          if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
             nft add rule inet fw4 openclash_mangle_v6 ip6 nexthdr {udp} ip6 daddr { "$fakeip_range6" } mark set "$PROXY_FWMARK" counter
-            #icmpv6
-            nft add rule inet fw4 openclash_mangle_v6 meta nfproto {ipv6} ip6 nexthdr icmpv6 icmpv6 type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMPv6 Redirect\"
          else
             if [ "$enable_v6_udp_proxy" -eq 1 ]; then
                nft add rule inet fw4 openclash_mangle_v6 ip6 nexthdr {udp} ip6 daddr { "$fakeip_range6" } mark set "$PROXY_FWMARK" tproxy ip6 to :"$tproxy_port" counter accept
@@ -2085,6 +2086,11 @@ if [ -n "$FW4" ]; then
             fi
             [ "$enable_redirect_dns" != "2" ] && rule="$rule ip6 daddr != @china_ip6_route_pass"
             nft "add rule inet fw4 openclash_mangle_v6 $rule counter return"
+         fi
+
+         #icmpv6
+         if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
+            nft add rule inet fw4 openclash_mangle_v6 meta nfproto {ipv6} ip6 nexthdr icmpv6 icmpv6 type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMPv6 Redirect\"
          fi
       fi
 
@@ -2172,10 +2178,6 @@ if [ -n "$FW4" ]; then
                nft add rule inet fw4 openclash_mangle_output_v6 ip6 nexthdr {tcp} ip6 daddr { "$fakeip_range6" } mark set "$PROXY_FWMARK" counter
             fi
          fi
-         #icmpv6
-         if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
-            nft add rule inet fw4 openclash_mangle_output_v6 meta nfproto {ipv6} ip6 nexthdr icmpv6 icmpv6 type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMPv6 Redirect\"
-         fi
          nft 'add rule inet fw4 openclash_mangle_output_v6 ip6 daddr @wan_ac_black_ipv6s counter return'
          nft 'add rule inet fw4 openclash_mangle_output_v6 th dport @wan_ac_black_ports counter return'
          if [ "$en_mode" = "redir-host" ]; then
@@ -2190,6 +2192,11 @@ if [ -n "$FW4" ]; then
             fi
             [ "$enable_redirect_dns" != "2" ] && rule="$rule ip6 daddr != @china_ip6_route_pass"
             nft "add rule inet fw4 openclash_mangle_output_v6 $rule counter return"
+         fi
+
+         #icmpv6
+         if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
+            nft add rule inet fw4 openclash_mangle_output_v6 meta nfproto {ipv6} ip6 nexthdr icmpv6 icmpv6 type echo-request mark set "$PROXY_FWMARK" counter accept comment \"OpenClash ICMPv6 Redirect\"
          fi
 
          if ([ "$ipv6_mode" -eq 1 ] && [ "$enable_v6_udp_proxy" -eq 1 ]) || [ "$ipv6_mode" -eq 3 ]; then
@@ -2655,8 +2662,6 @@ if [ -z "$FW4" ]; then
             iptables -t mangle -A openclash_output -d "$fakeip_range" -j MARK --set-mark "$PROXY_FWMARK"
          else
             iptables -t mangle -A openclash_output -p udp -d "$fakeip_range" -j MARK --set-mark "$PROXY_FWMARK"
-            #icmp
-            iptables -t mangle -A openclash_output -p icmp --icmp-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMP Mark"
          fi
          if [ "$en_mode" = "redir-host" ]; then
             iptables -t mangle -A openclash_output -m set ! --match-set common_ports dst -j RETURN
@@ -2676,6 +2681,8 @@ if [ -z "$FW4" ]; then
             if [ "$en_mode_tun" -eq 1 ]; then
                iptables -t mangle -A openclash_output -j MARK --set-mark "$PROXY_FWMARK"
             else
+               #icmp
+               iptables -t mangle -A openclash_output -p icmp --icmp-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMP Mark"
                iptables -t mangle -A openclash_output -p udp -j MARK --set-mark "$PROXY_FWMARK"
             fi
          fi
@@ -2695,8 +2702,6 @@ if [ -z "$FW4" ]; then
          iptables -t mangle -A openclash -d "$fakeip_range" -j MARK --set-mark "$PROXY_FWMARK"
       else
          iptables -t mangle -A openclash -p udp -d "$fakeip_range" -j MARK --set-mark "$PROXY_FWMARK"
-         #icmp
-         iptables -t mangle -A openclash -p icmp --icmp-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMP Mark"
       fi
       iptables -t mangle -A openclash -m set --match-set wan_ac_black_ips dst -j RETURN
       iptables -t mangle -A openclash -m set --match-set wan_ac_black_ports dst -j RETURN
@@ -2727,6 +2732,8 @@ if [ -z "$FW4" ]; then
       if [ "$en_mode_tun" -eq 1 ]; then
          iptables -t mangle -A openclash -j MARK --set-mark "$PROXY_FWMARK"
       else
+         #icmp
+         iptables -t mangle -A openclash -p icmp --icmp-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMP Mark"
          iptables -t mangle -A openclash -p udp -j MARK --set-mark "$PROXY_FWMARK"
       fi
 
@@ -2897,8 +2904,6 @@ if [ -z "$FW4" ]; then
          fi
          if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
             ip6tables -t mangle -A openclash -p udp -d "$fakeip_range6" -j MARK --set-mark "$PROXY_FWMARK"
-            #icmpv6
-            ip6tables -t mangle -A openclash -p icmpv6 --icmpv6-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMPv6 Redirect"
          else
             if [ "$enable_v6_udp_proxy" -eq 1 ]; then
                ip6tables -t mangle -A openclash -p udp -d "$fakeip_range6" -j TPROXY --on-port "$tproxy_port" --tproxy-mark "$PROXY_FWMARK"
@@ -2927,6 +2932,10 @@ if [ -z "$FW4" ]; then
             fi
             [ "$enable_redirect_dns" != "2" ] && rule="$rule -m set ! --match-set china_ip6_route_pass dst"
             ip6tables -t mangle -A openclash $rule -j RETURN
+         fi
+         if [ "$ipv6_mode" -eq 2 ] && [ "$ipv6_mode" -eq 3 ]; then
+            #icmpv6
+            ip6tables -t mangle -A openclash -p icmpv6 --icmpv6-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMPv6 Redirect"
          fi
       fi
 
@@ -2996,10 +3005,6 @@ if [ -z "$FW4" ]; then
          if [ "$ipv6_mode" -eq 0 ] && [ "$enable_v6_udp_proxy" -ne 1 ]; then
             ip6tables -t mangle -A openclash_output -p tcp -d "$fakeip_range6" -j MARK --set-xmark "$PROXY_FWMARK"
          fi
-         #icmpv6
-         if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
-            ip6tables -t mangle -A openclash_output -p icmpv6 --icmpv6-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMPv6 Redirect"
-         fi
          ip6tables -t mangle -A openclash_output -m set --match-set wan_ac_black_ipv6s dst -j RETURN
          ip6tables -t mangle -A openclash_output -m set --match-set wan_ac_black_ports dst -j RETURN
          if [ "$en_mode" = "redir-host" ]; then
@@ -3013,6 +3018,11 @@ if [ -z "$FW4" ]; then
             fi
             [ "$enable_redirect_dns" != "2" ] && rule="$rule -m set ! --match-set china_ip6_route_pass dst"
             ip6tables -t mangle -A openclash_output $rule -j RETURN
+         fi
+
+         #icmpv6
+         if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
+            ip6tables -t mangle -A openclash_output -p icmpv6 --icmpv6-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMPv6 Redirect"
          fi
 
          if ([ "$ipv6_mode" -eq 1 ] && [ "$enable_v6_udp_proxy" -eq 1 ]) || [ "$ipv6_mode" -eq 3 ]; then
