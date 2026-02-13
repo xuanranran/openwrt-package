@@ -1752,11 +1752,11 @@ msgstr "未启用第三方规则，更新程序终止！"
 msgid "Get Other Rules Settings Faild, Update Stop!"
 msgstr "未找到第三方规则配置，更新程序终止！"
 
-msgid "is Replaced Successfully, Start Picking Nodes..."
-msgstr "替换成功，检测到已启用节点筛选，开始挑选节点..."
+msgid "Start Picking Nodes..."
+msgstr "检测到已启用节点筛选，开始挑选节点..."
 
-msgid "is Replaced Successfully, Start to Reserving..."
-msgstr "替换成功，检测到已启用保留配置，开始进行设置..."
+msgid "Start to Reserving..."
+msgstr "检测到已启用保留配置，开始进行设置..."
 
 msgid "Config File Test Successful, Check If There is Any Update..."
 msgstr "配置文件测试成功，检查是否有更新..."

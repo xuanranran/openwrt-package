@@ -1751,11 +1751,11 @@ msgstr "Las reglas de terceros no están habilitadas; operación detenida."
 msgid "Get Other Rules Settings Faild, Update Stop!"
 msgstr "No se encontró configuración de reglas de terceros; operación detenida."
 
-msgid "is Replaced Successfully, Start Picking Nodes..."
-msgstr "Reemplazo correcto; iniciando selección de nodos..."
+msgid "Start Picking Nodes..."
+msgstr "iniciando selección de nodos..."
 
-msgid "is Replaced Successfully, Start to Reserving..."
-msgstr "Reemplazo correcto; aplicando configuraciones reservadas..."
+msgid "Start to Reserving..."
+msgstr "aplicando configuraciones reservadas..."
 
 msgid "Config File Test Successful, Check If There is Any Update..."
 msgstr "Archivo de configuración válido; comprobando cambios..."

@@ -646,11 +646,6 @@ do_run_file()
       ln -s "$HISTORY_PATH" "$CACHE_PATH"
    fi
 
-   #创建原始备份
-   if [ ! -f "$2" ]; then
-      cp "$1" "$2"
-   fi
-
    #保存启动内核类型
    uci -q set openclash.config.core_type="$core_type"
    uci -q commit openclash
@@ -3531,7 +3526,6 @@ ${trimmed}"
                uci -q set openclash.@overwrite[0].config_path="$RAW_CONFIG_FILE"
                cfg_name=$(basename "$RAW_CONFIG_FILE" 2>/dev/null)
                if [ -n "$cfg_name" ]; then
-                  BACKUP_FILE="/etc/openclash/backup/${cfg_name}"
                   CONFIG_FILE="/etc/openclash/${cfg_name}"
                   TMP_CONFIG_FILE="/tmp/yaml_config_tmp_${cfg_name}"
                fi
@@ -3620,7 +3614,6 @@ get_config()
 {
    RAW_CONFIG_FILE=$(uci_get_config "config_path")
    CFG_NAME=$(basename "$RAW_CONFIG_FILE" 2>/dev/null)
-   BACKUP_FILE="/etc/openclash/backup/${CFG_NAME}"
    CONFIG_FILE="/etc/openclash/${CFG_NAME}"
    TMP_CONFIG_FILE="/tmp/yaml_config_tmp_${CFG_NAME}"
    enable=$(uci_get_config "enable")
@@ -3739,7 +3732,7 @@ start_service()
       do_run_mode
 
       LOG_OUT "Step 2: Check The Components..."
-      do_run_file "$RAW_CONFIG_FILE" "$BACKUP_FILE"
+      do_run_file "$RAW_CONFIG_FILE"
 
       if ! $QUICK_START; then
          LOG_OUT "Step 3: Modify The Config File..."
