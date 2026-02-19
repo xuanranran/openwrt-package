@@ -21,7 +21,6 @@ return view.extend({
 					max-width: 1600px;
 					height: 800px;
 					overflow: hidden;
-					border: 2px solid #ccc;
 					border-radius: 10px;
 				`
 			}, [

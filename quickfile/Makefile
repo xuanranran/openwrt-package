@@ -7,12 +7,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=quickfile
-PKG_VERSION:=1.0.6
+PKG_VERSION:=1.0.7
 PKG_RELEASE:=1
 
 PKG_SOURCE:=quickfile-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://r2.cooluc.com/source
-PKG_HASH:=097742d5ae64ac8300a6c01154f15cc8203adaa686012970267e90001ad05488
+PKG_HASH:=15097ae2c90503b298d2b6b3b5b095c39fd3316a150a05e4933372a437d15896
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -34,7 +34,7 @@ endef
 
 define Package/quickfile/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/quickfile-$(ARCH_PACKAGES) $(1)/usr/bin/quickfile
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/quickfile.$(ARCH) $(1)/usr/bin/quickfile
 	$(INSTALL_DIR) $(1)/etc/init.d $(1)/etc/nginx/conf.d
 	$(INSTALL_BIN) $(CURDIR)/files/quickfile.init $(1)/etc/init.d/quickfile
 	$(INSTALL_CONF) $(CURDIR)/files/quickfile.locations $(1)/etc/nginx/conf.d/quickfile.locations
