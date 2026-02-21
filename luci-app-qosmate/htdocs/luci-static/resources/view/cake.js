@@ -72,8 +72,14 @@ return view.extend({
 
     render: function() {
         return Promise.all([
-            uci.load('qosmate')
-        ]).then(() => {
+            uci.load('qosmate'),
+            fs.read('/tmp/qosmate/cake_type').then(function(res) {
+                return (res || '').trim();
+            }).catch(function() {
+                return null;
+            })
+        ]).then(function(data) {
+            var activeCakeType = data[1];
             var m, s, o;
             var rootQdisc = uci.get('qosmate', 'settings', 'ROOT_QDISC') || 'hfsc';
 
@@ -156,6 +162,28 @@ return view.extend({
 
         createOption('EXTRA_PARAMETERS_INGRESS', _('Extra Parameters (Ingress)'), _('Set extra parameters for ingress'), _('Default: none'));
         createOption('EXTRA_PARAMETERS_EGRESS', _('Extra Parameters (Egress)'), _('Set extra parameters for egress'), _('Default: none'));
+
+        var mqDesc = _('Use cake_mq for multi-core CPU scaling. Only effective in pure CAKE mode (not hybrid). Requires kernel support (OpenWrt 25.12+).');
+        var mqStatus = '';
+        var useMq = uci.get('qosmate', 'cake', 'USE_MQ') || '0';
+        if (rootQdisc === 'hybrid') {
+            mqStatus = ' ⚠ ' + _('Not available in Hybrid mode (cake_mq requires root qdisc)');
+        } else if (rootQdisc !== 'cake') {
+            mqStatus = ' ⚠ ' + _('Not used with %s').format(rootQdisc.toUpperCase());
+        } else if (useMq === '1') {
+            if (activeCakeType === 'cake_mq') {
+                mqStatus = ' ✓ ' + _('cake_mq is active');
+            } else if (activeCakeType === 'cake') {
+                mqStatus = ' ⚠ ' + _('cake_mq not available on this system, using standard cake');
+            } else {
+                mqStatus = ' ℹ ' + _('Service not running - restart to apply');
+            }
+        }
+
+        o = s.option(form.ListValue, 'USE_MQ', _('Multi-Queue CAKE (cake_mq)'), mqDesc + mqStatus);
+        o.value('0', _('Off (default)'));
+        o.value('1', _('Auto-detect'));
+        o.default = '0';
 
         return m.render();
         });

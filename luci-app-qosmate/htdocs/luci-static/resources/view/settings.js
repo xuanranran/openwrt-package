@@ -39,6 +39,7 @@ function createStatusText(status, text) {
 }
 
 var healthCheckData = null;
+var activeCakeType = null;
 var versionInfo = {
     backend: { current: 'Unknown', latest: 'Unknown', channel: 'Unknown' },
     frontend: { current: 'Unknown', latest: 'Unknown', channel: 'Unknown' }
@@ -146,7 +147,10 @@ return view.extend({
             uci.load('qosmate'),
             uci.load('firewall'),
             this.fetchHealthCheck(),
-            fetchVersionInfo()
+            fetchVersionInfo(),
+            fs.read('/tmp/qosmate/cake_type').then(function(res) {
+                activeCakeType = (res || '').trim() || null;
+            }).catch(function() { activeCakeType = null; })
         ]).catch(error => {
             console.error('Error in load function:', error);
             ui.addNotification(null, E('p', _('Error loading initial data: %s').format(error.message || error)), 'error');
@@ -758,8 +762,20 @@ return view.extend({
             switch(value) {
                 case 'hfsc':
                     return _('HFSC - Hierarchical Fair Service Curve. Configure realtime traffic settings in the HFSC tab.');
-                case 'cake':
-                    return _('CAKE - Common Applications Kept Enhanced. Configure CAKE-specific parameters in the CAKE tab.');
+                case 'cake': {
+                    var base = _('CAKE - Common Applications Kept Enhanced. Configure CAKE-specific parameters in the CAKE tab.');
+                    if (!activeCakeType) return base;
+                    var useMq = uci.get('qosmate', 'cake', 'USE_MQ') || '0';
+                    var mqStatus;
+                    if (activeCakeType === 'cake_mq') {
+                        mqStatus = ' ✓ ' + _('cake_mq active');
+                    } else if (useMq === '1') {
+                        mqStatus = ' ⚠ ' + _('cake_mq not available');
+                    } else {
+                        mqStatus = ' — ' + _('cake_mq off');
+                    }
+                    return base + mqStatus;
+                }
                 case 'hybrid':
                     return _('Hybrid - HFSC as shaper, Game Qdisc for realtime traffic, CAKE for default traffic and fq_codel for bulk traffic. Configure realtime class settings in HFSC tab and default class settings in CAKE tab.');
                 case 'htb':
