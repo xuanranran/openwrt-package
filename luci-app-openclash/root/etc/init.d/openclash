@@ -1,5 +1,5 @@
 #!/bin/sh /etc/rc.common
-# Copyright (c) 2019-2024 vernesong
+# Copyright (c) 2019-2026 vernesong
 
 START=99
 STOP=15
@@ -37,9 +37,6 @@ add_cron()
    [ -z "$(grep "openclash.sh" "$CRON_FILE" 2>/dev/null)" ] && {
       [ "$(uci_get_config "auto_update")" -eq 1 ] && [ "$(uci_get_config "config_auto_update_mode")" -ne 1 ] && echo "0 $(uci_get_config "auto_update_time" || 1) * * $(uci_get_config "config_update_week_time" || 0) /usr/share/openclash/openclash.sh" >> $CRON_FILE
    }
-   [ -z "$(grep "openclash_rule.sh" "$CRON_FILE" 2>/dev/null)" ] && {
-      [ "$(uci_get_config "other_rule_auto_update")" -eq 1 ] && echo "0 $(uci_get_config "other_rule_update_day_time" || 1) * * $(uci_get_config "other_rule_update_week_time" || 0) /usr/share/openclash/openclash_rule.sh" >> $CRON_FILE
-   }
    [ -z "$(grep "openclash_ipdb.sh" "$CRON_FILE" 2>/dev/null)" ] && {
       [ "$(uci_get_config "geo_auto_update")" -eq 1 ] && echo "0 $(uci_get_config "geo_update_day_time" || 1) * * $(uci_get_config "geo_update_week_time" || 0) /usr/share/openclash/openclash_ipdb.sh" >> $CRON_FILE
    }
@@ -69,7 +66,6 @@ add_cron()
 del_cron()
 {
    sed -i '/openclash.sh/d' $CRON_FILE
-   sed -i '/openclash_rule.sh/d' $CRON_FILE
    sed -i '/openclash_ipdb.sh/d' $CRON_FILE
    sed -i '/openclash_geoip.sh/d' $CRON_FILE
    sed -i '/openclash_geosite.sh/d' $CRON_FILE
@@ -466,7 +462,6 @@ write_run_quick()
       echo "$CONFIG_FILE"
       ls -d /etc/openclash/custom/* 2>/dev/null
       ls -d /etc/openclash/overwrite/* 2>/dev/null
-      echo "/usr/share/openclash/res/lhie1.yaml"
    } | while read -r file; do
       echo "$file #edited time# $(date -r "$file")" >> "/tmp/openclash.change"
    done
@@ -3617,7 +3612,6 @@ get_config()
    CONFIG_FILE="/etc/openclash/${CFG_NAME}"
    TMP_CONFIG_FILE="/tmp/yaml_config_tmp_${CFG_NAME}"
    enable=$(uci_get_config "enable")
-   rule_source=$(uci_get_config "rule_source")
    enable_custom_clash_rules=$(uci_get_config "enable_custom_clash_rules")
    da_password=$(uci_get_config "dashboard_password")
    cn_port=$(uci_get_config "cn_port")
@@ -3748,8 +3742,8 @@ start_service()
          "$lgbm_auto_update" "$lgbm_custom_url" "$lgbm_update_interval" "$smart_collect" "$smart_collect_size" "$fakeip_range6"
 
          /usr/share/openclash/yml_rules_change.sh \
-         "$rule_source" "$enable_custom_clash_rules" "$TMP_CONFIG_FILE"\
-         "$enable_rule_proxy" "$CONFIG_NAME" "$router_self_proxy" "$lan_ip" "$enable_redirect_dns" "$en_mode"\
+         "$enable_custom_clash_rules" "$TMP_CONFIG_FILE"\
+         "$enable_rule_proxy" "$router_self_proxy" "$lan_ip" "$enable_redirect_dns" "$en_mode"\
          "$auto_smart_switch" "$smart_collect" "$smart_collect_rate" "$smart_policy_priority" "$smart_enable_lgbm" "$smart_prefer_asn"
 
          #Custom overwrite
@@ -3841,13 +3835,9 @@ stop_service()
 
       if [ "$enable" != "1" ]; then
          rm -rf /tmp/clash_last_version \
-                /tmp/Proxy_Group \
-                /tmp/rules_name \
-                /tmp/rule_providers_name \
                 /tmp/openclash_last_version \
                 /tmp/openclash.change \
                 /tmp/openclash_debug.log \
-                /tmp/openclash_edit_file_name \
                 /tmp/openclash_announcement \
                 ${DNSMASQ_CONF_DIR}/dnsmasq_openclash_chnroute_pass.conf \
                 ${DNSMASQ_CONF_DIR}/dnsmasq_openclash_chnroute6_pass.conf \

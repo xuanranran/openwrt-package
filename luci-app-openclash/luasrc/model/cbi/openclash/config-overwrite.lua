@@ -444,10 +444,6 @@ o = s:taboption("smart", DummyValue, "flush_smart_cache", translate("Flush Smart
 o.template = "openclash/flush_smart_cache"
 
 ---- Rules Settings
-o = s:taboption("rules", Flag, "rule_source", translate("Enable Other Rules"))
-o.description = translate("Use Other Rules")
-o.default = 0
-
 o = s:taboption("rules", Flag, "enable_rule_proxy", translate("Rule Match Proxy Mode"))
 o.description = translate("Append Some Rules to Config, Allow Only Traffic Proxies that Match the Rule, Prevent BT/P2P Passing")
 o.default = 0
@@ -572,53 +568,6 @@ o.rempty = false
 o = ds:option(Flag, "disable_ipv6", translate("Disable-IPv6"))
 o.rmempty = false
 o.default = o.disbled
-
--- [[ Other Rules Manage ]]--
-ss = m:section(TypedSection, "other_rules", translate("Other Rules Edit")..translate("(Take Effect After Choose Above)"))
-ss.anonymous = true
-ss.addremove = true
-ss.sortable = true
-ss.template = "cbi/tblsection"
-ss.extedit = luci.dispatcher.build_url("admin/services/openclash/other-rules-edit/%s")
-function ss.create(...)
-	local sid = TypedSection.create(...)
-	if sid then
-		luci.http.redirect(ss.extedit % sid)
-		return
-	end
-end
-ss.render = function(self, ...)
-	Map.render(self, ...)
-	if type(optimize_cbi_ui) == "function" then
-		optimize_cbi_ui()
-	end
-end
-
-o = ss:option(Flag, "enabled", translate("Enable"))
-o.rmempty = false
-o.default = o.enabled
-o.cfgvalue = function(...)
-	return Flag.cfgvalue(...) or "1"
-end
-
-o = ss:option(DummyValue, "config", translate("Config File"))
-function o.cfgvalue(...)
-	return Value.cfgvalue(...) or translate("None")
-end
-
-o = ss:option(DummyValue, "rule_name", translate("Other Rules Name"))
-function o.cfgvalue(...)
-	if Value.cfgvalue(...) == "lhie1" then
-		return translate("lhie1 Rules")
-	else
-		return translate("None")
-	end
-end
-
-o = ss:option(DummyValue, "Note", translate("Note"))
-function o.cfgvalue(...)
-	return Value.cfgvalue(...) or translate("None")
-end
 
 -- [[ Edit Authentication ]] --
 s = m:section(TypedSection, "authentication", translate("Set Authentication of SOCKS5/HTTP(S)"))

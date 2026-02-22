@@ -5,8 +5,8 @@
 msgid "OpenClash"
 msgstr "OpenClash"
 
-msgid "A Clash Client For OpenWrt"
-msgstr "一个运行在 OpenWrt 上的 Clash 客户端，兼容 Shadowsocks(R)、Vmess、Trojan、Snell 等协议，根据灵活的规则配置实现策略代理"
+msgid "A Mihomo(Clash) Client For OpenWrt"
+msgstr "一个运行在 OpenWrt 上的 Mihomo(Clash) 客户端，兼容 Shadowsocks(R)、Vmess、Trojan、Snell 等协议，根据灵活的规则配置实现策略代理"
 
 msgid "Plugin Settings"
 msgstr "插件设置"
@@ -19,18 +19,6 @@ msgstr "运行状态"
 
 msgid "Overwrite Settings"
 msgstr "覆写设置"
-
-msgid "Rule Providers Append"
-msgstr "规则附加"
-
-msgid "Game Rules Append"
-msgstr "游戏规则附加"
-
-msgid "Other Rule Providers Append"
-msgstr "第三方规则集附加"
-
-msgid "Custom Rule Providers Append"
-msgstr "自定义规则集附加"
 
 msgid "General Settings"
 msgstr "常规设置"
@@ -287,8 +275,8 @@ msgstr "允许 IPv6 类型 DNS 解析"
 msgid "Enable to Resolve IPv6 DNS Requests"
 msgstr "允许解析 IPv6 类型的 DNS 请求"
 
-msgid "Rules Setting"
-msgstr "规则设置"
+msgid "Common Setting"
+msgstr "通用设置"
 
 msgid "Config Manage"
 msgstr "配置管理"
@@ -334,9 +322,6 @@ msgstr "代理集文件列表"
 
 msgid "Rule Providers File List"
 msgstr "规则集文件列表"
-
-msgid "Game Rules File List"
-msgstr "游戏规则文件列表"
 
 msgid "Please Make Sure Ports Available"
 msgstr "请确保端口可用"
@@ -470,21 +455,6 @@ msgstr "更新大陆白名单"
 msgid "Chnroute Update"
 msgstr "大陆白名单订阅"
 
-msgid "Other Rules Update(Only in Use)"
-msgstr "正在使用第三方规则时才能更新"
-
-msgid "Enable Other Rules"
-msgstr "第三方规则"
-
-msgid "Use Other Rules"
-msgstr "将覆盖配置文件内的所有规则 (不包括自定义规则)，启用前请先在此页面下方创建配置"
-
-msgid "lhie1 Rules"
-msgstr "lhie1 规则"
-
-msgid "Auto Update Other Rules"
-msgstr "正在使用第三方规则时更新设置才会生效"
-
 msgid "Update Time (Every Week)"
 msgstr "更新时间(每周)"
 
@@ -512,33 +482,6 @@ msgstr "每周六"
 msgid "Every Sunday"
 msgstr "每周日"
 
-msgid "Update Other Rules"
-msgstr "更新第三方规则"
-
-msgid "GlobalTV"
-msgstr "国际流媒体"
-
-msgid "AsianTV"
-msgstr "亚洲流媒体"
-
-msgid "CN Mainland TV"
-msgstr "大陆流媒体"
-
-msgid "Proxy"
-msgstr "必须代理的流量"
-
-msgid "Apple"
-msgstr "苹果服务（Apple）"
-
-msgid "Google FCM"
-msgstr "谷歌推送（Google FCM）"
-
-msgid "Scholar"
-msgstr "学术网站（Scholar）"
-
-msgid "Microsoft"
-msgstr "微软服务（Microsoft）"
-
 msgid "Netflix"
 msgstr "奈飞（Netflix）"
 
@@ -550,27 +493,6 @@ msgstr "哔哩哔哩（Bilibili）"
 
 msgid "Bahamut"
 msgstr "巴哈姆特（Bahamut）"
-
-msgid "Steam"
-msgstr "Steam（非下载流量）"
-
-msgid "Netease Music"
-msgstr "网易云音乐"
-
-msgid "Speedtest"
-msgstr "测速流量（Speedtest）"
-
-msgid "AdBlock"
-msgstr "广告（AdBlock）"
-
-msgid "Domestic"
-msgstr "国内流量"
-
-msgid "Others"
-msgstr "未匹配到规则的流量"
-
-msgid "Choose Proxy Groups, Base On Your Config File"
-msgstr "指定流量(策略)的代理方式，只支持选择（策略组），信息来源于您的配置文件"
 
 msgid "Custom Clash Rules"
 msgstr "*自定义规则"
@@ -633,8 +555,8 @@ msgstr "更新客户端"
 msgid "Only For IPK Install Type Or Not Release Memory"
 msgstr "只支持通过 IPK 安装的版本进行更新，因为随系统编译的版本更新后不会释放旧版本的闪存空间"
 
-msgid "Onekey Create"
-msgstr "一键生成"
+msgid "Servers Manage"
+msgstr "节点管理"
 
 msgid "Read Config"
 msgstr "读取配置"
@@ -657,35 +579,8 @@ msgstr "返回概览"
 msgid "Refresh Page"
 msgstr "刷新页面"
 
-msgid "Onekey Create (Servers&Groups manage)"
-msgstr "一键生成（服务器&策略组管理）"
-
-msgid "Keep Settings"
-msgstr "保留配置"
-
-msgid "Only Update Servers Below When Subscription"
-msgstr "订阅时仅更新节点和代理集，保留下方策略组设置，不修改顺序"
-
-msgid "New Servers Group (Support Regex)"
-msgstr "新节点默认策略组（请勿重复添加，支持正则匹配）"
-
-msgid "Set The New Subscribe Server's Default Proxy Groups"
-msgstr "选择符合订阅要求的新节点的默认策略组（请勿重复添加）"
-
-msgid "Choose Template For Create Config"
-msgstr "选择配置文件模板"
-
-msgid "Use Other Rules To Create Config"
-msgstr "使用第三方规则快速创建配置文件（创建后可在全局设置页面调整参数）"
-
-msgid "Disable Create Config"
-msgstr "只更新配置文件服务器节点信息"
-
-msgid "Mix Proxies"
-msgstr "混合节点"
-
-msgid "Mix This Page's Proxies"
-msgstr "一键生成配置文件时合并本页下方的所有代理服务器信息（不区分配置文件）"
+msgid "Servers & Groups manage"
+msgstr "节点 & 策略组管理"
 
 msgid "Type"
 msgstr "类型"
@@ -750,14 +645,8 @@ msgstr "登录密码"
 msgid "None"
 msgstr "未配置"
 
-msgid "Create Config"
-msgstr "一键生成配置文件"
-
-msgid "Create Config By One-Click Only Need Proxies"
-msgstr "一键生成配置文件功能只需要配置服务器节点信息或代理集信息"
-
-msgid "Proxy Groups(No Need Set when Config Create)"
-msgstr "策略组配置（使用一键生成配置文件功能时无需设置）"
+msgid "Proxy Groups"
+msgstr "策略组配置"
 
 msgid "Proxies"
 msgstr "服务器节点配置"
@@ -803,51 +692,6 @@ msgstr "QUIC 初始的连接接收窗口大小"
 
 msgid "QUIC max connection receive window"
 msgstr "QUIC 最大的连接接收窗口大小"
-
-msgid "Edit Rule Providers"
-msgstr "编辑规则集配置"
-
-msgid "Rule Providers Type"
-msgstr "规则集类型"
-
-msgid "Choose The Rule Providers Type"
-msgstr "选择规则集类型"
-
-msgid "Append Position"
-msgstr "规则集匹配顺序"
-
-msgid "Priority Match"
-msgstr "优先（覆盖）"
-
-msgid "Extended Match"
-msgstr "扩展（补充）"
-
-msgid "Rule Providers Name"
-msgstr "别名（请勿重名）"
-
-msgid "Rule Behavior"
-msgstr "规则类型"
-
-msgid "Rule Format"
-msgstr "规则格式"
-
-msgid "Choose The Rule Behavior"
-msgstr "选择规则类型"
-
-msgid "Choose The Rule File Format, For More Info:"
-msgstr "选择规则格式, 了解使用方式请前往："
-
-msgid "Rule Providers Path"
-msgstr "规则集路径"
-
-msgid "Update Your Rule Providers File From Config Luci Page"
-msgstr "请先在配置文件管理页面上传您的规则集文件"
-
-msgid "Rule Providers URL"
-msgstr "规则集地址"
-
-msgid "Rule Providers Interval(s)"
-msgstr "规则集更新时间（秒）"
 
 msgid "Edit Group"
 msgstr "编辑策略组配置"
@@ -903,8 +747,8 @@ msgstr "添加到策略组（请勿重复添加，支持正则匹配）"
 msgid "Set Proxy Group"
 msgstr "指定策略组"
 
-msgid "No Need Set when Config Create, The added Proxy Groups Must Exist"
-msgstr "注意：使用一键生成配置文件功能时无需设置此项，修改配置文件前添加的策略组必须已创建"
+msgid "The added Proxy Groups Must Exist"
+msgstr "注意：修改配置文件前添加的策略组必须已创建"
 
 msgid "The added Dialer Proxy or Group Must Exist"
 msgstr "注意：修改配置文件前添加的策略组或者节点必须已创建"
@@ -1004,48 +848,6 @@ msgstr "状态检查 URL"
 
 msgid "Health Check Interval(s)"
 msgstr "状态检查间隔（s）"
-
-msgid "Game Rule's Name"
-msgstr "选择游戏规则"
-
-msgid "Rule Provider's Name"
-msgstr "选择规则集（请勿重复添加）"
-
-msgid "Select Proxy Group"
-msgstr "选择策略组"
-
-msgid "Game Rules List"
-msgstr "游戏规则列表"
-
-msgid "Rule Name"
-msgstr "规则名称"
-
-msgid "Rule Type"
-msgstr "规则类型"
-
-msgid "Rule Author"
-msgstr "规则作者"
-
-msgid "Download Rule"
-msgstr "下载规则"
-
-msgid "Exist"
-msgstr "已下载"
-
-msgid "Not Exist"
-msgstr "未下载"
-
-msgid "Serial Number"
-msgstr "序号"
-
-msgid "Game Rules Manage"
-msgstr "管理第三方游戏规则"
-
-msgid "Other Rule Provider Manage"
-msgstr "管理第三方规则集"
-
-msgid "Other Rule Providers List"
-msgstr "第三方规则集列表"
 
 msgid "Proxy UDP Traffics"
 msgstr "UDP 流量转发"
@@ -1512,18 +1314,6 @@ msgstr "(全部国家且且包含官方全部信息数据)"
 msgid "(Only CN)"
 msgstr "(仅中国数据)"
 
-msgid "Other Rules Edit"
-msgstr "设置第三方规则"
-
-msgid "Get Group Names"
-msgstr "获取策略组"
-
-msgid "Get Group Names After Select Config File"
-msgstr "选择配置文件后请点击以获取对应的策略组"
-
-msgid "Other Rules Name"
-msgstr "第三方规则"
-
 msgid "Note"
 msgstr "备注"
 
@@ -1695,15 +1485,6 @@ msgstr "警告：未选择编译版本，请到升级页面选择后再试！"
 msgid "Core Has Not Been Updated, Stop Continuing Operation!"
 msgstr "版本内核没有更新，停止继续操作！"
 
-msgid "Start Downloading Third Party Rules in Use..."
-msgstr "开始下载使用中的第三方规则..."
-
-msgid "Warning: Multiple Other-Rules-Configurations Enabled, Ignore..."
-msgstr "警告：检测到启用了多个第三方规则配置，忽略后续配置..."
-
-msgid "Download Successful, Start Preprocessing Rule File..."
-msgstr "下载成功，开始预处理规则文件..."
-
 msgid "Error:"
 msgstr "错误："
 
@@ -1713,32 +1494,8 @@ msgstr "提示："
 msgid "Warning:"
 msgstr "警告："
 
-msgid "Rule File Format Validation Failed, Please Try Again Later..."
-msgstr "规则文件格式校验失败，请稍后再试..."
-
-msgid "Error: Updated Others Rules"
-msgstr "错误：更新的第三方规则文件"
-
-msgid "Has No Rules Field, Update Exit..."
-msgstr "规则部分校验失败，请稍后再试..."
-
-msgid "Has Incompatible Proxy-Group, Update Exit, Please Wait For OpenClash Update To Adapt..."
-msgstr "含有未支持的策略组，更新停止，请等待 OpenClash 版本更新适配..."
-
-msgid "Check The Downloaded Rule File For Updates..."
-msgstr "检查下载的规则文件是否有更新..."
-
-msgid "Detected that The Downloaded Rule File Has Been Updated, Starting To Replace..."
-msgstr "检测到下载的规则文件有更新，开始替换..."
-
-msgid "Other Rules"
-msgstr "第三方规则文件"
-
 msgid "Update Successful!"
 msgstr "更新成功！"
-
-msgid "Updated Other Rules"
-msgstr "检测到更新的规则文件"
 
 msgid "No Change, Do Nothing!"
 msgstr "没有更新，停止继续操作!"
@@ -1746,17 +1503,8 @@ msgstr "没有更新，停止继续操作!"
 msgid "Update Error, Please Try Again Later..."
 msgstr "下载失败，请检查网络或稍后再试..."
 
-msgid "Other Rules Not Enable, Update Stop!"
-msgstr "未启用第三方规则，更新程序终止！"
-
-msgid "Get Other Rules Settings Faild, Update Stop!"
-msgstr "未找到第三方规则配置，更新程序终止！"
-
 msgid "Start Picking Nodes..."
 msgstr "检测到已启用节点筛选，开始挑选节点..."
-
-msgid "Start to Reserving..."
-msgstr "检测到已启用保留配置，开始进行设置..."
 
 msgid "Config File Test Successful, Check If There is Any Update..."
 msgstr "配置文件测试成功，检查是否有更新..."
@@ -1947,8 +1695,8 @@ msgstr "节点到配置文件..."
 msgid "Proxy-provider To Config File..."
 msgstr "代理集到配置文件..."
 
-msgid "Unable To Parse, Please Choose One-key Function To Create Config File..."
-msgstr "的信息读取失败，无法进行修改，请选择一键创建配置文件..."
+msgid "Unable To Parse..."
+msgstr "的信息读取失败..."
 
 msgid "Setting Secondary DNS Server List..."
 msgstr "正在设置第二 DNS 服务器列表..."
@@ -1968,20 +1716,8 @@ msgstr "读取完成！"
 msgid "Write Successful!"
 msgstr "写入完成！"
 
-msgid "Creating By Using lhie1 Rules..."
-msgstr "使用 lhie1 规则创建中..."
-
-msgid "Created Successful, Updating Proxies, Proxy-providers, Groups..."
-msgstr "创建完成，正在更新服务器、代理集、策略组信息..."
-
 msgid "Proxies, Proxy-providers, Groups Edited Successful, Updating Config File"
 msgstr "服务器、代理集、策略组信息修改完成，正在更新配置文件"
-
-msgid "Warning: Because of The Different Porxy-Group's Name, Stop Setting The Other Rules!"
-msgstr "警告：由于第三方规则设置中的策略组名称与配置文件中的不符或不存在，停止继续设置第三方规则！"
-
-msgid "Error: Missing Porxy-Group's Name, Stop Setting The Other Rules!"
-msgstr "错误：丢失或未指定第三方规则中的部分策略组，停止继续设置第三方规则！"
 
 msgid "Tip: Detected That The nameserver DNS Option Has No Server Set, Starting To Complete..."
 msgstr "提示：检测到 DNS 选项下的 Nameserver 未设置服务器，开始补全..."
@@ -2124,27 +1860,6 @@ msgstr "URL-Test 策略组切换灵敏度"
 msgid "Attention:"
 msgstr "注意事项："
 
-msgid "The game proxy is a test function and does not guarantee the availability of rules"
-msgstr "游戏代理为测试功能，不保证规则可用性"
-
-msgid "Preparation steps:"
-msgstr "准备步骤："
-
-msgid "1. Check the policy group and node you are going to use, Policy group type suggestion: fallback, game nodes must be support UDP and not a Vmess"
-msgstr "1、检查您准备使用的策略组和节点，策略组类型建议: FallBack，游戏节点必须支持 UDP 且不是 Vmess 节点"
-
-msgid "2. Click the <manage third party game rules> or <manage third party rule set> button to enter the rule list and download the rules you want to use"
-msgstr "2、点击《管理第三方游戏规则》或者《管理第三方规则集》按钮进入规则列表下载您要使用的规则"
-
-msgid "3. On this page, set the corresponding configuration file and policy group of the rule you have downloaded, and save the settings"
-msgstr "3、在此页面设置您已下载的规则的对应配置文件、策略组并保存设置"
-
-msgid "When setting this page, if the groups is empty, please go to the <Onekey Create> page to add"
-msgstr "本页设置时如策略组为空，请先到《一键生成》页面进行添加"
-
-msgid "Introduction to rule set usage:"
-msgstr "规则集使用介绍："
-
 msgid "Introduction to proxy usage:"
 msgstr "代理使用介绍："
 
@@ -2172,81 +1887,6 @@ msgstr "错误：只有在配置文件设置了 Fallback 组的 DNS 时 Fallback
 msgid "Error: Unable To Parse Custom Fallback-Filter File, Ignore..."
 msgstr "错误：读取自定义的 Fallback-Filter 设置失败，跳过此项修改..."
 
-msgid "Simple & trustworthy"
-msgstr "简单 & 值得信赖"
-
-msgid "Cross-platform Support"
-msgstr "丰富的第三方应用兼容性"
-
-msgid "Global Acceleration Network"
-msgstr "全球网络基础设施"
-
-msgid "Easy to Use"
-msgstr "操作简易"
-
-msgid "Intelligent Shunting"
-msgstr "智能分流"
-
-msgid "Perfect Technical Support"
-msgstr "完善技术支持"
-
-msgid "Plan Expiration Time"
-msgstr "到期时间"
-
-msgid "Account Balances"
-msgstr "账户余额"
-
-msgid "Aff Balances"
-msgstr "返利余额"
-
-msgid "Account Integral"
-msgstr "账户积分"
-
-msgid "Today Used"
-msgstr "今日已用"
-
-msgid "Plan Used"
-msgstr "本月已用"
-
-msgid "Plan Unused"
-msgstr "剩余流量"
-
-msgid "Plan Traffic"
-msgstr "套餐流量"
-
-msgid "Checkin"
-msgstr "试试手气"
-
-msgid "Dler Cloud Account Login Failed! Please Check And Try Again..."
-msgstr "Dler Cloud 账户登录失败！请检查账户信息并重试..."
-
-msgid "Dler Cloud Account Login Failed, The Error Info is"
-msgstr "Dler Cloud 账户登录失败，错误信息"
-
-msgid "Dler Cloud Checkin Failed! Please Check And Try Again..."
-msgstr "Dler Cloud 签到失败，请稍后再试！"
-
-msgid "Account Email Address"
-msgstr "账号地址"
-
-msgid "Account Password"
-msgstr "账号密码"
-
-msgid "Checkin Interval (hour)"
-msgstr "签到间隔（小时）"
-
-msgid "Checkin Multiple"
-msgstr "签到倍数"
-
-msgid "Multiple Must Be a Positive Integer and No More Than 100"
-msgstr "倍数必须是正整数且不大于 100"
-
-msgid "Dler Cloud Checkin Successful, Result:"
-msgstr "Dler Cloud 签到成功，结果："
-
-msgid "Dler Cloud Checkin Failed, Result:"
-msgstr "Dler Cloud 签到失败，结果："
-
 msgid "Downloading Rule..."
 msgstr "正在下载规则..."
 
@@ -2256,62 +1896,8 @@ msgstr "下载失败"
 msgid "Download Successful"
 msgstr "下载成功"
 
-msgid "Rule No Change"
-msgstr "规则没有更新"
-
 msgid "Download Timeout"
 msgstr "下载超时"
-
-msgid "Rule Project:"
-msgstr "规则项目:"
-
-msgid "Login..."
-msgstr "登录中..."
-
-msgid "Dler Cloud Login Successful"
-msgstr "Dler Cloud 登录成功"
-
-msgid "Dler Cloud Login Faild"
-msgstr "Dler Cloud 登录失败"
-
-msgid "Login Account"
-msgstr "登录账号"
-
-msgid "Dler Cloud Logout Successful"
-msgstr "Dler Cloud 已成功退出"
-
-msgid "Dler Cloud Logout Faild"
-msgstr "Dler Cloud 退出失败"
-
-msgid "Logout Account"
-msgstr "退出账号"
-
-msgid "Account Login"
-msgstr "账号登录"
-
-msgid "Account logged in"
-msgstr "账号已登录"
-
-msgid "Account not logged in"
-msgstr "账号未登录"
-
-msgid "Logout..."
-msgstr "退出中..."
-
-msgid "Error Login Info"
-msgstr "登录信息错误"
-
-msgid "Warning: Proxy is no longer used. Auto replaced by proxies"
-msgstr "警告：【Proxy】写法已不再支持，自动替换为 proxies"
-
-msgid "Warning: Proxy Group is no longer used. Auto replaced by proxy-groups"
-msgstr "警告：【Proxy Group】写法已不再支持，自动替换为 proxy-groups"
-
-msgid "Warning: Rule is no longer used. Auto replaced by rules"
-msgstr "警告：【Rule】写法已不再支持，自动替换为 rules"
-
-msgid "Warning: rule-provider is no longer used. Auto replaced by rule-providers"
-msgstr "警告：【rule-provider】写法已不再支持，自动替换为 rule-providers"
 
 msgid "Error: Load File Failed,"
 msgstr "错误：文件解析失败，"
@@ -2343,32 +1929,17 @@ msgstr "错误：设置自定义规则失败，"
 msgid "Error: Set BT/P2P DIRECT Rules Failed,"
 msgstr "错误：设置仅代理命中规则流量（BT/P2P 直连）失败，"
 
-msgid "Error: Set lhie1 Rules Failed,"
-msgstr "错误：设置第三方规则（lhie1）失败，"
-
 msgid "Error: Filter Proxies Failed,"
 msgstr "错误：节点筛选失败，"
 
 msgid "Error: Unable To Parse Config File,"
 msgstr "错误：配置文件解析失败，"
 
-msgid "Error: Unable To Parse Updated Rules File,"
-msgstr "错误：更新的规则文件解析失败，"
-
 msgid "Error: Edit Provider Path Failed,"
 msgstr "错误：修改集路径失败，"
 
 msgid "Error: Edit URL-Test Group Tolerance Option Failed,"
 msgstr "错误：修改 URL-Test 策略组容忍值失败，"
-
-msgid "Error: Game Proxy Merge Failed,"
-msgstr "错误：游戏规则策略组合并失败，"
-
-msgid "Error: Rule Set Add Failed,"
-msgstr "错误：规则集 Rule-Set 规则添加失败，"
-
-msgid "Error: Custom Rule Provider Merge Failed,"
-msgstr "错误：规则集 Rule Provider 合并失败，"
 
 msgid "Error: Resolve Proxy-providers Failed,"
 msgstr "错误：解析代理集失败，"
@@ -2847,6 +2418,9 @@ msgstr "流量（域名）探测能有效防止域名分流异常和 DNS 劫持�
 msgid "Override All Dns Query"
 msgstr "启用后将尽可能的覆盖 DNS 查询到的域名"
 
+msgid "Rules Setting"
+msgstr "规则设置"
+
 msgid "Meta Settings"
 msgstr "Meta 设置"
 
@@ -3116,12 +2690,6 @@ msgstr "1. 修改配置文件前，请先点击下方按钮读取配置文件"
 
 msgid "2. Proxy-providers address can be directly filled in the subscription link"
 msgstr "2. 代理集地址可以直接填写订阅链接"
-
-msgid "Custom Tag"
-msgstr "自定义标记"
-
-msgid "Mark as Custom Node to Prevent Retention config from being Deleted When Enabled"
-msgstr "标记为自定义节点，防止保留配置启用时被删除"
 
 msgid "Error: Edit URL-Test URL Failed,"
 msgstr "错误：修改测速地址失败，"

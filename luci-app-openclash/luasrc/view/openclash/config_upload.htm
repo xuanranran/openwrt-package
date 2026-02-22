@@ -785,7 +785,6 @@
                                     <label for="convert-address-input"><%:Convert Address%>:</label>
                                     <div class="form-select-wrapper">
                                         <select id="convert-address-input" class="form-select">
-                                            <option value="https://api.dler.io/sub">api.dler.io (<%:Default%>)</option>
                                             <option value="https://api.wcc.best/sub">api.wcc.best</option>
                                             <option value="https://api.asailor.org/sub">api.asailor.org</option>
                                             <option value="custom"><%:Custom%></option>
@@ -1160,7 +1159,7 @@ var ConfigUploader = {
     resetAdvancedOptions: function() {
         document.getElementById('sub-convert-enable').checked = false;
         document.getElementById('sub-convert-options').style.display = 'none';
-        document.getElementById('convert-address-input').value = 'https://api.dler.io/sub';
+        document.getElementById('convert-address-input').selectedIndex = 0;
         document.getElementById('convert-address-custom').style.display = 'none';
         document.getElementById('convert-address-custom').value = '';
 
@@ -1249,7 +1248,7 @@ var ConfigUploader = {
                 document.getElementById('sub-convert-options').style.display = 'block';
 
                 if (data.convert_address) {
-                    if (data.convert_address === 'https://api.dler.io/sub' || data.convert_address === 'https://api.wcc.best/sub' || data.convert_address === 'https://api.asailor.org/sub') {
+                    if (data.convert_address === 'https://api.wcc.best/sub' || data.convert_address === 'https://api.asailor.org/sub') {
                         document.getElementById('convert-address-input').value = data.convert_address;
                         if (data.convert_address === 'custom') {
                             document.getElementById('convert-address-custom').style.display = 'block';
@@ -1520,7 +1519,7 @@ var ConfigUploader = {
         var advancedEnabled = document.getElementById('advanced-options-enable').checked;
         var subConvert = advancedEnabled && document.getElementById('sub-convert-enable').checked;
 
-        var convertAddress = 'https://api.dler.io/sub';
+        var convertAddress = '';
         var template = '';
         var emoji = false;
         var udp = false;
@@ -1554,7 +1553,7 @@ var ConfigUploader = {
             if (document.getElementById('exclude-website').checked) excludeDefaults.push('官网');
 
             if (convertAddress === 'custom') {
-                convertAddress = convertAddressCustom.trim() || 'https://api.dler.io/sub';
+                convertAddress = convertAddressCustom.trim();
             }
 
             if (template === '0') {
