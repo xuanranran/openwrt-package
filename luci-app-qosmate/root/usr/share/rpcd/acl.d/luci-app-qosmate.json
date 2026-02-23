@@ -20,6 +20,7 @@
                 "/tmp/qosmate_stats_history.json": [ "read" ],
                 "/tmp/qosmate-autorate-state": [ "read" ],
                 "/tmp/qosmate-autorate-history": [ "read" ],
+                "/tmp/qosmate/cake_type": [ "read" ],
                 "/etc/qosmate.d/autorate_hourly.csv": [ "read" ]
             }
         },
