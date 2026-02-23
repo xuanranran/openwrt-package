@@ -7,7 +7,10 @@ PROG=/usr/bin/quickfile
 start_service() {
 	procd_open_instance quickfile
 	procd_set_param command $PROG
-	procd_append_param command -dir / -sock /tmp/run/quickfile/quickfile.sock
+	procd_append_param command -dir /
+	procd_append_param command -api /cgi-bin/luci/quickfile/api/
+	procd_append_param command -static /cgi-bin/luci/quickfile-static/
+	procd_append_param command -sock /tmp/run/quickfile/quickfile.sock
 	procd_set_param stdout 0
 	procd_set_param stderr 0
 	procd_set_param respawn
