@@ -898,6 +898,14 @@ tr.cbi-section-table-row {
   }
 }
 
+.cbi-filebrowser > ul > li:hover {
+  background: #444950;
+}
+
+.cbi-filebrowser {
+  border: 1px solid #5c5c5c;
+}
+
 @media screen and (max-width: 480px) {
   .node-status-iptables>.main div>.cbi-map>form {
     background-color: #000000;

@@ -1,0 +1,109 @@
+#!/bin/sh
+# author jjm2473
+
+. /lib/functions.sh
+. /usr/share/libubox/jshn.sh
+
+# the script will be excuted when `argon.@global[0].bing_background == '1'`
+# defaults to 'bing' to be compatible with old config
+WEB_PIC_SRC="$(uci -q get argon.@global[0].online_wallpaper || echo 'bing')"
+
+CACHE="/var/run/argon_${WEB_PIC_SRC}.url"
+WRLOCK="/var/lock/argon_${WEB_PIC_SRC}.lock"
+
+fetch_pic_url() {
+	case "$WEB_PIC_SRC" in
+	bing)
+		local picpath="$(curl -s -m 3 \
+			"https://www.bing.com/HPImageArchive.aspx?format=js&n=1" |
+			jsonfilter -qe '@.images[0].url' |
+			sed 's/1920x1080/UHD/g')"
+		[ -n "${picpath}" ] && echo "//www.bing.com${picpath}"
+		;;
+	unsplash)
+		curl -fks --max-time 3 \
+			--header "Authorization: Client-ID kmFIroj2ELqXJPtC0XUoyww-Tr_lDU8Ho8uxjptIrCo" \
+			"https://api.unsplash.com/photos/random?count=1&orientation=landscape" |
+			jsonfilter -e "@[0]['urls']['full']" |
+			sed 's/$/&\&w=1920\&h=1080\&fit=crop\&q=90/'
+		;;
+	unsplash_*)
+		curl -fks --max-time 3 \
+			--header "Authorization: Client-ID kmFIroj2ELqXJPtC0XUoyww-Tr_lDU8Ho8uxjptIrCo" \
+			"https://api.unsplash.com/photos/random?count=1&orientation=landscape" |
+			jsonfilter -e "@[0]['urls']['full']" |
+			sed 's/$/&\&w=1920\&h=1080\&fit=crop\&q=90/'
+		;;
+	esac
+}
+
+try_update() {
+	local lock="$WRLOCK"
+	exec 200>"$lock"
+
+	if flock -n 200 >"/dev/null" 2>&1; then
+		local picurl="$(fetch_pic_url)"
+		if [ -n "$picurl" ]; then
+
+			# below is quirk fix for all browsers
+			# for some weird reason on first load, wallhaven images needs to be
+			# download or browsed first before it can be shown as a background image
+			# if not, browser only displays a blank image
+			# NOTE: only happens to Wallhaven.cc source images
+			if [[ "$WEB_PIC_SRC" == wallhave* ]] ; then
+				curl -s -m 3 "${picurl}" > /dev/null
+			fi
+
+			echo "$picurl" | tee "$CACHE"
+		else
+			if [ -s "$CACHE" ]; then
+				cat "$CACHE"
+			else
+				touch "$CACHE"
+			fi
+		fi
+		flock -u 200 >"/dev/null" 2>&1
+	elif [ -s "$CACHE" ]; then
+		cat "$CACHE"
+	fi
+}
+
+case "$1" in
+"list")
+	json_init
+	json_add_object "get_url"
+	json_close_object
+	json_dump
+	json_cleanup
+	;;
+"call")
+	case "$2" in
+	"get_url")
+		read -r input
+		if [ -f "$CACHE" ]; then
+			idle_t="$(($(date '+%s') - $(date -r "$CACHE" '+%s' 2>/dev/null || echo '0')))"
+			if [ -s "$CACHE" ]; then
+				if [ "$idle_t" -le "43200" ]; then
+					json_init
+					json_add_string "url" "$(cat "$CACHE")"
+					json_dump
+					json_cleanup
+					return 0
+				fi
+			else
+				if [ "$idle_t" -le 120 ]; then
+					echo '{ "url": "" }'
+					return 1
+				fi
+			fi
+		fi
+
+		json_init
+		json_add_string "url" "$(try_update)"
+		json_dump
+		json_cleanup
+		return 0
+		;;
+	esac
+	;;
+esac

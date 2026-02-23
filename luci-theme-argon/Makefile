@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 LUCI_TITLE:=Argon Theme
 LUCI_DEPENDS:=+curl +jsonfilter
 PKG_VERSION:=2.5.0
-PKG_RELEASE:=20250617
+PKG_RELEASE:=20260223
 
 define Package/luci-theme-argon/postrm
 #!/bin/sh

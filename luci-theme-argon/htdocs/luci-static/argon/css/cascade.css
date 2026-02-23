@@ -2001,6 +2001,95 @@ td>table>tbody>tr>td,
   /* margin: inherit !important */
 }
 
+.cbi-filebrowser {
+  min-width: 400px !important;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.cbi-filebrowser.open {
+  opacity: 1;
+  height: auto;
+  overflow: visible;
+  transition: opacity .25s ease-in;
+}
+
+.cbi-filebrowser > * {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 0 .25em 0;
+  margin: .25em .25em 0px .25em;
+  white-space: nowrap;
+  border-bottom: 1px solid #ccc;
+}
+
+.cbi-filebrowser .cbi-button-positive {
+  margin-right: .25em;
+}
+
+.cbi-filebrowser > div {
+  border-bottom: none;
+}
+
+.cbi-filebrowser > ul > li {
+  display: flex;
+  flex-direction: row;
+}
+
+.cbi-filebrowser > ul > li:hover {
+  background: #f5f5f5;
+}
+
+.cbi-filebrowser > ul > li > div:first-child {
+  flex: 10;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cbi-filebrowser > ul > li > div:last-child {
+  flex: 3;
+  text-align: right;
+}
+
+.cbi-filebrowser > ul > li > div:last-child > button {
+  padding: .125em .25em;
+  margin: 1px 0 1px .25em;
+}
+
+.cbi-filebrowser .upload {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 -.125em .25em -.125em;
+  padding: 0 0 .125em 0px;
+  border-bottom: 1px solid #ccc;
+}
+
+.cbi-filebrowser .upload > * {
+  margin: .125em;
+  flex: 1;
+}
+
+.cbi-filebrowser .upload > .btn {
+  flex-basis: 60px;
+}
+
+.cbi-filebrowser .upload > div {
+  flex: 10;
+  min-width: 150px;
+}
+
+.cbi-filebrowser .upload > div > input {
+  width: 100%;
+}
+
 .cbi-section[id] .cbi-section-remove:nth-of-type(4n+3),
 .cbi-section[id] .cbi-section-node:nth-of-type(4n+4) {
   background-color: #f9f9f9
@@ -2216,7 +2305,7 @@ td>table>tbody>tr>td,
 .td.cbi-section-actions>*>*,
 .td.cbi-section-actions>*>form>* {
   margin: 0 5px;
-  display: flex;
+  display: flex !important;
   align-items: center
 }
 
@@ -4788,6 +4877,10 @@ strong,
     left: 0 !important;
     right: 0 !important;
     margin-bottom: 1rem;
+  }
+  
+  .cbi-filebrowser {
+    min-width: 210px !important;
   }
 }
 
