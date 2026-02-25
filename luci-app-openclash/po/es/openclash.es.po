@@ -3832,3 +3832,6 @@ msgstr "Interfaz"
 
 msgid "User"
 msgstr "Usuario"
+
+msgid "Serial Number"
+msgstr "Número de serie"

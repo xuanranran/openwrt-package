@@ -3857,3 +3857,6 @@ msgstr "接口"
 
 msgid "User"
 msgstr "用户"
+
+msgid "Serial Number"
+msgstr "序号"

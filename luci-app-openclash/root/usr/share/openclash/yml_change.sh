@@ -718,7 +718,7 @@ begin
       threads.clear
 
       # DNS Loop Check
-      if enable_redirect_dns != '2'
+      if enable_redirect_dns == '1'
          dns_options = ['nameserver', 'fallback', 'default-nameserver', 'proxy-server-nameserver', 'nameserver-policy', 'direct-nameserver', 'proxy-server-nameserver-policy']
          dns_options.each do |option|
             threads << Thread.new(option) do |opt|

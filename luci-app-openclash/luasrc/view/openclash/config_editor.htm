@@ -74,6 +74,8 @@ if not conf then conf = "/etc/openclash/config/config.yaml" end
 local conf_name = fs.basename(conf)
 if not conf_name then conf_name = "config.yaml"  end
 local sconf = "/etc/openclash/"..conf_name
+local path_info = os.getenv("PATH_INFO") or ""
+local sid = path_info:match("(cfg[0-9a-f]+)") or ""
 -%>
 
 <table id="my_editor_div" style="width: 100%; text-align: center; display: none;">
@@ -362,7 +364,7 @@ function other_log_area(id, readOnly, wid, height)
 	other_log_area.markText({line:0,ch:0},{line:9999,ch:9999}, {css: 'font-size:13px'});
 };
 
-var custom_cfg_value = document.getElementById("cbid.openclash." + window.location.pathname.split("/")[window.location.pathname.split("/").length - 1] + ".other_parameters");
+var custom_cfg_value = document.getElementById("cbid.openclash.<%=sid%>.other_parameters");
 if (custom_cfg_value) {
 	editor(custom_cfg_value, 'false', '100%', '300px');
 };
