@@ -2,7 +2,10 @@
 	"luci-app-clouddrive2": {
 		"description": "Grant UCI access for luci-app-clouddrive2",
 		"read": {
-			"uci": [ "clouddrive2" ]
+			"uci": [ "clouddrive2" ],
+			"ubus": {
+				"service": [ "list" ]
+			}
 		},
 		"write": {
 			"uci": [ "clouddrive2" ]
