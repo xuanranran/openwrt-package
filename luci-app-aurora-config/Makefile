@@ -4,7 +4,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI configuration app for luci-theme-aurora
-LUCI_DEPENDS:=+luci-base
+LUCI_DEPENDS:=+luci-base +luci-theme-aurora
 LUCI_PKGARCH:=all
 
 PKG_VERSION:=0.3.0
