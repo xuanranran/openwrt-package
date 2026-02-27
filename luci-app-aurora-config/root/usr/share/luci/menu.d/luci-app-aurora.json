@@ -1,0 +1,28 @@
+{
+  "admin/system/aurora": {
+    "title": "Aurora Settings",
+    "order": 100,
+    "action": {
+      "type": "firstchild"
+    },
+    "depends": {
+      "acl": ["luci-app-aurora"]
+    }
+  },
+  "admin/system/aurora/theme": {
+    "title": "Theme Settings",
+    "order": 10,
+    "action": {
+      "type": "view",
+      "path": "aurora/theme"
+    }
+  },
+  "admin/system/aurora/version": {
+    "title": "Version Management",
+    "order": 20,
+    "action": {
+      "type": "view",
+      "path": "aurora/version"
+    }
+  }
+}
