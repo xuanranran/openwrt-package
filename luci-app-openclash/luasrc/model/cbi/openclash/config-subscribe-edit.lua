@@ -17,8 +17,6 @@ m = Map(openclash, translate("Config Subscribe Edit"))
 m.pageaction = false
 m.description=translate("Convert Subscribe function of Online is Supported By subconverter Written By tindy X") ..
 "<br/>"..
-"<br/>"..translate("API By tindy X")..
-"<br/>"..
 "<br/>"..translate("Subconverter external configuration (subscription conversion template) Description: https://github.com/tindy2013/subconverter#external-configuration-file")..
 "<br/>"..
 "<br/>"..translate("If you need to customize the external configuration file (subscription conversion template), please write it according to the instructions, upload it to the accessible location of the external network, and fill in the address correctly when using it")..
@@ -169,10 +167,10 @@ o.rmempty = true
 ---- de_exkey
 o = s:option(MultiValue, "de_ex_keyword", font_red..bold_on..translate("Exclude Keyword Match Default")..bold_off..font_off)
 o.rmempty = true
-o:value("过期时间")
-o:value("剩余流量")
-o:value("TG群")
-o:value("官网")
+o:value(translate("Expire"))
+o:value(translate("Traffic"))
+o:value(translate("Plan"))
+o:value(translate("Official"))
 
 local t = {
 	{Commit, Back}

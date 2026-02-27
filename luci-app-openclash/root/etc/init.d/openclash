@@ -725,8 +725,12 @@ check_core_status()
       fi
 
       if [ -n "$(pidof clash)" ]; then
-         ip -6 rule del oif utun table 2022
-         ip -6 route del default dev utun table 2022
+         while ( [ -n "$(pidof clash)" ] && [ -n "$(ip -6 rule show |grep 2022)" ] && [ "$CORE_WAIT" -le 10 ] )
+         do
+            ip -6 rule del oif utun table 2022
+            ip -6 route del default dev utun table 2022
+            let CORE_WAIT++
+         done
          if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
             ip -6 route add default dev utun table "$PROXY_ROUTE_TABLE"
             ip -6 rule add fwmark "$PROXY_FWMARK" table "$PROXY_ROUTE_TABLE" pref 1888

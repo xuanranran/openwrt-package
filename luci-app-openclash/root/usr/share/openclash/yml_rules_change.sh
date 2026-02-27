@@ -103,7 +103,7 @@ yml_other_set()
                end;
 
                # GEOIP replace
-               geoip_pattern = /GEOIP,([A-Z]{2}),([^,]+)(,.*)?/;
+               geoip_pattern = /GEOIP,([A-Za-z]{2}),([^,]+)(,.*)?/;
                match_pattern = /(^MATCH.*|^FINAL.*)/;
 
                Value['rules'].to_a.collect!{|x|

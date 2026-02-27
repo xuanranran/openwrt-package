@@ -900,24 +900,24 @@
                                 <label for="exclude-default-select"><%:Exclude Keyword Match Default%>:</label>
                                 <div class="form-checkbox-group">
                                     <label class="form-checkbox">
-                                        <input type="checkbox" id="exclude-expire" value="过期时间">
+                                        <input type="checkbox" id="exclude-expire" value="<%:Expire%>">
                                         <span class="checkmark"></span>
-                                        <%:Expire Time%>
+                                        <%:Expire%>
                                     </label>
                                     <label class="form-checkbox">
-                                        <input type="checkbox" id="exclude-traffic" value="剩余流量">
+                                        <input type="checkbox" id="exclude-traffic" value="<%:Traffic%>">
                                         <span class="checkmark"></span>
-                                        <%:Remaining Traffic%>
+                                        <%:Traffic%>
                                     </label>
                                     <label class="form-checkbox">
-                                        <input type="checkbox" id="exclude-tg" value="TG群">
+                                        <input type="checkbox" id="exclude-plan" value="<%:Plan%>">
                                         <span class="checkmark"></span>
-                                        <%:TG Group%>
+                                        <%:Plan%>
                                     </label>
                                     <label class="form-checkbox">
-                                        <input type="checkbox" id="exclude-website" value="官网">
+                                        <input type="checkbox" id="exclude-website" value="<%:Official%>">
                                         <span class="checkmark"></span>
-                                        <%:Official Website%>
+                                        <%:Official%>
                                     </label>
                                 </div>
                             </div>
@@ -1183,7 +1183,7 @@ var ConfigUploader = {
         document.getElementById('exclude-keyword-input').value = '';
         document.getElementById('exclude-expire').checked = false;
         document.getElementById('exclude-traffic').checked = false;
-        document.getElementById('exclude-tg').checked = false;
+        document.getElementById('exclude-plan').checked = false;
         document.getElementById('exclude-website').checked = false;
     },
 
@@ -1302,10 +1302,10 @@ var ConfigUploader = {
             }
             if (data.de_ex_keyword) {
                 var defaults = data.de_ex_keyword.split(' ');
-                document.getElementById('exclude-expire').checked = defaults.indexOf('过期时间') !== -1;
-                document.getElementById('exclude-traffic').checked = defaults.indexOf('剩余流量') !== -1;
-                document.getElementById('exclude-tg').checked = defaults.indexOf('TG群') !== -1;
-                document.getElementById('exclude-website').checked = defaults.indexOf('官网') !== -1;
+                document.getElementById('exclude-expire').checked = defaults.indexOf(document.getElementById('exclude-expire').value) !== -1;
+                document.getElementById('exclude-traffic').checked = defaults.indexOf(document.getElementById('exclude-traffic').value) !== -1;
+                document.getElementById('exclude-plan').checked = defaults.indexOf(document.getElementById('exclude-plan').value) !== -1;
+                document.getElementById('exclude-website').checked = defaults.indexOf(document.getElementById('exclude-website').value) !== -1;
             }
         }
     },
@@ -1547,10 +1547,10 @@ var ConfigUploader = {
             keywords = document.getElementById('keyword-input').value;
             excludeKeywords = document.getElementById('exclude-keyword-input').value;
 
-            if (document.getElementById('exclude-expire').checked) excludeDefaults.push('过期时间');
-            if (document.getElementById('exclude-traffic').checked) excludeDefaults.push('剩余流量');
-            if (document.getElementById('exclude-tg').checked) excludeDefaults.push('TG群');
-            if (document.getElementById('exclude-website').checked) excludeDefaults.push('官网');
+            if (document.getElementById('exclude-expire').checked) excludeDefaults.push(document.getElementById('exclude-expire').value);
+            if (document.getElementById('exclude-traffic').checked) excludeDefaults.push(document.getElementById('exclude-traffic').value);
+            if (document.getElementById('exclude-plan').checked) excludeDefaults.push(document.getElementById('exclude-plan').value);
+            if (document.getElementById('exclude-website').checked) excludeDefaults.push(document.getElementById('exclude-website').value);
 
             if (convertAddress === 'custom') {
                 convertAddress = convertAddressCustom.trim();

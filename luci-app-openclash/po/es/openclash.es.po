@@ -1964,9 +1964,6 @@ msgstr "¡El cambio ha fallado!"
 msgid "Current Config File"
 msgstr "Archivo de configuración actual"
 
-msgid "Official Website"
-msgstr "Sitio oficial"
-
 msgid "Up"
 msgstr "Subida"
 
@@ -2746,9 +2743,6 @@ msgstr "Configurar rango Fake-IP"
 
 msgid "IPv6 Settings"
 msgstr "Configuración IPv6"
-
-msgid "Custom Config Overwrite Scripts Which Will Run After Plugin Own Completely, Please Be Careful, The Wrong Changes May Lead to Exceptions"
-msgstr "Scripts de sobrescritura personalizados (se ejecutan tras las reglas internas). Usa con cuidado; cambios incorrectos pueden causar fallos."
 
 msgid "Custom Firewall Rules, Support IPv4 and IPv6, All Rules Will Be Added After Plugin Own Completely"
 msgstr "Reglas de firewall personalizadas (IPv4/IPv6). Se aplican tras las reglas internas del plugin."
@@ -3554,14 +3548,17 @@ msgstr "Introduce palabras clave para incluir nodos (una por línea)"
 msgid "Enter keywords to exclude nodes (one per line)"
 msgstr "Introduce palabras clave para excluir nodos (una por línea)"
 
-msgid "Expire Time"
-msgstr "Tiempo de expiración"
+msgid "Expire"
+msgstr "Expiración"
 
-msgid "Remaining Traffic"
-msgstr "Tráfico restante"
+msgid "Traffic"
+msgstr "Tráfico"
 
-msgid "TG Group"
-msgstr "Grupo TG"
+msgid "Plan"
+msgstr "Plan"
+
+msgid "Official"
+msgstr "oficial"
 
 msgid "Invalid subscription URL format. Support HTTP/HTTPS subscription URLs or protocol links, can be separated by newlines or |"
 msgstr "Formato de URL no válido. Se admiten direcciones HTTP/HTTPS o enlaces de protocolo, separados por saltos de línea o |"

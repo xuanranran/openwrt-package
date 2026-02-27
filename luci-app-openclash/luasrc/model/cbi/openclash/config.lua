@@ -191,7 +191,6 @@ st.template="openclash/cfg_check"
 sb.template="openclash/sub_info_show"
 
 btnis=tb:option(Button,"switch",translate("SwiTch"))
-btnis.template="openclash/other_button"
 btnis.render=function(o,t,a)
 	if not e[t] then return false end
 	if IsYamlFile(e[t].name) or IsYmlFile(e[t].name) then
@@ -209,7 +208,7 @@ btnis.write=function(a,t)
 end
 
 btned=tb:option(Button,"edit",translate("Edit"))
-btned.template="openclash/other_button"
+btned.inputstyle="apply"
 btned.write=function(a,t)
 	local file_path = "etc/openclash/config/" .. fs.basename(e[t].name)
 	HTTP.redirect(DISP.build_url("admin", "services", "openclash", "other-file-edit", "config", "%s") % file_path)
@@ -264,7 +263,7 @@ btnapply.write = function(self, t)
 
 	if action == "servers_manage" then
 		local file_path = "etc/openclash/config/" .. fs.basename(e[t].name)
-		HTTP.redirect(DISP.build_url("admin", "services", "openclash", "servers", "config", "%s") % file_path)
+		HTTP.redirect(DISP.build_url("admin", "services", "openclash", "servers", "%s") % file_path)
 	elseif action == "copy" then
 		local num = 1
 		while true do

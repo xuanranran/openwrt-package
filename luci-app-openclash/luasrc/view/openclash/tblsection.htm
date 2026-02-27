@@ -33,16 +33,22 @@ end
 
 local a={}
 local e={}
-for t,o in ipairs(fs.glob("/etc/openclash/config/*"))do
-    a=fs.stat(o)
-    if a then
-        e[t]={}
-        e[t].name=fs.basename(o)
+if self.sectiontype == "dns_servers" then
+    table.insert(e, {name="nameserver", title="nameserver"})
+    table.insert(e, {name="fallback", title="fallback"})
+    table.insert(e, {name="default", title="default-nameserver"})
+else
+    for t,o in ipairs(fs.glob("/etc/openclash/config/*"))do
+        a=fs.stat(o)
+        if a then
+            e[t]={}
+            e[t].name=fs.basename(o)
+        end
     end
-end
 
-if not table_include(e, "all") then
-    table.insert(e, 1, {name="all"})
+    if not table_include(e, "all") then
+        table.insert(e, 1, {name="all"})
+    end
 end
 
 local cfg_name
@@ -106,7 +112,7 @@ local sectiontype = "_"..self.config.."_"..string.match(self.sectiontype, "[%w_]
         gap: 8px;
         padding: 12px 0;
         height: 40px;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 400;
         color: #64748b;
         background: transparent;
@@ -236,9 +242,9 @@ local sectiontype = "_"..self.config.."_"..string.match(self.sectiontype, "[%w_]
 
 <!-- tblsection -->
 <fieldset class="cbi-section" id="cbi-<%=self.config%>-<%=self.sectiontype%>">
-    <% if self.title and #self.title > 0 then -%>
+    <%- if self.title and #self.title > 0 then -%>
         <h3><%=self.title%></h3>
-    <%- end %>
+    <%- end -%>
     <%- if self.sortable then -%>
         <input type="hidden" id="cbi.sts.<%=self.config%>.<%=self.sectiontype%>" name="cbi.sts.<%=self.config%>.<%=self.sectiontype%>" value="" />
     <%- end -%>
@@ -247,35 +253,50 @@ local sectiontype = "_"..self.config.."_"..string.match(self.sectiontype, "[%w_]
     <div id="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tabmenu">
         <ul class="cbi-tabmenu">
             <%- 
-            if #e ~= 1 then
-                for t,o in ipairs(e)do
-                    if o.name == cfg_name and cfg_name then
-                -%>
-                    <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab"><a><%=o.name%></a></li>
-                    <%- elseif not cfg_name and o.name == "all" then -%>
-                    <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab"><a>ALL</a></li>
-                    <%- elseif o.name == "all" then -%>
-                    <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab-disabled"><a>ALL</a></li>
+            if self.sectiontype == "dns_servers" then
+                for i, tab in ipairs(e) do
+                    if i == 1 then
+            -%>
+                        <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab" data-group="<%=tab.name%>"><a><%=tab.title%></a></li>
                     <%- else -%>
-                    <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab-disabled"><a><%=o.name%></a></li>
+                        <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab-disabled" data-group="<%=tab.name%>"><a><%=tab.title%></a></li>
+                    <%- end -%>
+                <%- end -%>
+            <%- elseif #e ~= 1 then
+                for i, tab in ipairs(e) do
+                    if tab.name == cfg_name and cfg_name then
+                -%>
+                        <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab" data-group="<%=tab.name%>"><a><%=tab.name%></a></li>
+                    <%- elseif not cfg_name and tab.name == "all" then -%>
+                        <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab" data-group="<%=tab.name%>"><a>ALL</a></li>
+                    <%- elseif tab.name == "all" then -%>
+                        <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab-disabled" data-group="<%=tab.name%>"><a>ALL</a></li>
+                    <%- else -%>
+                        <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab-disabled" data-group="<%=tab.name%>"><a><%=tab.name%></a></li>
                     <%- end -%>
                 <%- end -%>
             <%- else -%>
-                <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab"><a>ALL</a></li>
+                <li name="tab-header-<%=self.config%>-<%=self.sectiontype%>" class="cbi-tab" data-group="all"><a>ALL</a></li>
             <%- end -%>
         </ul>
     </div>
     <div id="tab-content">
-        <%- for t,o in ipairs(e)do
-            if #e ~= 1 and o.name == cfg_name and cfg_name then
+        <%- for i, tab in ipairs(e) do
+            if self.sectiontype == "dns_servers" then
+                if tab.name == "nameserver" then
             -%>
-            <div class="dom-<%=self.config%>-<%=self.sectiontype%>" style="display: block;">
-            <%- elseif #e ~= 1 and o.name == "all" and not cfg_name then -%>
-            <div class="dom-<%=self.config%>-<%=self.sectiontype%>" style="display: block;">
+                    <div class="dom-<%=self.config%>-<%=self.sectiontype%>" style="display: block;" data-group="<%=tab.name%>">
+                <%- else -%>
+                    <div class="dom-<%=self.config%>-<%=self.sectiontype%>" data-group="<%=tab.name%>">
+                <%- end -%>
+            <%- elseif #e ~= 1 and tab.name == cfg_name and cfg_name then -%>
+                <div class="dom-<%=self.config%>-<%=self.sectiontype%>" style="display: block;" data-group="<%=tab.name%>">
+            <%- elseif #e ~= 1 and tab.name == "all" and not cfg_name then -%>
+                <div class="dom-<%=self.config%>-<%=self.sectiontype%>" style="display: block;" data-group="<%=tab.name%>">
             <%- elseif #e == 1 then -%>
-            <div class="dom-<%=self.config%>-<%=self.sectiontype%>" style="display: block;">
+                <div class="dom-<%=self.config%>-<%=self.sectiontype%>" style="display: block;" data-group="all">
             <%- else -%>
-            <div class="dom-<%=self.config%>-<%=self.sectiontype%>">
+                <div class="dom-<%=self.config%>-<%=self.sectiontype%>" data-group="<%=tab.name%>">
             <%- end -%>
                 <table class="table cbi-section-table">
                     <tr class="tr cbi-section-table-titles">
@@ -320,25 +341,28 @@ local sectiontype = "_"..self.config.."_"..string.match(self.sectiontype, "[%w_]
                     <%- local isempty = true
                         local num = 1
                     for i, k in ipairs(self:cfgsections()) do
-                        section = k
-                        while true do
-                            if not uci:get("openclash", section, "config") then
-                                uci:set("openclash", section, "config", "all")
-                                uci:save("openclash")
-                            end
-                            if uci:get("openclash", section, "config") ~= o.name then
-                                break
-                            end
+                        local section = k
+                        local should_render = false
+                        local section_name 
+                        if self.sectiontype == "dns_servers" then
+                            section_name = uci:get("openclash", section, "group")
+                        else
+                            section_name = uci:get("openclash", section, "config")
+                        end
+                        if section_name == tab.name then
+                            should_render = true
+                        end
+                        if should_render then
                             isempty = false
                             scope = { valueheader = "cbi/cell_valueheader", valuefooter = "cbi/cell_valuefooter" }
                     -%>
                             <tr class="tr cbi-section-table-row<% if self.extedit or self.rowcolors then %> cbi-rowstyle-<%=rowstyle()%><% end %>" id="cbi-<%=self.config%>-<%=section%>">
-                            <% if not self.anonymous then -%>
+                            <%- if not self.anonymous then -%>
                                 <th><h3><%=(type(self.sectiontitle) == "function") and self:sectiontitle(section) or k%></h3></th>
-                            <%- end %>
+                            <%- end -%>
                             <td class="td cbi-section-table-cell">
                                 <p><%=num%></p>
-                                <% num = num + 1 -%>
+                                <%- num = num + 1 -%>
                             </td>
                             <%-
                                 for k, node in ipairs(self.children) do
@@ -364,13 +388,12 @@ local sectiontype = "_"..self.config.."_"..string.match(self.sectiontype, "[%w_]
                                         %> onclick="location.href='<%=self:extedit(section)%>';return switch_to_tab<%=sectiontype%>()"
                                         <%- end
                                         %> alt="<%:Edit%>" title="<%:Edit%>" />
-                                    <%- end; if self.addremove then %>
+                                    <%- end; if self.addremove then -%>
                                         <input class="btn cbi-button cbi-button-remove" type="submit" value="<%:Delete%>"  onclick="this.form.cbi_state='del-section'; return switch_to_tab<%=sectiontype%>()" name="cbi.rts.<%=self.config%>.<%=k%>" alt="<%:Delete%>" title="<%:Delete%>" />
                                     <%- end -%>
                                 </td>
                             <%- end -%>
                     <%-
-                            break
                         end
                     -%>
                             </tr>
@@ -383,31 +406,34 @@ local sectiontype = "_"..self.config.."_"..string.match(self.sectiontype, "[%w_]
                     <%- end -%>
                 </table>
 
-                <% if self.error then %>
+                <%- if self.error then -%>
                     <div class="cbi-section-error">
-                        <ul><% for _, c in pairs(self.error) do for _, e in ipairs(c) do -%>
+                        <ul><%- for _, c in pairs(self.error) do for _, e in ipairs(c) do -%>
                             <li><%=pcdata(e):gsub("\n","<br />")%></li>
-                        <%- end end %></ul>
+                        <%- end end -%></ul>
                     </div>
-                <% end %>
+                <%- end -%>
 
                 <%- if self.addremove then -%>
-                    <% if self.template_addremove then include(self.template_addremove) else -%>
+                    <%- if self.template_addremove then include(self.template_addremove) else -%>
                     <div class="cbi-section-create cbi-tblsection-create">
-                        <% if self.anonymous then %>
-                            <input class="btn cbi-button cbi-button-add" type="submit" onclick="return switch_to_tab<%=sectiontype%>('create')" value="<%:Add%>" name="cbi.cts.<%=self.config%>.<%=self.sectiontype%>.<%=section%>" title="<%:Add%>" />
-                        <% else %>
+                        <%- if self.anonymous then -%>
+                            <input class="btn cbi-button cbi-button-add" type="submit" onclick="return switch_to_tab<%=sectiontype%>('<%=tab.name%>')" value="<%:Add%>" name="cbi.cts.<%=self.config%>.<%=self.sectiontype%>.<%=section%>" title="<%:Add%>" />
+                        <%- else -%>
                             <% if self.invalid_cts then -%><div class="cbi-section-error"><% end %>
                             <input type="text" class="cbi-section-create-name" id="cbi.cts.<%=self.config%>.<%=self.sectiontype%>.<%=section%>" name="cbi.cts.<%=self.config%>.<%=self.sectiontype%>.<%=section%>" data-type="uciname" data-optional="true" />
-                            <input class="btn cbi-button cbi-button-add" type="submit" onclick="this.form.cbi_state='add-section'; return true" value="<%:Add%>" title="<%:Add%>" />
+                            <input type="submit" class="cbi-button cbi-button-add" onclick="this.form.cbi_state='add-section'; return switch_to_tab<%=sectiontype%>('<%=tab.name%>')" value="<%:Add%>" />
                             <% if self.invalid_cts then -%>
                                 <br /><%:Invalid%></div>
                             <%- end %>
-                        <% end %>
+                        <%- end %>
                     </div>
-                    <%- end %>
+                    <%- end -%>
                 <%- end -%>
             </div>
+        <%- end -%>
+        <%- if self.addremove then -%>
+            <input type="hidden" id="cbi.cts.tagname.<%=self.config%>.<%=self.sectiontype%>" name="cbi.cts.tagname.<%=self.config%>.<%=self.sectiontype%>" value="" />
         <%- end -%>
     </div>
 </fieldset>
@@ -456,17 +482,20 @@ local sectiontype = "_"..self.config.."_"..string.match(self.sectiontype, "[%w_]
 		return luminance < 128;
 	};
 
-    function switch_to_tab<%=sectiontype%>(type){
+    function switch_to_tab<%=sectiontype%>(tab_name){
         if(titles<%=sectiontype%>.length != divs<%=sectiontype%>.length) return;
 
-        if ( type == 'create' ) {
-            localStorage.setItem("titles<%=sectiontype%>", 0);
-        } else {
-            for(var j=0; j < titles<%=sectiontype%>.length; j++){
-                if(titles<%=sectiontype%>[j].className === 'cbi-tab'){
-                    localStorage.setItem("titles<%=sectiontype%>", j);
-                    break;
-                }
+        for(var j=0; j < titles<%=sectiontype%>.length; j++){
+            if(titles<%=sectiontype%>[j].className === 'cbi-tab'){
+                localStorage.setItem("titles<%=sectiontype%>", j);
+                break;
+            }
+        }
+
+        if (tab_name) {
+            var name = document.getElementById('cbi.cts.tagname.<%=self.config%>.<%=self.sectiontype%>');
+            if (name) {
+                name.value = tab_name;
             }
         }
 

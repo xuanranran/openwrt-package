@@ -5,7 +5,7 @@ local uci = luci.model.uci.cursor()
 local fs = require "luci.openclash"
 local file_path = ""
 
-for i = 2, #(arg) do
+for i = 1, #(arg) do
 	file_path = file_path .. "/" .. luci.http.urlencode(arg[i])
 end
 
@@ -23,129 +23,141 @@ m.description=translate("Attention:")..
 "<br/>"..translate("Introduction to proxy-provider usage:").." <a href='javascript:void(0)' onclick='javascript:return winOpen(\"https://wiki.metacubex.one/config/proxy-providers/\")'>"..translate("https://wiki.metacubex.one/config/proxy-providers/").."</a>"
 
 -- [[ Groups Manage ]]--
-s = m:section(TypedSection, "groups", translate("Proxy Groups"))
-s.anonymous = true
-s.addremove = true
-s.sortable = true
-s.template = "openclash/tblsection"
-s.extedit = luci.dispatcher.build_url("admin/services/openclash/groups-config/%s"..file_path)
-function s.create(...)
-	local sid = TypedSection.create(...)
+gs = m:section(TypedSection, "groups", translate("Proxy Groups"))
+gs.anonymous = true
+gs.addremove = true
+gs.sortable = true
+gs.template = "openclash/tblsection"
+gs.extedit = luci.dispatcher.build_url("admin/services/openclash/groups-config/%s"..file_path)
+function gs.create(self, section)
+	local sid = TypedSection.create(self, section)
 	if sid then
-		luci.http.redirect(s.extedit % sid)
+		local name = luci.http.formvalue("cbi.cts.tagname.".. self.config .. "." .. self.sectiontype)
+		if name and #name > 0 then
+			self.map.uci:set("openclash", sid, "config", name)
+		end
+		luci.http.redirect(gs.extedit % sid)
 		return
 	end
 end
 
 ---- enable flag
-o = s:option(Flag, "enabled", translate("Enable"))
+o = gs:option(Flag, "enabled", translate("Enable"))
 o.rmempty = false
 o.default = o.enabled
 o.cfgvalue = function(...)
 	return Flag.cfgvalue(...) or "1"
 end
 
-o = s:option(DummyValue, "config", translate("Config File"))
+o = gs:option(DummyValue, "config", translate("Config File"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("all")
 end
 
-o = s:option(DummyValue, "type", translate("Group Type"))
+o = gs:option(DummyValue, "type", translate("Group Type"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
-o = s:option(DummyValue, "name", translate("Group Name"))
+o = gs:option(DummyValue, "name", translate("Group Name"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
 -- [[ Proxy-Provider Manage ]]--
-s = m:section(TypedSection, "proxy-provider", translate("Proxy-Provider"))
-s.anonymous = true
-s.addremove = true
-s.sortable = true
-s.template = "openclash/tblsection"
-s.extedit = luci.dispatcher.build_url("admin/services/openclash/proxy-provider-config/%s"..file_path)
-function s.create(...)
-	local sid = TypedSection.create(...)
+ps = m:section(TypedSection, "proxy-provider", translate("Proxy-Provider"))
+ps.anonymous = true
+ps.addremove = true
+ps.sortable = true
+ps.template = "openclash/tblsection"
+ps.extedit = luci.dispatcher.build_url("admin/services/openclash/proxy-provider-config/%s"..file_path)
+function ps.create(self, section)
+	local sid = TypedSection.create(self, section)
 	if sid then
-		luci.http.redirect(s.extedit % sid)
+		local name = luci.http.formvalue("cbi.cts.tagname.".. self.config .. "." .. self.sectiontype)
+		if name and #name > 0 then
+			self.map.uci:set("openclash", sid, "config", name)
+		end
+		luci.http.redirect(ps.extedit % sid)
 		return
 	end
 end
 
-o = s:option(Flag, "enabled", translate("Enable"))
+o = ps:option(Flag, "enabled", translate("Enable"))
 o.rmempty = false
 o.default = o.enabled
 o.cfgvalue = function(...)
 	return Flag.cfgvalue(...) or "1"
 end
 
-o = s:option(DummyValue, "config", translate("Config File"))
+o = ps:option(DummyValue, "config", translate("Config File"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("all")
 end
 
-o = s:option(DummyValue, "type", translate("Provider Type"))
+o = ps:option(DummyValue, "type", translate("Provider Type"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
-o = s:option(DummyValue, "name", translate("Provider Name"))
+o = ps:option(DummyValue, "name", translate("Provider Name"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
 -- [[ Servers Manage ]]--
-s = m:section(TypedSection, "servers", translate("Proxies"))
-s.anonymous = true
-s.addremove = true
-s.sortable = true
-s.template = "openclash/tblsection"
-s.extedit = luci.dispatcher.build_url("admin/services/openclash/servers-config/%s"..file_path)
-function s.create(...)
-	local sid = TypedSection.create(...)
+ss = m:section(TypedSection, "servers", translate("Proxies"))
+ss.anonymous = true
+ss.addremove = true
+ss.sortable = true
+ss.template = "openclash/tblsection"
+ss.extedit = luci.dispatcher.build_url("admin/services/openclash/servers-config/%s"..file_path)
+function ss.create(self, section)
+	local sid = TypedSection.create(self, section)
 	if sid then
-		luci.http.redirect(s.extedit % sid)
+		local name = luci.http.formvalue("cbi.cts.tagname.".. self.config .. "." .. self.sectiontype)
+		if name and #name > 0 then
+			self.map.uci:set("openclash", sid, "config", name)
+		end
+		luci.http.redirect(ss.extedit % sid)
 		return
 	end
 end
 
 ---- enable flag
-o = s:option(Flag, "enabled", translate("Enable"))
+o = ss:option(Flag, "enabled", translate("Enable"))
 o.rmempty = false
 o.default = o.enabled
 o.cfgvalue = function(...)
 	return Flag.cfgvalue(...) or "1"
 end
 
-o = s:option(DummyValue, "config", translate("Config File"))
+o = ss:option(DummyValue, "config", translate("Config File"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("all")
 end
 
-o = s:option(DummyValue, "type", translate("Type"))
+o = ss:option(DummyValue, "type", translate("Type"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
-o = s:option(DummyValue, "name", translate("Server Alias"))
+o = ss:option(DummyValue, "name", translate("Server Alias"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
-o = s:option(DummyValue, "server", translate("Server Address"))
+o = ss:option(DummyValue, "server", translate("Server Address"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
-o = s:option(DummyValue, "port", translate("Server Port"))
+o = ss:option(DummyValue, "port", translate("Server Port"))
 function o.cfgvalue(...)
 	return Value.cfgvalue(...) or translate("None")
 end
 
-o = s:option(DummyValue, "udp", translate("UDP Support"))
+o = ss:option(DummyValue, "udp", translate("UDP Support"))
 function o.cfgvalue(...)
 	if Value.cfgvalue(...) == "true" then
 		return translate("Enable")

@@ -56,7 +56,6 @@ s:tab("dns", "DNS "..translate("Settings"))
 s:tab("meta", translate("Meta Settings"))
 s:tab("smart", translate("Smart Settings"))
 s:tab("rules", translate("Rules Setting"))
-s:tab("developer", translate("Developer Settings"))
 
 ----- General Settings
 o = s:taboption("settings", ListValue, "interface_name", translate("Bind Network Interface"))
@@ -492,36 +491,20 @@ function custom_rules_2.write(self, section, value)
 	end
 end
 
----- developer
-o = s:taboption("developer", Value, "ymchange_custom")
-o.template = "cbi/tvalue"
-o.description = translate("Custom Config Overwrite Scripts Which Will Run After Plugin Own Completely, Please Be Careful, The Wrong Changes May Lead to Exceptions")
-o.rows = 30
-o.wrap = "off"
-
-function o.cfgvalue(self, section)
-	return NXFS.readfile("/etc/openclash/custom/openclash_custom_overwrite.sh") or ""
-end
-function o.write(self, section, value)
-	if value then
-		value = value:gsub("\r\n?", "\n")
-		local old_value = NXFS.readfile("/etc/openclash/custom/openclash_custom_overwrite.sh")
-		if value ~= old_value then
-			NXFS.writefile("/etc/openclash/custom/openclash_custom_overwrite.sh", value)
-		end
-	end
-end
-
 -- [[ Edit Custom DNS ]] --
 ds = m:section(TypedSection, "dns_servers", translate("Add Custom DNS Servers")..translate("(Take Effect After Choose Above)"))
 ds.anonymous = true
 ds.addremove = true
 ds.sortable = true
-ds.template = "openclash/tblsection_dns"
+ds.template = "openclash/tblsection"
 ds.extedit = luci.dispatcher.build_url("admin/services/openclash/custom-dns-edit/%s")
-function ds.create(...)
-	local sid = TypedSection.create(...)
+function ds.create(self, section)
+	local sid = TypedSection.create(self, section)
 	if sid then
+		local name = luci.http.formvalue("cbi.cts.tagname.".. self.config .. "." .. self.sectiontype)
+		if name and #name > 0 then
+			self.map.uci:set("openclash", sid, "group", name)
+		end
 		luci.http.redirect(ds.extedit % sid)
 		return
 	end
@@ -537,9 +520,9 @@ end
 
 ---- group
 o = ds:option(ListValue, "group", translate("DNS Server Group"))
-o:value("nameserver", translate("NameServer "))
-o:value("fallback", translate("FallBack "))
-o:value("default", translate("Default-NameServer"))
+o:value("nameserver", translate("nameserver "))
+o:value("fallback", translate("fallback "))
+o:value("default", translate("default-nameserver"))
 o.default = "nameserver"
 o.rempty = false
 
