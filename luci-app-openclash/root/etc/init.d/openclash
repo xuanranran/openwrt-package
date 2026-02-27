@@ -2927,8 +2927,9 @@ if [ -z "$FW4" ]; then
             [ "$enable_redirect_dns" != "2" ] && rule="$rule -m set ! --match-set china_ip6_route_pass dst"
             ip6tables -t mangle -A openclash $rule -j RETURN
          fi
-         if [ "$ipv6_mode" -eq 2 ] && [ "$ipv6_mode" -eq 3 ]; then
-            #icmpv6
+
+         #icmpv6
+         if [ "$ipv6_mode" -eq 2 ] || [ "$ipv6_mode" -eq 3 ]; then
             ip6tables -t mangle -A openclash -p icmpv6 --icmpv6-type echo-request -j MARK --set-xmark "$PROXY_FWMARK" -m comment --comment "OpenClash ICMPv6 Redirect"
          fi
       fi
