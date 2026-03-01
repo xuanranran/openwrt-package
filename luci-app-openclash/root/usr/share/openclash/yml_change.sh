@@ -563,7 +563,7 @@ begin
       begin
          if enable_custom_dns
             if (defaultdns_config = safe_load_yaml('/tmp/yaml_config.defaultdns.yaml')) && defaultdns_config['default-nameserver']
-               (Value['dns']['default-nameserver'] ||= []).concat(defaultdns_config['default-nameserver']).uniq!
+               Value['dns']['default-nameserver'] = defaultdns_config['default-nameserver'].uniq
             end
          end
          if add_default_from_dns

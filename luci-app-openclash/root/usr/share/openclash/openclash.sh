@@ -163,9 +163,6 @@ config_cus_up()
 	      end" 2>/dev/null >> $LOG_FILE
 	   fi
    fi
-   if [ "$CONFIG_FILE" == "$CONFIG_PATH" ]; then
-      restart=1
-   fi
 }
 
 config_su_check()
@@ -176,7 +173,6 @@ config_su_check()
       if [ "$only_download" -eq 0 ]; then
          config_cus_up
       fi
-
       cmp -s "$CONFIG_FILE" "$CFG_FILE"
       if [ "$?" -ne 0 ]; then
          LOG_OUT "Config File【$name】Are Updates, Start Replacing..."
@@ -185,6 +181,7 @@ config_su_check()
       else
          LOG_OUT "Config File【$name】No Change, Do Nothing!"
          rm -rf "$CFG_FILE"
+         return
       fi
    else
       LOG_OUT "Config File【$name】Download Successful, Start To Create..."
@@ -194,15 +191,15 @@ config_su_check()
       mv "$CFG_FILE" "$CONFIG_FILE" 2>/dev/null
       LOG_OUT "Config File【$name】Update Successful!"
    fi
-   SLOG_CLEAN
+   if [ "$CONFIG_FILE" == "$CONFIG_PATH" ]; then
+      restart=1
+   fi
 }
 
 config_error()
 {
    LOG_OUT "Error:【$name】Update Error, Please Try Again Later..."
    rm -rf "$CFG_FILE" 2>/dev/null
-   SLOG_CLEAN
-   return 1
 }
 
 change_dns()
@@ -273,24 +270,24 @@ server_key_match()
 	local key_match key_word
 	 
    if [ -n "$(echo "$1" |grep "^ \{0,\}$")" ] || [ -n "$(echo "$1" |grep "^\t\{0,\}$")" ]; then
-	    return
+	   return
    fi
 	 
    if [ -n "$(echo "$1" |grep "&")" ]; then
       key_word=$(echo "$1" |sed 's/&/ /g')
-	    for k in $key_word
-	    do
-	       if [ -z "$k" ]; then
-	          continue
-	       fi
-	       k="(?=.*$k)"
-	       key_match="$key_match$k"
-	    done
-	    key_match="^($key_match).*"
+      for k in $key_word
+      do
+         if [ -z "$k" ]; then
+            continue
+         fi
+         k="(?=.*$k)"
+         key_match="$key_match$k"
+      done
+      key_match="^($key_match).*"
    else
-	    if [ -n "$1" ]; then
-	       key_match="($1)"
-	    fi
+      if [ -n "$1" ]; then
+         key_match="($1)"
+      fi
    fi
 
    if [ "$2" = "keyword" ]; then
@@ -423,7 +420,6 @@ sub_info_get()
    if [ "${PIPESTATUS[0]}" -eq 0 ] && [ -s "$CFG_FILE" ]; then
       #prevent ruby unexpected error
       sed -i -E 's/protocol-param: ([^,'"'"'"''}( *#)\n\r]+)/protocol-param: "\1"/g' "$CFG_FILE" 2>/dev/null
-      sed -i '/^ \{0,\}enhanced-mode:/d' "$CFG_FILE" >/dev/null 2>&1
       config_test
       if [ $? -ne 0 ]; then
          LOG_OUT "Error: Config File Tested Faild, Please Check The Log Infos!"
@@ -461,8 +457,6 @@ sub_info_get()
 #分别获取订阅信息进行处理
 config_load "openclash"
 config_foreach sub_info_get "config_subscribe" "$1"
-uci -q delete openclash.config.config_update_path
-uci commit openclash
-
+SLOG_CLEAN
 dec_job_counter_and_restart "$restart"
 del_lock
