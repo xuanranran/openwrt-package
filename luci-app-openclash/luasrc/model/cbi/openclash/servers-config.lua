@@ -1178,7 +1178,7 @@ o.rmempty = true
 o.description = font_red..bold_on..translate("The added Dialer Proxy or Group Must Exist")..bold_off..font_off
 m.uci:foreach("openclash", "groups",
 function(s)
-	if s.name ~= "" and s.name ~= nil then
+	if s.name ~= "" and s.name ~= nil and (s.config == m.uci:get(openclash, sid, "config") or s.config == "all") then
 		o:value(s.name)
 	end
 end)
@@ -1189,7 +1189,7 @@ o.rmempty = true
 o:value("all", translate("All Groups"))
 m.uci:foreach("openclash", "groups",
 function(s)
-	if s.name ~= "" and s.name ~= nil then
+	if s.name ~= "" and s.name ~= nil and (s.config == m.uci:get(openclash, sid, "config") or s.config == "all") then
 		o:value(s.name)
 	end
 end)

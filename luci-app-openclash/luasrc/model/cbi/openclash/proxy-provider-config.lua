@@ -167,7 +167,7 @@ o.rmempty = true
 o:value("all", translate("All Groups"))
 m.uci:foreach("openclash", "groups",
 		function(s)
-			if s.name ~= "" and s.name ~= nil then
+			if s.name ~= "" and s.name ~= nil and (s.config == m.uci:get(openclash, sid, "config") or s.config == "all") then
 				o:value(s.name)
 			end
 		end)
