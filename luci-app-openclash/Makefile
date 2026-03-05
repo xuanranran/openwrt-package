@@ -110,8 +110,6 @@ endef
 
 define Package/$(PKG_NAME)/prerm
 #!/bin/sh
-	uci -q set openclash.config.enable=0
-	uci -q commit openclash
 	[ -n "$(pidof clash)" ] && /etc/init.d/openclash stop 2>/dev/null
 	if [ -f "/etc/config/openclash" ] && [ ! -f "/tmp/openclash.bak" ]; then
 		cp -f "/etc/config/openclash" "/tmp/openclash.bak" >/dev/null 2>&1
