@@ -3857,3 +3857,6 @@ msgstr "用户"
 
 msgid "Serial Number"
 msgstr "序号"
+
+msgid "Error: Set Custom Overwrite Script Failed,"
+msgstr "错误：自定义覆写命令执行失败，"

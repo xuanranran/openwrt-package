@@ -3832,3 +3832,6 @@ msgstr "Usuario"
 
 msgid "Serial Number"
 msgstr "Número de serie"
+
+msgid "Error: Set Custom Overwrite Script Failed,"
+msgstr "Error: fallo al ejecutar el script de sobrescritura personalizado,"
