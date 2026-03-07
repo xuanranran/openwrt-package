@@ -369,6 +369,9 @@ echo "" >> "$DEBUG_LOG"
 echo "#ip route list" >> "$DEBUG_LOG"
 ip route list >> "$DEBUG_LOG" 2>/dev/null
 echo "" >> "$DEBUG_LOG"
+echo "#ip route list table 354" >> "$DEBUG_LOG"
+ip route list table 354 >> "$DEBUG_LOG" 2>/dev/null
+echo "" >> "$DEBUG_LOG"
 echo "#ip rule show" >> "$DEBUG_LOG"
 ip rule show >> "$DEBUG_LOG" 2>/dev/null
 echo "" >> "$DEBUG_LOG"
@@ -379,6 +382,9 @@ route -A inet6 >> "$DEBUG_LOG" 2>/dev/null
 echo "" >> "$DEBUG_LOG"
 echo "#ip -6 route list" >> "$DEBUG_LOG"
 ip -6 route list >> "$DEBUG_LOG" 2>/dev/null
+echo "" >> "$DEBUG_LOG"
+echo "#ip -6 route list table 354" >> "$DEBUG_LOG"
+ip -6 route list table 354 >> "$DEBUG_LOG" 2>/dev/null
 echo "" >> "$DEBUG_LOG"
 echo "#ip -6 rule show" >> "$DEBUG_LOG"
 ip -6 rule show >> "$DEBUG_LOG" 2>/dev/null

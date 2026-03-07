@@ -1841,6 +1841,9 @@ msgstr "Watchdog: límite de tamaño alcanzado; limpiando registros..."
 msgid "Watchdog: Setting Firewall For Rules Order..."
 msgstr "Watchdog: corrigiendo el orden de las reglas del firewall..."
 
+msgid "Watchdog: Setting Firewall For IP Rules Table Recreate..."
+msgstr "Watchdog: configurando el firewall para recrear la tabla de reglas..."
+
 msgid "Watchdog: Force Reset DNS Hijack..."
 msgstr "Watchdog: restableciendo interceptación DNS..."
 

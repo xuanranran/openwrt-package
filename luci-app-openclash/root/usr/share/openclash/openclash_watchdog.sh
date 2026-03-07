@@ -219,6 +219,12 @@ fi
       fi
    fi
 
+## 路由表检查
+   if [ -n "$(ip tuntap list |grep utun)" ] && [ -z "$(ip route list table 354)" ]; then
+      LOG_OUT "Watchdog: Setting Firewall For IP Rules Table Recreate..."
+      /etc/init.d/openclash reload "firewall"
+   fi
+
 ## Localnetwork 刷新
    wan_ip4s=$(/usr/share/openclash/openclash_get_network.lua "wanip" 2>/dev/null)
    wan_ip6s=$(ifconfig | grep 'inet6 addr' | awk '{print $3}' 2>/dev/null)

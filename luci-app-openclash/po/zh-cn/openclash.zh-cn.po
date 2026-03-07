@@ -1863,6 +1863,9 @@ msgstr "守护程序：因日志大小限制，清理所有日志内容..."
 msgid "Watchdog: Setting Firewall For Rules Order..."
 msgstr "守护程序：检测到防火墙规则顺序有误，修改插件防火墙规则..."
 
+msgid "Watchdog: Setting Firewall For IP Rules Table Recreate..."
+msgstr "守护程序：检测到路由表异常，重置插件防火墙规则..."
+
 msgid "Watchdog: Force Reset DNS Hijack..."
 msgstr "守护程序：重新设置 Dnsmasq 的 DNS 转发选项..."
 
