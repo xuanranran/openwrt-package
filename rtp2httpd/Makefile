@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rtp2httpd
 
-PKG_VERSION:=3.10.1
+PKG_VERSION:=3.11.0
 PKG_RELEASE:=1
 PKG_MAINTAINER:=Stackie Jia <jsq2627@gmail.com>
 PKG_LICENSE:=GPL-2.0-or-later
@@ -12,7 +12,7 @@ PKG_FIXUP:=autoreconf
 
 PKG_SOURCE:=rtp2httpd-v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/stackia/rtp2httpd/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=f99df492ffd5a9da2ebcd731243232e5a9432c601d0dd98012b4a0d627db636e
+PKG_HASH:=992d41429e063ed2e66a682151bff5928ad4e2da2164abd1b093ca04c4f220fd
 
 include $(INCLUDE_DIR)/package.mk
 

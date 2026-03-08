@@ -554,10 +554,10 @@ function fetch_sub_info(sub_url, sub_ua)
 	local info, upload, download, total, day_expire, http_code
 	local used, expire, day_left, percent, surplus
 
-	info = luci.sys.exec(string.format("curl -sLI -X GET -m 10 -w 'http_code=%%{http_code}' -H 'User-Agent: %s' '%s'", sub_ua, sub_url))
+	info = luci.sys.exec(string.format("curl -sLI -X GET -m 10 --retry 3 -w 'http_code=%%{http_code}' -H 'User-Agent: %s' '%s'", sub_ua, sub_url))
 	local http_match = string.match(info, "http_code=(%d+)")
 	if not info or not http_match or tonumber(http_match) ~= 200 then
-		info = luci.sys.exec(string.format("curl -sLI -X GET -m 10 -w 'http_code=%%{http_code}' -H 'User-Agent: Quantumultx' '%s'", sub_url))
+		info = luci.sys.exec(string.format("curl -sLI -X GET -m 10 --retry 3 -w 'http_code=%%{http_code}' -H 'User-Agent: Quantumultx' '%s'", sub_url))
 		http_match = string.match(info, "http_code=(%d+)")
 	end
 

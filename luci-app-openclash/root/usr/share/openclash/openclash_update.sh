@@ -343,7 +343,6 @@ if [ "$install_success" = true ]; then
    elif [ -x "/usr/bin/apk" ]; then
       rm -rf /tmp/openclash.apk >/dev/null 2>&1
    fi
-   LOG_OUT "Tip: OpenClash update successful, about to restart!"
 else
    if [ -x "/bin/opkg" ]; then
       LOG_OUT "Error: OpenClash update failed after 3 attempts, the file is saved in /tmp/openclash.ipk, please try to update manually with【opkg install /tmp/openclash.ipk】"

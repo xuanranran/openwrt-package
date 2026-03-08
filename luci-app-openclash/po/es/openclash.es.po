@@ -1430,9 +1430,6 @@ msgstr "Instalando nueva versión; no recargues la página ni realices acciones.
 msgid "Installation failed..."
 msgstr "Instalación fallida..."
 
-msgid "Tip: OpenClash update successful, about to restart!"
-msgstr "Consejo: actualización correcta; OpenClash se reiniciará."
-
 msgid "Error: OpenClash update failed after 3 attempts, the file is saved in /tmp/openclash.ipk, please try to update manually with"
 msgstr "Error: actualización fallida; archivo guardado en /tmp/openclash.ipk, intenta actualizar con:"
 

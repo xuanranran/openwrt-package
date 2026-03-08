@@ -3785,21 +3785,19 @@ start_service()
                sed -n "s/.*yaml_file_path=['\"]\([^'\"]*\)['\"].*/\1/p" /tmp/yaml_openclash_ruby_parse | sort | uniq | while read -r yaml_file; do
                   [ -z "$yaml_file" ] && continue
                   ruby_code=$(grep "yaml_file_path=['\"]$yaml_file['\"]" /tmp/yaml_openclash_ruby_parse | sed "s/^threads << Thread.new do //;s/ end$//")
-                  if [ -z "$ruby_code" ]; then
-                  continue
-                  fi
+                  [ -z "$ruby_code" ] && continue
                   if [ -f "$yaml_file" ]; then
-                  (
-                     ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
-                     Value = YAML.load_file('$yaml_file');
-                     threads = []
-                     $ruby_code
-                     threads.each(&:join)
-                     File.open('$yaml_file', 'w') do |f|
-                        YAML.dump(Value, f)
-                     end
-                     " >> $LOG_FILE 2>&1
-                  )
+                     (
+                        ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
+                        Value = YAML.load_file('$yaml_file');
+                        threads = []
+                        $ruby_code
+                        threads.each(&:join)
+                        File.open('$yaml_file', 'w') do |f|
+                           YAML.dump(Value, f)
+                        end
+                        " >> $LOG_FILE 2>&1
+                     )
                   fi
                done
             fi
