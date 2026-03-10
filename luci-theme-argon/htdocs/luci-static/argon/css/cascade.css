@@ -4173,6 +4173,10 @@ pre.command-output {
   color: #EEFFFF;
 }
 
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .cm-s-log.CodeMirror {
+  background-color: #000000;
+}
+
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button {
   background: #242424;
   box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.15);
@@ -4207,6 +4211,8 @@ strong,
 .status-item .label,
 [data-page^="admin-services-openclash"] [class^="info-cell"],
 [data-page^="admin-services-openclash"] [class^="info-cell"] *,
+[data-page^="admin-services-openclash"] .cm-s-log span,
+[data-page^="admin-services-openclash"] .cm-s-material *,
 [data-page^="admin-services-openclash"] .settings-cell,
 [data-page^="admin-services-openclash"] .settings-cell * [data-page^="admin-services-openclash"] .sub_div {
   font-family: 'Google Sans' !important;
