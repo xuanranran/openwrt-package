@@ -4137,6 +4137,25 @@ pre.command-output {
   width: 0px;
 }
 
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .diag-style {
+  background-color: #242424;
+}
+
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #diag-rc-output>pre,
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #dns-rc-output>pre {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+[data-page^="admin-services-openclash"] .cm-s-material.CodeMirror {
+  background-color: #000000;
+  color: #EEFFFF;
+}
+
+:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .cm-s-log.CodeMirror {
+  background-color: #000000;
+}
+
 [data-page^="admin-services-openclash"] .cm-s-material .CodeMirror-gutters {
   background: #263238;
   color: rgba(156, 163, 175, 0.7);
@@ -4158,23 +4177,16 @@ pre.command-output {
   border: none;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .diag-style {
-  background-color: #242424;
+[data-page^="admin-services-openclash"] .cm-s-log span.cm-log-tip,
+[data-page^="admin-services-openclash"] .cm-s-log span.cm-log-string {
+  font-weight: 600;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #diag-rc-output>pre,
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #dns-rc-output>pre {
-  background-color: #000000;
-  color: #ffffff;
-}
-
-[data-page^="admin-services-openclash"] .cm-s-material.CodeMirror {
-  background-color: #000000;
-  color: #EEFFFF;
-}
-
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .cm-s-log.CodeMirror {
-  background-color: #000000;
+[data-page^="admin-services-openclash"] .cm-s-material *,
+[data-page^="admin-services-openclash"] .cm-s-log,
+[data-page^="admin-services-openclash"] .cm-s-log * {
+  font-family: 'Twemoji Mozilla', 'Consolas', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Google Sans' !important;
+  font-weight: 600 !important;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button {
@@ -4211,8 +4223,6 @@ strong,
 .status-item .label,
 [data-page^="admin-services-openclash"] [class^="info-cell"],
 [data-page^="admin-services-openclash"] [class^="info-cell"] *,
-[data-page^="admin-services-openclash"] .cm-s-log span,
-[data-page^="admin-services-openclash"] .cm-s-material *,
 [data-page^="admin-services-openclash"] .settings-cell,
 [data-page^="admin-services-openclash"] .settings-cell * [data-page^="admin-services-openclash"] .sub_div {
   font-family: 'Google Sans', 'Twemoji Mozilla' !important;
@@ -4249,7 +4259,7 @@ strong,
 
 [data-page^="admin-services-openclash"] .cbi-input-textarea {
   font-size: 14px !important;
-  font-family: 'Google Sans' !important;
+  font-family: 'Twemoji Mozilla', 'Consolas', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Google Sans' !important;
 }
 
 [data-page^="admin-services-openclash"] .oc .version-display .version-text {
