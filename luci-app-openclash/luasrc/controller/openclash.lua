@@ -352,8 +352,8 @@ function action_flush_dns_cache()
 		local dase = dase() or ""
 		local cn_port = cn_port()
 		if not daip or not cn_port then return end
-		fake_ip_state = luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPOST http://"%s":"%s"/cache/fakeip/flush', dase, daip, cn_port))
-		dns_state = luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPOST http://"%s":"%s"/cache/dns/flush', dase, daip, cn_port))
+		fake_ip_state = luci.sys.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPOST http://"%s":"%s"/cache/fakeip/flush', dase, daip, cn_port))
+		dns_state = luci.sys.exec(string.format('curl -sL -m 3 --retry 2-H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPOST http://"%s":"%s"/cache/dns/flush', dase, daip, cn_port))
 	end
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
@@ -368,7 +368,7 @@ function action_flush_smart_cache()
 		local dase = dase() or ""
 		local cn_port = cn_port()
 		if not daip or not cn_port then return end
-		flush_state = luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPOST http://"%s":"%s"/cache/smart/flush', dase, daip, cn_port))
+		flush_state = luci.sys.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPOST http://"%s":"%s"/cache/smart/flush', dase, daip, cn_port))
 	end
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
@@ -554,10 +554,10 @@ function fetch_sub_info(sub_url, sub_ua)
 	local info, upload, download, total, day_expire, http_code
 	local used, expire, day_left, percent, surplus
 
-	info = luci.sys.exec(string.format("curl -sLI -X GET -m 10 --retry 3 -w 'http_code=%%{http_code}' -H 'User-Agent: %s' '%s'", sub_ua, sub_url))
+	info = luci.sys.exec(string.format("curl -sLI -X GET -m 10 --retry 2 -w 'http_code=%%{http_code}' -H 'User-Agent: %s' '%s'", sub_ua, sub_url))
 	local http_match = string.match(info, "http_code=(%d+)")
 	if not info or not http_match or tonumber(http_match) ~= 200 then
-		info = luci.sys.exec(string.format("curl -sLI -X GET -m 10 --retry 3 -w 'http_code=%%{http_code}' -H 'User-Agent: Quantumultx' '%s'", sub_url))
+		info = luci.sys.exec(string.format("curl -sLI -X GET -m 10 --retry 2 -w 'http_code=%%{http_code}' -H 'User-Agent: Quantumultx' '%s'", sub_url))
 		http_match = string.match(info, "http_code=(%d+)")
 	end
 
@@ -825,7 +825,7 @@ function action_rule_mode()
 		local dase = dase() or ""
 		local cn_port = cn_port()
 		if not daip or not cn_port then return end
-		info = json.parse(luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/configs', dase, daip, cn_port)))
+		info = json.parse(luci.sys.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/configs', dase, daip, cn_port)))
 		if info then
 			mode = info["mode"]
 		else
@@ -854,7 +854,7 @@ function action_switch_rule_mode()
 
 	if is_running() then
 		if not daip or not cn_port then luci.http.status(500, "Switch Faild") return end
-		info = luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPATCH http://"%s":"%s"/configs -d \'{\"mode\": \"%s\"}\'', dase, daip, cn_port, mode))
+		info = luci.sys.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPATCH http://"%s":"%s"/configs -d \'{\"mode\": \"%s\"}\'', dase, daip, cn_port, mode))
 		if info ~= "" then
 			luci.http.status(500, "Switch Faild")
 		end
@@ -904,7 +904,7 @@ function action_log_level()
 		local dase = dase() or ""
 		local cn_port = cn_port()
 		if not daip or not cn_port then return end
-		info = json.parse(luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/configs', dase, daip, cn_port)))
+		info = json.parse(luci.sys.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/configs', dase, daip, cn_port)))
 		if info then
 			level = info["log-level"]
 		else
@@ -916,27 +916,6 @@ function action_log_level()
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
 		log_level = level;
-	})
-end
-
-function action_switch_log()
-	local level, info
-	if is_running() then
-		local daip = daip()
-		local dase = dase() or ""
-		local cn_port = cn_port()
-		level = luci.http.formvalue("log_level")
-		if not daip or not cn_port or not level then luci.http.status(500, "Switch Faild") return end
-		info = luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPATCH http://"%s":"%s"/configs -d \'{\"log-level\": \"%s\"}\'', dase, daip, cn_port, level))
-		if info ~= "" then
-			luci.http.status(500, "Switch Faild")
-		end
-	else
-		luci.http.status(500, "Switch Faild")
-	end
-	luci.http.prepare_content("application/json")
-	luci.http.write_json({
-		info = info;
 	})
 end
 
@@ -1001,8 +980,8 @@ function action_toolbar_show()
 		local cn_port = cn_port()
 		if not daip or not cn_port then return end
 
-		traffic = json.parse(luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/traffic', dase, daip, cn_port)))
-		connections = json.parse(luci.sys.exec(string.format('curl -sL -m 3 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/connections', dase, daip, cn_port)))
+		traffic = json.parse(luci.sys.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/traffic', dase, daip, cn_port)))
+		connections = json.parse(luci.sys.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/connections', dase, daip, cn_port)))
 
 		if traffic and connections and connections.connections then
 			connection = #(connections.connections)
@@ -1328,6 +1307,7 @@ function action_refresh_log()
 	luci.http.prepare_content("application/json")
 	local logfile = "/tmp/openclash.log"
 	local log_len = tonumber(luci.http.formvalue("log_len")) or 0
+	local core_refresh = luci.http.formvalue("core_refresh") == "true"
 
 	if not fs.access(logfile) then
 		luci.http.write_json({
@@ -1360,7 +1340,14 @@ function action_refresh_log()
 		"tail -n +%d '%s' | grep -v -E '%s' | grep -E '%s' | tail -n %d",
 		start_line, logfile, exclude_pattern, core_pattern, limit
 	)
-	local core_raw = luci.sys.exec(core_cmd)
+	local core_raw = ""
+	if not core_refresh then
+		local core_cmd = string.format(
+			"tail -n +%d '%s' | grep -v -E '%s' | grep -E '%s' | tail -n %d",
+			start_line, logfile, exclude_pattern, core_pattern, limit
+		)
+		core_raw = luci.sys.exec(core_cmd)
+	end
 
 	local oc_cmd = string.format(
 		"tail -n +%d '%s' | grep -v -E '%s' | grep -v -E '%s' | tail -n %d",
@@ -2088,7 +2075,7 @@ function action_myip_check()
 
 	if result.ipify and result.ipify.ip then
 		local geo_cmd = string.format(
-			'curl -sL -m 5 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "https://api-ipv4.ip.sb/geoip/%s" 2>/dev/null',
+			'curl -sL -m 5 --retry 2 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "https://api-ipv4.ip.sb/geoip/%s" 2>/dev/null',
 			result.ipify.ip
 		)
 		local geo_data = luci.sys.exec(geo_cmd)
@@ -2141,7 +2128,7 @@ function action_website_check()
 	end
 
 	local cmd = string.format(
-		'curl -sL -m 5 --connect-timeout 3 -w "%%{http_code},%%{time_total},%%{time_connect},%%{time_appconnect}" "%s" -o /dev/null 2>/dev/null',
+		'curl -sL -m 5 --connect-timeout 3 --retry 2 -w "%%{http_code},%%{time_total},%%{time_connect},%%{time_appconnect}" "%s" -o /dev/null 2>/dev/null',
 		test_url
 	)
 
@@ -2330,7 +2317,7 @@ function action_switch_oc_setting()
 			return false
 		end
 
-		local reload_result = luci.sys.exec(string.format('curl -sL -m 5 --connect-timeout 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPUT http://"%s":"%s"/configs?force=true -d \'{"path":"%s"}\' 2>&1', dase, daip, cn_port, runtime_config_path))
+		local reload_result = luci.sys.exec(string.format('curl -sL -m 5 --connect-timeout 2 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPUT http://"%s":"%s"/configs?force=true -d \'{"path":"%s"}\' 2>&1', dase, daip, cn_port, runtime_config_path))
 
 		if reload_result ~= "" then
 			luci.http.status(500, "Switch Failed")
@@ -3853,7 +3840,7 @@ function action_overwrite_subscribe_info()
 			local overwrite_dir = "/etc/openclash/overwrite/"
 			local file_path = overwrite_dir .. section_name
 			if url and url ~= "" then
-				local cmd = string.format('curl -sL --connect-timeout 5 -m 15 "%s" -o "%s"', url, file_path)
+				local cmd = string.format('curl -sL --connect-timeout 5 -m 15 --retry 2 "%s" -o "%s"', url, file_path)
 				local ret = luci.sys.call(cmd)
 				if not fs.access(file_path) then
 					fs.writefile(file_path, "")

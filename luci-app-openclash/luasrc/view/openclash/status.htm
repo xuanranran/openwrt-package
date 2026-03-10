@@ -2248,14 +2248,10 @@
             DISCONNECTED: 2,
             ERROR: 3
         },
-        retryAttempts: {},
-        maxRetries: 3,
-        reconnectDelay: 2000,
+        reconnectDelay: 5000,
         heartbeatInterval: 30000,
         heartbeatTimers: {},
         _ws_connect: false,
-        _ws_error: false,
-        _ws_retry: 0,
         _allowedCloseCodes: [1000, 1001, 1005, 1006],
 
         isSupported: function() {
@@ -2283,8 +2279,6 @@
                     lastActivity: Date.now(),
                     options: options
                 };
-
-                this.retryAttempts[type] = 0;
 
                 if (ws.addEventListener) {
                     ws.addEventListener('open', this.handleOpen.bind(this, type));
@@ -2362,8 +2356,6 @@
                 this.closeConnection(types[i]);
             }
             this._ws_connect = false;
-            this._ws_error = false;
-            this._ws_retry = 0;
         },
 
         handleMessage: function(type, event) {
@@ -2389,13 +2381,13 @@
                 connection.state = this.connectionStates.CONNECTED;
                 connection.lastActivity = Date.now();
             }
-            this.retryAttempts[type] = 0;
             this.startHeartbeat(type);
 
-            if (type === 'traffic' || Object.keys(this.connections).length === 3) {
+            if (Object.keys(this.connections).length === 3) {
                 this._ws_connect = true;
-                this._ws_error = false;
-                this._ws_retry = 0;
+                if (NetworkStatsManager.isEnabled) {
+                    NetworkStatsManager.stop();
+                }
             }
         },
 
@@ -2404,12 +2396,8 @@
             if (connection) {
                 connection.state = this.connectionStates.ERROR;
             }
-            this._ws_error = true;
             this.stopHeartbeat(type);
-
-            if (type === 'traffic') {
-                this.enableFallbackMode();
-            }
+            this.enableFallbackMode();
         },
 
         handleClose: function(type, event) {
@@ -2429,7 +2417,6 @@
             if (connection) {
                 connection.state = this.connectionStates.ERROR;
             }
-            this._ws_error = true;
             this.enableFallbackMode();
         },
 
@@ -2437,25 +2424,22 @@
             var self = this;
             var connection = this.connections[type];
 
-            if (!connection || this.retryAttempts[type] >= this.maxRetries) {
+            if (!connection) {
                 this.enableFallbackMode();
                 return;
             }
-
-            this.retryAttempts[type] = (this.retryAttempts[type] || 0) + 1;
-            var delay = this.reconnectDelay * Math.pow(1.5, this.retryAttempts[type] - 1);
 
             setTimeout(function() {
                 if (self.connections[type] && self.connections[type].state !== self.connectionStates.CONNECTED) {
                     self.createConnection(type, connection.url, connection.messageHandler, connection.options);
                 }
-            }, delay);
+            }, this.reconnectDelay);
         },
 
         enableFallbackMode: function() {
             this._ws_connect = false;
             this.closeAll();
-            if (typeof NetworkStatsManager !== "undefined" && !NetworkStatsManager.isEnabled) {
+            if (!NetworkStatsManager.isEnabled) {
                 NetworkStatsManager.start();
             }
         },
@@ -2480,14 +2464,6 @@
                 }
             }
             return false;
-        },
-
-        resetRetryCount: function(type) {
-            if (type) {
-                this.retryAttempts[type] = 0;
-            } else {
-                this.retryAttempts = {};
-            }
         }
     };
 
@@ -2575,7 +2551,7 @@
 
                     this.updateSubscriptionDisplay(currentConfigFile, currentFileInfo);
 
-                    if (currentConfigFile && SubscriptionManager.currentConfigFile !== currentConfigFile) {
+                    if (SubscriptionManager.currentConfigFile !== currentConfigFile) {
                         SubscriptionManager.currentConfigFile = currentConfigFile;
                         SubscriptionManager.getSubscriptionInfo();
                     }
@@ -2967,7 +2943,7 @@
 
         loadSubscriptionInfo: function() {
             var currentConfig = ConfigFileManager.getCurrentConfig() || ConfigFileManager.getSelectedConfig();
-            if (currentConfig && currentConfig !== this.currentConfigFile) {
+            if (currentConfig !== this.currentConfigFile) {
                 this.currentConfigFile = currentConfig;
                 this.getSubscriptionInfo();
             }
@@ -4143,19 +4119,13 @@
 
             if (status.clash && status.daip) {
                 if (!WSManager.hasActiveConnections()) {
-                    if (!WSManager._ws_error || WSManager._ws_retry < 3) {
-                        if (initializeWebSocketConnections(status)) {
-                            WSManager._ws_retry++;
-                        }
-                    } else {
-                        WSManager.enableFallbackMode();
-                    }
+                    initializeWebSocketConnections(status);
                 } else {
-                    if (NetworkStatsManager && NetworkStatsManager.isEnabled) {
+                    if (NetworkStatsManager.isEnabled) {
                         NetworkStatsManager.stop();
                     }
 
-                    if (SystemStatusManager && !SystemStatusManager.isEnabled) {
+                    if (!SystemStatusManager.isEnabled) {
                         SystemStatusManager.start();
                     }
                 }
@@ -4503,12 +4473,6 @@
         if (winOpen == null || typeof(winOpen) == 'undefined') {
             window.location.href = url;
         }
-    }
-
-    function ws_terror() {
-        WSManager._ws_error = true;
-
-        NetworkStatsManager.start();
     }
 
     function ws_tmessage(event) {
@@ -4969,6 +4933,10 @@
             var mixPort = StateManager.cached_proxy_info.mixed_port || '7893';
             var proxyIp = StateManager.current_status.daip;
             var proxyText = proxyIp + ':' + mixPort;
+            if (StateManager.cached_proxy_info.auth_user && StateManager.cached_proxy_info.auth_pass) {
+                proxyText = StateManager.cached_proxy_info.auth_user + ':' + StateManager.cached_proxy_info.auth_pass + '@' + proxyText;
+            }
+            proxyText = 'http://' + proxyText;
             copyToClipboard(proxyText, '<%:Mix proxy address copied:%> ');
         } else {
             alert('<%:Proxy info not available, please try again later%>');
@@ -5392,11 +5360,11 @@
             filename: filename
         }, function(x, status) {
             if (x.status == 200) {
-                if (typeof ConfigUploader !== 'undefined' && ConfigUploader.showEditSubscribe) {
+                if (ConfigUploader && ConfigUploader.showEditSubscribe) {
                     ConfigUploader.showEditSubscribe(status, filename);
                 } else {
                     setTimeout(function() {
-                        if (typeof ConfigUploader !== 'undefined' && ConfigUploader.showEditSubscribe) {
+                        if (ConfigUploader && ConfigUploader.showEditSubscribe) {
                             ConfigUploader.showEditSubscribe(status, filename);
                         } else {
                             alert('<%:Config editor not ready, please try again%>');
@@ -5418,11 +5386,11 @@
             return false;
         }
 
-        if (typeof ConfigEditor !== 'undefined' && ConfigEditor.show) {
+        if (ConfigEditor.show) {
             ConfigEditor.show(currentConfig);
         } else {
             setTimeout(function() {
-                if (typeof ConfigEditor !== 'undefined' && ConfigEditor.show) {
+                if (ConfigEditor.show) {
                     ConfigEditor.show(currentConfig);
                 } else {
                     alert('<%:Config editor not ready, please try again%>');
@@ -5434,11 +5402,11 @@
     }
 
     function editOverwrite() {
-        if (typeof ConfigEditor !== 'undefined' && ConfigEditor.showOverwrite) {
+        if (ConfigEditor.showOverwrite) {
             ConfigEditor.showOverwrite();
         } else {
             setTimeout(function() {
-                if (typeof ConfigEditor !== 'undefined' && ConfigEditor.showOverwrite) {
+                if (ConfigEditor.showOverwrite) {
                     ConfigEditor.showOverwrite();
                 } else {
                     alert('<%:Config editor not ready, please try again%>');
