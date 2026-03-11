@@ -8,9 +8,9 @@ write_ruby_part()
   fi
   if [ "$OVERWRITE_PARENT" = "yaml_overwrite" ]; then
     mkdir -p /tmp/yaml_openclash_ruby_parts 2>/dev/null
-    echo "threads << Thread.new do begin $part; rescue Exception => e; YAML.LOG('Error: Set Custom Overwrite Script Failed,【%s】' % [e.message]); end; end" >> "/tmp/yaml_openclash_ruby_parts/$sid"
+    echo "threads << Thread.new do begin $part; rescue Exception => e; YAML.LOG_ERROR('Set Custom Overwrite Script Failed,【%s】' % [e.message]); end; end" >> "/tmp/yaml_openclash_ruby_parts/$sid"
   else
-    echo "threads << Thread.new do begin $part; rescue Exception => e; YAML.LOG('Error: Set Custom Overwrite Script Failed,【%s】' % [e.message]); end; end" >> /tmp/yaml_openclash_ruby_parse
+    echo "threads << Thread.new do begin $part; rescue Exception => e; YAML.LOG_ERROR('Set Custom Overwrite Script Failed,【%s】' % [e.message]); end; end" >> /tmp/yaml_openclash_ruby_parse
   fi
 }
 
@@ -20,7 +20,7 @@ run_ruby_part()
   if [ -z "$part" ]; then
     return
   fi
-  ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "begin $part; rescue Exception => e; YAML.LOG('Error: Set Custom Overwrite Script Failed,【%s】' % [e.message]); end" 2>/dev/null
+  ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "begin $part; rescue Exception => e; YAML.LOG_ERROR('Set Custom Overwrite Script Failed,【%s】' % [e.message]); end" 2>/dev/null
 }
 
 openclash_custom_overwrite() {

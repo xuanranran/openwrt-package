@@ -14,10 +14,11 @@
     --primary-color: #3b82f6;
     --success-color: #059669;
     --success-dark: #047857;
-    --warning-color: #f59e0b;
+    --tip-color: #f59e0b;
     --error-color: #dc2626;
-    --warning-log: #ff00bb;
-    --watch-log: #b300ff;
+    --warning-color: #ff00bb;
+    --watchdog-color: #b300ff;
+    --info-color: #3b82f6;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --radius-sm: 6px;
@@ -50,9 +51,10 @@
     --success-color: #34d399;
     --success-dark: #10b981;
     --error-color: #ff7070;
-    --warning-color: #f9bb51;
-    --warning-log: #fa41c8;
-    --watch-log: #c147f5;
+    --tip-color: #f9bb51;
+    --warning-color: #fa41c8;
+    --watchdog-color: #c147f5;
+    --info-color: #3b82f6;
 }
 
 .oc[data-darkmode="true"] .plugin-toggle-slider {
@@ -94,7 +96,7 @@
 }
 
 .oc[data-darkmode="true"] .subscription-progress-fill.medium {
-    background: var(--warning-color);
+    background: var(--tip-color);
 }
 
 .oc[data-darkmode="true"] .subscription-progress-fill.low {
@@ -942,7 +944,7 @@
 }
 
 .oc .subscription-progress-fill.medium {
-    background: var(--warning-color);
+    background: var(--tip-color);
 }
 
 .oc .subscription-progress-fill.low {
@@ -3467,7 +3469,7 @@
 
             if (DOMCache.oclog) {
                 DOMCache.oclog.style.display = 'inline-flex';
-                DOMCache.oclog.innerHTML = '<b style="color:var(--warning-color)">' + (initialMessage || '<%:Processing...%>') + '</b>';
+                DOMCache.oclog.innerHTML = '<b style="color:var(--tip-color)">' + (initialMessage || '<%:Processing...%>') + '</b>';
             }
 
             this.isPolling = true;
@@ -3567,17 +3569,11 @@
 
         checkForErrors: function(log) {
             if (!log) return false;
-            if (log.match(/level=fatal|level=error|FTL \[Config]/)) {
+            if (log.match(/level=(fatal|error)/)) {
                 XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "del_start_log")%>', null, function(x) {});
 
-                var errorMsg;
-                if (log.match(/level=(fatal|error)/)) {
-                    var msgParts = log.split('msg=');
-                    errorMsg = msgParts.length > 1 ? msgParts[1].replace(/"/g, '') : log;
-                } else { // FTL [Config]
-                    var ftlParts = log.split('FTL [Config] ');
-                    errorMsg = ftlParts.length > 1 ? ftlParts[1] : log;
-                }
+                var msgParts = log.split('msg=');
+                var errorMsg = msgParts.length > 1 ? msgParts[1].replace(/"/g, '') : log;
 
                 setTimeout(function() {
                     alert('<%:OpenClash Start Failed%>:\n\n' + errorMsg);
@@ -3605,19 +3601,13 @@
         },
 
         getLogColor: function(log) {
-            if (log.includes("Tip:") || log.includes("提示：")) {
-                return 'var(--warning-color)';
-            } else if (log.includes("Error:") || log.includes("错误：") || log.includes("level=error")) {
-                return 'var(--error-color)';
-            } else if (log.includes("Warning:") || log.includes("警告：") || log.includes("level=warning")) {
-                return 'var(--warning-log)';
-            } else if (log.includes("Watchdog:") || log.includes("守护程序：")) {
-                return 'var(--watch-log)';
-            } else if (log.match(/level=info|Success|Started|Ready/)) {
-                return 'var(--success-color)';
-            } else {
-                return 'var(--text-secondary)';
+            for (var levelKey in window.levelTranslations) {
+                var translatedText = '[' + window.levelTranslations[levelKey] + ']';
+                if (log.includes(translatedText)) {
+                    return "var(--" + levelKey + "-color)";
+                }
             }
+            return "var(--info-color)";
         },
 
         formatLogText: function(log) {
@@ -3671,12 +3661,12 @@
             StateManager.cachedXHRGet('<%=luci.dispatcher.build_url("admin", "services", "openclash", "toolbar_show_sys")%>', function(x, status) {
                 if (x && x.status == 200 && x.responseText != "") {
                     self.retryCount = 0;
-                    var cpuColor = status.cpu <= 50 ? "var(--success-color)" : (status.cpu <= 80 ? "var(--warning-color)" : "var(--error-color)");
+                    var cpuColor = status.cpu <= 50 ? "var(--success-color)" : (status.cpu <= 80 ? "var(--tip-color)" : "var(--error-color)");
                     var cpuValue = status.cpu <= 100 ? status.cpu + " %" : "0 %";
                     document.getElementById("cpu_t").innerHTML = "<font style=\"color:"+cpuColor+"\">"+cpuValue+"</font>";
 
                     var loadValue = parseFloat(status.load_avg) || 0;
-                    var loadColor = loadValue <= 50 ? "var(--success-color)" : (loadValue <= 80 ? "var(--warning-color)" : "var(--error-color)");
+                    var loadColor = loadValue <= 50 ? "var(--success-color)" : (loadValue <= 80 ? "var(--tip-color)" : "var(--error-color)");
                     document.getElementById("load_a").innerHTML = "<font style=\"color:"+loadColor+"\">"+status.load_avg+" %</font>";
                 } else {
                     self.handleError();
@@ -3758,12 +3748,12 @@
             ];
 
             if (!SystemStatusManager.isEnabled) {
-                var cpuColor = status.cpu <= 50 ? "var(--success-color)" : (status.cpu <= 80 ? "var(--warning-color)" : "var(--error-color)");
+                var cpuColor = status.cpu <= 50 ? "var(--success-color)" : (status.cpu <= 80 ? "var(--tip-color)" : "var(--error-color)");
                 var cpuValue = status.cpu <= 100 ? status.cpu + " %" : "0 %";
                 updates.push({element: document.getElementById("cpu_t"), content: "<font style=\"color:"+cpuColor+"\">"+cpuValue+"</font>"});
 
                 var loadValue = parseFloat(status.load_avg) || 0;
-                var loadColor = loadValue <= 50 ? "var(--success-color)" : (loadValue <= 80 ? "var(--warning-color)" : "var(--error-color)");
+                var loadColor = loadValue <= 50 ? "var(--success-color)" : (loadValue <= 80 ? "var(--tip-color)" : "var(--error-color)");
                 updates.push({element: document.getElementById("load_a"), content: "<font style=\"color:"+loadColor+"\">"+status.load_avg+" %</font>"});
             }
 
@@ -4202,14 +4192,14 @@
         var isChineseUser = userLang.indexOf('zh') === 0;
 
         var tips = [
-            '<%:Tip: You can modify the profile on the profile page (for content that is not taken over)%>',
-            '<%:Tip: do not write configuration files? Try to create one click on the server page%>',
-            '<%:Tip: some website are abnormal? Try switching modes or using third-party rules%>',
-            '<%:Tip: using the fake IP mode can get a faster access experience%>',
-            '<%:Tip: the nameserver group must have at least one server set when using custom DNS%>',
-            '<%:Tip: after started, please wait patiently until the connection is normal%>',
-            '<%:Tip: if you don not use IPv6, please turn off the DHCP service of IPv6, otherwise the connection will be abnormal%>',
-            '<%:Tip: you can update the version in the settings page%>',
+            '<%:You can modify the profile on the profile page (for content that is not taken over)%>',
+            '<%:do not write configuration files? Try to create one click on the server page%>',
+            '<%:some website are abnormal? Try switching modes or using third-party rules%>',
+            '<%:using the fake IP mode can get a faster access experience%>',
+            '<%:the nameserver group must have at least one server set when using custom DNS%>',
+            '<%:after started, please wait patiently until the connection is normal%>',
+            '<%:if you don not use IPv6, please turn off the DHCP service of IPv6, otherwise the connection will be abnormal%>',
+            '<%:you can update the version in the settings page%>',
             '<%:Note: It is not recommended to enable IPv6 and related services for routing. Most of the network connection problems reported so far are related to it%>',
             '<%:Note: Turning on secure DNS in the browser will cause abnormal shunting, please be careful to turn it off%>',
             '<%:Note: Some software will modify the device HOSTS, which will cause abnormal shunt, please pay attention to check%>',
@@ -5030,13 +5020,8 @@
                 client_href: currentUrl.href
             }, function(x, data) {
                 if (x && x.status == 200 && data.pac_url) {
-                    if (data.error && data.error.indexOf("warning:") === 0) {
-                        var warningMsg = data.error.replace("warning: ", "");
-                        var warningTranslations = {
-                            'No authentication configured, please be aware of the risk of information leakage!': '<%:No authentication configured, please be aware of the risk of information leakage!%>'
-                        };
-                        var translatedWarning = warningTranslations[warningMsg] || warningMsg;
-                        alert('<%:Warning:%> ' + translatedWarning);
+                    if (data.error && data.error !== "") {
+                        alert(data.error);
                     }
                     copyToClipboard(data.pac_url, '<%:PAC file URL copied:%> ');
                 } else if (data.error) {

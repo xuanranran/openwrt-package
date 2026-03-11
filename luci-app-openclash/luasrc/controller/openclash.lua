@@ -167,19 +167,13 @@ end
 
 local function startlog()
 	local info = ""
-	local line_trans = ""
 	if fs.access("/tmp/openclash_start.log") then
 		info = luci.sys.exec("sed -n '$p' /tmp/openclash_start.log 2>/dev/null")
-		line_trans = info
 		if string.len(info) > 0 then
-			if not string.find (info, "【") or not string.find (info, "】") then
-				line_trans = trans_line_nolabel(info)
-   			else
-   				line_trans = trans_line(info)
-   			end
-   		end
+			info = trans_line(info)
+		end
 	end
-	return line_trans
+	return info
 end
 
 local function pkg_type()
@@ -1332,60 +1326,53 @@ function action_refresh_log()
 	end
 
 	local exclude_pattern = "UDP%-Receive%-Buffer%-Size|^Sec%-Fetch%-Mode|^User%-Agent|^Access%-Control|^Accept|^Origin|^Referer|^Connection|^Pragma|^Cache%-"
-	local core_pattern = " DBG | INF |level=| WRN | ERR | FTL "
+	local core_pattern = "level=|^time="
 	local limit = 1000
 	local start_line = (log_len > 0 and total_lines > log_len) and (log_len + 1) or 1
+	local core_cmd, oc_cmd, core_raw, oc_raw
+	local core_logs = {}
+	local oc_logs = {}
 
-	local core_cmd = string.format(
+	core_cmd = string.format(
 		"tail -n +%d '%s' | grep -v -E '%s' | grep -E '%s' | tail -n %d",
 		start_line, logfile, exclude_pattern, core_pattern, limit
 	)
-	local core_raw = ""
-	if not core_refresh then
-		local core_cmd = string.format(
-			"tail -n +%d '%s' | grep -v -E '%s' | grep -E '%s' | tail -n %d",
-			start_line, logfile, exclude_pattern, core_pattern, limit
-		)
-		core_raw = luci.sys.exec(core_cmd)
-	end
 
-	local oc_cmd = string.format(
+	oc_cmd = string.format(
 		"tail -n +%d '%s' | grep -v -E '%s' | grep -v -E '%s' | tail -n %d",
 		start_line, logfile, exclude_pattern, core_pattern, limit
 	)
-	local oc_raw = luci.sys.exec(oc_cmd)
 
-	local core_log = ""
+	if core_refresh then
+		core_raw = luci.sys.exec(core_cmd)
+	end
+
+	oc_raw = luci.sys.exec(oc_cmd)
+
 	if core_raw and core_raw ~= "" then
-		local core_logs = {}
 		for line in core_raw:gmatch("[^\n]+") do
-			local line_trans = line
-			if string.match(string.sub(line, 0, 8), "%d%d:%d%d:%d%d") then
-				line_trans = '"'..os.date("%Y-%m-%d", os.time()).. " "..os.date("%H:%M:%S", tonumber(string.sub(line, 0, 8)))..'"'..string.sub(line, 9, -1)
-			end
-			table.insert(core_logs, line_trans)
-		end
-		if #core_logs > 0 then
-			core_log = table.concat(core_logs, "\n")
+			table.insert(core_logs, line)
 		end
 	end
 
-	local oc_log = ""
 	if oc_raw and oc_raw ~= "" then
-		local oc_logs = {}
 		for line in oc_raw:gmatch("[^\n]+") do
-			local line_trans
-			if not string.find(line, "【") or not string.find(line, "】") then
-				line_trans = trans_line_nolabel(line)
-			else
-				line_trans = trans_line(line)
+			if not string.match(string.sub(line, 1, 19), "%d%d%d%d%-%d%d%-%d%d %d%d:%d%d:%d%d") then
+				line = os.date("%Y-%m-%d %H:%M:%S") .. ' [Fatal] ' .. line
 			end
-			table.insert(oc_logs, line_trans)
-		end
-		if #oc_logs > 0 then
-			oc_log = table.concat(oc_logs, "\n")
+			table.insert(oc_logs, trans_line(line))
 		end
 	end
+
+	if #core_logs > limit then
+		core_logs = {table.unpack(core_logs, #core_logs - limit + 1)}
+	end
+	if #oc_logs > limit then
+		oc_logs = {table.unpack(oc_logs, #oc_logs - limit + 1)}
+	end
+
+	local core_log = #core_logs > 0 and table.concat(core_logs, "\n") or ""
+	local oc_log = #oc_logs > 0 and table.concat(oc_logs, "\n") or ""
 
 	luci.http.write_json({
 		len = total_lines,
@@ -1667,19 +1654,13 @@ end
 function manual_stream_unlock_test()
 	local type = luci.http.formvalue("type")
 	local cmd = string.format('/usr/share/openclash/openclash_streaming_unlock.lua "%s"', type)
-	local line_trans
 	luci.http.prepare_content("text/plain; charset=utf-8")
 	local util = io.popen(cmd)
 	if util and util ~= "" then
 		while true do
 			local ln = util:read("*l")
 			if ln then
-				if not string.find (ln, "【") or not string.find (ln, "】") then
-					line_trans = trans_line_nolabel(ln)
-   				else
-   					line_trans = trans_line(ln)
-   				end
-				luci.http.write(line_trans)
+				luci.http.write(trans_line(ln))
 				luci.http.write("\n")
 			end
 			if not process_status("openclash_streaming_unlock.lua "..type) or not process_status("openclash_streaming_unlock.lua ") then
@@ -1695,19 +1676,13 @@ end
 function all_proxies_stream_test()
 	local type = luci.http.formvalue("type")
 	local cmd = string.format('/usr/share/openclash/openclash_streaming_unlock.lua "%s" "%s"', type, "all")
-	local line_trans
 	luci.http.prepare_content("text/plain; charset=utf-8")
 	local util = io.popen(cmd)
 	if util and util ~= "" then
 		while true do
 			local ln = util:read("*l")
 			if ln then
-				if not string.find (ln, "【") or not string.find (ln, "】") then
-					line_trans = trans_line_nolabel(ln)
-   				else
-   					line_trans = trans_line(ln)
-   				end
-				luci.http.write(line_trans)
+				luci.http.write(trans_line(ln))
 				luci.http.write("\n")
 			end
 			if not process_status("openclash_streaming_unlock.lua "..type) or not process_status("openclash_streaming_unlock.lua ") then
@@ -1720,95 +1695,70 @@ function all_proxies_stream_test()
 	luci.http.status(500, "Something Wrong While Testing...")
 end
 
-function trans_line_nolabel(data)
-	if data == nil or data == "" then
-		return ""
-	end
-
-	local line_trans = ""
-	if string.len(data) >= 19 and string.match(string.sub(data, 0, 19), "%d%d%d%d%-%d%d%-%d%d %d%d:%d%d:%d%d") then
-		line_trans = string.sub(data, 0, 20)..luci.i18n.translate(string.sub(data, 21, -1))
-	else
-		line_trans = luci.i18n.translate(data)
-	end
-	return line_trans
-end
-
 function trans_line(data)
 	if data == nil or data == "" then
 		return ""
 	end
 
-	local no_trans = {}
 	local line_trans = ""
-	local a = string.find(data, "【")
 
-	if not a then
-		if string.len(data) >= 19 and string.match(string.sub(data, 0, 19), "%d%d%d%d%-%d%d%-%d%d %d%d:%d%d:%d%d") then
-			return string.sub(data, 0, 20) .. luci.i18n.translate(string.sub(data, 21, -1))
-		else
-			return luci.i18n.translate(data)
+	local has_timestamp = string.len(data) >= 19 and string.match(string.sub(data, 1, 19), "%d%d%d%d%-%d%d%-%d%d %d%d:%d%d:%d%d")
+	local time_part = ""
+	local level_part = ""
+	local content_start = has_timestamp and 21 or 1
+
+	if has_timestamp then
+		time_part = string.sub(data, 1, 20)
+		local level_start, level_end, level_content = string.find(data, "%[([^%]]+)%]", 21)
+		if level_start and level_end and level_start == 21 then
+			level_part = "[" .. luci.i18n.translate(level_content) .. "] "
+			content_start = level_end + 2
 		end
 	end
 
-	local b_pos = string.find(data, "】")
-	if not b_pos then
-		return luci.i18n.translate(data)
-	end
+	local segments = {}
+	local last_pos = content_start
+	local pos = string.find(data, "【", content_start)
 
-	local b = b_pos + 2
-	local c = 21
-	local d = 0
-	local v
-	local x
+	while pos do
+		if pos > last_pos then
+			table.insert(segments, {
+				type = "trans",
+				text = string.sub(data, last_pos, pos - 1)
+			})
+		end
 
-	while true do
-		table.insert(no_trans, a)
-		table.insert(no_trans, b)
-
-		local next_a = string.find(data, "【", b+1)
-		local next_b = string.find(data, "】", b+1)
-
-		if next_a and next_b then
-			a = next_a
-			b = next_b + 2
-		else
+		local close_pos = string.find(data, "】", pos + 1)
+		if not close_pos then
+			table.insert(segments, {
+				type = "trans",
+				text = string.sub(data, pos, -1)
+			})
 			break
 		end
+
+		table.insert(segments, {
+			type = "no_trans",
+			text = string.sub(data, pos, close_pos + 2)
+		})
+
+		last_pos = close_pos + 3
+		pos = string.find(data, "【", last_pos)
 	end
 
-	if #no_trans % 2 ~= 0 then
-		table.remove(no_trans)
+	if last_pos <= string.len(data) then
+		table.insert(segments, {
+			type = "trans",
+			text = string.sub(data, last_pos, -1)
+		})
 	end
 
-	for k = 1, #no_trans, 2 do
-		x = no_trans[k]
-		v = no_trans[k+1]
-
-		if x and v then
-			if x <= 21 or not string.match(string.sub(data, 0, 19), "%d%d%d%d%-%d%d%-%d%d %d%d:%d%d:%d%d") then
-				line_trans = line_trans .. luci.i18n.translate(string.sub(data, d, x - 1)) .. string.sub(data, x, v)
-				d = v + 1
-			elseif v <= string.len(data) then
-				line_trans = line_trans .. luci.i18n.translate(string.sub(data, c, x - 1)) .. string.sub(data, x, v)
-			end
-			c = v + 1
-		end
-	end
-
-	if c > string.len(data) then
-		if d == 0 then
-			if string.match(string.sub(data, 0, 19), "%d%d%d%d%-%d%d%-%d%d %d%d:%d%d:%d%d") then
-				line_trans = string.sub(data, 0, 20) .. line_trans
-			end
-		end
-	else
-		if d == 0 then
-			if string.match(string.sub(data, 0, 19), "%d%d%d%d%-%d%d%-%d%d %d%d:%d%d:%d%d") then
-				line_trans = string.sub(data, 0, 20) .. line_trans .. luci.i18n.translate(string.sub(data, c, -1))
-			end
+	line_trans = time_part .. level_part
+	for _, seg in ipairs(segments) do
+		if seg.type == "trans" then
+			line_trans = line_trans .. luci.i18n.translate(seg.text)
 		else
-			line_trans = line_trans .. luci.i18n.translate(string.sub(data, c, -1))
+			line_trans = line_trans .. seg.text
 		end
 	end
 
@@ -2550,7 +2500,7 @@ function action_generate_pac()
 	local mixed_port = fs.uci_get_config("config", "mixed_port") or "7893"
 
 	if not proxy_ip then
-		result.error = "Unable to get proxy IP"
+		result.error = luci.i18n.translate("Unable to get proxy IP")
 		luci.http.prepare_content("application/json")
 		luci.http.write_json(result)
 		return
@@ -2670,7 +2620,7 @@ function action_generate_pac()
 
 			luci.sys.call("chmod 644 " .. pac_file_path)
 		else
-			result.error = "Failed to write PAC file"
+			result.error = luci.i18n.translate("Failed to write PAC file")
 			luci.http.prepare_content("application/json")
 			luci.http.write_json(result)
 			return
@@ -2683,7 +2633,7 @@ function action_generate_pac()
 	result.pac_url = pac_url
 
 	if not auth_exists then
-		result.error = "warning: No authentication configured, please be aware of the risk of information leakage!"
+		result.error = luci.i18n.translate("No authentication configured, please be aware of the risk of information leakage!")
 	end
 
 	luci.http.prepare_content("application/json")

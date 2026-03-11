@@ -57,23 +57,6 @@ local dns_host = "www.instagram.com"
 
 
 <script type="text/javascript">//<![CDATA[
-	setTimeout(function(){
-		initDarkMode();
-	}, 200);
-
-	function initDarkMode() {
-		if (typeof isDarkBackground === 'undefined') {
-			setTimeout(function() {
-				initDarkMode();
-			}, 100);
-			return;
-		}
-		
-		if (isDarkBackground(document.body)) {
-			document.documentElement.setAttribute('data-darkmode', 'true');
-		}
-	}
-	
 	function show_diag_info(addr)
 	{
 		var addr = addr;

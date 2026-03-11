@@ -13,25 +13,18 @@
 "use strict";
 
 CodeMirror.defineMode("log", function(config, parserConfig) {
-
   return {
     startState: function(basecol) {
       return {
         basecol: basecol || 0,
-        levelDone: false,
-        categoryDone: false
+        tabDone: false
       };
     },
 
     token: function(stream, state) {
-      var ch;
-
       if (stream.sol()) {
-        state.levelDone = false;
-        state.categoryDone = false;
-        state.othersDone = false;
-
-        // Match timestamp: YYYY-MM-DD HH:MM:SS
+        state.tabDone = false;
+        
         if (stream.match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)) {
           return "log-timestamp";
         }
@@ -39,71 +32,42 @@ CodeMirror.defineMode("log", function(config, parserConfig) {
 
       if (stream.eatSpace()) return null;
 
-      ch = stream.peek();
+      var ch = stream.peek();
 
-      // Match log level: [info] [warning] [error] [debug]
-      if (!state.levelDone && ch === '[' && stream.match(/\[(?:info|warning|error|debug)\]/i)) {
-        var level = stream.current().slice(1, -1).toLowerCase();
-        state.levelDone = true;
-        return "log-level-" + level;
+      if (!ch) {
+        stream.skipToEnd();
+        return null;
       }
-      
-      // Match category tag: [TCP] [UDP] [DNS] etc - only after level is matched
-      if (state.levelDone && !state.categoryDone && !state.othersDone && ch === '[' && stream.match(/\[[^\]]+\]/)) {
-        state.categoryDone = true;
+
+      if (ch === '【') {
+        if (stream.match(/【[^】]*】/)) {
+          return "log-bracket";
+        }
+      }
+
+      if (state.tabDone) {
+        stream.next();
+        return "log-string";
+      }
+
+      if (ch === '[' && window.levelTranslations) {
+        for (var levelKey in window.levelTranslations) {
+          var levelText = '[' + window.levelTranslations[levelKey] + ']';
+          if (stream.match(levelText)) {
+            return "log-level-" + levelKey;
+          }
+        }
+      }
+
+      if (ch === '[' && stream.match(/\[[A-Z][^\]]*\]/)) {
         return "log-category";
       }
 
-      state.othersDone = true;
-      
-      // Special marker detection with early exit checks
-      // Match 【...】 brackets
-      if (stream.match(/【[^】]*】/)) {
-        return "log-bracket";
+      if (ch !== '[') {
+        state.tabDone = true;
       }
-      
-      // Tip markers
-      if (ch === '提' && stream.match(/提示[：:]/)) {
-        stream.skipToEnd();
-        return "log-tip";
-      }
-      if (ch === 'T' && stream.match(/Tip[：:]/)) {
-        stream.skipToEnd();
-        return "log-tip";
-      }
-      
-      // Watchdog markers
-      if (ch === '守' && stream.match(/守护程序[：:]/)) {
-        stream.skipToEnd();
-        return "log-watchdog";
-      }
-      if (ch === 'W' && stream.match(/Watchdog[：:]/)) {
-        stream.skipToEnd();
-        return "log-watchdog";
-      }
-      
-      // Warning markers
-      if (ch === '警' && stream.match(/警告[：:]/)) {
-        stream.skipToEnd();
-        return "log-warn";
-      }
-      if (ch === 'W' && stream.match(/Warning[：:]/)) {
-        stream.skipToEnd();
-        return "log-warn";
-      }
-      
-      // Error markers
-      if (ch === '错' && stream.match(/错误[：:]/)) {
-        stream.skipToEnd();
-        return "log-error";
-      }
-      if (ch === 'E' && stream.match(/Error[：:]/)) {
-        stream.skipToEnd();
-        return "log-error";
-      }
-      
-      // All other content is styled as string
-      stream.eatWhile(/(?!【)\S/);
+
+      stream.next();
       return "log-string";
     }
   };
@@ -112,3 +76,42 @@ CodeMirror.defineMode("log", function(config, parserConfig) {
 CodeMirror.defineMIME("text/x-log", "log");
 
 });
+
+(function() {
+  function initLogLevelWidth() {
+    if (!window.levelTranslations) return;
+    
+    var tempContainer = document.createElement('div');
+    tempContainer.style.position = 'absolute';
+    tempContainer.style.visibility = 'hidden';
+    tempContainer.style.whiteSpace = 'nowrap';
+    tempContainer.style.fontSize = '15px';
+    tempContainer.style.fontWeight = '600';
+    tempContainer.style.fontFamily = 'Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif';
+    tempContainer.style.padding = '0px 5px';
+    document.body.appendChild(tempContainer);
+    
+    let maxWidth = 0;
+    
+    for (var levelKey in window.levelTranslations) {
+      var translatedText = '[' + window.levelTranslations[levelKey] + ']';
+      tempContainer.textContent = translatedText;
+      var width = tempContainer.offsetWidth;
+      if (width > maxWidth) {
+        maxWidth = width;
+      }
+    }
+    
+    document.body.removeChild(tempContainer);
+    
+    if (maxWidth > 0) {
+      document.documentElement.style.setProperty('--log-level-width', maxWidth + 'px');
+    }
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLogLevelWidth);
+  } else {
+    initLogLevelWidth();
+  }
+})();

@@ -28,7 +28,10 @@
 		box-sizing: border-box;
 		word-break: break-all !important;
 		overflow-wrap: break-word !important;
-		font-family: 'Twemoji Mozilla', Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, sans-serif !important;
+		font-family: 'Twemoji Mozilla', "Microsoft Yahei", "sans-serif", "Helvetica Neue", "Helvetica", "Hiragino Sans GB" !important;
+	}
+	.CodeMirror-hints.log {
+		font-family: 'Twemoji Mozilla', "Open Sans", "PingFangSC-Regular", "Microsoft Yahei", "WenQuanYi Micro Hei", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "sans-serif" !important;
 	}
 	:root[data-darkmode="true"] .CodeMirror-merge-gap {
 		background: #d0cfcf !important;
@@ -101,6 +104,15 @@ local sid = path_info:match("(cfg[0-9a-f]+)") or ""
 </table>
 
 <script type="text/javascript">//<![CDATA[
+var levelTranslations = {
+    'info': '<%:Info%>',
+    'warning': '<%:Warning%>',
+    'error': '<%:Error%>',
+    'debug': '<%:Debug%>',
+    'tip': '<%:Tip%>',
+    'watchdog': '<%:Watchdog%>',
+	'fatal': '<%:Fatal%>'
+};
 
 function isDarkBackground(element) {
 	var cachedTheme = localStorage.getItem('oc-theme');
@@ -344,7 +356,7 @@ function log_editor(id, name, readOnly, wid, height)
 	lineNumbers: true,
 	theme: "log",
 	lineWrapping: true,
-	matchBrackets: true,
+	matchBrackets: false,
 	foldGutter: true,
 	gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
 	extraKeys: {

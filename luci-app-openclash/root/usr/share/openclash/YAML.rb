@@ -6,7 +6,19 @@ module YAML
   end
 
   def self.LOG(info)
-    puts Time.new.strftime("%Y-%m-%d %H:%M:%S") + " #{info}"
+    puts Time.new.strftime("%Y-%m-%d %H:%M:%S") + " [Info] " + "#{info}"
+  end
+
+  def self.LOG_ERROR(info)
+    puts Time.new.strftime("%Y-%m-%d %H:%M:%S") + " [Error] " + "#{info}"
+  end
+
+  def self.LOG_WARN(info)
+    puts Time.new.strftime("%Y-%m-%d %H:%M:%S") + " [Warning] " + "#{info}"
+  end
+
+  def self.LOG_TIP(info)
+    puts Time.new.strftime("%Y-%m-%d %H:%M:%S") + " [Tip] " + "#{info}"
   end
 
   # Keep `short-id` as string before YAML parsing so leading zeros are preserved.
@@ -40,7 +52,7 @@ module YAML
         fix_short_id_quotes(yaml_content)
       end
     rescue => e
-      LOG("Error: Write file failed:【%s】" % [e.message])
+      LOG_ERROR("Write file failed:【%s】" % [e.message])
       nil
     end
   end
@@ -97,7 +109,7 @@ module YAML
       end
       lines.join
     rescue => e
-      LOG("Error: Fix short-id values type failed:【%s】" % [e.message])
+      LOG_ERROR("Fix short-id values type failed:【%s】" % [e.message])
       processed
     end
   end

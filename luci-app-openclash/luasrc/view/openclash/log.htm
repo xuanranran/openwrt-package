@@ -272,15 +272,15 @@ ul{
                 <textarea id="core_log" class="cbi-input-textarea" style="width: 100%;display:inline" data-update="change" rows="32" cols="60" readonly="readonly" ></textarea>
                 <div class="radio-button">
                     <input type="radio" id="info" name="radios" value="info" checked onclick="return switch_log_level(this.value)"/>
-                    <label for="info">Info</label>
+                    <label for="info"><%:Info%></label>
                     <input type="radio" id="warning" name="radios" value="warning" onclick="return switch_log_level(this.value)"/>
-                    <label for="warning">Warning</label>
+                    <label for="warning"><%:Warning%></label>
                     <input type="radio" id="error" name="radios" value="error" onclick="return switch_log_level(this.value)"/>
-                    <label for="error">Error</label>
+                    <label for="error"><%:Error%></label>
                     <input type="radio" id="debug" name="radios" value="debug" onclick="return switch_log_level(this.value)"/>
-                    <label for="debug">Debug</label>
+                    <label for="debug"><%:Debug%></label>
                     <input type="radio" id="silent" name="radios" value="silent" onclick="return switch_log_level(this.value)"/>
-                    <label for="silent">Silent</label>
+                    <label for="silent"><%:Silent%></label>
                 </div>
             </div>
         </div>
@@ -309,6 +309,7 @@ var coreLogBuffer = [];
 var currentLogLevel = 'info';
 var wsRetryDelay = 2000;
 var wsRetryTimer = null;
+var isPolling = false;
 
 function setLogTab(log_level) {
     var radio = document.getElementsByName("radios");
@@ -390,7 +391,7 @@ function download_log(){
     }
 
     oc_content = oc_content.split('\n').filter(function(line) { 
-        return line.indexOf("】订阅的下载链接为【") === -1 && line.indexOf("】Downloading URL【") === -1; 
+        return line.indexOf("】<%:Downloading URL%>【") === -1; 
     }).join('\n');
 
     if (!oc_content.trim() && !core_content.trim()) {
@@ -510,8 +511,9 @@ function coreLogWebSocket() {
                             var now = new Date();
                             var timestamp = now.getFullYear() + "-" + p(now.getMonth() + 1) + "-" + p(now.getDate()) + " " + 
                                            p(now.getHours()) + ":" + p(now.getMinutes()) + ":" + p(now.getSeconds());
-                            var type = msgData.type || 'unknown';
-                            coreLogBuffer.push(timestamp + " [" + type + "] " + msgData.payload);
+                            var type = msgData.type || 'info';
+                            var translatedType = levelTranslations[type] || type;
+                            coreLogBuffer.push(timestamp + " [" + translatedType + "] " + msgData.payload);
                         }
                     } catch (e) {
                         coreLogWebSocketRetry();
@@ -552,10 +554,11 @@ function line_tolocal(str) {
                                    p(dt.getHours()) + ":" + p(dt.getMinutes()) + ":" + p(dt.getSeconds());
                     
                     var levelMatch = v.match(/level=(\w+)/);
-                    var level = levelMatch ? levelMatch[1] : 'unknown';
+                    var level = levelMatch ? levelMatch[1] : 'info';
+                    var translatedLevel = levelTranslations[level] || level;
                     var msgMatch = v.match(/msg="(.*)"/);
                     var msg = msgMatch ? msgMatch[1] : '';
-                    trans_local[local_count] = timestamp + " [" + level + "] " + msg;
+                    trans_local[local_count] = timestamp + " [" + translatedLevel + "] " + msg;
                     local_count++;
                 } else {
                     trans_local[local_count] = v;
@@ -814,11 +817,12 @@ function smoothlyDisplayLogs(newLines, target, isEditor, currentContent, isActiv
 function poll_log(){
     var activeTabId = 0;
     var titles = document.getElementsByName('tab-header');
-    var core_refresh = false;
+    var core_refresh = true;
     var core_logs = [];
     var oc_logs = [];
     var currentCoreContent = "";
     var currentContent = "";
+    var bufferToProcess = [];
 
     for(var i=0; i<titles.length; i++){
         if(titles[i].className === 'cbi-tab') {
@@ -827,11 +831,12 @@ function poll_log(){
         }
     }
 
-    if (coreWebSocket && coreWebSocket.readyState == WebSocket.OPEN && coreLogBuffer && coreLogBuffer.length > 0) {
-        core_logs = line_tolocal(coreLogBuffer.join('\n'));
-        core_refresh = true;
-
-        if (core_logs.length > 0) {
+    if (coreWebSocket && coreWebSocket.readyState == WebSocket.OPEN) {
+        core_refresh = false;
+        if (coreLogBuffer.length > 0) {
+            bufferToProcess = coreLogBuffer;
+            coreLogBuffer = [];
+            core_logs = line_tolocal(bufferToProcess.join('\n'));
             if (editor_core) {
                 currentCoreContent = editor_core.getValue();
                 smoothlyDisplayLogs(core_logs, editor_core, true, currentCoreContent, activeTabId === 1);
@@ -839,9 +844,15 @@ function poll_log(){
                 currentCoreContent = cl.innerHTML;
                 smoothlyDisplayLogs(core_logs, cl, false, currentCoreContent, activeTabId === 1);
             }
-            coreLogBuffer = [];
         }
     }
+
+    if (isPolling) {
+        r = setTimeout("poll_log()", 1000);
+        return;
+    }
+    
+    isPolling = true;
 
     XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "refresh_log")%>', 
         { 
@@ -851,6 +862,7 @@ function poll_log(){
             if (x && x.status == 200) {
                 if (status) {
                     if (!status.update) {
+                        isPolling = false;
                         r = setTimeout("poll_log()", 1000);
                         return;
                     }
@@ -873,7 +885,7 @@ function poll_log(){
                         }
                     }
 
-                    if (status.core_log && status.core_log !== "" && (!coreWebSocket || coreWebSocket.readyState !== WebSocket.OPEN)) {
+                    if (status.core_log && status.core_log !== "") {
                         core_logs = line_tolocal(status.core_log);
 
                         if (core_logs.length > 0) {
@@ -888,6 +900,7 @@ function poll_log(){
                     }
                 }
             }
+            isPolling = false;
             r = setTimeout("poll_log()", 1000);
         }
     );

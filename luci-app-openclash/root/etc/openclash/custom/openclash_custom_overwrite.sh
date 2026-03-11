@@ -6,7 +6,7 @@
 # This script is called by /etc/init.d/openclash
 # Add your custom overwrite scripts here, they will be take effict after the OpenClash own srcipts
 
-LOG_OUT "Tip: Start Running Custom Overwrite Scripts..."
+LOG_TIP "Start Running Custom Overwrite Scripts..."
 LOGTIME=$(echo $(date "+%Y-%m-%d %H:%M:%S"))
 LOG_FILE="/tmp/openclash.log"
 #Config Path
@@ -103,7 +103,7 @@ CONFIG_FILE="$1"
     #   begin
     #      Value = YAML.load_file('$CONFIG_FILE');
     #   rescue Exception => e
-    #      puts '${LOGTIME} Error: Load File Failed,【' + e.message + '】';
+    #      puts '${LOGTIME} [error] Load File Failed,【' + e.message + '】';
     #   end;
 
         #General
@@ -117,7 +117,7 @@ CONFIG_FILE="$1"
     #   }.join;
 
     #   rescue Exception => e
-    #      puts '${LOGTIME} Error: Set General Failed,【' + e.message + '】';
+    #      puts '${LOGTIME} [error] Set General Failed,【' + e.message + '】';
     #   ensure
     #      File.open('$CONFIG_FILE','w') {|f| YAML.dump(Value, f)};
     #   end" 2>/dev/null >> $LOG_FILE

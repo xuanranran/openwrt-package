@@ -4,6 +4,10 @@
   Dark mode: :root[data-darkmode="true"] .cm-s-log
 */
 
+:root {
+  --log-level-width: auto;
+}
+
 /* ========== Light Mode ========== */
 
 .cm-s-log.CodeMirror {
@@ -77,10 +81,6 @@
 .cm-s-log span.cm-attribute { color: #0000FF; }
 .cm-s-log span.cm-tag { color: #000080; }
 .cm-s-log span.cm-link { color: #0000FF; }
-.cm-s-log span.cm-log-tip { color: #ff6f00; font-weight: 600; }
-.cm-s-log span.cm-log-watchdog { color: #b300ff; font-weight: 600; }
-.cm-s-log span.cm-log-warn { line-height: 1em; font-weight: bold; color: #ff00bb; }
-.cm-s-log span.cm-log-error { line-height: 1em; font-weight: bold; color: #FF0000; }
 .cm-s-log span.cm-builtin { color: #30a; }
 .cm-s-log span.cm-bracket { color: #cc7; }
 
@@ -108,15 +108,17 @@
 .cm-s-log span.cm-log-level-info,
 .cm-s-log span.cm-log-level-warning,
 .cm-s-log span.cm-log-level-error,
-.cm-s-log span.cm-log-level-debug { 
+.cm-s-log span.cm-log-level-debug,
+.cm-s-log span.cm-log-level-tip,
+.cm-s-log span.cm-log-level-fatal,
+.cm-s-log span.cm-log-level-watchdog { 
   font-weight: 600;
-  padding: 0px 5px;
   margin: 2px 0px;
   border-radius: 5px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 85px;
+  width: var(--log-level-width);
 }
 
 .cm-s-log span.cm-log-level-info { 
@@ -134,6 +136,18 @@
 .cm-s-log span.cm-log-level-debug { 
   color: #0062ff; 
   background-color: rgba(0, 98, 255, 0.15);
+}
+.cm-s-log span.cm-log-level-tip { 
+  color: #FF6B00; 
+  background-color: rgba(255, 107, 0, 0.15);
+}
+.cm-s-log span.cm-log-level-fatal {
+  color: #FF0000; 
+  background-color: rgba(255, 0, 0, 0.15);
+}
+.cm-s-log span.cm-log-level-watchdog { 
+  color: #ffa700; 
+  background-color: rgba(255, 167, 0, 0.15);
 }
 .cm-s-log span.cm-log-category { 
   color: #FF6B00; 
@@ -235,10 +249,6 @@
 :root[data-darkmode="true"] .cm-s-log span.cm-attribute { color: #C792EA; }
 :root[data-darkmode="true"] .cm-s-log span.cm-tag { color: #FF5370; }
 :root[data-darkmode="true"] .cm-s-log span.cm-link { color: #82AAFF; }
-:root[data-darkmode="true"] .cm-s-log span.cm-log-tip { color: #ff6f00; font-weight: 600; }
-:root[data-darkmode="true"] .cm-s-log span.cm-log-watchdog { color: #d873ff; font-weight: 600; }
-:root[data-darkmode="true"] .cm-s-log span.cm-log-warn { color: #ff66cc; font-weight: 600; }
-:root[data-darkmode="true"] .cm-s-log span.cm-log-error { line-height: 1em; font-weight: bold; color: #FF0000; }
 :root[data-darkmode="true"] .cm-s-log span.cm-builtin { color: #FFCB6B; }
 :root[data-darkmode="true"] .cm-s-log span.cm-bracket { color: #F78C6C; }
 
@@ -267,6 +277,18 @@
 :root[data-darkmode="true"] .cm-s-log span.cm-log-level-debug { 
   color: #287bff;
   background-color: rgba(40, 123, 255, 0.2);
+}
+:root[data-darkmode="true"] .cm-s-log span.cm-log-level-tip { 
+  color: #ff6f00; 
+  background-color: rgba(255, 111, 0, 0.2);
+}
+:root[data-darkmode="true"] .cm-s-log span.cm-log-level-fatal {
+  color: #FF0000; 
+  background-color: rgba(255, 0, 0, 0.2);
+}
+:root[data-darkmode="true"] .cm-s-log span.cm-log-level-watchdog { 
+  color: #ffb833; 
+  background-color: rgba(255, 184, 51, 0.15);
 }
 :root[data-darkmode="true"] .cm-s-log span.cm-log-category { 
   color: #ff6f00;
