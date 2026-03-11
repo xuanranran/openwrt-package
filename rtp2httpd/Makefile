@@ -12,7 +12,7 @@ PKG_FIXUP:=cmake
 
 PKG_SOURCE:=rtp2httpd-v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/stackia/rtp2httpd/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=992d41429e063ed2e66a682151bff5928ad4e2da2164abd1b093ca04c4f220fd
+PKG_HASH:=2f9270b4a13816561faa30b67960773c36fd3dc79938b546a216928080c52cac
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
