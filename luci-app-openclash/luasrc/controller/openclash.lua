@@ -218,23 +218,19 @@ local function coremetacv()
 end
 
 local function corelv()
-	local status = process_status("/usr/share/openclash/clash_version.sh")
 	local core_meta_lv = ""
 	local core_smart_enable = fs.uci_get_config("config", "smart_enable") or "0"
-	if not status then
-		if fs.access("/tmp/clash_last_version") and tonumber(os.time() - fs.mtime("/tmp/clash_last_version")) < 1800 then
-			if core_smart_enable == "1" then
-				core_meta_lv = luci.sys.exec("sed -n 2p /tmp/clash_last_version 2>/dev/null |tr -d '\n'")
-			else
-				core_meta_lv = luci.sys.exec("sed -n 1p /tmp/clash_last_version 2>/dev/null |tr -d '\n'")
-			end
+	if fs.access("/tmp/clash_last_version") then
+		if core_smart_enable == "1" then
+			core_meta_lv = luci.sys.exec("sed -n 2p /tmp/clash_last_version 2>/dev/null |tr -d '\n'")
 		else
-			action_get_last_version()
-			core_meta_lv = "loading..."
+			core_meta_lv = luci.sys.exec("sed -n 1p /tmp/clash_last_version 2>/dev/null |tr -d '\n'")
 		end
 	else
 		core_meta_lv = "loading..."
 	end
+
+	action_get_last_version()
 	return core_meta_lv
 end
 
@@ -258,23 +254,19 @@ local function opcv()
 end
 
 local function oplv()
-	local status = process_status("/usr/share/openclash/openclash_version.sh")
 	local oplv = ""
-	if not status then
-		if fs.access("/tmp/openclash_last_version") and tonumber(os.time() - fs.mtime("/tmp/openclash_last_version")) < 1800 then
-			oplv = luci.sys.exec("sed -n 1p /tmp/openclash_last_version 2>/dev/null |tr -d '\n'")
-		else
-			action_get_last_version()
-			oplv = "loading..."
-		end
+
+	if fs.access("/tmp/openclash_last_version") then
+		oplv = luci.sys.exec("sed -n 1p /tmp/openclash_last_version 2>/dev/null |tr -d '\n'")
 	else
 		oplv = "loading..."
 	end
+
+	action_get_last_version()
 	return oplv
 end
 
 local function opup()
-	luci.sys.call("bash /usr/share/openclash/openclash_version.sh >/dev/null 2>&1")
 	return luci.sys.call("bash /usr/share/openclash/openclash_update.sh >/dev/null 2>&1 &")
 end
 
@@ -282,7 +274,6 @@ local function coreup()
 	uci:set("openclash", "config", "enable", "1")
 	uci:commit("openclash")
 	local type = luci.http.formvalue("core_type")
-	luci.sys.call("bash /usr/share/openclash/clash_version.sh >/dev/null 2>&1")
 	return luci.sys.call(string.format("/usr/share/openclash/openclash_core.sh '%s' >/dev/null 2>&1 &", type))
 end
 
@@ -330,10 +321,8 @@ end
 function core_download()
 	local cdn_url = luci.http.formvalue("url")
 	if cdn_url then
-		luci.sys.call(string.format("bash /usr/share/openclash/clash_version.sh '%s' >/dev/null 2>&1", cdn_url))
 		luci.sys.call(string.format("bash /usr/share/openclash/openclash_core.sh 'Meta' '%s' >/dev/null 2>&1 &", cdn_url))
 	else
-		luci.sys.call("bash /usr/share/openclash/clash_version.sh >/dev/null 2>&1")
 		luci.sys.call("bash /usr/share/openclash/openclash_core.sh 'Meta' >/dev/null 2>&1 &")
 	end
 
@@ -1223,10 +1212,14 @@ end
 
 function action_get_last_version()
 	if not process_status("/usr/share/openclash/clash_version.sh") then
-		luci.sys.call("bash /usr/share/openclash/clash_version.sh &")
+		if tonumber(os.time() - (fs.mtime("/tmp/clash_last_version") or 0)) > 1800 then
+			luci.sys.call("bash /usr/share/openclash/clash_version.sh &")
+		end
 	end
 	if not process_status("/usr/share/openclash/openclash_version.sh") then
-		luci.sys.call("bash /usr/share/openclash/openclash_version.sh &")
+		if tonumber(os.time() - (fs.mtime("/tmp/openclash_last_version") or 0)) > 1800 then
+			luci.sys.call("bash /usr/share/openclash/openclash_version.sh &")
+		end
 	end
 end
 

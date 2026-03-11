@@ -19,11 +19,11 @@ inc_job_counter
 restart=0
 
 if [ -n "$1" ] && [ "$1" != "one_key_update" ]; then
-   [ ! -f "/tmp/openclash_last_version" ] && /usr/share/openclash/openclash_version.sh "$1" 2>/dev/null
+   /usr/share/openclash/openclash_version.sh "$1" 2>/dev/null
 elif [ -n "$2" ]; then
-   [ ! -f "/tmp/openclash_last_version" ] && /usr/share/openclash/openclash_version.sh "$2" 2>/dev/null
+   /usr/share/openclash/openclash_version.sh "$2" 2>/dev/null
 else
-   [ ! -f "/tmp/openclash_last_version" ] && /usr/share/openclash/openclash_version.sh 2>/dev/null
+   /usr/share/openclash/openclash_version.sh 2>/dev/null
 fi
 
 if [ ! -f "/tmp/openclash_last_version" ]; then

@@ -42,9 +42,9 @@ CPU_MODEL=$(uci_get_config "core_version")
 RELEASE_BRANCH=$(uci_get_config "release_branch" || echo "master")
 
 if [ "$github_address_mod" != "0" ]; then
-   [ ! -f "/tmp/clash_last_version" ] && /usr/share/openclash/clash_version.sh "$github_address_mod" 2>/dev/null
+   /usr/share/openclash/clash_version.sh "$github_address_mod" 2>/dev/null
 else
-   [ ! -f "/tmp/clash_last_version" ] && /usr/share/openclash/clash_version.sh 2>/dev/null
+   /usr/share/openclash/clash_version.sh 2>/dev/null
 fi
 if [ ! -f "/tmp/clash_last_version" ]; then
    LOG_ERROR "【"$CORE_TYPE"】Core Version Check Error, Please Try Again Later..."
