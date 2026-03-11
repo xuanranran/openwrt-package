@@ -310,6 +310,7 @@ var currentLogLevel = 'info';
 var wsRetryDelay = 2000;
 var wsRetryTimer = null;
 var isPolling = false;
+var core_refresh = true;
 
 function setLogTab(log_level) {
     var radio = document.getElementsByName("radios");
@@ -817,7 +818,6 @@ function smoothlyDisplayLogs(newLines, target, isEditor, currentContent, isActiv
 function poll_log(){
     var activeTabId = 0;
     var titles = document.getElementsByName('tab-header');
-    var core_refresh = true;
     var core_logs = [];
     var oc_logs = [];
     var currentCoreContent = "";
@@ -832,8 +832,8 @@ function poll_log(){
     }
 
     if (coreWebSocket && coreWebSocket.readyState == WebSocket.OPEN) {
-        core_refresh = false;
         if (coreLogBuffer.length > 0) {
+            core_refresh = false;
             bufferToProcess = coreLogBuffer;
             coreLogBuffer = [];
             core_logs = line_tolocal(bufferToProcess.join('\n'));

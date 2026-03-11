@@ -80,7 +80,8 @@ if [ -z "$DOWNLOAD_URL" ]; then
    DOWNLOAD_URL="${subscribe_url}"
    DOWNLOAD_PARAM="$sub_ua"
 fi
-DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$CFG_FILE" "$DOWNLOAD_PARAM"
+DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$CFG_FILE" "$CONFIG_FILE" "$DOWNLOAD_PARAM"
+DOWNLOAD_RESULT=$?
 }
 
 config_cus_up()
@@ -220,7 +221,7 @@ config_download_direct()
 
       config_download
 
-      if [ "${PIPESTATUS[0]}" -eq 0 ] && [ -s "$CFG_FILE" ]; then
+      if [ "$DOWNLOAD_RESULT" -eq 0 ] && [ -s "$CFG_FILE" ]; then
          #prevent ruby unexpected error
          sed -i -E 's/protocol-param: ([^,'"'"'"''}( *#)\n\r]+)/protocol-param: "\1"/g' "$CFG_FILE" 2>/dev/null
          sed -i '/^ \{0,\}enhanced-mode:/d' "$CFG_FILE" >/dev/null 2>&1
@@ -256,6 +257,9 @@ config_download_direct()
             change_dns
             config_su_check
          fi
+      elif [ "$DOWNLOAD_RESULT" -eq 2 ]; then
+         change_dns
+         LOG_OUT "Config File【$name】No Change, Do Nothing!"
       else
          change_dns
          config_error
@@ -417,7 +421,7 @@ sub_info_get()
    LOG_OUT "Start Updating Config File【$name】..."
 
    config_download
-   if [ "${PIPESTATUS[0]}" -eq 0 ] && [ -s "$CFG_FILE" ]; then
+   if [ "$DOWNLOAD_RESULT" -eq 0 ] && [ -s "$CFG_FILE" ]; then
       #prevent ruby unexpected error
       sed -i -E 's/protocol-param: ([^,'"'"'"''}( *#)\n\r]+)/protocol-param: "\1"/g' "$CFG_FILE" 2>/dev/null
       config_test
@@ -448,6 +452,8 @@ sub_info_get()
       else
          config_su_check
       fi
+   elif [ "$DOWNLOAD_RESULT" -eq 2 ]; then
+      LOG_OUT "Config File【$name】No Change, Do Nothing!"
    else
       LOG_ERROR "Config File【$name】Subscribed Failed, Trying to Download Without Agent..."
       config_download_direct

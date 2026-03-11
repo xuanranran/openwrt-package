@@ -97,10 +97,10 @@ if [ "$CORE_CV" != "$CORE_LV" ] || [ -z "$CORE_CV" ]; then
 
          rm -rf "$DOWNLOAD_FILE" "$TMP_FILE" >/dev/null 2>&1
 
-         SHOW_DOWNLOAD_PROGRESS=1 DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$DOWNLOAD_FILE"
-         download_result=$?
+         SHOW_DOWNLOAD_PROGRESS=1 DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$DOWNLOAD_FILE" "$TARGET_CORE_PATH"
+         DOWNLOAD_RESULT=$?
 
-         if [ "$download_result" -eq 0 ]; then
+         if [ "$DOWNLOAD_RESULT" -eq 0 ]; then
             gzip -t "$DOWNLOAD_FILE" >/dev/null 2>&1
 
             if [ "$?" -eq 0 ]; then
@@ -158,6 +158,9 @@ if [ "$CORE_CV" != "$CORE_LV" ] || [ -z "$CORE_CV" ]; then
                   break
                fi
             fi
+         elif [ "$DOWNLOAD_RESULT" -eq 2 ]; then
+            LOG_TIP "【"$CORE_TYPE"】Core Has Not Been Updated, Stop Continuing Operation!"
+            SLOG_CLEAN
          else
             if [ "$retry_count" -lt "$max_retries" ]; then
                LOG_ERROR "【$retry_count/$max_retries】【"$CORE_TYPE"】Core Download Failed..."

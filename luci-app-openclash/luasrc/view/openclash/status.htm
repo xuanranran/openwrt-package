@@ -2265,6 +2265,9 @@
 
             this.closeConnection(type);
 
+            // if not connected, start log display because core maybe restart
+            LogManager.startLogDisplay();
+
             if (!this.isSupported()) {
                 this.enableFallbackMode();
                 return null;

@@ -120,15 +120,15 @@ if [ -n "$OP_CV" ] && [ -n "$OP_LV" ] && version_compare "$OP_CV" "$OP_LV" && [ 
       retry_count=$((retry_count + 1))
 
       if [ "$pkg_update_success" = "false" ]; then
-         download_result=0
+         DOWNLOAD_RESULT=0
       else
          rm -rf "$DOWNLOAD_PATH" >/dev/null 2>&1
          LOG_TIP "【$retry_count/$max_retries】【OpenClash - v$LAST_VER】Downloading..."
-         SHOW_DOWNLOAD_PROGRESS=1 DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$DOWNLOAD_PATH"
-         download_result=$?
+         SHOW_DOWNLOAD_PROGRESS=1 DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$DOWNLOAD_PATH" "$DOWNLOAD_PATH"
+         DOWNLOAD_RESULT=$?
       fi
 
-      if [ "$download_result" -eq 0 ]; then
+      if [ "$DOWNLOAD_RESULT" -ne 1 ]; then
          LOG_TIP "【$retry_count/$max_retries】【OpenClash - v$LAST_VER】Download successful, start pre update test..."
 
          pre_test_success=false

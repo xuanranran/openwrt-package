@@ -274,7 +274,7 @@ local function oplv()
 end
 
 local function opup()
-	luci.sys.call("rm -rf /tmp/*_last_version 2>/dev/null && bash /usr/share/openclash/openclash_version.sh >/dev/null 2>&1")
+	luci.sys.call("bash /usr/share/openclash/openclash_version.sh >/dev/null 2>&1")
 	return luci.sys.call("bash /usr/share/openclash/openclash_update.sh >/dev/null 2>&1 &")
 end
 
@@ -282,7 +282,7 @@ local function coreup()
 	uci:set("openclash", "config", "enable", "1")
 	uci:commit("openclash")
 	local type = luci.http.formvalue("core_type")
-	luci.sys.call("rm -rf /tmp/*_last_version 2>/dev/null && bash /usr/share/openclash/clash_version.sh >/dev/null 2>&1")
+	luci.sys.call("bash /usr/share/openclash/clash_version.sh >/dev/null 2>&1")
 	return luci.sys.call(string.format("/usr/share/openclash/openclash_core.sh '%s' >/dev/null 2>&1 &", type))
 end
 
@@ -330,10 +330,10 @@ end
 function core_download()
 	local cdn_url = luci.http.formvalue("url")
 	if cdn_url then
-		luci.sys.call(string.format("rm -rf /tmp/clash_last_version 2>/dev/null && bash /usr/share/openclash/clash_version.sh '%s' >/dev/null 2>&1", cdn_url))
+		luci.sys.call(string.format("bash /usr/share/openclash/clash_version.sh '%s' >/dev/null 2>&1", cdn_url))
 		luci.sys.call(string.format("bash /usr/share/openclash/openclash_core.sh 'Meta' '%s' >/dev/null 2>&1 &", cdn_url))
 	else
-		luci.sys.call("rm -rf /tmp/clash_last_version 2>/dev/null && bash /usr/share/openclash/clash_version.sh >/dev/null 2>&1")
+		luci.sys.call("bash /usr/share/openclash/clash_version.sh >/dev/null 2>&1")
 		luci.sys.call("bash /usr/share/openclash/openclash_core.sh 'Meta' >/dev/null 2>&1 &")
 	end
 
@@ -423,9 +423,9 @@ end
 function action_one_key_update()
 	local cdn_url = luci.http.formvalue("url")
 	if cdn_url then
-		return luci.sys.call(string.format("rm -rf /tmp/*_last_version 2>/dev/null && bash /usr/share/openclash/openclash_update.sh 'one_key_update' '%s' >/dev/null 2>&1 &", cdn_url))
+		return luci.sys.call(string.format("bash /usr/share/openclash/openclash_update.sh 'one_key_update' '%s' >/dev/null 2>&1 &", cdn_url))
 	else
-		return luci.sys.call("rm -rf /tmp/*_last_version 2>/dev/null && bash /usr/share/openclash/openclash_update.sh 'one_key_update' >/dev/null 2>&1 &")
+		return luci.sys.call("bash /usr/share/openclash/openclash_update.sh 'one_key_update' >/dev/null 2>&1 &")
 	end
 end
 
@@ -1097,7 +1097,7 @@ function action_switch_dashboard()
 	local switch_name = luci.http.formvalue("name")
 	local switch_type = luci.http.formvalue("type")
 	local state = luci.sys.call(string.format('/usr/share/openclash/openclash_download_dashboard.sh "%s" "%s" >/dev/null 2>&1', switch_name, switch_type))
-	if switch_name == "Dashboard" and tonumber(state) == 1 then
+	if switch_name == "Dashboard" and tonumber(state) == 0 then
 		if switch_type == "Official" then
 			uci:set("openclash", "config", "dashboard_type", "Official")
 			uci:commit("openclash")
@@ -1105,7 +1105,7 @@ function action_switch_dashboard()
 			uci:set("openclash", "config", "dashboard_type", "Meta")
 			uci:commit("openclash")
 		end
-	elseif switch_name == "Yacd" and tonumber(state) == 1 then
+	elseif switch_name == "Yacd" and tonumber(state) == 0 then
 		if switch_type == "Official" then
 			uci:set("openclash", "config", "yacd_type", "Official")
 			uci:commit("openclash")
