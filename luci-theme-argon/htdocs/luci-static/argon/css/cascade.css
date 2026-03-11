@@ -4179,14 +4179,14 @@ pre.command-output {
 
 [data-page^="admin-services-openclash"] .cm-s-log span.cm-log-tip,
 [data-page^="admin-services-openclash"] .cm-s-log span.cm-log-string {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 [data-page^="admin-services-openclash"] .cm-s-material *,
 [data-page^="admin-services-openclash"] .cm-s-log,
 [data-page^="admin-services-openclash"] .cm-s-log * {
   font-family: 'Twemoji Mozilla', 'Consolas', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Google Sans' !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
 
 :root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button {
