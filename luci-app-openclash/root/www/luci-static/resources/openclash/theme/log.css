@@ -112,7 +112,7 @@
 .cm-s-log span.cm-log-level-tip,
 .cm-s-log span.cm-log-level-fatal,
 .cm-s-log span.cm-log-level-watchdog { 
-  font-weight: 600;
+  font-weight: 500;
   margin: 2px 0px;
   border-radius: 5px;
   display: inline-flex;
@@ -151,7 +151,7 @@
 }
 .cm-s-log span.cm-log-category { 
   color: #FF6B00; 
-  font-weight: 600;
+  font-weight: 500;
   background-color: rgba(255, 107, 0, 0.15);
   padding: 0px 5px;
   margin: 2px 0px;
