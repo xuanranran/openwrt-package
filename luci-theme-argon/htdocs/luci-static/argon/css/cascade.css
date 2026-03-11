@@ -4074,17 +4074,19 @@ pre.command-output {
 
 [data-page^="admin-services-openclash"] #diag-rc-output>pre,
 [data-page^="admin-services-openclash"] #dns-rc-output>pre {
-  font-size: .875rem;
+  font-size: 1.000rem;
   color: #8898aa;
   border: 1px solid #dee2e6;
   background-color: transparent;
   border-radius: .25rem;
-  font-family: 'Google Sans' !important;
+  font-family: 'Twemoji Mozilla', 'Consolas', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Google Sans' !important;
+  font-weight: 500 !important;
   box-shadow: none
 }
 
 [data-page^="admin-services-openclash"] #debug-rc-output>textarea {
-  font-family: 'Google Sans' !important
+  font-family: 'Twemoji Mozilla', 'Consolas', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Google Sans' !important;
+  font-weight: 550 !important;
 }
 
 [data-page^="admin-services-openclash"] .CodeMirror {
