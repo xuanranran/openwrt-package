@@ -318,162 +318,189 @@
     }
 
     XHR.poll(3, '<%=luci.dispatcher.build_url("admin", "services", "openclash", "startlog")%>', null, handleStartLog);
-
-    function core_update(btn, type) {
-        var v = coreVersionSelect.value, r = release_branch.value, s = smart_enable.value;
-        btn.disabled = true;
-        XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', { core_ver: v, release_branch: r, smart_enable: s }, function (x, status) {
-            if (x && x.status == 200) {
-                XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "coreupdate")%>', { core_type: type }, function (x, status) { btn.disabled = false; });
-            } else { btn.disabled = false; }
-        });
+	
+	function core_update(btn,type)
+    {
+    	var v = core_version.value;
+    	var r = release_branch.value;
+		var s = smart_enable.value;
+		XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', {core_ver: v, release_branch: r, smart_enable: s}, function(x, status) {
+			if (x && x.status == 200) {
+				XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "coreupdate")%>', {core_type: type}, function(x, status) {
+					btn.value    = '<%:Check And Update%>';
+					btn.disabled = false;
+					return false;
+				});
+			}
+		});
     }
 
-    function op_update(btn) {
-        var v = coreVersionSelect.value, r = release_branch.value, s = smart_enable.value;
-        btn.disabled = true;
-        XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', { core_ver: v, release_branch: r, smart_enable: s }, function (x, status) {
-            if (x && x.status == 200) {
-                XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "opupdate")%>', null, function (x, status) { btn.disabled = false; });
-            } else { btn.disabled = false; }
-        });
+	function op_update(btn)
+    {
+        var v = core_version.value;
+    	var r = release_branch.value;
+		var s = smart_enable.value;
+		XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', {core_ver: v, release_branch: r, smart_enable: s}, function(x, status) {
+			if (x && x.status == 200) {
+				XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "opupdate")%>', null, function(x, status) {
+					btn.value    = '<%:Check And Update%>';
+					btn.disabled = false;
+					return false;
+				});
+			}
+		});
     }
 
-    function ma_core_update(btn, type) {
-        var v = coreVersionSelect.value, r = release_branch.value, s = smart_enable.value;
-        XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', { core_ver: v, release_branch: r, smart_enable: s }, function (x, status) {
-            if (x && x.status == 200) {
-                XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "update_ma")%>', { core_type: type }, function (x, status) {
-                    if (x && x.status == 200 && status.corever && status.corever != "0") {
-                        var url;
-                        if (s == "1") { url = 'https://raw.githubusercontent.com/vernesong/OpenClash/core/' + r + '/smart/clash-' + status.corever + '.tar.gz'; }
-                        else { url = 'https://raw.githubusercontent.com/vernesong/OpenClash/core/' + r + '/meta/clash-' + status.corever + '.tar.gz'; }
-                        window.location.href = url;
-                    } else { alert('<%:No Compiled Version is Selected, Please Select on The Top and Try Again!%>'); }
-                });
-            }
-        });
-    }
-
-    function ma_op_update(btn) {
-        var v = coreVersionSelect.value, r = release_branch.value, s = smart_enable.value;
-        XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', { core_ver: v, release_branch: r, smart_enable: s }, function (x, status) {
-            if (x && x.status == 200) {
-                XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "update_ma")%>', null, function (x, status) {
-                    if (x && x.status == 200 && status.oplv && status.oplv != "" && status.oplv != "loading...") {
-                        var oplv = status.oplv.substring(status.oplv.indexOf("v") + 1);
-                        var url;
-                        if (status.pkg_type == "apk") { url = 'https://raw.githubusercontent.com/vernesong/OpenClash/package/' + r + '/luci-app-openclash-' + oplv + '.apk'; }
-                        else { url = 'https://raw.githubusercontent.com/vernesong/OpenClash/package/' + r + '/luci-app-openclash_' + oplv + '_all.ipk'; }
-                        window.location.href = url;
-                    } else { alert('<%:Failed to get the latest version. Please try again later!%>'); }
-                });
-            }
-        });
-    }
-
-    function restore_config(btn) {
-        if (!confirm("<%:Are you sure to restore the default configuration?%>")) return;
+    function ma_core_update(btn,type)
+    {
+    	var v = core_version.value;
+		var r = release_branch.value;
+		var s = smart_enable.value;
+		XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', {core_ver: v, release_branch: r, smart_enable: s}, function(x, status) {
+		if (x && x.status == 200) {
+			btn.value    = '<%:Download%>';
+			btn.disabled = false;
+			XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "update_ma")%>', status.corever, function(x, status) {
+			if ( x && x.status == 200 ) {
+				if ( status.corever != "0" ) {
+					if (type == "Meta") {
+						if (s == "1") {
+							url4='https://raw.githubusercontent.com/vernesong/OpenClash/core/'+r+'/smart/clash-'+status.corever+'.tar.gz';
+							window.location.href=url4;
+						}
+						else {
+							url4='https://raw.githubusercontent.com/vernesong/OpenClash/core/'+r+'/meta/clash-'+status.corever+'.tar.gz';
+							window.location.href=url4;
+						}
+					}
+				}
+				else {
+					alert('<%:No Compiled Version is Selected, Please Select on The Top and Try Again!%>')
+				}
+			}
+       		});
         return false;
+    	}
+      });
     }
 
-    function remove_all_core(btn) {
-        if (!confirm("<%:Are you sure want to remove all core files?%>")) return;
-        btn.disabled = true;
-        XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "remove_all_core")%>', null, function (x, status) {
-            if (x && x.status == 200) { alert('<%:Remove succeeded!%>'); }
-            else { alert('<%:Remove failed!%>'); }
-            btn.disabled = false;
+    function ma_op_update(btn)
+    {
+        btn.value    = '<%:Download%>';
+        btn.disabled = false;
+        var v = core_version.value;
+		var r = release_branch.value;
+		var s = smart_enable.value;
+		XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', {core_ver: v, release_branch: r, smart_enable: s}, function(x, status) {
+			if (x && x.status == 200) {
+				XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "update_ma")%>', status.oplv, function(x, status) {
+					if ( x && x.status == 200 ) {
+						var oplv = status.oplv.substring(status.oplv.indexOf("v") + 1);
+						if ( oplv != "" && oplv != "loading..." ) {
+							if (status.pkg_type == "apk") {
+								url2='https://raw.githubusercontent.com/vernesong/OpenClash/package/'+r+'/luci-app-openclash-'+oplv+'.apk';
+							}
+							else {
+								url2='https://raw.githubusercontent.com/vernesong/OpenClash/package/'+r+'/luci-app-openclash_'+oplv+'_all.ipk';
+							}
+							window.location.href=url2;
+						}
+						else {
+							alert('<%:Failed to get the latest version. Please try again later!%>')
+						}
+					}
+				});
+			}
         });
+        return false; 
     }
 
-    function triggerDownload(url) {
-        var iframe = document.getElementById('oc-download-frame');
-        if (!iframe) {
-            iframe = document.createElement('iframe');
-            iframe.id = 'oc-download-frame';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-        }
-        var sep = url.indexOf('?') === -1 ? '?' : '&';
-        iframe.src = url + sep + '_=' + Date.now();
-    }
-
-    function backup_all_file() { triggerDownload('<%="backup"%>'); }
-    function backup_no_core() { triggerDownload('<%="backup_ex_core"%>'); }
-    function backup_only_core() { triggerDownload('<%="backup_only_core"%>'); }
-    function backup_only_config() { triggerDownload('<%="backup_only_config"%>'); }
-    function backup_only_rule() { triggerDownload('<%="backup_only_rule"%>'); }
-    function backup_only_proxy() { triggerDownload('<%="backup_only_proxy"%>'); }
-
-    function all_one_key_update_cdn(btn) {
-        var v = coreVersionSelect.value, r = release_branch.value, s = smart_enable.value;
+    function remove_all_core(btn)
+    {
+        btn.value    = '<%:Remove Core%>';
         btn.disabled = true;
-        btn.value = '<%:Checking...%>';
-        XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', { core_ver: v, release_branch: r, smart_enable: s }, function (x, status) {
-            if (x && x.status == 200) {
-                select_git_cdn("one_key_update");
-            }
-            btn.value = '<%:Check Update%>';
-            btn.disabled = false;
+        var r = confirm("<%:Are you sure want to remove all core files?%>")
+        if (r == true) {
+        XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "remove_all_core")%>', null, function(x, status) {
+        	if ( x && x.status == 200 ) {
+        		alert('<%:Remove succeeded!%>')
+        	}
+          	else {
+            alert('<%:Remove failed!%>')
+           }
         });
+        } else {
+        }
+        btn.disabled = false;
+        return false; 
     }
 
-    document.getElementById('shortcuts-execute').addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var select = document.getElementById('shortcuts-select');
-        var selectedAction = select.value;
-        var button = this;
+    function backup_all_file(btn)
+    {
+		btn.value    = '<%:Backup OpenClash%>';
+		btn.disabled = true;
+		window.location.href='<%="backup"%>';
+		btn.disabled = false;
+		return false; 
+    }
 
-        switch (selectedAction) {
-            case 'one_key_update_cdn':
-                all_one_key_update_cdn(button);
-                break;
-            case 'restore':
-                restore_config(button);
-                break;
-            case 'remove_core':
-                remove_all_core(button);
-                break;
-        }
-    });
+    function backup_no_core(btn)
+    {
+		btn.value    = '<%:Backup Exclude Cores%>';
+		btn.disabled = true;
+		window.location.href='<%="backup_ex_core"%>';
+		btn.disabled = false;
+		return false; 
+    }
 
-    document.getElementById('backup-execute').addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var select = document.getElementById('backup-select');
-        var selectedAction = select.value;
-        var button = this;
-        var originalText = button.textContent;
+    function backup_only_core(btn)
+    {
+		btn.value    = '<%:Backup Core%>';
+		btn.disabled = true;
+		window.location.href='<%="backup_only_core"%>';
+		btn.disabled = false;
+		return false; 
+    }
 
-        button.disabled = true;
-        button.textContent = button.dataset.backingUp;
+    function backup_only_config(btn)
+    {
+		btn.value    = '<%:Backup Config%>';
+		btn.disabled = true;
+		window.location.href='<%="backup_only_config"%>';
+		btn.disabled = false;
+		return false; 
+    }
 
-        setTimeout(function () {
-            button.disabled = false;
-            button.textContent = originalText;
-        }, 8000);
+    function backup_only_rule(btn)
+    {
+		btn.value    = '<%:Backup Rule Provider%>';
+		btn.disabled = true;
+		window.location.href='<%="backup_only_rule"%>';
+		btn.disabled = false;
+		return false; 
+    }
 
-        switch (selectedAction) {
-            case 'backup_all':
-                backup_all_file();
-                break;
-            case 'backup_no_core':
-                backup_no_core();
-                break;
-            case 'backup_only_core':
-                backup_only_core();
-                break;
-            case 'backup_only_config':
-                backup_only_config();
-                break;
-            case 'backup_only_rule':
-                backup_only_rule();
-                break;
-            case 'backup_only_proxy':
-                backup_only_proxy();
-                break;
-        }
-    });
-</script>
+    function backup_only_proxy(btn)
+    {
+		btn.value    = '<%:Backup Proxy Provider%>';
+		btn.disabled = true;
+		window.location.href='<%="backup_only_proxy"%>';
+		btn.disabled = false;
+		return false; 
+    }
+
+	function all_one_key_update_cdn(btn)
+    {
+    	var v = core_version.value;
+		var r = release_branch.value;
+		var s = smart_enable.value;
+		XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "save_corever_branch")%>', {core_ver: v, release_branch: r, smart_enable: s}, function(x, status) {
+			if (x && x.status == 200) {
+				btn.value    = '<%:Check Update%>';
+				btn.disabled = false;
+				return select_git_cdn("one_key_update");
+			}
+		});
+    }
+
+//]]></script>
