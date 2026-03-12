@@ -1226,8 +1226,8 @@ msgstr "Última versión del cliente"
 msgid "Download Latest Client"
 msgstr "Descargar última versión del cliente"
 
-msgid "Restore Default Config"
-msgstr "Restablecer configuración por defecto"
+msgid "Restore Default"
+msgstr "Restablecer por defecto"
 
 msgid "Failed to get the latest version. Please try again later!"
 msgstr "Error al obtener la última versión. Inténtalo más tarde."
@@ -2024,9 +2024,6 @@ msgstr "Archivo de copia de seguridad"
 msgid "Backup File Restore Successful!"
 msgstr "Restauración desde copia de seguridad completada."
 
-msgid "Backup OpenClash"
-msgstr "Respaldar OpenClash"
-
 msgid "Not Select"
 msgstr "Sin seleccionar"
 
@@ -2617,9 +2614,6 @@ msgstr "Hong Kong / Macao / Taiwán"
 
 msgid "Taiwan Only"
 msgstr "Solo Taiwán"
-
-msgid "Backup Section"
-msgstr "Opciones de copia de seguridad"
 
 msgid "Backup Exclude Cores"
 msgstr "Copia sin núcleos"
