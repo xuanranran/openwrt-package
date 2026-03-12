@@ -55,15 +55,20 @@
     line-height: 0;
     flex-shrink: 0;
     cursor: pointer;
+    background-color: unset;
+    border: unset;
 }
 
-.sub_setting img {
+.sub_setting svg {
     vertical-align: middle;
     display: inline-block;
-    transition: opacity 0.3s ease;
+    width: 18px;
+    height: 18px;
+    color: #414c5c;
+    padding-left: 2px;
 }
 
-.sub_setting:hover img {
+.sub_setting:hover svg {
     opacity: 0.7;
 }
 
@@ -234,14 +239,8 @@
     cursor: not-allowed;
 }
 
-:root[data-darkmode="true"] #icon_wrench {
-    -webkit-filter: invert(1);
-    filter: invert(1);
-}
-
-:root[data-darkmode="true"] #icon_arrow {
-    -webkit-filter: invert(1);
-    filter: invert(1);
+:root[data-darkmode="true"] .sub_setting svg {
+    color: #e0e0e0;
 }
 
 :root[data-darkmode="true"] .text_show {
@@ -347,10 +346,6 @@
         min-width: 200px;
     }
 
-    .sub_setting img {
-        height: 18px !important;
-    }
-
     .sub_div {
         gap: 4px;
         width: calc(100% - 16px);
@@ -367,10 +362,6 @@
         min-width: 180px !important;
     }
 
-    .sub_setting img {
-        height: 16px !important;
-    }
-
     .sub_div {
         gap: 2px;
         width: calc(100% - 12px);
@@ -385,10 +376,6 @@
 
     .progress_bar_bg {
         min-width: 160px !important;
-    }
-
-    .sub_setting img {
-        height: 14px !important;
     }
 
     .sub_div {
@@ -546,12 +533,20 @@
 
 <div class="sub_div">
     <span id='<%=idname%>' class="sub_tab"></span>
-    <span class="sub_setting">
-        <img id="icon_arrow" src='/luci-static/resources/openclash/img/arrow-clockwise-light.svg' height="20px" title='<%:Refresh%>' alt='<%:Refresh%>' onclick='return sub_info_refresh_<%=idname%>(this)'>
-    </span>
-    <span class="sub_setting">
-        <img id="icon_wrench" src='/luci-static/resources/openclash/img/wrench-light.svg' height="20px" title='<%:Specify URL%>' alt='<%:Specify URL%>' onclick='return set_subinfo_url_<%=idname%>(this,"<%=filename%>")'>
-    </span>
+    <button type="button" class="sub_setting" title='<%:Refresh%>' alt='<%:Refresh%>' onclick='return sub_info_refresh_<%=idname%>(this)'>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6"></path>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+    </button>
+    <button type="button" class="sub_setting" title='<%:Specify URL%>' alt='<%:Specify URL%>' onclick='return set_subinfo_url_<%=idname%>(this,"<%=filename%>")'>
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4">
+            <path d="M4 6H44V36H29L24 41L19 36H4V6Z"/>
+            <path d="M23 21H25.0025" />
+            <path d="M33.001 21H34.9999"/>
+            <path d="M13.001 21H14.9999"/>
+        </svg>
+    </button>
 </div>
 
 <script type="text/javascript">//<![CDATA[
@@ -914,12 +909,13 @@ function set_subinfo_url_<%=idname%>(btn, filename) {
     }, function(x, status) {
         if (x && x.status == 200 && status) {
             var urls = '';
-            if (status.url) {
-                if (Array.isArray(status.url)) {
-                    urls = status.url.join('\n');
-                } else if (typeof status.url === 'string') {
-                    urls = status.url;
+            if (status.type && status.type === "multiple") {
+                for (var data in status.providers) {
+                    urls += status.providers[data].url + '#name=' + status.providers[data].name + '\n';
                 }
+            }
+            if (status.type && status.type === "single") {
+                urls = status.url;
             }
             textarea.value = urls;
         }

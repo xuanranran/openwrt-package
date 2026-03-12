@@ -3434,12 +3434,13 @@
                     var textarea = document.getElementById('subscription-url-textarea');
                     if (textarea) {
                         var urls = '';
-                        if (status.url) {
-                            if (typeof status.url === 'string') {
-                                urls = status.url;
-                            } else if (Array.isArray(status.url)) {
-                                urls = status.url.join('\n');
+                        if (status.type && status.type === "multiple") {
+                            for (var data in status.providers) {
+                                urls += status.providers[data].url + '#name=' + status.providers[data].name + '\n';
                             }
+                        }
+                        if (status.type && status.type === "single") {
+                            urls = status.url;
                         }
                         textarea.value = urls;
                     }

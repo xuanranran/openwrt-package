@@ -3913,14 +3913,6 @@ function action_get_subscribe_info_data()
 		luci.http.status(400, "Bad Request")
 		return
 	end
-
-	local data = {}
-	uci:foreach("openclash", "subscribe_info", function(s)
-		if s.name == filename then
-			data = s
-		end
-	end)
-
 	luci.http.prepare_content("application/json")
-	luci.http.write_json(data)
+	luci.http.write_json(get_sub_url(filename))
 end
