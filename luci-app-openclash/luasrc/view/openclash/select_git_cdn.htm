@@ -648,18 +648,20 @@
     var smart_enable_cdn = document.getElementById('SMART_ENABLE_CDN');
 
     function initDarkMode() {
-        var ocContainer = document.querySelector('.oc');
-        if (!ocContainer) return;
+        var ocContainers = document.querySelectorAll('.oc');
+        if (!ocContainers.length) return;
 
         var shouldUseDark = isDarkBackground(document.body);
 
-        if (shouldUseDark) {
-            ocContainer.setAttribute('data-darkmode', 'true');
-            document.documentElement.setAttribute('data-darkmode', 'true');
-        } else {
-            ocContainer.removeAttribute('data-darkmode');
-            document.documentElement.removeAttribute('data-darkmode');
-        }
+        ocContainers.forEach(function(ocContainer) {
+            if (shouldUseDark) {
+                ocContainer.setAttribute('data-darkmode', 'true');
+                document.documentElement.setAttribute('data-darkmode', 'true');
+            } else {
+                ocContainer.removeAttribute('data-darkmode');
+                document.documentElement.removeAttribute('data-darkmode');
+            }
+        });
     }
 
     if (document.readyState === 'loading') {
