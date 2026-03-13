@@ -748,7 +748,7 @@ function get_sub_url(filename)
 end
 
 function sub_info_get()
-	local sub_ua, filename, sub_info
+	local sub_ua, filename, sub_info, url_result
 	local providers_data = {}
 
 	filename = luci.http.formvalue("filename")
@@ -764,7 +764,7 @@ function sub_info_get()
 	)
 
 	if filename and not is_start() then
-		local url_result = get_sub_url(filename)
+		url_result = get_sub_url(filename)
 
 		if not url_result then
 			sub_info = "No Sub Info Found"
@@ -797,7 +797,8 @@ function sub_info_get()
 	luci.http.write_json({
 		sub_info = sub_info,
 		providers = providers_data,
-		get_time = os.time()
+		get_time = os.time(),
+		url_result = url_result
 	})
 end
 

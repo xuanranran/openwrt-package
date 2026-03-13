@@ -315,7 +315,7 @@ function get_resourse_mtime(path)
         end
     end
     local file = fs.readlink(real_path) or real_path
-	local resourse_etag_version = SYS.exec(string.format("source /usr/share/openclash/openclash_etag.sh && GET_TIMESTAMP_BY_PATH '%s'", real_path))
+	local resourse_etag_version = SYS.exec(string.format("source /usr/share/openclash/openclash_etag.sh && GET_ETAG_TIMESTAMP_BY_PATH '%s'", real_path))
     if resourse_etag_version and resourse_etag_version ~= "" then
 		return resourse_etag_version
 	end

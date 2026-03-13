@@ -757,14 +757,12 @@ function sub_info_refresh_<%=idname%>()
 					(status.day_left)
 				);
 			}
-		}
-		else if ( x && x.status == 200 && status.sub_info == "No Sub Info Found" ) {
+		} else if ( x && x.status == 200 && status.sub_info == "No Sub Info Found" ) {
 			retry_<%=idname%> = 0;
 			localStorage.setItem("sub_info_<%=filename%>",JSON.stringify(status));
 			document.getElementById('<%=idname%>').className = "sub_tab_show";
 			document.getElementById('<%=idname%>').innerHTML = "<span><%:No Sub Info Found%></span>";
-		}
-		else {
+		} else {
 			if (document.getElementById('<%=idname%>').innerHTML == "" || retry_<%=idname%> > 2) {
 				document.getElementById('<%=idname%>').className = "sub_tab_show";
 				document.getElementById('<%=idname%>').innerHTML = "<span style=color:red><%:Sub Info Get Error%></span>";
@@ -772,13 +770,11 @@ function sub_info_refresh_<%=idname%>()
 			if (retry_<%=idname%> > 2) {
 				retry_<%=idname%> = 0;
 				localStorage.removeItem("sub_info_<%=filename%>");
-			}
-			else {
+			} else {
 				retry_<%=idname%> ++;
 				s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>()",1000*120);
 				return
 			}
-
 		};
 		s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>()",1000*1800);
 	});
@@ -904,20 +900,33 @@ function set_subinfo_url_<%=idname%>(btn, filename) {
 
     textarea.focus();
 
+    var handleSubURL = function(urlresult) {
+        var urls = '';
+        if (urlresult.type && urlresult.type === "multiple") {
+            for (var data in urlresult.providers) {
+                urls += urlresult.providers[data].url + '#name=' + urlresult.providers[data].name + '\n';
+            }
+        }
+        if (urlresult.type && urlresult.type === "single") {
+            urls = urlresult.url;
+        }
+        textarea.value = urls;
+    };
+
+    var existingData = localStorage.getItem('sub_info_' + filename);
+    if (existingData) {
+        existingData = JSON.parse(existingData);
+        if (existingData.url_result) {
+            handleSubURL(existingData.url_result);
+            return;
+        }
+    };
+
     XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "get_subscribe_info_data")%>', {
         filename: filename
     }, function(x, status) {
         if (x && x.status == 200 && status) {
-            var urls = '';
-            if (status.type && status.type === "multiple") {
-                for (var data in status.providers) {
-                    urls += status.providers[data].url + '#name=' + status.providers[data].name + '\n';
-                }
-            }
-            if (status.type && status.type === "single") {
-                urls = status.url;
-            }
-            textarea.value = urls;
+            handleSubURL(status);
         }
     });
 };

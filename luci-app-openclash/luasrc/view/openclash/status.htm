@@ -3357,7 +3357,6 @@
         },
 
         bindEvents: function() {
-            var self = this;
             var textarea = document.getElementById('subscription-url-textarea');
             var overlay = document.getElementById('subscription-url-overlay');
 
@@ -3425,25 +3424,38 @@
             });
         },
 
+        handleSubURL: function(urlresult) {
+            var textarea = document.getElementById('subscription-url-textarea');
+            if (!textarea) return;
+
+            var urls = '';
+            if (urlresult.type && urlresult.type === "multiple") {
+                for (var data in urlresult.providers) {
+                    urls += urlresult.providers[data].url + '#name=' + urlresult.providers[data].name + '\n';
+                }
+            }
+            if (urlresult.type && urlresult.type === "single") {
+                urls = urlresult.url;
+            }
+            textarea.value = urls;
+        },
+
         loadUrls: function() {
             var self = this;
+            var existingData = localStorage.getItem('sub_info_' + this.filename);
+            if (existingData) {
+                existingData = JSON.parse(existingData);
+                if (existingData.url_result) {
+                    this.handleSubURL(existingData.url_result);
+                    return;
+                }
+            };
+
             XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "get_subscribe_info_data")%>', {
                 filename: this.filename
             }, function(x, status) {
                 if (x && x.status == 200 && status) {
-                    var textarea = document.getElementById('subscription-url-textarea');
-                    if (textarea) {
-                        var urls = '';
-                        if (status.type && status.type === "multiple") {
-                            for (var data in status.providers) {
-                                urls += status.providers[data].url + '#name=' + status.providers[data].name + '\n';
-                            }
-                        }
-                        if (status.type && status.type === "single") {
-                            urls = status.url;
-                        }
-                        textarea.value = urls;
-                    }
+                    self.handleSubURL(status);
                 }
             });
         }

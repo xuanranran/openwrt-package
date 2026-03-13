@@ -13,11 +13,11 @@ DOWNLOAD_FILE_CURL() {
     CURL_OUTPUT=$(curl -sLI --connect-timeout 5 -m 10 --speed-time 5 --speed-limit 1 --retry 2 \
         -H "User-Agent: ${DOWNLOAD_UA}" "$DOWNLOAD_URL" 2>&1)
 
-    NEW_ETAG=$(echo "$CURL_OUTPUT" | grep -i "^etag:" | cut -d' ' -f2- | tr -d '\r\n')
+    NEW_ETAG=$(echo "$CURL_OUTPUT" | grep -i "^etag:" | cut -d' ' -f2- | tr -d '\r\n' | sed 's/^"//;s/"$//')
     HTTP_CODE=$(echo "$CURL_OUTPUT" | grep -i "^HTTP" | tail -1 | cut -d' ' -f2)
-    CACHED_ETAG=$(GET_ETAG_FROM_CACHE "$DOWNLOAD_URL")
+    CACHED_ETAG=$(GET_ETAG_BY_PATH "$FILE_PATH")
 
-    if [ -n "$NEW_ETAG" ] && [ "$NEW_ETAG" = "$CACHED_ETAG" ] && [ -e "$FILE_PATH" ]; then
+    if [ "$HTTP_CODE" = "200" ] && [ -n "$NEW_ETAG" ] && [ "$NEW_ETAG" = "$CACHED_ETAG" ] && [ -e "$FILE_PATH" ]; then
         return 2
     fi
 
