@@ -3651,14 +3651,14 @@ get_config()
    socks_port=$(uci_get_config "socks_port")
    enable_redirect_dns=$(uci_get_config "enable_redirect_dns" || echo 1)
    if [ "$(uci_get_config "fakeip_range")"  == "0" ]; then
-      fakeip_range=$(ruby_read "$CONFIG_FILE" "['dns']['fake-ip-range']")
+      fakeip_range=$(ruby_read "$RAW_CONFIG_FILE" "['dns']['fake-ip-range']")
    else
       fakeip_range=$(uci_get_config "fakeip_range")
    fi
    [ -z "$fakeip_range" ] && fakeip_range="198.18.0.1/16"
 
    if [ "$(uci_get_config "fakeip_range6")"  == "0" ]; then
-      fakeip_range6=$(ruby_read "$CONFIG_FILE" "['dns']['fake-ip-range6']")
+      fakeip_range6=$(ruby_read "$RAW_CONFIG_FILE" "['dns']['fake-ip-range6']")
    else
       fakeip_range6=$(uci_get_config "fakeip_range6")
    fi

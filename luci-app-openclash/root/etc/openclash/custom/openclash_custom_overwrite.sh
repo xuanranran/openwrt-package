@@ -51,7 +51,7 @@ CONFIG_FILE="$1"
     #4--match key value
     #5--target key name
     #6--target key value
-    #ruby_arr_edit "$CONFIG_FILE" "['proxy-groups']" "['name']" "Proxy" "['type']" "Smart"
+    #ruby_arr_edit "$CONFIG_FILE" "['proxy-groups']" "['name']" "Proxy" "['type']" "smart"
     #ruby_arr_edit "$CONFIG_FILE" "['dns']['nameserver']" "" "114.114.114.114" "" "119.29.29.29"
 
     #Array Insert Value Demo:

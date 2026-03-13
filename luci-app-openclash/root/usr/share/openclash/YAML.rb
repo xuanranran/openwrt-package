@@ -21,10 +21,6 @@ module YAML
     puts Time.new.strftime("%Y-%m-%d %H:%M:%S") + " [Tip] " + "#{info}"
   end
 
-  def self.LOG_MSG(info)
-    File.open("/tmp/openclash.log", 'a') { |f| f.puts(Time.new.strftime("%Y-%m-%d %H:%M:%S") + " [Error] " + "#{info}") }
-  end
-
   # Keep `short-id` as string before YAML parsing so leading zeros are preserved.
   # This is required for REALITY short-id values like `00000000`.
   def self.load_file(filename, *args, **kwargs)
@@ -56,7 +52,7 @@ module YAML
         fix_short_id_quotes(yaml_content)
       end
     rescue => e
-      LOG_MSG("Write file failed:【%s】" % [e.message])
+      LOG_ERROR("Write file failed:【%s】" % [e.message])
       nil
     end
   end
@@ -113,7 +109,7 @@ module YAML
       end
       lines.join
     rescue => e
-      LOG_MSG("Fix short-id values type failed:【%s】" % [e.message])
+      LOG_ERROR("Fix short-id values type failed:【%s】" % [e.message])
       yaml_content
     end
   end
