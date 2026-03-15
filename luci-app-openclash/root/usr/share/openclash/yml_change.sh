@@ -426,7 +426,7 @@ begin
          when 'metacubexd'
          Value['external-ui-url'] = 'https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages'
          when 'zashboard'
-         Value['external-ui-url'] = 'https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages-cdn-fonts'
+         Value['external-ui-url'] = 'https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages-cdn-fonts.zip'
          end
          if !Value.key?('keep-alive-interval') && !Value.key?('keep-alive-idle')
             Value['keep-alive-interval'] = 15
