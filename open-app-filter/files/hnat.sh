@@ -1,9 +1,12 @@
+#!/bin/sh
 
 disable_hnat=`uci get appfilter.global.disable_hnat`
 
 if [ x"1" != x"$disable_hnat" ];then
     return
 fi
+
+[ "$(uci -q get appfilter.global.enable)" != "1" ] && exit 0
 
 # mt798x                                          
 test -d /sys/kernel/debug/hnat  && {              
