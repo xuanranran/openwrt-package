@@ -18,7 +18,7 @@ china_ip_route=$(uci_get_config "china_ip_route" || echo 0)
 china_ip6_route=$(uci_get_config "china_ip6_route" || echo 0)
 enable_redirect_dns=$(uci_get_config "enable_redirect_dns" || echo 1)
 fake_ip_filter_mode=${34}
-default_dashboard=$(uci_get_config "default_dashboard" || echo "metacubexd")
+default_dashboard=$(uci_get_config "default_dashboard" || echo "zashboard")
 yacd_type=$(uci_get_config "yacd_type" || echo "Official")
 dashboard_type=$(uci_get_config "dashboard_type" || echo "Official")
 
