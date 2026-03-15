@@ -395,9 +395,9 @@ sub_info_get()
    if [ "$sub_convert" -eq 0 ]; then
       subscribe_url=$address
    elif [ "$sub_convert" -eq 1 ] && [ -n "$template" ]; then
-      while read line
-      do
-      	subscribe_url=$([ -n "$subscribe_url" ] && echo "$subscribe_url|")$(urlencode "$line")
+      while IFS= read -r line; do
+         line=$(echo "$line" | tr -d '\r')
+         subscribe_url=$([ -n "$subscribe_url" ] && echo "$subscribe_url|")$(urlencode "$line")
       done < <(echo "$address")
       if [ "$template" != "0" ]; then
          template_path=$(grep "^$template," /usr/share/openclash/res/sub_ini.list |awk -F ',' '{print $3}' 2>/dev/null)
