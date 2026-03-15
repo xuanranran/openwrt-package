@@ -413,20 +413,20 @@ begin
          case default_dashboard
          when 'dashboard'
          if dashboard_type == 'Official'
-            Value['external-ui-url'] = 'https://codeload.github.com/ayanamist/clash-dashboard/zip/refs/heads/gh-pages'
+            Value['external-ui-url1'] = 'https://codeload.github.com/ayanamist/clash-dashboard/zip/refs/heads/gh-pages'
          else
-            Value['external-ui-url'] = 'https://codeload.github.com/MetaCubeX/Razord-meta/zip/refs/heads/gh-pages'
+            Value['external-ui-url1'] = 'https://codeload.github.com/MetaCubeX/Razord-meta/zip/refs/heads/gh-pages'
          end
          when 'yacd'
          if yacd_type == 'Official'
-            Value['external-ui-url'] = 'https://codeload.github.com/haishanh/yacd/zip/refs/heads/gh-pages'
+            Value['external-ui-url1'] = 'https://codeload.github.com/haishanh/yacd/zip/refs/heads/gh-pages'
          else
-            Value['external-ui-url'] = 'https://codeload.github.com/MetaCubeX/Yacd-meta/zip/refs/heads/gh-pages'
+            Value['external-ui-url1'] = 'https://codeload.github.com/MetaCubeX/Yacd-meta/zip/refs/heads/gh-pages'
          end
          when 'metacubexd'
-         Value['external-ui-url'] = 'https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages'
+         Value['external-ui-url1'] = 'https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages'
          when 'zashboard'
-         Value['external-ui-url'] = 'https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages-cdn-fonts.zip'
+         Value['external-ui-url1'] = 'https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages-cdn-fonts'
          end
          if !Value.key?('keep-alive-interval') && !Value.key?('keep-alive-idle')
             Value['keep-alive-interval'] = 15
