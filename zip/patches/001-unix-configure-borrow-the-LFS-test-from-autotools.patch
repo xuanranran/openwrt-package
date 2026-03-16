@@ -16,7 +16,6 @@ Signed-off-by: Romain Naour <romain.naour at openwide.fr>
  configure |   46 +++++++++++++++-------------------------------
  1 file changed, 15 insertions(+), 31 deletions(-)
 
-diff --rupN a/unix/configure b/unix/configure
 --- a/unix/configure
 +++ b/unix/configure
 @@ -399,9 +399,8 @@ else
