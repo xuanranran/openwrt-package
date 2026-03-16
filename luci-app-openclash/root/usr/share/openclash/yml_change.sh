@@ -18,7 +18,7 @@ china_ip_route=$(uci_get_config "china_ip_route" || echo 0)
 china_ip6_route=$(uci_get_config "china_ip6_route" || echo 0)
 enable_redirect_dns=$(uci_get_config "enable_redirect_dns" || echo 1)
 fake_ip_filter_mode=${34}
-default_dashboard=$(uci_get_config "default_dashboard" || echo "zashboard")
+default_dashboard=$(uci_get_config "default_dashboard" || echo "metacubexd")
 yacd_type=$(uci_get_config "yacd_type" || echo "Official")
 dashboard_type=$(uci_get_config "dashboard_type" || echo "Official")
 
@@ -413,20 +413,20 @@ begin
          case default_dashboard
          when 'dashboard'
          if dashboard_type == 'Official'
-            Value['external-ui-url1'] = 'https://codeload.github.com/ayanamist/clash-dashboard/zip/refs/heads/gh-pages'
+            Value['external-ui-url'] = 'https://codeload.github.com/ayanamist/clash-dashboard/zip/refs/heads/gh-pages'
          else
-            Value['external-ui-url1'] = 'https://codeload.github.com/MetaCubeX/Razord-meta/zip/refs/heads/gh-pages'
+            Value['external-ui-url'] = 'https://codeload.github.com/MetaCubeX/Razord-meta/zip/refs/heads/gh-pages'
          end
          when 'yacd'
          if yacd_type == 'Official'
-            Value['external-ui-url1'] = 'https://codeload.github.com/haishanh/yacd/zip/refs/heads/gh-pages'
+            Value['external-ui-url'] = 'https://codeload.github.com/haishanh/yacd/zip/refs/heads/gh-pages'
          else
-            Value['external-ui-url1'] = 'https://codeload.github.com/MetaCubeX/Yacd-meta/zip/refs/heads/gh-pages'
+            Value['external-ui-url'] = 'https://codeload.github.com/MetaCubeX/Yacd-meta/zip/refs/heads/gh-pages'
          end
          when 'metacubexd'
-         Value['external-ui-url1'] = 'https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages'
+         Value['external-ui-url'] = 'https://codeload.github.com/MetaCubeX/metacubexd/zip/refs/heads/gh-pages'
          when 'zashboard'
-         Value['external-ui-url1'] = 'https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages-cdn-fonts'
+         Value['external-ui-url'] = 'https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages-cdn-fonts.zip'
          end
          if !Value.key?('keep-alive-interval') && !Value.key?('keep-alive-idle')
             Value['keep-alive-interval'] = 15
