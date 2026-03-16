@@ -735,13 +735,25 @@ function get_sub_url(filename)
 		function(s)
 			if s.name == filename and s.address and string.find(s.address, "http") then
 				string.gsub(s.address, '[^\n]+', function(w) table.insert(info_tb, w) end)
-				sub_url = info_tb[1]
+				if #info_tb == 1 then
+					local url, _ = parse_url_with_name(info_tb[1], filename)
+					sub_url = url
+				elseif #info_tb > 1 then
+					for _, raw in ipairs(info_tb) do
+						local url, name = parse_url_with_name(raw, filename)
+						table.insert(providers, {name = name, url = url})
+					end
+				end
 			end
 		end
 	)
 
 	if sub_url then
 		return {type = "single", url = sub_url}
+	end
+
+	if #providers > 0 then
+		return {type = "multiple", providers = providers}
 	end
 
 	return nil
