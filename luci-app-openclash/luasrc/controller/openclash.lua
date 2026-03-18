@@ -778,36 +778,33 @@ function sub_info_get()
 	if filename and not is_start() then
 		url_result = get_sub_url(filename)
 
-		if not url_result then
-			sub_info = "No Sub Info Found"
-		elseif url_result.type == "single" then
-			local info = fetch_sub_info(url_result.url, sub_ua)
-			if info then
-				table.insert(providers_data, info)
-				sub_info = "Successful"
-			else
-				sub_info = "No Sub Info Found"
-			end
-		elseif url_result.type == "multiple" then
-			for i, provider in ipairs(url_result.providers) do
-				local info = fetch_sub_info(provider.url, sub_ua)
+		if url_result then
+			if url_result.type == "single" then
+				local info = fetch_sub_info(url_result.url, sub_ua)
 				if info then
-					info.provider_name = provider.name
 					table.insert(providers_data, info)
 				end
-			end
-
-			if #providers_data > 0 then
-				sub_info = "Successful"
 			else
-				sub_info = "No Sub Info Found"
+				for i, provider in ipairs(url_result.providers) do
+					local info = fetch_sub_info(provider.url, sub_ua)
+					if info then
+						info.provider_name = provider.name
+						table.insert(providers_data, info)
+					end
+				end
 			end
+		end
+	end
+
+	if #providers_data == 0 then
+		if not url_result then
+			luci.http.status(400, "Subscription information not found")
+			return
 		end
 	end
 
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
-		sub_info = sub_info,
 		providers = providers_data,
 		get_time = os.time(),
 		url_result = url_result
