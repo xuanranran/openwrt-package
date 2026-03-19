@@ -72,13 +72,13 @@ config_download()
 LOG_TIP "Config File【$name】Downloading User-Agent【$sub_ua】..."
 if [ -n "$subscribe_url_param" ] && [ -n "$c_address" ]; then
    LOG_INFO "Config File【$name】Downloading URL【$c_address$subscribe_url_param】..."
-   DOWNLOAD_URL="${c_address}${subscribe_url_param}"
-   DOWNLOAD_PARAM="$sub_ua"
+   local DOWNLOAD_URL="${c_address}${subscribe_url_param}"
+   local DOWNLOAD_PARAM="$sub_ua"
 fi
 if [ -z "$DOWNLOAD_URL" ]; then
    LOG_INFO "Config File【$name】Downloading URL【$subscribe_url】..."
-   DOWNLOAD_URL="${subscribe_url}"
-   DOWNLOAD_PARAM="$sub_ua"
+   local DOWNLOAD_URL="${subscribe_url}"
+   local DOWNLOAD_PARAM="$sub_ua"
 fi
 DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$CFG_FILE" "$CONFIG_FILE" "$DOWNLOAD_PARAM"
 DOWNLOAD_RESULT=$?

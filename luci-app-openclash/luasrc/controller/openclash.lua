@@ -912,6 +912,27 @@ function action_log_level()
 	})
 end
 
+function action_switch_log()
+	local level, info
+	if is_running() then
+		local daip = daip()
+		local dase = dase() or ""
+		local cn_port = cn_port()
+		level = luci.http.formvalue("log_level")
+		if not daip or not cn_port or not level then luci.http.status(500, "Switch Faild") return end
+		info = luci.sys.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XPATCH http://"%s":"%s"/configs -d \'{\"log-level\": \"%s\"}\'', dase, daip, cn_port, level))
+		if info ~= "" then
+			luci.http.status(500, "Switch Faild")
+		end
+	else
+		luci.http.status(500, "Switch Faild")
+	end
+	luci.http.prepare_content("application/json")
+	luci.http.write_json({
+		info = info;
+	})
+end
+
 local function s(e)
 local t=0
 local a={' B/S',' KB/S',' MB/S',' GB/S',' TB/S',' PB/S'}
