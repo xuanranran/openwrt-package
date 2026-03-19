@@ -803,8 +803,14 @@ function sub_info_refresh_<%=idname%>(force) {
         }
     }
 
+    if (retry_<%=idname%> >= 3) {
+        localStorage.removeItem("sub_info_<%=filename%>");
+        retry_<%=idname%> = 0;
+        shouldFetchNew = false;
+    }
+
     if (!shouldFetchNew) {
-        s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 1000*1800);
+        s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 60000*15);
         return;
     }
 
@@ -831,11 +837,11 @@ function sub_info_refresh_<%=idname%>(force) {
             needsErrorHandling = true;
 		};
 
-        if (needsErrorHandling && retry_<%=idname%> < 2) {
+        if (needsErrorHandling && retry_<%=idname%> <= 2) {
             retry_<%=idname%>++;
-            s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 5000);
+            s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 15000);
         } else {
-            s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 1000*1800);
+            s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 60000*15);
         };
 	});
 };
