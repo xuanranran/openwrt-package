@@ -3869,6 +3869,7 @@ stop_service()
 
       del_cron
       clear_overwrite_set
+      rm -rf /tmp/openclash_jobs
       rm -rf /tmp/yaml_*
    } >/dev/null 2>&1
 
