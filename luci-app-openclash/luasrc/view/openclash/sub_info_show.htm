@@ -839,7 +839,7 @@ function sub_info_refresh_<%=idname%>(force) {
 
         if (needsErrorHandling && retry_<%=idname%> <= 2) {
             retry_<%=idname%>++;
-            s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 15000);
+            s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 5000);
         } else {
             s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 60000*15);
         };
