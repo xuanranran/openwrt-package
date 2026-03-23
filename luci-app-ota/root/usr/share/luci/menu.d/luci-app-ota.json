@@ -1,0 +1,13 @@
+{
+	"admin/system/ota": {
+		"title": "OTA",
+		"order": 68,
+		"action": {
+			"type": "view",
+			"path": "ota"
+		},
+		"depends": {
+			"acl": [ "luci-app-ota" ]
+		}
+	}
+}

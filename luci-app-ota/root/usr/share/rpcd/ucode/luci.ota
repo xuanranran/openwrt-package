@@ -1,0 +1,63 @@
+#!/usr/bin/env ucode
+
+import { popen } from 'fs';
+
+function run_ota(cmd) {
+	let fd = popen('/usr/bin/ota ' + cmd, 'r');
+	if (!fd) return null;
+	let out = fd.read('all');
+	fd.close();
+	return out ? trim(out) : "";
+}
+
+const methods = {
+	check: {
+		call: function() {
+			let out = run_ota('check');
+			if (!out || out == "") {
+				return { code: 1, msg: "Check failed, ota script has no output. Please check network." };
+			}
+			try {
+				let data = json(out);
+				return { code: 0, data: data };
+			} catch (e) {
+				return { code: 1, msg: "Failed to parse data: " + out };
+			}
+		}
+	},
+
+	download: {
+		call: function() {
+			run_ota('download');
+			return { code: 0, msg: "ok" };
+		}
+	},
+
+	progress: {
+		call: function() {
+			let out = run_ota('progress');
+			if (out == "0" || out == "done") return { code: 0, msg: "done" };
+			if (out == "2" || out == "Canceled") return { code: 2, msg: "Canceled" };
+			if (out == "254" || out == "Checksum failed!") return { code: 254, msg: out };
+			return { code: 1, msg: out };
+		}
+	},
+
+	cancel: {
+		call: function() {
+			run_ota('cancel');
+			return { code: 0, msg: "ok" };
+		}
+	},
+
+	apply: {
+		args: { keep: 1 },
+		call: function(req) {
+			let keep_flag = (req.args.keep == 1) ? '' : '-n';
+			popen('(sleep 3 && /sbin/sysupgrade ' + keep_flag + ' /tmp/firmware.img) >/dev/null 2>&1 &', 'r');
+			return { code: 0, msg: "Sysupgrade initiated" };
+		}
+	}
+};
+
+return { "luci.ota": methods };

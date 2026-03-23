@@ -1,4 +1,5 @@
 #!/bin/sh
+# author jjm2473
 
 . /etc/os-release
 . /lib/functions/uci-defaults.sh
@@ -30,9 +31,12 @@ download() {
             rm -f /tmp/firmware.img
         fi
     fi
+
     touch /tmp/firmware.img.progress
-    fw_download_tool "$FW_URL" -o /tmp/firmware.img.part -k -L -4 > /tmp/firmware.img.progress 2>&1 &
-    echo "$! $PPID" > /var/run/ota/download.pid
+    # otahelper is a firmware download tool based on libcurl that provides real-time download progress.
+    otahelper "$FW_URL" -o /tmp/firmware.img.part -k -L -4 > /tmp/firmware.img.progress 2>&1 &
+
+    local download_pid=$!
     while true; do
         progress=$(grep -c "100.00%" /tmp/firmware.img.progress)
         if [ "$progress" -ge "1" ]; then
@@ -49,7 +53,7 @@ download() {
         echo "Checksum failed!" >>/tmp/firmware.img.progress
         sleep 1
         rm -rf /tmp/firmware.img.part
-        return 1
+        return 0
     fi
 }
 
@@ -69,11 +73,27 @@ do_check() {
     read_json
     NEW_VERSION=$(basename $FW_URL | awk -F- '{if (NF >= 3 && $3 ~ /^rc/) {print $2 "-" $3} else {print $2}}')
     if [ "$BUILD_DATE" -lt "$FW_BUILD_DATE" ]; then
-        echo "<h3>Model:&nbsp;&nbsp;<font color=\"green\">$(board_name)</font><br/>Current Version:&nbsp;&nbsp;<font color=\"green\">$PRETTY_NAME</font><br/>Build Date:&nbsp;&nbsp;<font color=\"Orange\">$(date "+%Y-%m-%d %H:%M:%S" -d "@$BUILD_DATE")</font></h3>"
-        echo "<h3>New Version:&nbsp;&nbsp;<font color=\"green\">OpenWrt $NEW_VERSION</font><br/>Build Date:&nbsp;&nbsp;<font color=\"green\">$(date "+%Y-%m-%d %H:%M:%S" -d "@$FW_BUILD_DATE")</font></h3>"
+        BOARD_NAME=$(board_name)
+        CURRENT_BUILD_DATE_FORMATTED=$(date '+%Y-%m-%d %H:%M:%S' -d @$BUILD_DATE)
+        FW_BUILD_DATE_FORMATTED=$(date '+%Y-%m-%d %H:%M:%S' -d @$FW_BUILD_DATE)
+        
+        printf '{"latest":false,"model":"%s","current_version":"%s","current_build_date":"%s","new_version":"OpenWrt %s","new_build_date":"%s","logs":"%s"}' \
+            "$BOARD_NAME" \
+            "$PRETTY_NAME" \
+            "$CURRENT_BUILD_DATE_FORMATTED" \
+            "$NEW_VERSION" \
+            "$FW_BUILD_DATE_FORMATTED" \
+            "$FW_LOGS"
+        
         return 0
     elif [ "$BUILD_DATE" -ge "$FW_BUILD_DATE" ]; then
-        return 1
+        BOARD_NAME=$(board_name)
+        CURRENT_BUILD_DATE_FORMATTED=$(date '+%Y-%m-%d %H:%M:%S' -d @$BUILD_DATE)
+        printf '{"latest":true,"model":"%s","current_version":"%s","current_build_date":"%s"}' \
+            "$BOARD_NAME" \
+            "$PRETTY_NAME" \
+            "$CURRENT_BUILD_DATE_FORMATTED"
+        return 0
     else
         return 255
     fi
@@ -82,14 +102,15 @@ do_check() {
 # async download
 do_download(){
     [ ! -f "/var/run/ota/fw.json" ] && { echo "do check first" >&2 ; return 254; }
-    lock_download &
+    lock_download &    
+    echo $! > /var/run/ota/download.pid
     return 0
 }
 
 # 0: done, 1: downloading, 2: failed, *: err
 do_progress() {
     read_json
-    [ -f /tmp/firmware.img.sha256sum ] && [ "`cat /tmp/firmware.img.sha256sum`" = "$FW_SHA256SUM" ] && return 0
+    [ -f /tmp/firmware.img.sha256sum ] && [ "`cat /tmp/firmware.img.sha256sum`" = "$FW_SHA256SUM" ] && { echo "done"; return 0; }
     [ -f /tmp/firmware.img.progress ] || { echo "download not in progress" >&2 ; return 254; }
     [ -f /tmp/firmware.img.part ] && { cat /tmp/firmware.img.progress | tr '\r' '\n' | tail -n1; return 1; }
     tail -1 /tmp/firmware.img.progress | grep -Fq 'Canceled!' && { echo "Canceled"; return 2; }
@@ -100,18 +121,16 @@ do_progress() {
 
 do_cancel() {
     if [ -f /var/run/ota/download.pid ]; then
-        local pid=`cat /var/run/ota/download.pid`
-        if [ -n "$pid" ]; then
-            kill -TERM $pid;
-            while kill -9 $pid >/dev/null 2>&1; do
-                if ! sleep 1; then
-                    break
-                fi
-            done
-            rm -rf /tmp/firmware.img* /var/lock/ota_background.lock /var/lock/ota_api.lock /var/run/ota/download.pid
-            echo "" >> /tmp/firmware.img.progress
-            echo "Canceled!" >> /tmp/firmware.img.progress
+        local pids=$(cat /var/run/ota/download.pid)
+        if [ -n "$pids" ]; then
+            kill -TERM $pids >/dev/null 2>&1
+            sleep 1
+            kill -9 $pids >/dev/null 2>&1
         fi
+
+        rm -rf /tmp/firmware.img* /var/lock/ota_background.lock /var/lock/ota_api.lock /var/run/ota/download.pid
+
+        echo "Canceled!" >> /tmp/firmware.img.progress
     fi
     return 0
 }
@@ -120,6 +139,7 @@ read_json(){
     FW_BUILD_DATE=$(jsonfilter -i /var/run/ota/fw.json -e "@['$(board_name)'][0]['build_date']")
     FW_SHA256SUM=$(jsonfilter -i /var/run/ota/fw.json -e "@['$(board_name)'][0]['sha256sum']")
     FW_URL=$(jsonfilter -i /var/run/ota/fw.json -e "@['$(board_name)'][0]['url']")
+    FW_LOGS=$(jsonfilter -i /var/run/ota/fw.json -e "@['$(board_name)'][0]['logs']" || true)
 }
 
 ota_init(){

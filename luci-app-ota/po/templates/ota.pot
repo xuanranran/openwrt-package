@@ -1,99 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-23 21:52+0800\n"
-"PO-Revision-Date: 2026-03-23 21:13+0800\n"
-"Last-Translator: sbwml <admin@cooluc.com>\n"
-"Language-Team: Chinese\n"
-"Language: zh_Hans\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: htdocs/luci-static/resources/view/ota.js:58
 msgid "Checking..."
-msgstr "检查中..."
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:65
 #: htdocs/luci-static/resources/view/ota.js:98
 msgid "Check failed"
-msgstr "检查失败"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:67
 #: htdocs/luci-static/resources/view/ota.js:100
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Check failed: %s"
-msgstr "检查失败: %s"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:76
 msgid "Already the latest firmware"
-msgstr "已经是最新固件"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:77
 #: htdocs/luci-static/resources/view/ota.js:82
 msgid "Model"
-msgstr "型号"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:78
 #: htdocs/luci-static/resources/view/ota.js:83
 msgid "Current Version"
-msgstr "当前版本"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:79
 #: htdocs/luci-static/resources/view/ota.js:84
 #: htdocs/luci-static/resources/view/ota.js:86
 msgid "Build Date"
-msgstr "构建日期"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:81
 msgid "Found new firmware"
-msgstr "发现新固件"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:85
 msgid "New Version"
-msgstr "新版本"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:91
 msgid "Changelog"
-msgstr "更新日志"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:112
-#, fuzzy
 msgid "Downloading: ..."
-msgstr "下载中: ..."
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:115
 #: htdocs/luci-static/resources/view/ota.js:119
 #: htdocs/luci-static/resources/view/ota.js:139
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Download failed: %s"
-msgstr "下载失败: %s"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:133
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Downloading: %s"
-msgstr "下载中: %s"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:136
-#, fuzzy
 msgid "Download canceled."
-msgstr "下载已取消"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:148
-#, fuzzy
 msgid "Canceling..."
-msgstr "检查中..."
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:152
-#, fuzzy
 msgid "Download canceled successfully."
-msgstr "下载已取消"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:154
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Cancel failed: %s"
-msgstr "检查失败: %s"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:168
 msgid "Flashing…"
@@ -111,36 +113,36 @@ msgstr ""
 #: htdocs/luci-static/resources/view/ota.js:184
 #, javascript-format
 msgid "Flash failed: %s"
-msgstr "固件更新失败: %s"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:196
 msgid "Check update"
-msgstr "检查更新"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:201
 msgid "Cancel download"
-msgstr "取消下载"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:212
 msgid "Download firmware"
-msgstr "下载固件"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:227
 msgid "Keep settings and retain the current configuration"
-msgstr "保留设置并继续使用当前配置"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:234
 msgid "Firmware downloaded"
-msgstr "固件已下载"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:239
 msgid "Flash image..."
-msgstr "刷写固件..."
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:259
 msgid "OTA"
-msgstr "在线升级"
+msgstr ""
 
 #: htdocs/luci-static/resources/view/ota.js:260
 msgid "Check and upgrade firmware from the Internet"
-msgstr "通过网络检查和更新固件"
+msgstr ""
