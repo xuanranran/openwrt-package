@@ -169,11 +169,17 @@ return view.extend({
 					E('p', { 'class': 'spinning' }, _('The system is flashing now.<br /> DO NOT POWER OFF THE DEVICE!<br /> Wait a few minutes before you try to reconnect. It might be necessary to renew the address of your computer to reach the device again, depending on your settings.'))
 				]);
 
-				if (keepCheckbox.checked) {
-					ui.awaitReconnect(window.location.host);
-				} else {
-					ui.awaitReconnect('10.0.0.1', 'openwrt.lan');
-				}
+				var interval = window.setInterval(function() {
+					var img = new Image();
+					var target = window.location.protocol + '//' + window.location.host;
+
+					img.onload = function() {
+						window.clearInterval(interval);
+						window.location.replace(target);
+					};
+
+					img.src = target + L.resource('icons/loading.svg') + '?' + Math.random();
+				}, 10000);
 
 			} else {
 				ev.target.disabled = false;
