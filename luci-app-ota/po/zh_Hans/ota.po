@@ -83,7 +83,7 @@ msgstr "下载已取消"
 #: htdocs/luci-static/resources/view/ota.js:148
 #, fuzzy
 msgid "Canceling..."
-msgstr "检查中..."
+msgstr "取消中..."
 
 #: htdocs/luci-static/resources/view/ota.js:152
 #, fuzzy
