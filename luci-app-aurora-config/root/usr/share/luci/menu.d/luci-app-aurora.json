@@ -1,7 +1,7 @@
 {
   "admin/system/aurora": {
     "title": "Aurora Settings",
-    "order": 100,
+    "order": 85,
     "action": {
       "type": "firstchild"
     },
