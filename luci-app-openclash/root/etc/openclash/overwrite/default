@@ -210,6 +210,137 @@
 #SUB_INFO_URL = https://default-demo.yaml
 
 # ==========================================================
+# ==== 以下为 YAML 块覆写示例 ====
+# ==========================================================
+# YAML 覆写块识别标记
+# [YAML]
+
+# 1. 默认合并 - 合并哈希键值，如果键不存在则添加
+# 示例：修改 dns.enable 和添加新键
+# dns:
+#   enable: true
+#   cache-algorithm: lru
+
+# 2. 强制覆盖 - 使用 '!' 后缀强制替换整个值
+# 示例：替换整个 dns.fake-ip-filter 数组
+# dns:
+#   fake-ip-filter!:
+#     - '*.lan'
+#     - 'new.domain.com'
+
+# 3. 数组前置 - 使用 '+' 前缀将数组前置
+# 示例：在 dns.nameserver 前置
+# dns:
+#   +nameserver:
+#     - '223.5.5.5'
+
+# 4. 数组后置 - 使用 '+' 后缀将数组后置
+# 示例：在 dns.nameserver 后置
+# dns:
+#   nameserver+:
+#     - '1.1.1.1'
+
+# 5. 批量更新 - 使用 '*' 后缀进行条件更新，支持 where 和 set 子句
+# 示例：更新 proxies 数组中的特定项
+# proxies*:
+#   where:
+#     type: socks5
+#   set:
+#     port: 1080
+
+# 示例：更新 hosts 哈希中的值
+# hosts*:
+#   where:
+#     key: '*.mihomo.dev'
+#   set:
+#     '*.mihomo.dev': '::1'
+
+# 示例：删除 fake-ip-filter 中的字符串项（set value 为 nil）
+# dns:
+#   fake-ip-filter*:
+#     where:
+#       value: '+.localhost.ptlogin2.qq.com'
+#     set:
+#       value:  # 删除项
+
+# 示例：查找删除 proxy-groups 数组中哈希项的字段（set value 为 nil）
+# proxy-groups*:
+#   where:
+#     name: Proxy
+#   set:
+#     type:  # 删除字段
+
+# 示例：使用正则匹配更新（where 值支持 /pattern/ 形式）
+# dns:
+#   fake-ip-filter*:
+#     where:
+#       value: '/\.lan$/'  # 正则：以 .lan 结尾
+#     set:
+#       value: 'new.lan'  # 替换匹配项
+
+# 示例：批量查找更新 proxy-groups 数组（哈希数组）
+# proxy-groups*:
+#   where:
+#     type: select
+#   set:
+#     proxies:
+#       - 'new-proxy1'
+#       - 'new-proxy2'
+
+# 示例：替换数字或布尔值（直接合并）
+# mixed-port: 10802
+# allow-lan: false
+
+# 示例：修改 tun 配置（哈希合并）
+# tun:
+#   enable: true
+#   stack: gvisor
+
+# 示例：添加新规则到 rules 数组（数组后置）
+# rules+:
+#   - DOMAIN-SUFFIX,example.com,REJECT
+
+# 示例：强制覆盖整个 rules 数组
+# rules!:
+#   - DOMAIN-SUFFIX,new.com,DIRECT
+
+# 示例：批量查找更新 rules 数组（字符串数组）
+# rules*:
+#   where:
+#     value: 'DOMAIN-SUFFIX,old.com,REJECT'
+#   set:
+#     value: 'DOMAIN-SUFFIX,new.com,DIRECT'
+
+# 示例：删除 rules 中的特定规则
+# rules*:
+#   where:
+#     value: '/REJECT$/'  # 正则匹配以 REJECT 结尾
+#   set:
+#     value:  # 删除
+
+# 6. 用 <> 包裹的键 (高级操作) - 支持 <key>suffix 形式，如 <key>+ (后置)、<key>! (强制覆盖)、<key>* (批量更新)
+# 示例：使用 <nameserver>+ 在 dns.nameserver 后置 
+# dns:
+#   <nameserver>+:
+#     - '8.8.8.8'
+
+# 示例：强制覆盖整个 dns 配置
+# <dns>!:
+#   enable: false
+#   nameserver:
+#     - '114.114.114.114'
+
+# 示例：批量更新 dns 子项
+# <dns>*:
+#   where:
+#     enable: true
+#   set:
+#     cache-algorithm: arc
+
+# 注意：批量更新适用于数组（字符串或哈希）和哈希，支持条件匹配、删除（nil 值）和正则匹配（/pattern/）。
+# 可组合使用，优先级为强制覆盖 > 批量更新 > 数组操作 > 默认合并。
+
+# ==========================================================
 # ==== 以下为仅修改插件设置示例 ====
 # ==========================================================
 
