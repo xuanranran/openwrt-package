@@ -128,30 +128,11 @@ module YAML
 
         override.each do |key, value|
           processed_key, operation = parse_key(key)
-
-          case operation
-          when :force_overwrite
-            result[processed_key] = value
-          when :prepend_array
-            if result[processed_key].is_a?(Array) && value.is_a?(Array)
-              result[processed_key] = value + result[processed_key]
-            else
-              result[processed_key] = value
-            end
-          when :append_array
-            if result[processed_key].is_a?(Array) && value.is_a?(Array)
-              result[processed_key] = result[processed_key] + value
-            else
-              result[processed_key] = value
-            end
-          when :batch_update
-            result[processed_key] = batch_update_items(result[processed_key], value)
-          when :merge
-            if result[processed_key].is_a?(Hash) && value.is_a?(Hash)
-              result[processed_key] = overwrite(result[processed_key], value)
-            else
-              result[processed_key] = value
-            end
+          applied = apply_operation(result[processed_key], value, operation)
+          if applied.equal?(DELETED_SENTINEL)
+            result.delete(processed_key)
+          else
+            result[processed_key] = applied
           end
         end
         result
@@ -171,24 +152,28 @@ module YAML
   def self.parse_key(key)
     key_str = key.to_s
 
-    # 检查是否用 <>
+    # <>
+    if key_str.start_with?('+<') && key_str.include?('>')
+      close_idx = key_str.index('>')
+      inner_key = key_str[2...close_idx]
+      return inner_key, :prepend_array
+    end
+    
     if key_str.start_with?('<') && key_str.include?('>')
       close_idx = key_str.index('>')
       inner_key = key_str[1...close_idx]
       suffix = key_str[(close_idx + 1)..-1]
-      
-      operation = determine_operation(suffix)
-      return inner_key, operation
+      return inner_key, determine_operation(suffix)
     end
 
+    # 前缀 +key
     if key_str.start_with?('+')
       return key_str[1..-1], :prepend_array
-    elsif key_str.end_with?('+')
-      return key_str[0...-1], :append_array
-    elsif key_str.end_with?('!')
-      return key_str[0...-1], :force_overwrite
-    elsif key_str.end_with?('*')
-      return key_str[0...-1], :batch_update
+    end
+
+    # 尾部（支持 +, !, *, -）
+    if key_str =~ /^(.*?)([+!*\-])$/
+      return $1, determine_operation($2)
     end
 
     [key_str, :merge]
@@ -198,12 +183,12 @@ module YAML
     case suffix
     when '+'
       :append_array
+    when '-'
+      :delete
     when '!'
       :force_overwrite
     when '*'
       :batch_update
-    when '+!', '!+'
-      :force_overwrite
     when ''
       :merge
     else
@@ -218,7 +203,13 @@ module YAML
       if condition.is_a?(String) && condition.start_with?('/') && condition.end_with?('/')
         pattern = condition[1...-1]
         regexp = Regexp.new(pattern)
-        target.to_s =~ regexp
+        if target.is_a?(Array)
+          target.any? { |item| item.to_s =~ regexp }
+        else
+          target.to_s =~ regexp
+        end
+      elsif condition.is_a?(Array) && target.is_a?(Array)
+        condition.all? { |c| target.include?(c) }
       else
         target == condition
       end
@@ -239,6 +230,76 @@ module YAML
     end
   end
 
+  DELETED_SENTINEL = Object.new.freeze
+  def self.apply_operation(base, value, operation)
+    case operation
+    when :delete
+      if base.is_a?(Array) && value.is_a?(Array)
+        base - value
+      elsif base.is_a?(Array) && !value.nil?
+        base - [value]
+      else
+        DELETED_SENTINEL
+      end
+    when :force_overwrite
+      value
+    when :prepend_array
+      if base.is_a?(Array) && value.is_a?(Array)
+        deep_dup(value) + base
+      else
+        deep_dup(value)
+      end
+    when :append_array
+      if base.is_a?(Array) && value.is_a?(Array)
+        base + deep_dup(value)
+      else
+        deep_dup(value)
+      end
+    when :batch_update
+      batch_update_items(base, value)
+    when :merge
+      if base.is_a?(Hash) && value.is_a?(Hash)
+        overwrite(base, value)
+      elsif value.nil?
+        base
+      else
+        value
+      end
+    else
+      value
+    end
+  end
+
+  def self.apply_set_fields(item, set_values)
+    keys_to_delete = []
+
+    set_values.each do |k, v|
+      processed_key, operation = parse_key(k)
+      result = apply_operation(item[processed_key], v, operation)
+      if result.equal?(DELETED_SENTINEL)
+        keys_to_delete << processed_key
+      else
+        item[processed_key] = result
+      end
+    end
+
+    keys_to_delete.each { |k| item.delete(k) }
+  end
+
+  def self.match_item(item, where_conditions, key = nil)
+    where_conditions.all? do |k, v|
+      if k == 'key' && !key.nil?
+        match_value(key, v)
+      elsif item.is_a?(Hash)
+        match_value(item[k] || item[k.to_s], v)
+      elsif item.is_a?(String) && k == 'value'
+        match_value(item, v)
+      else
+        false
+      end
+    end
+  end
+
   def self.batch_update_items(collection, update_spec)
     return collection unless update_spec.is_a?(Hash)
 
@@ -248,69 +309,55 @@ module YAML
 
       if collection.is_a?(Array)
         result = collection.dup
-        result.each_with_index do |item, index|
-          match = false
+        delete_indices = []
 
-          if item.is_a?(Hash)
-            match = where_conditions.all? do |k, v|
-              match_value(item[k] || item[k.to_s], v)
-            end
-          elsif item.is_a?(String) && where_conditions.key?('value')
-            match = match_value(item, where_conditions['value'])
-          end
+        result.each_with_index do |item, index|
+          match = match_item(item, where_conditions)
 
           if match
             if item.is_a?(Hash)
-              set_values.each do |k, v|
-                if v.nil?
-                  item.delete(k)
-                else
-                  item[k] = deep_dup(v)
-                end
-              end
+              apply_set_fields(item, set_values)
             elsif item.is_a?(String) && set_values.key?('value')
               new_value = set_values['value']
               if new_value.nil?
-                result.delete_at(index)
+                delete_indices << index
               else
                 result[index] = deep_dup(new_value)
               end
             end
           end
         end
+
+        delete_indices.reverse_each { |i| result.delete_at(i) }
         result
       elsif collection.is_a?(Hash)
-        result = collection.dup
-        keys_to_delete = []
+        if where_conditions.any? { |k, _| k != 'key' } &&
+           match_item(collection, where_conditions)
+          result = collection.dup
+          apply_set_fields(result, set_values)
+          result
+        else
+          result = collection.dup
+          keys_to_delete = []
 
-        result.each do |key, value|
-          next unless value.is_a?(Hash)
+          result.each do |key, value|
+            next unless value.is_a?(Hash)
+            match = match_item(value, where_conditions, key)
 
-          match = where_conditions.all? do |k, v|
-            if k == 'key'
-              match_value(key, v)
-            else
-              match_value(value[k] || value[k.to_s], v)
-            end
-          end
-
-          if match
-            if set_values.key?('key') && set_values['key'].nil?
-              keys_to_delete << key
-            else
-              set_values.each do |k, v|
-                if v.nil?
-                  value.delete(k)
-                else
-                  value[k] = deep_dup(v)
-                end
+            if match
+              if set_values.key?('key-') || (set_values.key?('key') && set_values['key'].nil?)
+                keys_to_delete << key
+              else
+                apply_set_fields(value, set_values)
               end
             end
           end
-        end
 
-        keys_to_delete.each { |k| result.delete(k) }
-        result
+          keys_to_delete.each { |k| result.delete(k) }
+          result
+        end
+      elsif collection.nil?
+        nil
       else
         collection
       end

@@ -214,70 +214,133 @@
 # YAML 覆写块识别标记
 # [YAML]
 
-# 1. 默认合并 - 合并哈希键值，如果键不存在则添加
-# 示例：修改 dns.enable 和添加新键
+# ----------------------------------------------------------
+# 操作符速查表：
+#   key        → 默认合并（Hash 递归合并，其他直接覆盖）
+#   key!       → 强制覆盖整个值
+#   key+       → 数组后置追加
+#   +key       → 数组前置插入
+#   key-       → 数组差集删除 / 非数组则删除该键
+#   key*       → 批量条件更新（需配合 where/set）
+#   <key>后缀  → 同上（+, !, *, -），适用于键名含特殊字符时
+#   +<key>     → 数组前置插入，适用于键名含特殊字符时
+# ----------------------------------------------------------
+
+# 1. 默认合并 - 合并哈希键值，键不存在则添加，Hash 值递归合并
+# 示例：修改 dns.enable 并添加新键
 # dns:
 #   enable: true
 #   cache-algorithm: lru
 
-# 2. 强制覆盖 - 使用 '!' 后缀强制替换整个值
+# 示例：直接替换标量值
+# mixed-port: 10802
+# allow-lan: false
+
+# 示例：合并 tun 配置（仅修改指定字段，其余保留）
+# tun:
+#   enable: true
+#   stack: gvisor
+
+# ----------------------------------------------------------
+
+# 2. 强制覆盖 (key!) - 强制替换整个值，不做递归合并
 # 示例：替换整个 dns.fake-ip-filter 数组
 # dns:
 #   fake-ip-filter!:
 #     - '*.lan'
 #     - 'new.domain.com'
 
-# 3. 数组前置 - 使用 '+' 前缀将数组前置
-# 示例：在 dns.nameserver 前置
-# dns:
-#   +nameserver:
-#     - '223.5.5.5'
+# 示例：强制覆盖整个 rules 数组
+# rules!:
+#   - DOMAIN-SUFFIX,example.com,DIRECT
+#   - MATCH,PROXY
 
-# 4. 数组后置 - 使用 '+' 后缀将数组后置
-# 示例：在 dns.nameserver 后置
+# 示例：使用 <> 强制覆盖整个 dns 配置（键名含特殊字符时）
+# <dns>!:
+#   enable: false
+#   nameserver:
+#     - '114.114.114.114'
+
+# ----------------------------------------------------------
+
+# 3. 数组后置 (key+) - 将新元素追加到数组末尾
+# 示例：向 dns.nameserver 末尾追加 DNS
 # dns:
 #   nameserver+:
 #     - '1.1.1.1'
+#     - '8.8.8.8'
 
-# 5. 批量更新 - 使用 '*' 后缀进行条件更新，支持 where 和 set 子句
-# 示例：更新 proxies 数组中的特定项
-# proxies*:
-#   where:
-#     type: socks5
-#   set:
-#     port: 1080
+# 示例：向 rules 末尾追加规则
+# rules+:
+#   - DOMAIN-SUFFIX,example.com,REJECT
 
-# 示例：更新 hosts 哈希中的值
-# hosts*:
-#   where:
-#     key: '*.mihomo.dev'
-#   set:
-#     '*.mihomo.dev': '::1'
-
-# 示例：删除 fake-ip-filter 中的字符串项（set value 为 nil）
+# 示例：使用 <> 后置
 # dns:
-#   fake-ip-filter*:
-#     where:
-#       value: '+.localhost.ptlogin2.qq.com'
-#     set:
-#       value:  # 删除项
+#   <nameserver>+:
+#     - '8.8.8.8'
 
-# 示例：查找删除 proxy-groups 数组中哈希项的字段（set value 为 nil）
-# proxy-groups*:
-#   where:
-#     name: Proxy
-#   set:
-#     type:  # 删除字段
+# ----------------------------------------------------------
 
-# 示例：使用正则匹配更新（where 值支持 /pattern/ 形式）
+# 4. 数组前置 (+key / +<key>) - 将新元素插入到数组开头
+# 示例：向 dns.nameserver 开头插入 DNS
 # dns:
-#   fake-ip-filter*:
-#     where:
-#       value: '/\.lan$/'  # 正则：以 .lan 结尾
-#     set:
-#       value: 'new.lan'  # 替换匹配项
+#   +nameserver:
+#     - '223.5.5.5'
+#     - '119.29.29.29'
 
-# 示例：批量查找更新 proxy-groups 数组（哈希数组）
+# 示例：向 rules 开头插入规则（优先匹配）
+# +rules:
+#   - DOMAIN-SUFFIX,priority.com,DIRECT
+
+# 示例：使用 +<> 前置插入（键名含特殊字符时）
+# dns:
+#   +<nameserver>:
+#     - '119.29.29.29'
+
+# ----------------------------------------------------------
+
+# 5. 数组删除 (key-) - 从数组中移除指定元素，非数组则删除整个键
+# 示例：从 dns.nameserver 中移除指定 DNS
+# dns:
+#   nameserver-:
+#     - '8.8.8.8'
+#     - '8.8.4.4'
+
+# 示例：从 rules 中移除指定规则
+# rules-:
+#   - DOMAIN-SUFFIX,old.com,REJECT
+
+# 示例：删除整个键（值为 null/~ 或空）
+# dns:
+#   cache-algorithm-:
+
+# ----------------------------------------------------------
+
+# 6. 批量条件更新 (key*) - 按 where 条件匹配集合元素，用 set 子句更新
+#
+# 支持的集合类型：
+#   - 数组（元素为 Hash 或 String）
+#   - Hash（值为 Hash）
+#
+# where 条件支持：
+#   - 普通值相等：  type: select
+#   - 正则匹配：    name: '/^HK/'
+#   - 数组包含：    proxies: ['proxy1']  （检查数组是否包含所有指定元素）
+#   - Hash 键匹配： key: 'some-key'      （仅用于 Hash 类型集合）
+#   - 字符串匹配：  value: 'some-string' （仅用于字符串数组）
+#
+# set 子句支持的操作符（同顶层操作符）：
+#   field        → 直接覆盖该字段
+#   field!       → 强制覆盖该字段
+#   field+       → 数组后置追加
+#   +field       → 数组前置插入
+#   field-       → 数组差集删除 / 非数组则删除该键
+#   value        → 替换字符串数组中的匹配项
+#   value: ~     → 删除字符串数组中的匹配项
+#   key: ~       → 删除 Hash 中的匹配键（仅 Hash 集合）
+#   key-:        → 同上
+
+# 示例：按 type 匹配，替换 proxy-groups 的 proxies
 # proxy-groups*:
 #   where:
 #     type: select
@@ -286,58 +349,156 @@
 #       - 'new-proxy1'
 #       - 'new-proxy2'
 
-# 示例：替换数字或布尔值（直接合并）
-# mixed-port: 10802
-# allow-lan: false
+# 示例：按 type 匹配，向 proxies 末尾追加节点
+# proxy-groups*:
+#   where:
+#     type: select
+#   set:
+#     proxies+:
+#       - 'new-proxy3'
 
-# 示例：修改 tun 配置（哈希合并）
-# tun:
-#   enable: true
-#   stack: gvisor
+# 示例：按 type 匹配，向 proxies 开头插入节点
+# proxy-groups*:
+#   where:
+#     type: url-test
+#   set:
+#     +proxies:
+#       - 'new-proxy1'
 
-# 示例：添加新规则到 rules 数组（数组后置）
-# rules+:
-#   - DOMAIN-SUFFIX,example.com,REJECT
+# 示例：按 type 匹配，从 proxies 中移除指定节点
+# proxy-groups*:
+#   where:
+#     type: select
+#   set:
+#     proxies-:
+#       - 'old-proxy1'
+#       - 'old-proxy2'
 
-# 示例：强制覆盖整个 rules 数组
-# rules!:
-#   - DOMAIN-SUFFIX,new.com,DIRECT
+# 示例：使用数组包含条件（proxies 中必须包含指定元素才匹配）
+# proxy-groups*:
+#   where:
+#     type: select
+#     proxies:
+#       - 'old-proxy1'
+#   set:
+#     proxies:
+#       - 'new-proxy1'
+#       - 'new-proxy2'
 
-# 示例：批量查找更新 rules 数组（字符串数组）
+# 示例：使用正则匹配 name 字段
+# proxy-groups*:
+#   where:
+#     name: '/^HK/'
+#   set:
+#     +proxies:
+#       - 'hk-new-proxy'
+
+# 示例：删除 proxy-groups 中某个字段（set value 为 null/~）
+# proxy-groups*:
+#   where:
+#     name: Proxy
+#   set:
+#     icon-:
+
+# 示例：按 type 匹配修改 proxies 中 socks5 节点端口
+# proxies*:
+#   where:
+#     type: socks5
+#   set:
+#     port: 1080
+
+# 示例：更新 hosts Hash 中的指定键
+# hosts*:
+#   where:
+#     key: '*.mihomo.dev'
+#   set:
+#     '*.mihomo.dev': '::1'
+
+# 示例：删除 hosts Hash 中的匹配键
+# hosts*:
+#   where:
+#     key: '*.old.dev'
+#   set:
+#     key-:
+
+# 示例：替换字符串数组中的匹配项
 # rules*:
 #   where:
 #     value: 'DOMAIN-SUFFIX,old.com,REJECT'
 #   set:
 #     value: 'DOMAIN-SUFFIX,new.com,DIRECT'
 
-# 示例：删除 rules 中的特定规则
+# 示例：使用正则匹配并删除字符串数组中的规则
 # rules*:
 #   where:
-#     value: '/REJECT$/'  # 正则匹配以 REJECT 结尾
+#     value: '/,REJECT$/'
 #   set:
-#     value:  # 删除
+#     value:
 
-# 6. 用 <> 包裹的键 (高级操作) - 支持 <key>suffix 形式，如 <key>+ (后置)、<key>! (强制覆盖)、<key>* (批量更新)
-# 示例：使用 <nameserver>+ 在 dns.nameserver 后置 
+# 示例：删除 fake-ip-filter 中的指定项
+# dns:
+#   fake-ip-filter*:
+#     where:
+#       value: '+.localhost.ptlogin2.qq.com'
+#     set:
+#       value:
+
+# 示例：使用 <> 批量更新
+# <proxy-groups>*:
+#   where:
+#     type: url-test
+#   set:
+#     interval: 300
+
+# ----------------------------------------------------------
+
+# 7. 组合操作 - 在同一块内同时使用多个操作符
+# 示例：同时前置和后置追加 DNS（必须写在同一 dns 块内）
+# dns:
+#   nameserver+:
+#     - '1.0.0.1'
+#   +nameserver:
+#     - '119.29.29.29'
+
+# 示例：同时删除旧 DNS 并前置插入新 DNS
+# dns:
+#   nameserver-:
+#     - '8.8.8.8'
+#   +nameserver:
+#     - '223.5.5.5'
+
+# ----------------------------------------------------------
+
+# 8. <key> 语法补充 - 适用于键名含特殊字符时
+# 后缀支持：+（后置）、-（删除）、!（强制覆盖）、*（批量更新），空串为默认合并
+# 前置插入请使用 +<key> 写法（前缀形式）
+
+# 示例：使用 <> 后置追加
 # dns:
 #   <nameserver>+:
 #     - '8.8.8.8'
 
-# 示例：强制覆盖整个 dns 配置
-# <dns>!:
-#   enable: false
-#   nameserver:
+# 示例：使用 <> 删除数组元素
+# dns:
+#   <nameserver>-:
+#     - '8.8.8.8'
+
+# 示例：使用 <> 强制覆盖
+# dns:
+#   <nameserver>!:
 #     - '114.114.114.114'
 
-# 示例：批量更新 dns 子项
-# <dns>*:
+# 示例：使用 <> 批量更新（等同于 key*）
+# <proxy-groups>*:
 #   where:
-#     enable: true
+#     type: url-test
 #   set:
-#     cache-algorithm: arc
+#     interval: 300
 
-# 注意：批量更新适用于数组（字符串或哈希）和哈希，支持条件匹配、删除（nil 值）和正则匹配（/pattern/）。
-# 可组合使用，优先级为强制覆盖 > 批量更新 > 数组操作 > 默认合并。
+# 示例：使用 +<> 前置插入（键名含特殊字符时的前置写法）
+# dns:
+#   +<nameserver>:
+#     - '119.29.29.29'
 
 # ==========================================================
 # ==== 以下为仅修改插件设置示例 ====
