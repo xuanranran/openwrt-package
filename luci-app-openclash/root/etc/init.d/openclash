@@ -79,7 +79,7 @@ save_dnsmasq_server() {
 }
 
 set_dnsmasq_server() {
-	if [ -z "$1" ] || [ "$1" == "127.0.0.1#${dns_port}" ]; then
+   if [ -z "$1" ] || [ "$1" == "127.0.0.1#${dns_port}" ]; then
      return
    fi
 
@@ -203,11 +203,11 @@ change_dns() {
    if [ "$1" -eq 1 ] && [ "$ipv6_dns" -eq 1 ] && [ -n "$(ip6tables -t mangle -L 2>&1 | grep -o 'Chain')" ]; then
       #dnsmasq answer ipv6
       uci -q set openclash.config.dnsmasq_filter_aaaa="$(uci -q get dhcp.@dnsmasq[0].filter_aaaa)"
-	   uci -q set dhcp.@dnsmasq[0].filter_aaaa=0
-	   uci -q set openclash.config.filter_aaaa_dns=1
-	else
-	   uci -q set openclash.config.filter_aaaa_dns=0
-	fi
+      uci -q set dhcp.@dnsmasq[0].filter_aaaa=0
+      uci -q set openclash.config.filter_aaaa_dns=1
+   else
+      uci -q set openclash.config.filter_aaaa_dns=0
+   fi
 
    uci -q commit dhcp
    uci -q commit openclash
@@ -1439,7 +1439,7 @@ if [ -n "$common_ports" ] && [ "$common_ports" != "0" ]; then
 fi
 
 case $enable_redirect_dns in
-	"1")
+   "1")
    LOG_TIP "DNS Hijacking Mode is Dnsmasq Redirect..."
    ;;
    "2")
@@ -3940,8 +3940,8 @@ restart()
 start_watchdog()
 {
    procd_open_instance "openclash-watchdog"
-	procd_set_param command "/usr/share/openclash/openclash_watchdog.sh"
-	procd_close_instance
+   procd_set_param command "/usr/share/openclash/openclash_watchdog.sh"
+   procd_close_instance
 }
 
 reload_service()
@@ -3995,12 +3995,11 @@ reload_service()
 
 boot()
 {
-	delay_start=$(uci_get_config "delay_start" || echo 0)
-	enable=$(uci_get_config "enable")
-	if [ "$delay_start" -gt 0 ] && [ "$enable" == "1" ]; then
-		LOG_OUT "Enable Delay Start, OpenClash Will Start After【$delay_start】Seconds..."
-		sleep "$delay_start"
-	fi
-	restart
+   delay_start=$(uci_get_config "delay_start" || echo 0)
+   enable=$(uci_get_config "enable")
+   if [ "$delay_start" -gt 0 ] && [ "$enable" == "1" ]; then
+      LOG_OUT "Enable Delay Start, OpenClash Will Start After【$delay_start】Seconds..."
+      sleep "$delay_start"
+   fi
+   restart
 }
-
