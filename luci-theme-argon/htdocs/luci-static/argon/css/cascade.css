@@ -3105,6 +3105,7 @@ td>.ifacebadge,
   border: 0;
   border-radius: .375rem;
   background-color: #ffffff
+  font-family: 'Twemoji Mozilla', 'Consolas', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Google Sans' !important;
 }
 
 #syslog:focus {
