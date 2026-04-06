@@ -110,6 +110,12 @@
     white-space: nowrap;
     flex: 1 1 auto;
 }
+.oc .config-editor-title #editTitle,
+.oc .config-editor-title #config-file-name {
+    user-select: text;
+    -webkit-user-select: text;
+    cursor: text;
+}
 .oc .config-editor-title .config-file-name {
     color: var(--primary-color);
     font-weight: 700;
@@ -2761,6 +2767,13 @@ var ConfigEditor = {
         }
         this.hideMergeView();
         this.hide();
+
+        if (window.OverwriteSubscribeManager && typeof window.OverwriteSubscribeManager.load === 'function') {
+            window.OverwriteSubscribeManager.load(true);
+        }
+        try {
+            window.dispatchEvent(new Event('oc-overwrite-updated'));
+        } catch (e) {}
     },
 
     updateZoom: function(newZoom) {
@@ -2800,6 +2813,29 @@ var ConfigEditor = {
         this.updateZoom(100);
     },
 
+    isPointOnTextContent: function(el, clientX, clientY) {
+        if (!el) return false;
+
+        var textWalker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+        var textNode;
+        while ((textNode = textWalker.nextNode())) {
+            if (!textNode.nodeValue || !textNode.nodeValue.trim()) {
+                continue;
+            }
+            var range = document.createRange();
+            range.selectNodeContents(textNode);
+            var rects = range.getClientRects();
+            for (var i = 0; i < rects.length; i++) {
+                var rect = rects[i];
+                if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    },
+
     makeDraggable: function() {
         var self = this;
         var header = this.model.querySelector('.config-editor-header');
@@ -2807,7 +2843,12 @@ var ConfigEditor = {
         var isDragging = false;
 
         header.addEventListener('mousedown', function(e) {
-            if (e.target.closest('.config-editor-actions')) {
+            var target = e.target && e.target.nodeType === 1 ? e.target : e.target.parentElement;
+            if (target && target.closest('.config-editor-actions')) {
+                return;
+            }
+            var textEl = target ? target.closest('#editTitle, #config-file-name') : null;
+            if (textEl && self.isPointOnTextContent(textEl, e.clientX, e.clientY)) {
                 return;
             }
 
@@ -2864,7 +2905,13 @@ var ConfigEditor = {
         }
 
         header.addEventListener('touchstart', function(e) {
-            if (e.target.closest('.config-editor-actions')) {
+            var target = e.target && e.target.nodeType === 1 ? e.target : e.target.parentElement;
+            if (target && target.closest('.config-editor-actions')) {
+                return;
+            }
+            var touch = e.touches && e.touches[0] ? e.touches[0] : null;
+            var textEl = target ? target.closest('#editTitle, #config-file-name') : null;
+            if (touch && textEl && self.isPointOnTextContent(textEl, touch.clientX, touch.clientY)) {
                 return;
             }
             if (e.touches.length !== 1) return;

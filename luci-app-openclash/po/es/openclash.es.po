@@ -3773,6 +3773,12 @@ msgstr "Editar información de módulo"
 msgid "Subscription"
 msgstr "Suscripción"
 
+msgid "HTTP Module"
+msgstr "Módulo HTTP"
+
+msgid "File Module"
+msgstr "Módulo de archivo"
+
 msgid "Overwrite Module"
 msgstr "Módulo de sobrescritura"
 
