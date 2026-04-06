@@ -3884,3 +3884,6 @@ msgstr "YAML 覆写模块解析失败："
 
 msgid "YAML overwrite failed:"
 msgstr "YAML 覆写模块执行失败："
+
+msgid "files selected"
+msgstr "配置已选择"

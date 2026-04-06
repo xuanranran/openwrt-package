@@ -911,7 +911,7 @@
 .oc .subscription-info-details {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
     flex: 1;
     min-height: 80px;
     padding-left: 20px;
@@ -972,7 +972,7 @@
 .oc .subscription-overwrite-tags {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     min-width: 0;
     flex: 1;
     margin-right: auto;
@@ -1008,7 +1008,7 @@
     background: var(--bg-white);
     color: var(--text-secondary);
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     white-space: nowrap;
     word-break: keep-all;
     line-height: 1;
@@ -1070,7 +1070,7 @@
 /* Multiple Providers Grid Layout */
 .oc .subscription-providers-grid {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     padding: 8px 0;
     max-width: 100%;
     width: 100%;
@@ -2633,6 +2633,7 @@
 
                 this.rawCurrentConfig = currentConfigFile;
                 this.configList = configFiles;
+                window.configFiles = configFiles;
                 this.currentConfig = currentConfigFile;
                 this.currentConfigIndex = -1;
 
@@ -2934,12 +2935,14 @@
                     }
                     SubscriptionManager.getSubscriptionInfo();
                 }
+                OverwriteSubscribeManager.render(OverwriteSubscribeManager.data);
             } else {
                 this.currentConfig = '';
                 this.currentConfigIndex = -1;
                 SubscriptionManager.currentConfigFile = '';
                 this.hideSubscriptionDisplay();
                 this.updateNavigationArrows();
+                OverwriteSubscribeManager.render(OverwriteSubscribeManager.data);
             }
         },
 
@@ -3017,6 +3020,8 @@
                 }
                 SubscriptionManager.getSubscriptionInfo();
             }
+
+            OverwriteSubscribeManager.render(OverwriteSubscribeManager.data);
 
             return true;
         },
@@ -3145,11 +3150,8 @@
         init: function() {
             if (this.isInitialized) return;
             this.isInitialized = true;
-
-            setTimeout(function() {
-                SubscriptionManager.loadSubscriptionInfo();
-                SubscriptionManager.startAutoUpdate();
-            }, 500);
+            SubscriptionManager.loadSubscriptionInfo();
+            SubscriptionManager.startAutoUpdate();
         },
 
         loadSubscriptionInfo: function() {
@@ -3839,10 +3841,41 @@
             return 'type-unknown';
         },
 
+        parseModuleConfigList: function(configValue) {
+            if (!Array.isArray(configValue)) {
+                return [];
+            }
+            return configValue.map(function(item) {
+                return String(item || '').trim();
+            }).filter(function(item) {
+                return !!item;
+            });
+        },
+
+        isModuleForCurrentConfig: function(moduleInfo, currentConfigPath) {
+            var configList = this.parseModuleConfigList(moduleInfo ? moduleInfo.config : null);
+            if (!configList.length) {
+                return true;
+            }
+
+            if (configList.indexOf('all') !== -1) {
+                return true;
+            }
+
+            var fullPath = String(currentConfigPath || '').trim();
+            if (!fullPath) {
+                return false;
+            }
+
+            return configList.indexOf(fullPath) !== -1;
+        },
+
         getEnabledModules: function(data) {
             if (!data || typeof data !== 'object') {
                 return [];
             }
+
+            var currentConfigPath = ConfigFileManager.getCurrentConfig() || ConfigFileManager.getSelectedConfig();
 
             var modules = [];
             for (var moduleName in data) {
@@ -3851,7 +3884,7 @@
                 }
 
                 var moduleInfo = data[moduleName] || {};
-                if (parseInt(moduleInfo.enable, 10) === 1) {
+                if (parseInt(moduleInfo.enable, 10) === 1 && this.isModuleForCurrentConfig(moduleInfo, currentConfigPath)) {
                     modules.push({
                         name: moduleName,
                         type: moduleInfo.type || 'unknown',
@@ -4453,13 +4486,13 @@
     document.addEventListener('DOMContentLoaded', function() {
         DarkModeDetector.init();
         ConfigFileManager.init();
-        OverwriteSubscribeManager.init();
 
         window.addEventListener('oc-overwrite-updated', function() {
             OverwriteSubscribeManager.load(true);
         });
 
         setTimeout(function() {
+            OverwriteSubscribeManager.init();
             SubscriptionManager.init();
         }, 300);
 
