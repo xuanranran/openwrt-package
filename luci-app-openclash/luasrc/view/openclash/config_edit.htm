@@ -431,19 +431,27 @@
     gap: 8px;
     padding: 8px 10px;
     border-bottom: 1px solid var(--border-light);
+    background: var(--bg-white);
+    color: var(--text-primary);
     cursor: pointer;
 }
 .oc .overwrite-config-option:last-child {
     border-bottom: none;
 }
 .oc .overwrite-config-option:hover {
-    background: var(--hover-bg);
+    background: var(--primary-color);
+    color: var(--select-hover);
 }
 .oc[data-darkmode="true"] .overwrite-config-option {
+    background: var(--bg-gray);
     border-bottom-color: var(--border-light);
 }
 .oc[data-darkmode="true"] .overwrite-config-option:hover {
-    background: var(--hover-bg);
+    background: var(--primary-color);
+    color: var(--select-hover);
+}
+.oc .overwrite-config-option:hover .overwrite-config-option-state {
+    border-color: var(--select-hover);
 }
 .oc[data-darkmode="true"] .overwrite-config-option-state {
     background: var(--bg-white);
@@ -453,9 +461,11 @@
     cursor: not-allowed;
     opacity: 0.55;
     background: var(--bg-gray);
+    color: var(--text-secondary);
 }
 .oc .overwrite-config-option.disabled-by-all:hover {
     background: var(--bg-gray);
+    color: var(--text-secondary);
 }
 .oc .overwrite-config-option.disabled-by-all .overwrite-config-option-state {
     border-color: var(--border-light);
@@ -495,7 +505,7 @@
 .oc .overwrite-config-option.selected .overwrite-config-option-state {
     border-color: var(--primary-color);
     background: var(--primary-color);
-    color: #fff;
+    color: var(--select-hover);
 }
 .oc .overwrite-config-dropdown.disabled .overwrite-config-dropdown-btn {
     opacity: 0.6;
