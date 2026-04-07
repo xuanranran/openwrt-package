@@ -3825,7 +3825,7 @@ function action_overwrite_subscribe_info()
 			uci:set("openclash", sid, "url", url)
 			uci:delete("openclash", sid, "config")
 			if #config_values > 0 then
-				uci:set_list("openclash", s[".name"], "config", config_values)
+				uci:set_list("openclash", sid, "config", config_values)
 			end
 			uci:set("openclash", sid, "update_days", update_days)
 			uci:set("openclash", sid, "update_hour", update_hour)
