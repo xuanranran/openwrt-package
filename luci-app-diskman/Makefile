@@ -17,7 +17,7 @@ LUCI_TITLE:=LuCI Support for Disk Manager
 LUCI_DESCRIPTION:=Provides Web UI for Disk Manager
 
 LUCI_DEPENDS:=+luci-base +ucode +block-mount \
-	+parted +smartmontools \
+	+parted +smartmontools +wipefs \
 	+btrfs-progs +dosfstools +e2fsprogs +exfat-fsck +exfat-mkfs \
 	+f2fs-tools +swap-utils +xfs-mkfs \
 	+kmod-fs-exfat +kmod-fs-f2fs +kmod-fs-vfat +kmod-fs-xfs

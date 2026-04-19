@@ -485,8 +485,7 @@ return view.extend({
 					E('div', { 'class': 'dkm-item' }, [E('div', { 'class': 'dkm-item-label' }, _('Health Status')), E('div', { 'class': 'dkm-item-value' }, healthDisplay)]),
 					E('div', { 'class': 'dkm-item' }, [E('div', { 'class': 'dkm-item-label' }, _('Temperature')), E('div', { 'class': 'dkm-item-value' }, disk.temp)]),
 					E('div', { 'class': 'dkm-item' }, [E('div', { 'class': 'dkm-item-label' }, _('NVMe/SATA Version')), E('div', { 'class': 'dkm-item-value' }, disk.sata_ver)]),
-					E('div', { 'class': 'dkm-item' }, [E('div', { 'class': 'dkm-item-label' }, _('RPM')), E('div', { 'class': 'dkm-item-value' }, disk.rpm)]),
-					E('div', { 'class': 'dkm-item' }, [E('div', { 'class': 'dkm-item-label' }, _('Status')), E('div', { 'class': 'dkm-item-value' }, disk.status)])
+					E('div', { 'class': 'dkm-item' }, [E('div', { 'class': 'dkm-item-label' }, _('RPM')), E('div', { 'class': 'dkm-item-value' }, disk.rpm)])
 				])
 			])
 		]);

@@ -207,7 +207,6 @@ const methods = {
 					ptable: ptable_val,
 					sata_ver: smart.sata_ver || "-",
 					rpm: smart.rpm || "-",
-					status: "-",
 					health: smart.health || "-",
 					partitions: []
 				};
