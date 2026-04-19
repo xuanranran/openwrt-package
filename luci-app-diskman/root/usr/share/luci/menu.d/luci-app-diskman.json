@@ -1,0 +1,22 @@
+{
+	"admin/system/diskman": {
+		"title": "Disk Man",
+		"order": 50,
+		"action": {
+			"type": "view",
+			"path": "diskman/overview"
+		},
+		"depends": {
+			"acl": [
+				"luci-app-diskman"
+			]
+		}
+	},
+	"admin/system/diskman/partition": {
+		"action": {
+			"type": "view",
+			"path": "diskman/partition"
+		},
+		"hidden": true
+	}
+}

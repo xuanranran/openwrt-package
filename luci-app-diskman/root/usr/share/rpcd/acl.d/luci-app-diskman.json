@@ -1,0 +1,15 @@
+{
+	"luci-app-diskman": {
+		"description": "Grant access to Diskman RPC",
+		"read": {
+			"ubus": {
+				"luci.diskman":[ "get_disk_info", "get_disks", "get_smart_raw", "get_btrfs_info" ]
+			}
+		},
+		"write": {
+			"ubus": {
+				"luci.diskman":[ "format_device", "part_add", "part_del", "umount_device", "eject_disk", "set_ptable", "mount_device", "btrfs_create", "btrfs_remove" ]
+			}
+		}
+	}
+}
