@@ -1,0 +1,50 @@
+#!/usr/bin/env ucode
+
+'use strict';
+
+import { open, readfile, glob } from 'fs';
+
+let UbusMethods = {
+	"luci.cpufreq": {
+		"get_cpu_info": {
+			call: function() {
+				let result = {};
+
+				let policies = glob("/sys/devices/system/cpu/cpufreq/policy*");
+				for (let i = 0; i < length(policies); i++) {
+					let policy = policies[i];
+					let m = match(policy, /policy([0-9]+)$/);
+					if (m && m[1] != null) {
+						let policy_num = m[1];
+						let freqs = readfile(policy + "/scaling_available_frequencies");
+						let govs = readfile(policy + "/scaling_available_governors");
+						result[policy_num] = {
+							freqs: freqs ? split(trim(freqs), " ") : [],
+							governors: govs ? split(trim(govs), " ") : []
+						};
+					}
+				}
+				return result;
+			}
+		},
+		"get_irq_status": {
+			call: function() {
+				let f = open("/proc/interrupts", "r");
+				if (!f) return { syslog: "" };
+				
+				let log = "";
+				let line = f.read("line");
+				while (line) {
+					if (match(line, /^[ ]*(CPU|[0-9]+:)/)) {
+						log += line;
+					}
+					line = f.read("line");
+				}
+				f.close();
+				return { syslog: log };
+			}
+		}
+	}
+};
+
+return UbusMethods;

@@ -1,82 +1,72 @@
 msgid ""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-19 14:11+0800\n"
-"PO-Revision-Date: 2026-04-19 12:27+0800\n"
-"Last-Translator: sbwml <admin@cooluc.com>\n"
-"Language-Team: Chinese\n"
-"Language: zh_Hans\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+msgstr "Content-Type: text/plain; charset=UTF-8"
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:27
 msgid "Auto"
-msgstr "自动"
+msgstr ""
 
 #: luci-app-cpufreq/root/usr/share/luci/menu.d/luci-app-cpufreq.json:3
 msgid "CPU Freq"
-msgstr "CPU 性能调节"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:24
 msgid "CPU Freq Settings"
-msgstr "CPU 性能调节设置"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:48
 msgid "CPU Scaling Governor"
-msgstr "CPU 工作模式"
+msgstr ""
 
 #: luci-app-cpufreq/root/usr/share/luci/menu.d/luci-app-cpufreq.json:13
 msgid "CPU Setting"
-msgstr "CPU 设置"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:65
 msgid "CPU Switching Sampling rate"
-msgstr "CPU 切换周期"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:72
 msgid "CPU Switching Threshold"
-msgstr "CPU 切换频率触发阈值"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:55
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/mglru.js:15
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:16
 msgid "Enabled"
-msgstr "启用"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:23
 msgid "Fan always on"
-msgstr "风扇常转"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:26
 msgid "Fan speed"
-msgstr "风扇转速"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:19
 msgid "Fan temperature activation (°C)"
-msgstr "风扇启停温度 (°C)"
+msgstr ""
 
 #: luci-app-cpufreq/root/usr/share/rpcd/acl.d/luci-app-cpufreq.json:3
 msgid "Grant access to cpufreq configuration"
-msgstr "授予 cpufreq 访问 UCI 配置的权限"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:69
 msgid "IRQ Status"
-msgstr "IRQ 状态"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:66
 msgid "Ignore (ID of irq)"
-msgstr "忽略（中断ID）"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:62
 msgid "Interval (Seconds)"
-msgstr "间隔（秒）"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:50
 #: luci-app-cpufreq/root/usr/share/luci/menu.d/luci-app-cpufreq.json:29
 msgid "Irqbalance"
-msgstr "中断均衡器"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:45
 msgid ""
@@ -86,67 +76,64 @@ msgid ""
 "information, visiting: https://openwrt.org/docs/guide-user/services/"
 "irqbalance"
 msgstr ""
-"Irqbalance 是一个 Linux 守护进程，它在多个逻辑 CPU 上分配中断。此设计旨在提高"
-"整体性能，从而实现平衡的负载和功耗。访问 https://openwrt.org/docs/guide-user/"
-"services/irqbalance 可获取更多信息。"
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:73
 msgid "Kernel make a decision on whether it should increase the frequency (%)"
-msgstr "当 CPU 占用率超过 (%) 的情况下触发内核切换频率"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:28
 msgid "Level 1"
-msgstr "等级 1"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:29
 msgid "Level 2"
-msgstr "等级 2"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:30
 msgid "Level 3"
-msgstr "等级 3"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:31
 msgid "Level 4"
-msgstr "等级 4"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:58
 msgid "Level at which irqbalance partitions cache domains"
-msgstr "缓存域级别"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:75
 msgid "Loading..."
-msgstr "加载中..."
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:60
 msgid "Max Turbo Boost CPU Freq"
-msgstr "最大 Turbo Boost CPU 频率"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:55
 msgid "Min Idle CPU Freq"
-msgstr "待机 CPU 最小频率"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/mglru.js:9
 #: luci-app-cpufreq/root/usr/share/luci/menu.d/luci-app-cpufreq.json:37
 msgid "Multi-Gen LRU"
-msgstr "Multi-Gen LRU"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:43
 msgid "NOT RUNNING"
-msgstr "未运行"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:35
 msgid "No CPU scaling policies found."
-msgstr "无可用的 CPU 频率调节策略。"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:87
 msgid "No data."
-msgstr "没有数据。"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:9
 #: luci-app-cpufreq/root/usr/share/luci/menu.d/luci-app-cpufreq.json:21
 msgid "PWM Fan Controller"
-msgstr "PWM 风扇控制"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:46
 msgid "Policy %s"
@@ -154,19 +141,19 @@ msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:42
 msgid "RUNNING"
-msgstr "运行中"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:90
 msgid "Read error, please refresh or wait."
-msgstr "读取错误，请刷新或稍等。"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:46
 msgid "Running Status"
-msgstr "运行状态"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:25
 msgid "Set CPU Scaling Governor to Max Performance or Balance Mode"
-msgstr "设置路由器的 CPU 性能模式（省电/性能/均衡）"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/mglru.js:20
 msgid ""
@@ -174,17 +161,15 @@ msgid ""
 "milliseconds from getting evicted. The OOM killer is triggered if this "
 "working set cannot be kept in memory. (0 means disabled, Default value 1000)"
 msgstr ""
-"设置预防颠簸值以防止 N 毫秒的工作集被驱逐，如果无法将此工作集保留在内存中，则"
-"会触发 OOM killer。（0 表示禁用，默认值 1000）"
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/irqbalance.js:52
 msgid "Settings"
-msgstr "设置"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/pwmfan.js:10
 msgid ""
 "Smart control PWM fan start/stop and fan speed based on CPU temperature."
-msgstr "通过 CPU 温度值智能控制 PWM 风扇启停、转速。"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/mglru.js:10
 msgid ""
@@ -193,16 +178,13 @@ msgid ""
 "the kernel's caching policy and ability to overcommit memory. It directly "
 "impacts the kswapd CPU usage and RAM efficiency."
 msgstr ""
-"Multi-Gen LRU 是一种替代 LRU 实现，优化页面回收并在内存压力下提高性能，页面回"
-"收决定内核的缓存策略和超额提交内存的能力，它直接影响 kswapd CPU 使用率和 RAM "
-"效率。"
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/cpufreq.js:66
 msgid ""
 "The sampling rate determines how frequently the governor checks to tune the "
 "CPU (ms)"
-msgstr "CPU 检查切换的周期 (ms)。注意：过于频繁的切换频率会引起网络延迟抖动"
+msgstr ""
 
 #: luci-app-cpufreq/htdocs/luci-static/resources/view/cpufreq/mglru.js:19
 msgid "Thrashing prevention (ms)"
-msgstr "预防颠簸（毫秒）"
+msgstr ""

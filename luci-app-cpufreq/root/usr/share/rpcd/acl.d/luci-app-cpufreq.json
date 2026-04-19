@@ -1,11 +1,46 @@
 {
 	"luci-app-cpufreq": {
-		"description": "Grant UCI access for luci-app-cpufreq",
+		"description": "Grant access to cpufreq configuration",
 		"read": {
-			"uci": [ "cpufreq" ]
+			"cgi-io": [
+				"exec"
+			],
+			"file": [
+				"/sys/devices/system/cpu/cpufreq/*",
+				"/proc/interrupts"
+			],
+			"ubus": {
+				"luci.cpufreq": [
+					"get_cpu_info",
+					"get_irq_status"
+				],
+				"uci": [
+					"get"
+				]
+			},
+			"uci": [
+				"cpufreq",
+				"irqbalance"
+			]
 		},
 		"write": {
-			"uci": [ "cpufreq" ]
+			"file": [
+				"/sys/devices/virtual/thermal/*",
+				"/sys/kernel/mm/lru_gen/*"
+			],
+			"uci": [
+				"cpufreq",
+				"irqbalance"
+			],
+			"ubus": {
+				"uci": [
+					"set",
+					"add",
+					"delete",
+					"rename",
+					"apply"
+				]
+			}
 		}
 	}
 }

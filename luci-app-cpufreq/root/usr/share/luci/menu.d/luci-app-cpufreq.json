@@ -1,0 +1,44 @@
+{
+	"admin/system/cpufreq": {
+		"title": "CPU Freq",
+		"action": {
+			"type": "firstchild"
+		},
+		"depends": {
+			"acl": [ "luci-app-cpufreq" ]
+		},
+		"order": 90
+	},
+	"admin/system/cpufreq/cpufreq": {
+		"title": "CPU Setting",
+		"action": {
+			"type": "view",
+			"path": "cpufreq/cpufreq"
+		},
+		"order": 1
+	},
+	"admin/system/cpufreq/pwmfan": {
+		"title": "PWM Fan Controller",
+		"action": {
+			"type": "view",
+			"path": "cpufreq/pwmfan"
+		},
+		"order": 2
+	},
+	"admin/system/cpufreq/irqbalance": {
+		"title": "Irqbalance",
+		"action": {
+			"type": "view",
+			"path": "cpufreq/irqbalance"
+		},
+		"order": 3
+	},
+	"admin/system/cpufreq/mglru": {
+		"title": "Multi-Gen LRU",
+		"action": {
+			"type": "view",
+			"path": "cpufreq/mglru"
+		},
+		"order": 4
+	}
+}
