@@ -39,6 +39,13 @@ function exec_cmd(cmd) {
 	return exec_cmd_status(cmd).out;
 }
 
+function fix_gpt_if_needed(dev) {
+	let check = exec_cmd("parted -s " + dev + " print 2>&1");
+	if (match(check, /Not all of the space available/)) {
+		exec_cmd("printf 'Fix\\nFix\\n' | parted ---pretend-input-tty " + dev + " print 2>/dev/null");
+	}
+}
+
 function parse_smart(dev) {
 	let out = exec_cmd("smartctl -a " + dev);
 	let res = { model: "-", serial: "-", temp: "-", sata_ver: "-", rpm: "-", health: "-" };
@@ -159,7 +166,7 @@ const methods = {
 				let parts_arr = split(block_path, "/");
 				let dev_name = parts_arr[length(parts_arr) - 1];
 
-				if (match(dev_name, /^(loop|ram|mtdblock|zram)/) || match(dev_name, /boot[0-9]+$/)) {
+				if (match(dev_name, /^(loop|ram|mtdblock|zram|sr)/) || match(dev_name, /boot[0-9]+$/)) {
 					continue;
 				}
 
@@ -516,6 +523,8 @@ const methods = {
 			
 			if (!match(dev, /^\/dev\/[a-zA-Z0-9_-]+$/)) return { code: 1, error: "Invalid device path" };
 			if (start == null || end == null) return { code: 1, error: "Missing sector bounds" };
+			
+			fix_gpt_if_needed(dev);
 			
 			let cmd = sprintf("parted -s -a optimal %s mkpart %s %ds %ds 2>&1", dev, type, start, end);
 			let out = exec_cmd(cmd);
