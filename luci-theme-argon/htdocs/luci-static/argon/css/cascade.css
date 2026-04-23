@@ -1415,7 +1415,7 @@ h5 {
   line-height: normal;
   min-width: inherit;
   margin: 1.5rem 0;
-  padding: 0rem;
+  padding: 1rem;
   border: 0;
   border-radius: 0.375rem;
   background-color: #fff;
@@ -5318,4 +5318,9 @@ div#add_link_div {
 
 #cbi-smartdns .cbi-section-node {
   padding: 16px
+}
+
+/* luci-app-ota */
+div#upgrade_log {
+  padding: 15px;
 }
