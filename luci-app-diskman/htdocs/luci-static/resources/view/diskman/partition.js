@@ -233,6 +233,12 @@ return view.extend({
 		var logicalSectorSize = parseInt(secArr[0], 10) || 512;
 
 		var startSector = parseInt(startNode.value, 10);
+
+		// 自动对齐起始扇区到 2048 扇区（向上取整）
+		if (startSector % 2048 !== 0) {
+			startSector = Math.ceil(startSector / 2048) * 2048;
+		}
+
 		var endVal = endNode.value;
 		var endSector = startSector;
 		var inputStr = String(endVal).trim().toLowerCase();
@@ -253,9 +259,18 @@ return view.extend({
 			endSector = parseInt(inputStr, 10);
 		}
 
+		// 自动对齐结束扇区，使其满足 (endSector + 1) % 2048 === 0（向下取整）
+		if ((endSector + 1) % 2048 !== 0) {
+			endSector = Math.floor((endSector + 1) / 2048) * 2048 - 1;
+		}
+
 		// 不允许超过磁盘最大可用扇区（避免 GPT 备份头报错）
 		if (endSector > maxUsableSector) {
 			endSector = maxUsableSector;
+			// 检查对齐
+			if ((endSector + 1) % 2048 !== 0) {
+				endSector = Math.floor((endSector + 1) / 2048) * 2048 - 1;
+			}
 		}
 
 		if (isNaN(startSector) || isNaN(endSector) || startSector > endSector) {
@@ -523,10 +538,16 @@ return view.extend({
 			// 如果两个分区中间存在空闲间隙，则渲染 "新建" 行
 			if (pStartSector > currentSector) {
 				var freeStart = currentSector;
+				if (freeStart % 2048 !== 0) {
+					freeStart = Math.ceil(freeStart / 2048) * 2048;
+				}
 				var freeEnd = pStartSector - 1;
+				if ((freeEnd + 1) % 2048 !== 0) {
+					freeEnd = Math.floor((freeEnd + 1) / 2048) * 2048 - 1;
+				}
 				var freeSize = (freeEnd - freeStart + 1) * SECTOR_SIZE;
 
-				if (freeSize > 1048576) {
+				if (freeSize >= 1048576) {
 					var startInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': freeStart, 'style': 'width: 120px;' });
 					var endInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': freeEnd, 'style': 'width: 120px;' });
 
@@ -621,10 +642,16 @@ return view.extend({
 		// 检查磁盘尾部的剩余空间
 		if (maxUsableSector > currentSector) {
 			var endFreeStart = currentSector;
+			if (endFreeStart % 2048 !== 0) {
+				endFreeStart = Math.ceil(endFreeStart / 2048) * 2048;
+			}
 			var endFreeEnd = maxUsableSector; // 截断到安全范围，避免越界导致 parted 报错
+			if ((endFreeEnd + 1) % 2048 !== 0) {
+				endFreeEnd = Math.floor((endFreeEnd + 1) / 2048) * 2048 - 1;
+			}
 			var endFreeSize = (endFreeEnd - endFreeStart + 1) * SECTOR_SIZE;
 
-			if (endFreeSize > 1048576) {
+			if (endFreeSize >= 1048576) {
 				var startInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': endFreeStart, 'style': 'width: 120px;' });
 				var endInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': endFreeEnd, 'style': 'width: 120px;' });
 
