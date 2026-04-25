@@ -34,7 +34,7 @@ define Package/libQt6/Default
   SUBMENU:=Qt6
   TITLE:=Qt6
   URL:=http://qt-project.org
-  DEPENDS:=@!arc +libatomic +libstdcpp +zlib
+  DEPENDS:=@!arc +libatomic +libstdcpp +liburing +zlib
 endef
 
 define Package/libQt6
