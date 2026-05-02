@@ -1,0 +1,28 @@
+{
+  "luci-app-bluetooth": {
+    "description": "Grant RPC access to Bluetooth functions",
+    "read": {
+      "ubus": {
+        "luci.bluetooth": [
+          "get_status",
+          "get_devices"
+        ]
+      }
+    },
+    "write": {
+      "ubus": {
+        "luci.bluetooth": [
+          "set_power",
+          "start_scan",
+          "pair",
+          "connect",
+          "disconnect",
+          "set_alias",
+          "set_codec",
+          "set_volume",
+          "remove_device"
+        ]
+      }
+    }
+  }
+}

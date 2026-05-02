@@ -1,0 +1,14 @@
+{
+	"admin/services/bluetooth":{
+		"title":"Bluetooth",
+		"action":{
+			"type":"view",
+			"path":"bluetooth/devices"
+		},
+		"depends":{
+			"acl":[
+				"luci-app-bluetooth"
+			]
+		}
+	}
+}

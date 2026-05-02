@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2007 OpenWrt.org
+
+#start after bluez-daemon (62)
+START=65
+USE_PROCD=1
+PROG=/usr/bin/bluealsa
+
+start_service() {
+	procd_open_instance
+	procd_set_param command "$PROG"
+	procd_append_param command -p a2dp-sink
+	procd_append_param command -p a2dp-source
+	procd_append_param command -c aac
+	procd_set_param respawn
+	procd_close_instance
+}
