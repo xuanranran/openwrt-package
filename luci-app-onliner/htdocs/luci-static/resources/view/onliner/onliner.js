@@ -396,10 +396,6 @@ th.sortable:hover {
 		border-radius: 4px;
 		align-items: center;
 	}
-	.mobile-sorter strong {
-		font-weight: 800;
-		margin-right: 8px;
-	}
 	.mobile-sorter .sort-control {
 		padding: 6px 10px;
 		background-color: #e9ecef00;
@@ -447,9 +443,6 @@ th.sortable:hover {
 	}
 	[data-darkmode="true"] .mobile-sorter {
 		background-color: #2a2a2a;
-	}
-	[data-darkmode="true"] .mobile-sorter strong {
-		color: #f1f1f1;
 	}
 	[data-darkmode="true"] .mobile-sorter .sort-control {
 		background-color: #3c3c3c;
@@ -507,7 +500,6 @@ return view.extend({
 		});
 
 		var mobileSorter = E('div', { 'class': 'mobile-sorter' }, [
-			E('strong', {}, _('Sort by:')),
 			E('span', { 'class': 'sort-control', 'data-sort': 'hostname', 'data-label-short': _('Hostname') }, _('Hostname')),
 			E('span', { 'class': 'sort-control', 'data-sort': 'ipaddr', 'data-label-short': _('IP') }, _('IP')),
 			E('span', { 'class': 'sort-control', 'data-sort': 'macaddr', 'data-label-short': _('MAC') }, _('MAC')),

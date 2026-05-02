@@ -7,9 +7,6 @@ msgstr "用户列表"
 msgid "Status"
 msgstr "状态"
 
-msgid "Sort by:"
-msgstr "排序:"
-
 msgid "Search by hostname, IPv4 address, or MAC address..."
 msgstr "搜索主机名、IPv4 地址或 MAC 地址..."
 
