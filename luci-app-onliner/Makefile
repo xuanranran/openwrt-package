@@ -6,24 +6,16 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI support arp online
-LUCI_DEPENDS:= 
+LUCI_DEPENDS:=+luci-base +ubus +rpcd +rpcd-mod-file
 LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-onliner
-PKG_VERSION:=1.1
-PKG_RELEASE:=6
-
-define Package/luci-app-onliner/install
-    $(INSTALL_DIR) $(1)/usr/lib/lua/luci
-	cp -pR ./luasrc/* $(1)/usr/lib/lua/luci
-	$(INSTALL_DIR) $(1)/
-	cp -pR ./root/* $(1)/
-endef
+PKG_VERSION:=2.0
+PKG_RELEASE:=1
 
 define Package/luci-app-onliner/postinst
 #!/bin/sh
 	rm -f /tmp/luci-indexcache
 	rm -f /tmp/luci-modulecache/*
-	chmod -R 755 /usr/share/onliner/*
 exit 0
 endef
 include $(TOPDIR)/feeds/luci/luci.mk

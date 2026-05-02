@@ -1,0 +1,12 @@
+{
+	"luci-app-onliner": {
+		"description": "Grant access to online client status data",
+		"read": {
+			"file": {
+				"/proc/net/arp": [ "read" ],
+				"/tmp/dhcp.leases": [ "read" ]
+			},
+			"uci": [ "dhcp" ]
+		}
+	}
+}

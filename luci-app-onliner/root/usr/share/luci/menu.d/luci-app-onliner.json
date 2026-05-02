@@ -1,0 +1,13 @@
+{
+	"admin/status/onliner": {
+		"title": "Online User",
+		"order": 11,
+		"action": {
+			"type": "view",
+			"path": "onliner/onliner"
+		},
+		"depends": {
+			"acl": [ "luci-app-onliner" ]
+		}
+	}
+}

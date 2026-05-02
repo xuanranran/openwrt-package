@@ -1,9 +1,6 @@
 msgid "Online User"
 msgstr "在线用户"
 
-msgid "Speed Monitor"
-msgstr "网速监控"
-
 msgid "Online User List"
 msgstr "用户列表"
 
