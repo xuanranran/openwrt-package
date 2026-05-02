@@ -5,9 +5,6 @@
 		"action": {
 			"type": "view",
 			"path": "onliner/onliner"
-		},
-		"depends": {
-			"acl": [ "luci-app-onliner" ]
 		}
 	}
 }

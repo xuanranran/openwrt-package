@@ -16,6 +16,7 @@ define Package/luci-app-onliner/postinst
 #!/bin/sh
 	rm -f /tmp/luci-indexcache
 	rm -f /tmp/luci-modulecache/*
+	[ -n "$${IPKG_INSTROOT}" ] || /etc/init.d/rpcd restart >/dev/null 2>&1 || true
 exit 0
 endef
 include $(TOPDIR)/feeds/luci/luci.mk
