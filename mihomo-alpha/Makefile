@@ -37,7 +37,6 @@ define Package/mihomo-alpha
   PROVIDES:=mihomo
   CONFLICTS:=mihomo-meta
   VARIANT:=alpha
-  DEFAULT_VARIANT:=1
   ALTERNATIVES:=\
     300:/usr/bin/mihomo:/usr/libexec/mihomo
 endef
