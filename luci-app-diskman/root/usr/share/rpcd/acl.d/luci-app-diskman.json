@@ -3,7 +3,7 @@
 		"description": "Grant access to Diskman RPC",
 		"read": {
 			"ubus": {
-				"luci.diskman":[ "get_disk_info", "get_disks", "get_smart_raw", "get_btrfs_info" ]
+				"luci.diskman":[ "get_disk_info", "get_disks", "get_smart_raw", "get_btrfs_info", "check_task" ]
 			}
 		},
 		"write": {

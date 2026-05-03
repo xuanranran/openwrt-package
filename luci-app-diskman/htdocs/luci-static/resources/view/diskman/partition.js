@@ -59,6 +59,13 @@ var callMountDevice = rpc.declare({
 	expect: { '': {} }
 });
 
+var callCheckTask = rpc.declare({
+	object: 'luci.diskman',
+	method: 'check_task',
+	params: ['task_id'],
+	expect: { '': {} }
+});
+
 function formatSize(bytes) {
 	if (bytes === 0) return '0 B';
 	var k = 1024,
@@ -318,14 +325,41 @@ return view.extend({
 							return;
 
 						ui.showModal(_('Formatting...'), [
-							E('p', { 'class': 'spinning' }, _('Formatting disk, please wait...'))
+							E('p', { 'class': 'spinning' }, _('Formatting disk, please wait...')),
+							E('pre', { 'id': 'format-task-output', 'style': 'max-height: 200px; overflow-y: auto; font-size: 12px; margin-top: 10px; display: none;' }, '')
 						]);
 
 						callFormatDevice(partPath, String(fstype)).then(function (res) {
-							ui.hideModal();
-							if (res && res.code === 0) {
+							if (res && res.background) {
+								var checkTask = function() {
+									callCheckTask(res.task_id).then(function(taskRes) {
+										if (taskRes.status === 'running') {
+											var logEl = document.getElementById('format-task-output');
+											if (logEl && taskRes.output) {
+												logEl.style.display = 'block';
+												logEl.textContent = taskRes.output;
+												logEl.scrollTop = logEl.scrollHeight;
+											}
+											setTimeout(checkTask, 2000);
+										} else if (taskRes.status === 'completed') {
+											ui.hideModal();
+											ui.addNotification(null, E('p', _('Formatting completed successfully.')), 'success');
+											setTimeout(function() { location.reload(); }, 1000);
+										} else {
+											ui.hideModal();
+											ui.addNotification(null, E('p', _('Formatting failed: ') + (taskRes.error || '')), 'danger');
+										}
+									}).catch(function(e) {
+										ui.hideModal();
+										ui.addNotification(null, E('p', _('Task check failed: ') + e.message), 'danger');
+									});
+								};
+								setTimeout(checkTask, 2000);
+							} else if (res && res.code === 0) {
+								ui.hideModal();
 								location.reload();
 							} else {
+								ui.hideModal();
 								ui.addNotification(null, E('p', _('Formatting failed: ') + (res.error || '')), 'danger');
 							}
 						}).catch(function (e) {
@@ -380,7 +414,6 @@ return view.extend({
 			maxUsableSector = totalSectors - 1 - gptReservedSectors;
 		}
 
-		// 参考自 luci-app-filemanager 的 css 插入
 		var css = `
 			.dkm-card {
 				margin-bottom: 20px;

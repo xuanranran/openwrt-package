@@ -30,6 +30,13 @@ var callBtrfsRemove = rpc.declare({
 	expect: { '': {} }
 });
 
+var callCheckTask = rpc.declare({
+	object: 'luci.diskman',
+	method: 'check_task',
+	params: ['task_id'],
+	expect: { '': {} }
+});
+
 var callEjectDisk = rpc.declare({
 	object: 'luci.diskman',
 	method: 'eject_disk',
@@ -303,14 +310,43 @@ return view.extend({
 				}
 
 				ui.hideModal();
-				ui.showModal(_('Processing...'), [E('p', { 'class': 'spinning' }, _('Creating BTRFS pool, this may take some time...'))]);
+				ui.showModal(_('Processing...'), [
+					E('p', { 'class': 'spinning' }, _('Creating BTRFS pool, this may take some time...')),
+					E('pre', { 'id': 'btrfs-task-output', 'style': 'max-height: 200px; overflow-y: auto; font-size: 12px; margin-top: 10px; display: none;' }, '')
+				]);
 
 				callBtrfsCreate(targetLevel, selectedDevs.join(' ')).then(function (res) {
-					ui.hideModal();
-					if (res && res.code === 0) {
+					if (res && res.background) {
+						var checkTask = function() {
+							callCheckTask(res.task_id).then(function(taskRes) {
+								if (taskRes.status === 'running') {
+									var logEl = document.getElementById('btrfs-task-output');
+									if (logEl && taskRes.output) {
+										logEl.style.display = 'block';
+										logEl.textContent = taskRes.output;
+										logEl.scrollTop = logEl.scrollHeight;
+									}
+									setTimeout(checkTask, 2000);
+								} else if (taskRes.status === 'completed') {
+									ui.hideModal();
+									ui.addNotification(null, E('p', _('Storage pool created successfully.')), 'success');
+									setTimeout(function () { location.reload(); }, 2000);
+								} else {
+									ui.hideModal();
+									ui.addNotification(null, E('p', _('Creation failed: ') + (taskRes.error || '')), 'danger');
+								}
+							}).catch(function(e) {
+								ui.hideModal();
+								ui.addNotification(null, E('p', _('Task check failed: ') + e.message), 'danger');
+							});
+						};
+						setTimeout(checkTask, 2000);
+					} else if (res && res.code === 0) {
+						ui.hideModal();
 						ui.addNotification(null, E('p', _('Storage pool created successfully.')), 'success');
 						setTimeout(function () { location.reload(); }, 2000);
 					} else {
+						ui.hideModal();
 						ui.addNotification(null, E('p', _('Creation failed: ') + (res.error || '')), 'danger');
 					}
 				}).catch(function (e) {
@@ -341,7 +377,6 @@ return view.extend({
 	render: function (data) {
 		var disks = data[0] || [];
 		var pools = data[1] || [];
-		// 参考自 luci-app-filemanager 的 css 插入
 		var css = `
 			.dkm-card {
 				margin-bottom: 20px;

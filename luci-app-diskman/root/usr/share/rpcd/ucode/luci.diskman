@@ -351,14 +351,15 @@ const methods = {
 			}
 			
 			let cmd = sprintf("mkfs.btrfs -f -d %s -m %s %s 2>&1", level, level, devs_str);
-			let f = fs.popen(cmd, "r");
-			let out = f ? f.read("all") : "";
-			let r_code = f ? f.close() : -1;
+			let task_id = "btrfs_" + time();
+			let log_file = "/tmp/" + task_id + ".log";
+			let status_file = "/tmp/" + task_id + ".status";
 			
-			exec_cmd("sync");
+			exec_cmd("rm -f " + log_file + " " + status_file);
+			let bg_cmd = sprintf("( %s > %s 2>&1 ; echo $? > %s ; sync ) < /dev/null > /dev/null 2>&1 &", cmd, log_file, status_file);
+			exec_cmd(bg_cmd);
 			
-			if (r_code !== 0) return { code: 1, error: out };
-			return { code: 0, output: out };
+			return { code: 0, task_id: task_id, background: true };
 		}
 	},
 
@@ -567,12 +568,16 @@ const methods = {
 			} else {
 				cmd = sprintf("mkfs.%s %s %s 2>&1", fstype, force_flag, dev);
 			}
-					  
-			let res = exec_cmd_status(cmd);
-			exec_cmd("sync");
 			
-			if (res.code !== 0) return { code: res.code, error: res.out };
-			return { code: 0, output: res.out };
+			let task_id = "format_" + time();
+			let log_file = "/tmp/" + task_id + ".log";
+			let status_file = "/tmp/" + task_id + ".status";
+			
+			exec_cmd("rm -f " + log_file + " " + status_file);
+			let bg_cmd = sprintf("( %s > %s 2>&1 ; echo $? > %s ; sync ) < /dev/null > /dev/null 2>&1 &", cmd, log_file, status_file);
+			exec_cmd(bg_cmd);
+			
+			return { code: 0, task_id: task_id, background: true };
 		}
 	},
 
@@ -625,6 +630,36 @@ const methods = {
 			}
 			
 			return { code: 0, output: out };
+		}
+	},
+
+	check_task: {
+		args: { task_id: "string" },
+		call: function(req) {
+			if (!req.args || !req.args.task_id) return { code: 1, error: "Missing task_id" };
+			let task_id = req.args.task_id;
+			if (!match(task_id, /^[a-zA-Z0-9_]+$/)) return { code: 1, error: "Invalid task_id" };
+			
+			let log_file = "/tmp/" + task_id + ".log";
+			let status_file = "/tmp/" + task_id + ".status";
+			
+			if (!file_exists(log_file)) {
+				return { code: 1, status: "not_found", error: "Task not found" };
+			}
+			
+			let out = read_file(log_file);
+			if (file_exists(status_file)) {
+				let exit_code = int(read_file(status_file));
+				exec_cmd("rm -f " + log_file + " " + status_file);
+				
+				if (exit_code === 0) {
+					return { code: 0, status: "completed", output: out };
+				} else {
+					return { code: exit_code, status: "failed", error: out };
+				}
+			} else {
+				return { code: 0, status: "running", output: out };
+			}
 		}
 	}
 };
