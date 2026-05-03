@@ -4,31 +4,27 @@
 'require uci';
 'require view';
 
-var sortColumn = 'hostname';
-var sortDirection = 'asc';
-var latestInfo = { onlines: [] };
-var searchQuery = '';
+let sortColumn = 'hostname';
+let sortDirection = 'asc';
+let latestInfo = { onlines: [] };
+let searchQuery = '';
 
-function ipToNum(ip) {
+const ipToNum = (ip) => {
 	if (!ip || typeof ip !== 'string' || ip === '-')
 		return 0;
 
-	return ip.split('.').reduce(function(num, octet) {
-		return (num << 8) + (parseInt(octet, 10) || 0);
-	}, 0);
-}
+	return ip.split('.').reduce((num, octet) => (num << 8) + (parseInt(octet, 10) || 0), 0);
+};
 
-function lower(value) {
-	return value ? String(value).toLowerCase() : '';
-}
+const lower = (value) => value ? String(value).toLowerCase() : '';
 
-function getStaticHosts() {
-	var hosts = {};
-	var sections = uci.sections('dhcp', 'host') || [];
+const getStaticHosts = () => {
+	const hosts = {};
+	const sections = uci.sections('dhcp', 'host') || [];
 
-	sections.forEach(function(section) {
-		var name = section.name;
-		var macs = section.mac;
+	sections.forEach(section => {
+		const name = section.name;
+		let macs = section.mac;
 
 		if (!name || !macs)
 			return;
@@ -36,23 +32,23 @@ function getStaticHosts() {
 		if (!Array.isArray(macs))
 			macs = [ macs ];
 
-		macs.forEach(function(mac) {
+		macs.forEach(mac => {
 			if (mac)
 				hosts[lower(mac)] = name;
 		});
 	});
 
 	return hosts;
-}
+};
 
-function parseLeases(raw, hosts) {
+const parseLeases = (raw, hosts) => {
 	if (!raw)
 		return hosts;
 
-	raw.trim().split(/\r?\n/).forEach(function(line) {
-		var fields = line.trim().split(/\s+/);
-		var mac = fields[1];
-		var hostname = fields[3];
+	raw.trim().split(/\r?\n/).forEach(line => {
+		const fields = line.trim().split(/\s+/);
+		let mac = fields[1];
+		const hostname = fields[3];
 
 		if (mac && hostname && hostname !== '*') {
 			mac = lower(mac);
@@ -62,22 +58,22 @@ function parseLeases(raw, hosts) {
 	});
 
 	return hosts;
-}
+};
 
-function parseArp(raw, hosts) {
-	var devices = [];
-	var seen = {};
+const parseArp = (raw, hosts) => {
+	const devices = [];
+	const seen = {};
 
 	if (!raw)
 		return devices;
 
-	raw.trim().split(/\r?\n/).slice(1).forEach(function(line) {
-		var fields = line.trim().split(/\s+/);
-		var ipaddr = fields[0];
-		var flags = fields[2];
-		var macaddr = fields[3];
-		var device = fields[5];
-		var macKey = lower(macaddr);
+	raw.trim().split(/\r?\n/).slice(1).forEach(line => {
+		const fields = line.trim().split(/\s+/);
+		const ipaddr = fields[0];
+		const flags = fields[2];
+		const macaddr = fields[3];
+		const device = fields[5];
+		const macKey = lower(macaddr);
 
 		if (flags !== '0x2' || !macaddr || macKey === '00:00:00:00:00:00')
 			return;
@@ -99,26 +95,26 @@ function parseArp(raw, hosts) {
 	});
 
 	return devices;
-}
+};
 
-function loadOnlineData() {
-	var staticHosts = getStaticHosts();
+const loadOnlineData = () => {
+	const staticHosts = getStaticHosts();
 
 	return Promise.all([
 		L.resolveDefault(fs.read_direct('/tmp/dhcp.leases'), ''),
 		L.resolveDefault(fs.read_direct('/proc/net/arp'), '')
-	]).then(function(res) {
-		var hosts = parseLeases(res[0], staticHosts);
+	]).then(([leasesRaw, arpRaw]) => {
+		const hosts = parseLeases(leasesRaw, staticHosts);
 
 		return {
-			onlines: parseArp(res[1], hosts)
+			onlines: parseArp(arpRaw, hosts)
 		};
 	});
-}
+};
 
-function sortDevices(devices) {
-	devices.sort(function(a, b) {
-		var valA, valB;
+const sortDevices = (devices) => {
+	devices.sort((a, b) => {
+		let valA, valB;
 
 		if (sortColumn === 'ipaddr') {
 			valA = ipToNum(a.ipaddr);
@@ -129,26 +125,21 @@ function sortDevices(devices) {
 			valB = lower(b[sortColumn]);
 		}
 
-		var comparison = 0;
-
-		if (valA > valB)
-			comparison = 1;
-		else if (valA < valB)
-			comparison = -1;
+		const comparison = valA > valB ? 1 : valA < valB ? -1 : 0;
 
 		return sortDirection === 'asc' ? comparison : comparison * -1;
 	});
 
 	return devices;
-}
+};
 
-function renderTable(table, info) {
+const renderTable = (table, info) => {
 	if (!table || !info || !info.onlines)
 		return;
 
 	latestInfo = info;
 
-	var devices = info.onlines.filter(function(device) {
+	const devices = info.onlines.filter(device => {
 		if (!searchQuery)
 			return true;
 
@@ -159,20 +150,20 @@ function renderTable(table, info) {
 
 	sortDevices(devices);
 
-	table.querySelectorAll('.sort-arrow').forEach(function(span) {
+	table.querySelectorAll('.sort-arrow').forEach(span => {
 		span.textContent = '';
 	});
 
-	var activeArrow = table.querySelector('#sort-arrow-' + sortColumn);
+	const activeArrow = table.querySelector(`#sort-arrow-${sortColumn}`);
 	if (activeArrow)
 		activeArrow.innerHTML = sortDirection === 'asc' ? '&#9650;' : '&#9660;';
 
-	document.querySelectorAll('.sort-control').forEach(function(span) {
+	document.querySelectorAll('.sort-control').forEach(span => {
 		span.classList.remove('active');
 		span.textContent = span.getAttribute('data-label-short');
 	});
 
-	var activeMobileControl = document.querySelector('.sort-control[data-sort="' + sortColumn + '"]');
+	const activeMobileControl = document.querySelector(`.sort-control[data-sort="${sortColumn}"]`);
 	if (activeMobileControl) {
 		activeMobileControl.classList.add('active');
 		activeMobileControl.innerHTML = activeMobileControl.getAttribute('data-label-short') +
@@ -183,33 +174,33 @@ function renderTable(table, info) {
 		table.deleteRow(1);
 
 	if (devices.length > 0) {
-		devices.forEach(function(device, i) {
-			var row = table.insertRow(-1);
-			row.className = 'cbi-section-table-row cbi-rowstyle-' + ((i % 2) + 1);
+		devices.forEach((device, i) => {
+			const row = table.insertRow(-1);
+			row.className = `cbi-section-table-row cbi-rowstyle-${(i % 2) + 1}`;
 
 			[
 				[ _('Hostname'), device.hostname || '?' ],
 				[ _('IPv4 Address'), device.ipaddr || '-' ],
 				[ _('MAC Address'), device.macaddr || '-' ],
 				[ _('Interface'), device.device || '-' ]
-			].forEach(function(cellInfo) {
-				var cell = row.insertCell(-1);
-				cell.setAttribute('data-label', cellInfo[0]);
-				cell.textContent = cellInfo[1];
+			].forEach(([label, value]) => {
+				const cell = row.insertCell(-1);
+				cell.setAttribute('data-label', label);
+				cell.textContent = value;
 			});
 		});
 	}
 	else {
-		var row = table.insertRow(-1);
-		var cell = row.insertCell(-1);
+		const row = table.insertRow(-1);
+		const cell = row.insertCell(-1);
 
 		row.className = 'cbi-section-table-row';
 		cell.colSpan = 4;
 		cell.appendChild(E('em', {}, searchQuery ? _('No matching devices found.') : _('There is no one online now.')));
 	}
-}
+};
 
-function setSort(table, column) {
+const setSort = (table, column) => {
 	if (sortColumn === column)
 		sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
 	else {
@@ -218,9 +209,9 @@ function setSort(table, column) {
 	}
 
 	renderTable(table, latestInfo);
-}
+};
 
-var css = `
+const css = `
 body.onliner-compact-page .main-right > #maincontent > .container {
 	flex-grow: 0 !important;
 	margin-bottom: 0 !important;
@@ -467,14 +458,14 @@ body.onliner-compact-page footer {
 `;
 
 return view.extend({
-	load: function() {
+	load() {
 		return L.resolveDefault(uci.load('dhcp'), null);
 	},
 
-	render: function() {
+	render() {
 		document.body.classList.add('onliner-compact-page');
 
-		var table = E('table', { 'class': 'cbi-section-table', 'id': 'online_status_table' }, [
+		const table = E('table', { 'class': 'cbi-section-table', 'id': 'online_status_table' }, [
 			E('tr', { 'class': 'cbi-section-table-titles' }, [
 				E('th', { 'class': 'cbi-section-table-cell sortable', 'data-sort': 'hostname' }, [
 					_('Hostname'), E('span', { 'class': 'sort-arrow', 'id': 'sort-arrow-hostname' })
@@ -494,24 +485,24 @@ return view.extend({
 			])
 		]);
 
-		var search = E('input', {
+		const search = E('input', {
 			'type': 'text',
 			'id': 'search_box',
 			'placeholder': _('Search by hostname, IPv4 address, or MAC address...'),
-			'keyup': function(ev) {
+			'keyup': (ev) => {
 				searchQuery = lower(ev.target.value);
 				renderTable(table, latestInfo);
 			}
 		});
 
-		var mobileSorter = E('div', { 'class': 'mobile-sorter' }, [
+		const mobileSorter = E('div', { 'class': 'mobile-sorter' }, [
 			E('span', { 'class': 'sort-control', 'data-sort': 'hostname', 'data-label-short': _('Hostname') }, _('Hostname')),
 			E('span', { 'class': 'sort-control', 'data-sort': 'ipaddr', 'data-label-short': _('IP') }, _('IP')),
 			E('span', { 'class': 'sort-control', 'data-sort': 'macaddr', 'data-label-short': _('MAC') }, _('MAC')),
 			E('span', { 'class': 'sort-control', 'data-sort': 'device', 'data-label-short': _('Interface') }, _('Interface'))
 		]);
 
-		var page = E('div', { 'class': 'onliner-page' }, [
+		const page = E('div', { 'class': 'onliner-page' }, [
 			E('style', { 'type': 'text/css' }, css),
 			E('h2', { 'name': 'content' }, _('Status')),
 			E('fieldset', { 'class': 'cbi-section' }, [
@@ -522,21 +513,19 @@ return view.extend({
 			])
 		]);
 
-		table.querySelectorAll('th.sortable').forEach(function(th) {
-			th.addEventListener('click', function() {
+		table.querySelectorAll('th.sortable').forEach(th => {
+			th.addEventListener('click', () => {
 				setSort(table, th.getAttribute('data-sort'));
 			});
 		});
 
-		mobileSorter.querySelectorAll('.sort-control').forEach(function(control) {
-			control.addEventListener('click', function() {
+		mobileSorter.querySelectorAll('.sort-control').forEach(control => {
+			control.addEventListener('click', () => {
 				setSort(table, control.getAttribute('data-sort'));
 			});
 		});
 
-		var update = function() {
-			return loadOnlineData().then(renderTable.bind(null, table));
-		};
+		const update = () => loadOnlineData().then(renderTable.bind(null, table));
 
 		poll.add(update, 5);
 		update();
