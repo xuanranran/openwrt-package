@@ -15,7 +15,7 @@ msgstr ""
 msgid "-- Create Partition Table --"
 msgstr "-- 创建分区表 --"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:667
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:665
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:556
 msgid "Actions"
 msgstr "操作"
@@ -64,12 +64,12 @@ msgstr "正在尝试挂载设备，请稍候..."
 msgid "Attempting to unmount device, please wait..."
 msgstr "正在尝试卸载设备，请稍候..."
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:755
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:753
 msgid "BTRFS Pools"
 msgstr "BTRFS 存储池"
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:401
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:724
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:722
 msgid "Back to Overview"
 msgstr "返回至概览"
 
@@ -84,7 +84,7 @@ msgstr "取消"
 msgid "Cannot find specified disk device:"
 msgstr "找不到指定的磁盘设备："
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:644
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:642
 msgid "Click to format this partition"
 msgstr "点击格式化此分区"
 
@@ -104,7 +104,7 @@ msgstr "确认创建"
 msgid "Create BTRFS Pool"
 msgstr "创建 BTRFS 存储池"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:759
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:757
 msgid "Create Pool"
 msgstr "创建存储池"
 
@@ -117,7 +117,7 @@ msgstr "正在创建 BTRFS 存储池，该过程可能会耗费一些时间..."
 msgid "Creation failed:"
 msgstr "创建失败："
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:714
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:712
 msgid ""
 "Default 2048 sector alignment; Supports +size{K,M,G,T} for relative end "
 "sector (e.g., +500M, +10G, +1T)"
@@ -125,11 +125,11 @@ msgstr ""
 "默认 2048 扇区对齐；支持以 +size{K,M,G,T} 指定相对结束扇区（如："
 "+500M、+10G、+1T）"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:656
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:654
 msgid "Delete"
 msgstr "删除"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:654
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:652
 msgid "Delete this partition"
 msgstr "删除此分区"
 
@@ -159,7 +159,7 @@ msgstr "磁盘弹出成功，现在可以安全拔出设备。"
 msgid "DiskMan Management"
 msgstr "DiskMan 磁盘管理"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:658
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:656
 msgid "Disks"
 msgstr "磁盘"
 
@@ -203,12 +203,12 @@ msgstr "设置分区表失败："
 msgid "File System"
 msgstr "文件系统"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:613
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:611
 msgid "Force unmount this partition"
 msgstr "强制卸载此分区"
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:370
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:639
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:637
 msgid "Format"
 msgstr "格式化"
 
@@ -241,7 +241,7 @@ msgstr "空闲空间"
 msgid "Grant access to Diskman RPC"
 msgstr "授予对 Diskman RPC 的访问权限"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:643
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:641
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:533
 msgid "Health Status"
 msgstr "健康状态"
@@ -259,13 +259,13 @@ msgid "Manual Mount"
 msgstr "手动挂载"
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:370
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:665
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:663
 msgid "Member Devices"
 msgstr "成员设备"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:740
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:738
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:227
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:628
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:626
 msgid "Mount"
 msgstr "挂载"
 
@@ -289,7 +289,7 @@ msgstr "挂载点"
 msgid "Mount Points"
 msgstr "挂载点"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:666
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:664
 msgid "Mount Status"
 msgstr "挂载状态"
 
@@ -298,11 +298,11 @@ msgstr "挂载状态"
 msgid "Mount failed:"
 msgstr "挂载失败："
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:626
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:624
 msgid "Mount this partition"
 msgstr "挂载此分区"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:747
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:745
 msgid "Mounted"
 msgstr "已挂载"
 
@@ -315,7 +315,7 @@ msgstr "正在挂载设备，请稍候..."
 msgid "Mounting..."
 msgstr "挂载中..."
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:645
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:643
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:535
 msgid "NVMe/SATA Version"
 msgstr "NVMe/SATA 版本"
@@ -325,12 +325,12 @@ msgstr "NVMe/SATA 版本"
 msgid "Name"
 msgstr "名称"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:601
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:705
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:599
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:703
 msgid "New"
 msgstr "新建"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:673
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:671
 msgid "No BTRFS pools found."
 msgstr "未找到 BTRFS 存储池。"
 
@@ -342,7 +342,7 @@ msgstr "未找到磁盘。"
 msgid "No information returned"
 msgstr "暂无信息返回"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:747
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:745
 msgid "Not Mounted"
 msgstr "未挂载"
 
@@ -355,7 +355,7 @@ msgstr "未设置"
 msgid "Operation refused or error occurred:"
 msgstr "操作被拒绝或出错："
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:713
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:711
 msgid "Partition Info"
 msgstr "分区信息"
 
@@ -363,7 +363,7 @@ msgstr "分区信息"
 msgid "Partition Management"
 msgstr "分区管理"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:642
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:640
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:531
 msgid "Partition Table"
 msgstr "分区表"
@@ -372,11 +372,11 @@ msgstr "分区表"
 msgid "Partition disks via LuCI."
 msgstr "通过 LuCI 分区磁盘"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:654
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:652
 msgid "Partition is mounted, unmount to delete"
 msgstr "该分区已被系统挂载，请先卸载才能删除"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:644
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:642
 msgid "Partition is mounted, unmount to format"
 msgstr "该分区已被系统挂载，请先卸载才能修改格式"
 
@@ -388,7 +388,7 @@ msgstr "分区表创建成功。"
 msgid "Partitioning disk space, do not power off..."
 msgstr "正在划分磁盘空间，请勿断开电源..."
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:648
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:646
 msgid "Partitions"
 msgstr "分区信息"
 
@@ -434,7 +434,7 @@ msgstr "转速"
 msgid "Reading SMART info..."
 msgstr "正在读取 SMART 信息..."
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:687
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:685
 msgid "Remove"
 msgstr "移除"
 
@@ -466,7 +466,7 @@ msgstr "正在扫描磁盘..."
 msgid "Sector/Physical Size"
 msgstr "扇区/物理扇区大小"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:641
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:639
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:530
 msgid "Serial Number"
 msgstr "序列号"
@@ -476,8 +476,8 @@ msgid "Single (No redundancy)"
 msgstr "Single (无冗余串联)"
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:265
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:640
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:664
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:638
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:662
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:529
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:549
 msgid "Size"
@@ -505,7 +505,7 @@ msgstr "存储池移除成功。"
 msgid "Task check failed:"
 msgstr "任务检查失败："
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:644
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:642
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:534
 msgid "Temperature"
 msgstr "温度"
@@ -521,17 +521,17 @@ msgstr "此操作仅为临时挂载。如需实现存储设备的持久化挂载
 msgid "Type"
 msgstr "类型"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:663
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:661
 msgid "UUID / Label"
 msgstr "UUID / 标签"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:581
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:600
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:579
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:598
 msgid "Unallocated"
 msgstr "未分配"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:734
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:615
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:732
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:613
 msgid "Unmount"
 msgstr "卸载"
 

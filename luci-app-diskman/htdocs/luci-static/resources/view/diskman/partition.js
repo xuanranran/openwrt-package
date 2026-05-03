@@ -4,93 +4,93 @@
 'require ui';
 'require dom';
 
-var callGetDiskInfo = rpc.declare({
+const callGetDiskInfo = rpc.declare({
 	object: 'luci.diskman',
 	method: 'get_disk_info',
 	expect: { '': {} }
 });
 
-var callGetSmartRaw = rpc.declare({
+const callGetSmartRaw = rpc.declare({
 	object: 'luci.diskman',
 	method: 'get_smart_raw',
 	params: ['device'],
 	expect: { '': {} }
 });
 
-var callEjectDisk = rpc.declare({
+const callEjectDisk = rpc.declare({
 	object: 'luci.diskman',
 	method: 'eject_disk',
 	params: ['device'],
 	expect: { '': {} }
 });
 
-var callPartDel = rpc.declare({
+const callPartDel = rpc.declare({
 	object: 'luci.diskman',
 	method: 'part_del',
 	params: ['device', 'part_num'],
 	expect: { '': {} }
 });
 
-var callPartAdd = rpc.declare({
+const callPartAdd = rpc.declare({
 	object: 'luci.diskman',
 	method: 'part_add',
 	params: ['device', 'type', 'start', 'end'],
 	expect: { '': {} }
 });
 
-var callFormatDevice = rpc.declare({
+const callFormatDevice = rpc.declare({
 	object: 'luci.diskman',
 	method: 'format_device',
 	params: ['device', 'fstype'],
 	expect: { '': {} }
 });
 
-var callUmountDevice = rpc.declare({
+const callUmountDevice = rpc.declare({
 	object: 'luci.diskman',
 	method: 'umount_device',
 	params: ['device'],
 	expect: { '': {} }
 });
 
-var callMountDevice = rpc.declare({
+const callMountDevice = rpc.declare({
 	object: 'luci.diskman',
 	method: 'mount_device',
 	params: ['device', 'target', 'options'],
 	expect: { '': {} }
 });
 
-var callCheckTask = rpc.declare({
+const callCheckTask = rpc.declare({
 	object: 'luci.diskman',
 	method: 'check_task',
 	params: ['task_id'],
 	expect: { '': {} }
 });
 
-function formatSize(bytes) {
+const formatSize = bytes => {
 	if (bytes === 0) return '0 B';
-	var k = 1024,
-		sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'],
-		i = Math.floor(Math.log(bytes) / Math.log(k));
+	const k = 1024;
+	const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+	const i = Math.floor(Math.log(bytes) / Math.log(k));
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
+};
 
 return view.extend({
-	load: function () {
+	load() {
 		return callGetDiskInfo();
 	},
 
-	handleReturn: function () {
+	handleReturn() {
 		window.location.href = L.url('admin/system/diskman');
 	},
 
-	showSmartInfo: function (diskPath, diskName) {
+	showSmartInfo(diskPath, diskName) {
 		ui.showModal(_('Reading SMART info...'), [
 			E('p', { 'class': 'spinning' }, _('Please wait...'))
 		]);
 
-		callGetSmartRaw(diskPath).then(function (res) {
-			var out = res.output || _('No information returned');
-			var pre = E('pre', {
+		callGetSmartRaw(diskPath).then(res => {
+			const out = res.output || _('No information returned');
+			const pre = E('pre', {
 				'style': 'max-height: 400px; overflow-y: auto; background: #f5f5f5; padding: 10px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px;'
 			}, out);
 
@@ -103,13 +103,13 @@ return view.extend({
 					}, _('Close'))
 				])
 			]);
-		}).catch(function (e) {
+		}).catch(e => {
 			ui.hideModal();
 			ui.addNotification(null, E('p', _('Failed to read SMART info: ') + e.message), 'danger');
 		});
 	},
 
-	handleEject: function (diskPath) {
+	handleEject(diskPath) {
 		if (!confirm(_('Are you sure you want to eject disk %s?\nAll mounted partitions on this disk will be unmounted!').format(diskPath)))
 			return;
 
@@ -117,23 +117,23 @@ return view.extend({
 			E('p', { 'class': 'spinning' }, _('Ejecting disk...'))
 		]);
 
-		callEjectDisk(diskPath).then(function (res) {
+		callEjectDisk(diskPath).then(res => {
 			ui.hideModal();
 			if (res && res.code === 0) {
 				ui.addNotification(null, E('p', _('Disk ejected successfully. You can now safely remove the device.')), 'success');
-				setTimeout(function () {
+				setTimeout(() => {
 					window.location.href = L.url('admin/system/diskman');
 				}, 2000);
 			} else {
 				ui.addNotification(null, E('p', _('Eject failed: ') + (res.error || '')), 'danger');
 			}
-		}).catch(function (e) {
+		}).catch(e => {
 			ui.hideModal();
 			ui.addNotification(null, E('p', e.message), 'danger');
 		});
 	},
 
-	handleDelete: function (diskPath, partNum, partName) {
+	handleDelete(diskPath, partNum, partName) {
 		if (!confirm(_('Are you sure you want to delete partition %s? This action is irreversible and data will be permanently lost!').format(partName)))
 			return;
 
@@ -141,21 +141,21 @@ return view.extend({
 			E('p', { 'class': 'spinning' }, _('Deleting partition, do not power off...'))
 		]);
 
-		callPartDel(diskPath, String(partNum)).then(function (res) {
+		callPartDel(diskPath, String(partNum)).then(res => {
 			ui.hideModal();
-			var out = (res.output || '').trim();
+			const out = (res.output || '').trim();
 			if (res && res.code === 0 && !/Warning|Error/i.test(out)) {
 				location.reload();
 			} else {
 				ui.addNotification(null, E('p', _('Operation refused or error occurred: ') + (res.error || out)), 'danger');
 			}
-		}).catch(function (e) {
+		}).catch(e => {
 			ui.hideModal();
 			ui.addNotification(null, E('p', e.message), 'danger');
 		});
 	},
 
-	handleUmount: function (partPath, mountPoint) {
+	handleUmount(partPath, mountPoint) {
 		if (!confirm(_('Are you sure you want to force unmount %s?\nIf the device is being read or written to, unmounting may fail.').format(mountPoint)))
 			return;
 
@@ -163,24 +163,24 @@ return view.extend({
 			E('p', { 'class': 'spinning' }, _('Attempting to unmount device, please wait...'))
 		]);
 
-		callUmountDevice(partPath).then(function (res) {
+		callUmountDevice(partPath).then(res => {
 			ui.hideModal();
 			if (res && res.code === 0) {
 				location.reload();
 			} else {
 				ui.addNotification(null, E('p', _('Unmount failed (device may be busy): ') + (res.error || '')), 'danger');
 			}
-		}).catch(function (e) {
+		}).catch(e => {
 			ui.hideModal();
 			ui.addNotification(null, E('p', e.message), 'danger');
 		});
 	},
 
-	handleMount: function (partPath, partName) {
-		var targetInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': '/mnt/' + partName, 'placeholder': '/mnt/' + partName });
-		var optionsInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'placeholder': _('defaults') });
+	handleMount(partPath, partName) {
+		const targetInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': '/mnt/' + partName, 'placeholder': '/mnt/' + partName });
+		const optionsInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'placeholder': _('defaults') });
 
-		var modalContent = [
+		const modalContent = [
 			E('div', { 'class': 'cbi-value' }, [
 				E('label', { 'class': 'cbi-value-title' }, _('Device')),
 				E('div', { 'class': 'cbi-value-field' }, E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': partPath, 'readonly': 'readonly' }))
@@ -201,25 +201,25 @@ return view.extend({
 			E('div', { 'class': 'right', 'style': 'margin-top: 15px;' }, [
 				E('button', {
 					'class': 'btn cbi-button cbi-button-action important',
-					'click': ui.createHandlerFn(this, function () {
-						var target = targetInput.value.trim();
-						var options = optionsInput.value.trim();
+					'click': ui.createHandlerFn(this, () => {
+						let target = targetInput.value.trim();
+						const options = optionsInput.value.trim();
 						if (!target) target = targetInput.placeholder;
 
 						ui.showModal(_('Mounting...'), [
 							E('p', { 'class': 'spinning' }, _('Mounting device, please wait...'))
 						]);
 
-						callMountDevice(partPath, target, options).then(function (res) {
+						callMountDevice(partPath, target, options).then(res => {
 							ui.hideModal();
 							if (res && res.code === 0) {
 								location.reload();
 							} else {
-								var errOut = res.error || '';
+								let errOut = res.error || '';
 								if (res.output) errOut += ' (' + res.output + ')';
 								ui.addNotification(null, E('p', _('Mount failed: ') + errOut), 'danger');
 							}
-						}).catch(function (e) {
+						}).catch(e => {
 							ui.hideModal();
 							ui.addNotification(null, E('p', e.message), 'danger');
 						});
@@ -235,23 +235,23 @@ return view.extend({
 		ui.showModal(_('Mount Partition: ') + partName, modalContent);
 	},
 
-	handleCreate: function (disk, startNode, endNode, maxUsableSector) {
-		var secArr = (disk.sector_size || '512/512').split('/');
-		var logicalSectorSize = parseInt(secArr[0], 10) || 512;
+	handleCreate(disk, startNode, endNode, maxUsableSector) {
+		const secArr = (disk.sector_size || '512/512').split('/');
+		const logicalSectorSize = parseInt(secArr[0], 10) || 512;
 
-		var startSector = parseInt(startNode.value, 10);
+		let startSector = parseInt(startNode.value, 10);
 
 		// 自动对齐起始扇区到 2048 扇区（向上取整）
 		if (startSector % 2048 !== 0) {
 			startSector = Math.ceil(startSector / 2048) * 2048;
 		}
 
-		var endVal = endNode.value;
-		var endSector = startSector;
-		var inputStr = String(endVal).trim().toLowerCase();
+		const endVal = endNode.value;
+		let endSector = startSector;
+		const inputStr = String(endVal).trim().toLowerCase();
 
 		if (inputStr.startsWith('+')) {
-			var val = parseFloat(inputStr.substring(1)), mult = 1;
+			let val = parseFloat(inputStr.substring(1)), mult = 1;
 			if (inputStr.endsWith('k'))
 				mult = 1024 / logicalSectorSize;
 			else if (inputStr.endsWith('m'))
@@ -289,27 +289,27 @@ return view.extend({
 			E('p', { 'class': 'spinning' }, _('Partitioning disk space, do not power off...'))
 		]);
 
-		callPartAdd(disk.path, 'primary', String(startSector), String(endSector)).then(function (res) {
+		callPartAdd(disk.path, 'primary', String(startSector), String(endSector)).then(res => {
 			ui.hideModal();
-			var out = (res.output || '').trim();
+			const out = (res.output || '').trim();
 			if (res && res.code === 0 && !/Warning|Error/i.test(out)) {
 				location.reload();
 			} else {
 				ui.addNotification(null, E('p', _('Operation refused or error occurred: ') + (res.error || out)), 'danger');
 			}
-		}).catch(function (e) {
+		}).catch(e => {
 			ui.hideModal();
 			ui.addNotification(null, E('p', e.message), 'danger');
 		});
 	},
 
-	handleFormat: function (partPath, partName, supportedFS) {
-		var select = E('select', { 'class': 'cbi-input-select' });
-		for (var i = 0; i < supportedFS.length; i++) {
+	handleFormat(partPath, partName, supportedFS) {
+		const select = E('select', { 'class': 'cbi-input-select' });
+		for (let i = 0; i < supportedFS.length; i++) {
 			select.appendChild(E('option', { 'value': supportedFS[i] }, supportedFS[i]));
 		}
 
-		var modalContent = [
+		const modalContent = [
 			E('div', { 'class': 'cbi-value' }, [
 				E('label', { 'class': 'cbi-value-title' }, _('File System')),
 				E('div', { 'class': 'cbi-value-field' }, select)
@@ -317,8 +317,8 @@ return view.extend({
 			E('div', { 'class': 'right', 'style': 'margin-top: 15px;' }, [
 				E('button', {
 					'class': 'btn cbi-button cbi-button-action important',
-					'click': ui.createHandlerFn(this, function () {
-						var fstype = select.value;
+					'click': ui.createHandlerFn(this, () => {
+						const fstype = select.value;
 						if (!fstype) return;
 
 						if (!confirm(_('Are you sure you want to format %s as %s?\nAll existing data on this partition will be erased!').format(partName, fstype)))
@@ -329,12 +329,12 @@ return view.extend({
 							E('pre', { 'id': 'format-task-output', 'style': 'max-height: 200px; overflow-y: auto; font-size: 12px; margin-top: 10px; display: none;' }, '')
 						]);
 
-						callFormatDevice(partPath, String(fstype)).then(function (res) {
+						callFormatDevice(partPath, String(fstype)).then(res => {
 							if (res && res.background) {
-								var checkTask = function() {
-									callCheckTask(res.task_id).then(function(taskRes) {
+								const checkTask = () => {
+									callCheckTask(res.task_id).then(taskRes => {
 										if (taskRes.status === 'running') {
-											var logEl = document.getElementById('format-task-output');
+											const logEl = document.getElementById('format-task-output');
 											if (logEl && taskRes.output) {
 												logEl.style.display = 'block';
 												logEl.textContent = taskRes.output;
@@ -344,12 +344,12 @@ return view.extend({
 										} else if (taskRes.status === 'completed') {
 											ui.hideModal();
 											ui.addNotification(null, E('p', _('Formatting completed successfully.')), 'success');
-											setTimeout(function() { location.reload(); }, 1000);
+											setTimeout(() => { location.reload(); }, 1000);
 										} else {
 											ui.hideModal();
 											ui.addNotification(null, E('p', _('Formatting failed: ') + (taskRes.error || '')), 'danger');
 										}
-									}).catch(function(e) {
+									}).catch(e => {
 										ui.hideModal();
 										ui.addNotification(null, E('p', _('Task check failed: ') + e.message), 'danger');
 									});
@@ -362,7 +362,7 @@ return view.extend({
 								ui.hideModal();
 								ui.addNotification(null, E('p', _('Formatting failed: ') + (res.error || '')), 'danger');
 							}
-						}).catch(function (e) {
+						}).catch(e => {
 							ui.hideModal();
 							ui.addNotification(null, E('p', e.message), 'danger');
 						});
@@ -378,14 +378,14 @@ return view.extend({
 		ui.showModal(_('Format Partition: ') + partName, modalContent);
 	},
 
-	render: function (res) {
-		var disks = res.disks || [];
-		var supportedFS = res.supported_fs || [];
-		var pathArray = window.location.pathname.split('/');
-		var targetDevName = pathArray[pathArray.length - 1];
-		var disk = null;
+	render(res) {
+		const disks = res.disks || [];
+		const supportedFS = res.supported_fs || [];
+		const pathArray = window.location.pathname.split('/');
+		const targetDevName = pathArray[pathArray.length - 1];
+		let disk = null;
 
-		for (var i = 0; i < disks.length; i++) {
+		for (let i = 0; i < disks.length; i++) {
 			if (disks[i].name === targetDevName) {
 				disk = disks[i];
 				break;
@@ -403,18 +403,18 @@ return view.extend({
 		}
 
 		// 获取逻辑扇区大小
-		var secArr = (disk.sector_size || '512/512').split('/');
-		var SECTOR_SIZE = parseInt(secArr[0], 10) || 512;
+		const secArr = (disk.sector_size || '512/512').split('/');
+		const SECTOR_SIZE = parseInt(secArr[0], 10) || 512;
 
 		// 计算磁盘最大可用扇区 (防止破坏 GPT 的末尾备份分区表)
-		var totalSectors = Math.floor(disk.size / SECTOR_SIZE);
-		var maxUsableSector = totalSectors - 1;
+		const totalSectors = Math.floor(disk.size / SECTOR_SIZE);
+		let maxUsableSector = totalSectors - 1;
 		if (String(disk.ptable).toUpperCase() === 'GPT') {
-			var gptReservedSectors = Math.ceil(16384 / SECTOR_SIZE) + 1;
+			const gptReservedSectors = Math.ceil(16384 / SECTOR_SIZE) + 1;
 			maxUsableSector = totalSectors - 1 - gptReservedSectors;
 		}
 
-		var css = `
+		const css = `
 			.dkm-card {
 				margin-bottom: 20px;
 				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -491,14 +491,14 @@ return view.extend({
 		`;
 		document.head.appendChild(E('style', { 'type': 'text/css' }, css));
 
-		var container = E('div', { 'class': 'cbi-map' }, [
+		const container = E('div', { 'class': 'cbi-map' }, [
 			E('h2', {}, _('Partition Management')),
 			E('div', { 'class': 'cbi-map-descr' }, _('Partition disks via LuCI.')),
 		]);
 
-		var healthDisplay = disk.health;
+		let healthDisplay = disk.health;
 		if (disk.health !== '-') {
-			var isPassed = /PASS|OK/i.test(disk.health);
+			const isPassed = /PASS|OK/i.test(disk.health);
 			healthDisplay = E('button', {
 				'style': isPassed ? 'color: #67c23a; font-weight: bold; background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline;' : 'color: #f56c6c; font-weight: bold; background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline;',
 				'title': _('Click to view full SMART info'),
@@ -506,12 +506,12 @@ return view.extend({
 			}, disk.health);
 		}
 
-		var btnEject = E('button', {
+		const btnEject = E('button', {
 			'class': 'btn cbi-button cbi-button-remove',
 			'click': ui.createHandlerFn(this, this.handleEject, disk.path)
 		}, _('Eject'));
 
-		var infoCard = E('div', { 'class': 'cbi-section dkm-card' }, [
+		const infoCard = E('div', { 'class': 'cbi-section dkm-card' }, [
 			E('div', { 'class': 'cbi-section-node dkm-card-inner' }, [
 				E('div', { 'class': 'dkm-card-header' }, [
 					E('div', { 'class': 'dkm-card-title' }, [
@@ -541,7 +541,7 @@ return view.extend({
 		container.appendChild(E('h3', _('Device Info')));
 		container.appendChild(infoCard);
 
-		var partTable = E('table', { 'class': 'table cbi-section-table' }, [
+		const partTable = E('table', { 'class': 'table cbi-section-table' }, [
 			E('tr', { 'class': 'tr table-titles' }, [
 				E('th', { 'class': 'th' }, _('Name')),
 				E('th', { 'class': 'th' }, _('Start Sector')),
@@ -557,32 +557,30 @@ return view.extend({
 			])
 		]);
 
-		disk.partitions.sort(function (a, b) {
-			return a.start - b.start;
-		});
+		disk.partitions.sort((a, b) => a.start - b.start);
 
-		var currentSector = 2048; // parted 默认最优起始扇区为 2048 (1MB对齐)
+		let currentSector = 2048; // parted 默认最优起始扇区为 2048 (1MB对齐)
 
-		for (var j = 0; j < disk.partitions.length; j++) {
-			var p = disk.partitions[j];
-			var pStartSector = p.start / SECTOR_SIZE;
-			var pEndSector = (p.start + p.size) / SECTOR_SIZE - 1;
+		for (let j = 0; j < disk.partitions.length; j++) {
+			const p = disk.partitions[j];
+			const pStartSector = p.start / SECTOR_SIZE;
+			const pEndSector = (p.start + p.size) / SECTOR_SIZE - 1;
 
 			// 如果两个分区中间存在空闲间隙，则渲染 "新建" 行
 			if (pStartSector > currentSector) {
-				var freeStart = currentSector;
+				let freeStart = currentSector;
 				if (freeStart % 2048 !== 0) {
 					freeStart = Math.ceil(freeStart / 2048) * 2048;
 				}
-				var freeEnd = pStartSector - 1;
+				let freeEnd = pStartSector - 1;
 				if ((freeEnd + 1) % 2048 !== 0) {
 					freeEnd = Math.floor((freeEnd + 1) / 2048) * 2048 - 1;
 				}
-				var freeSize = (freeEnd - freeStart + 1) * SECTOR_SIZE;
+				const freeSize = (freeEnd - freeStart + 1) * SECTOR_SIZE;
 
 				if (freeSize >= 1048576) {
-					var startInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': freeStart, 'style': 'width: 120px;' });
-					var endInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': freeEnd, 'style': 'width: 120px;' });
+					const startInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': freeStart, 'style': 'width: 120px;' });
+					const endInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': freeEnd, 'style': 'width: 120px;' });
 
 					partTable.appendChild(E('tr', { 'class': 'tr' }, [
 						E('td', { 'class': 'td' }, '-'),
@@ -603,11 +601,11 @@ return view.extend({
 				}
 			}
 
-			var isMounted = (p.mount && p.mount !== "");
-			var mountDisplay;
+			const isMounted = (p.mount && p.mount !== "");
+			let mountDisplay;
 
 			if (isMounted) {
-				var btnUmount = E('button', {
+				const btnUmount = E('button', {
 					'class': 'btn cbi-button cbi-button-remove',
 					'style': 'margin-left: 6px;',
 					'title': _('Force unmount this partition'),
@@ -621,7 +619,7 @@ return view.extend({
 			} else {
 				mountDisplay = '-';
 				if (p.fs_type !== 'unknown' && p.fs_type !== 'swap' && p.fs_type !== '') {
-					var btnMount = E('button', {
+					const btnMount = E('button', {
 						'class': 'btn cbi-button cbi-button-apply',
 						'title': _('Mount this partition'),
 						'click': ui.createHandlerFn(this, this.handleMount, p.path, p.name)
@@ -631,24 +629,24 @@ return view.extend({
 				}
 			}
 
-			var pUsed = (p.used != null) ? formatSize(p.used) : '-';
-			var pFree = (p.free != null) ? formatSize(p.free) : '-';
-			var pUsage = p.usage || '-';
+			const pUsed = (p.used != null) ? formatSize(p.used) : '-';
+			const pFree = (p.free != null) ? formatSize(p.free) : '-';
+			const pUsage = p.usage || '-';
 
-			var fsBtnClass = (p.fs_type === 'unknown') ? 'btn cbi-button cbi-button-remove' : 'btn cbi-button cbi-button-reset';
-			var fsLabelText = (p.fs_type === 'unknown') ? _('Format') : p.fs_type;
+			const fsBtnClass = (p.fs_type === 'unknown') ? 'btn cbi-button cbi-button-remove' : 'btn cbi-button cbi-button-reset';
+			const fsLabelText = (p.fs_type === 'unknown') ? _('Format') : p.fs_type;
 
-			var fsBtn = E('button', {
+			const fsBtn = E('button', {
 				'class': fsBtnClass,
 				'disabled': isMounted ? 'disabled' : null,
 				'title': isMounted ? _('Partition is mounted, unmount to format') : _('Click to format this partition'),
 				'click': isMounted ? null : ui.createHandlerFn(this, this.handleFormat, p.path, p.name, supportedFS)
 			}, fsLabelText);
 
-			var partNumStr = p.name.replace(disk.name, '').replace(/^p/, '');
-			var partNum = parseInt(partNumStr, 10);
+			const partNumStr = p.name.replace(disk.name, '').replace(/^p/, '');
+			const partNum = parseInt(partNumStr, 10);
 
-			var btnDel = E('button', {
+			const btnDel = E('button', {
 				'class': 'btn cbi-button cbi-button-remove',
 				'disabled': isMounted ? 'disabled' : null,
 				'title': isMounted ? _('Partition is mounted, unmount to delete') : _('Delete this partition'),
@@ -674,19 +672,19 @@ return view.extend({
 
 		// 检查磁盘尾部的剩余空间
 		if (maxUsableSector > currentSector) {
-			var endFreeStart = currentSector;
+			let endFreeStart = currentSector;
 			if (endFreeStart % 2048 !== 0) {
 				endFreeStart = Math.ceil(endFreeStart / 2048) * 2048;
 			}
-			var endFreeEnd = maxUsableSector; // 截断到安全范围，避免越界导致 parted 报错
+			let endFreeEnd = maxUsableSector; // 截断到安全范围，避免越界导致 parted 报错
 			if ((endFreeEnd + 1) % 2048 !== 0) {
 				endFreeEnd = Math.floor((endFreeEnd + 1) / 2048) * 2048 - 1;
 			}
-			var endFreeSize = (endFreeEnd - endFreeStart + 1) * SECTOR_SIZE;
+			const endFreeSize = (endFreeEnd - endFreeStart + 1) * SECTOR_SIZE;
 
 			if (endFreeSize >= 1048576) {
-				var startInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': endFreeStart, 'style': 'width: 120px;' });
-				var endInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': endFreeEnd, 'style': 'width: 120px;' });
+				const startInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': endFreeStart, 'style': 'width: 120px;' });
+				const endInput = E('input', { 'type': 'text', 'class': 'cbi-input-text', 'value': endFreeEnd, 'style': 'width: 120px;' });
 
 				partTable.appendChild(E('tr', { 'class': 'tr' }, [
 					E('td', { 'class': 'td' }, '-'),
