@@ -1,12 +1,12 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:546
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:538
 msgid "-- Create Partition Table --"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:665
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:556
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:657
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:551
 msgid "Actions"
 msgstr ""
 
@@ -51,12 +51,12 @@ msgstr ""
 msgid "Attempting to unmount device, please wait..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:753
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:745
 msgid "BTRFS Pools"
 msgstr ""
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:401
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:722
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:717
 msgid "Back to Overview"
 msgstr ""
 
@@ -71,11 +71,11 @@ msgstr ""
 msgid "Cannot find specified disk device:"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:642
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:637
 msgid "Click to format this partition"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:504
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:499
 msgid "Click to view full SMART info"
 msgstr ""
 
@@ -91,7 +91,7 @@ msgstr ""
 msgid "Create BTRFS Pool"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:757
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:749
 msgid "Create Pool"
 msgstr ""
 
@@ -104,17 +104,17 @@ msgstr ""
 msgid "Creation failed:"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:712
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:707
 msgid ""
 "Default 2048 sector alignment; Supports +size{K,M,G,T} for relative end "
 "sector (e.g., +500M, +10G, +1T)"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:654
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:649
 msgid "Delete"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:652
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:647
 msgid "Delete this partition"
 msgstr ""
 
@@ -127,7 +127,7 @@ msgstr ""
 msgid "Device"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:541
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:536
 msgid "Device Info"
 msgstr ""
 
@@ -140,20 +140,20 @@ msgstr ""
 msgid "Disk ejected successfully. You can now safely remove the device."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:500
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:492
 msgid "DiskMan Management"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:656
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:648
 msgid "Disks"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:529
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:521
 msgid "Edit"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:522
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:512
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:514
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:507
 msgid "Eject"
 msgstr ""
 
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Ejecting disk..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:548
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:543
 msgid "End Sector"
 msgstr ""
 
@@ -184,16 +184,16 @@ msgid "Failed to set partition table:"
 msgstr ""
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:314
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:555
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:550
 msgid "File System"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:611
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:606
 msgid "Force unmount this partition"
 msgstr ""
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:370
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:637
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:632
 msgid "Format"
 msgstr ""
 
@@ -218,7 +218,7 @@ msgstr ""
 msgid "Formatting..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:552
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:547
 msgid "Free Space"
 msgstr ""
 
@@ -226,8 +226,8 @@ msgstr ""
 msgid "Grant access to Diskman RPC"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:641
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:533
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:633
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:528
 msgid "Health Status"
 msgstr ""
 
@@ -235,7 +235,7 @@ msgstr ""
 msgid "Invalid sector range input!"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:501
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:493
 msgid "Manage disks via LuCI"
 msgstr ""
 
@@ -244,13 +244,13 @@ msgid "Manual Mount"
 msgstr ""
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:370
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:663
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:655
 msgid "Member Devices"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:738
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:730
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:227
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:626
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:621
 msgid "Mount"
 msgstr ""
 
@@ -265,7 +265,7 @@ msgstr ""
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:159
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:189
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:554
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:549
 msgid "Mount Point"
 msgstr ""
 
@@ -274,7 +274,7 @@ msgstr ""
 msgid "Mount Points"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:664
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:656
 msgid "Mount Status"
 msgstr ""
 
@@ -283,11 +283,11 @@ msgstr ""
 msgid "Mount failed:"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:624
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:619
 msgid "Mount this partition"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:745
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:737
 msgid "Mounted"
 msgstr ""
 
@@ -300,26 +300,26 @@ msgstr ""
 msgid "Mounting..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:643
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:535
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:635
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:530
 msgid "NVMe/SATA Version"
 msgstr ""
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:264
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:546
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:541
 msgid "Name"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:599
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:703
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:594
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:698
 msgid "New"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:671
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:663
 msgid "No BTRFS pools found."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:513
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:505
 msgid "No disks found."
 msgstr ""
 
@@ -327,11 +327,11 @@ msgstr ""
 msgid "No information returned"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:745
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:737
 msgid "Not Mounted"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:550
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:542
 msgid "Not Set"
 msgstr ""
 
@@ -340,28 +340,28 @@ msgstr ""
 msgid "Operation refused or error occurred:"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:711
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:706
 msgid "Partition Info"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:495
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:490
 msgid "Partition Management"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:640
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:531
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:632
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:526
 msgid "Partition Table"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:496
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:491
 msgid "Partition disks via LuCI."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:652
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:647
 msgid "Partition is mounted, unmount to delete"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:642
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:637
 msgid "Partition is mounted, unmount to format"
 msgstr ""
 
@@ -373,11 +373,11 @@ msgstr ""
 msgid "Partitioning disk space, do not power off..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:646
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:638
 msgid "Partitions"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:553
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:545
 msgid "Please create a partition table first"
 msgstr ""
 
@@ -411,7 +411,7 @@ msgstr ""
 msgid "RAID 1 (Mirroring)"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:536
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:531
 msgid "RPM"
 msgstr ""
 
@@ -419,7 +419,7 @@ msgstr ""
 msgid "Reading SMART info..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:685
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:677
 msgid "Remove"
 msgstr ""
 
@@ -431,7 +431,7 @@ msgstr ""
 msgid "Removing BTRFS pool..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:506
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:498
 msgid "Rescan Disks"
 msgstr ""
 
@@ -447,12 +447,12 @@ msgstr ""
 msgid "Scanning disks..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:532
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:527
 msgid "Sector/Physical Size"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:639
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:530
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:631
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:525
 msgid "Serial Number"
 msgstr ""
 
@@ -461,14 +461,14 @@ msgid "Single (No redundancy)"
 msgstr ""
 
 #: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:265
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:638
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:662
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:529
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:549
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:630
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:654
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:524
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:544
 msgid "Size"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:547
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:542
 msgid "Start Sector"
 msgstr ""
 
@@ -490,8 +490,8 @@ msgstr ""
 msgid "Task check failed:"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:642
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:534
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:634
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:529
 msgid "Temperature"
 msgstr ""
 
@@ -502,21 +502,21 @@ msgid ""
 "system's"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:550
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:545
 msgid "Type"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:661
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:653
 msgid "UUID / Label"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:579
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:598
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:571
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:590
 msgid "Unallocated"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:732
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:613
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/overview.js:724
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:608
 msgid "Unmount"
 msgstr ""
 
@@ -530,11 +530,11 @@ msgstr ""
 msgid "Unmounting..."
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:553
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:548
 msgid "Usage"
 msgstr ""
 
-#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:551
+#: luci-app-diskman/htdocs/luci-static/resources/view/diskman/partition.js:546
 msgid "Used"
 msgstr ""
 

@@ -91,7 +91,7 @@ return view.extend({
 		callGetSmartRaw(diskPath).then(res => {
 			const out = res.output || _('No information returned');
 			const pre = E('pre', {
-				'style': 'max-height: 400px; overflow-y: auto; background: #f5f5f5; padding: 10px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px;'
+				'style': 'max-height: 500px; overflow-y: auto; padding: 10px; font-size: 12px; border-radius: 4px;'
 			}, out);
 
 			ui.showModal(_('SMART Info - ') + diskName, [
@@ -441,13 +441,9 @@ return view.extend({
 			.dkm-card-title {
 				font-size: 18px;
 				font-weight: bold;
-				color: #333;
 				display: flex;
 				align-items: center;
 				gap: 8px;
-			}
-			.theme-dark .dkm-card-title {
-				color: #eee;
 			}
 			.dkm-card-actions {
 				display: flex;
@@ -471,7 +467,6 @@ return view.extend({
 			}
 			.dkm-item-value {
 				font-size: 16px;
-				color: #333;
 				font-weight: 500;
 			}
 			.theme-dark .dkm-item-value {

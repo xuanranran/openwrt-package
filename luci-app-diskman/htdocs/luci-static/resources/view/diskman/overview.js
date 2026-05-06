@@ -404,13 +404,9 @@ return view.extend({
 			.dkm-card-title {
 				font-size: 18px;
 				font-weight: bold;
-				color: #333;
 				display: flex;
 				align-items: center;
 				gap: 8px;
-			}
-			.theme-dark .dkm-card-title {
-				color: #eee;
 			}
 			.dkm-card-actions {
 				display: flex;
@@ -439,11 +435,7 @@ return view.extend({
 			}
 			.dkm-item-value {
 				font-size: 16px;
-				color: #333;
 				font-weight: 500;
-			}
-			.theme-dark .dkm-item-value {
-				color: #eee;
 			}
 			.dm-part-bar {
 				display: flex;
