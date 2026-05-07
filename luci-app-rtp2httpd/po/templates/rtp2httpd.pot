@@ -1,7 +1,7 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:600
+#: htdocs/luci-static/resources/view/rtp2httpd.js:622
 msgid ""
 "Additional FFmpeg arguments for snapshot generation. Common options: -"
 "hwaccel none, -hwaccel auto, -hwaccel vaapi (for Intel GPU)"
@@ -45,7 +45,7 @@ msgstr ""
 msgid "Edit the content of /etc/rtp2httpd.conf"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:565
+#: htdocs/luci-static/resources/view/rtp2httpd.js:598
 msgid ""
 "Enable video snapshot feature. When enabled, clients can request snapshots "
 "with snapshot=1 query parameter"
@@ -81,11 +81,11 @@ msgstr ""
 msgid "FCC Listen Port Range"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:587
+#: htdocs/luci-static/resources/view/rtp2httpd.js:620
 msgid "FFmpeg Arguments"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:575
+#: htdocs/luci-static/resources/view/rtp2httpd.js:608
 msgid "FFmpeg Path"
 msgstr ""
 
@@ -101,6 +101,16 @@ msgstr ""
 
 #: htdocs/luci-static/resources/view/rtp2httpd.js:529
 msgid "Hostname"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:574
+msgid "HTTP Proxy User-Agent"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:576
+msgid ""
+"Override the User-Agent header sent to upstream HTTP proxy requests. Leave "
+"empty to forward the client User-Agent as-is."
 msgstr ""
 
 #: htdocs/luci-static/resources/view/rtp2httpd.js:542
@@ -128,7 +138,7 @@ msgid ""
 "routing table)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:385
+#: htdocs/luci-static/resources/view/rtp2httpd.js:398
 msgid ""
 "Local UDP port range for FCC client sockets (format: start-end, e.g., "
 "40000-40100). Leave empty to use random ports."
@@ -153,7 +163,7 @@ msgstr ""
 msgid "Monitoring & Advanced"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:370
+#: htdocs/luci-static/resources/view/rtp2httpd.js:383
 msgid "Multicast Rejoin Interval"
 msgstr ""
 
@@ -179,12 +189,12 @@ msgstr ""
 msgid "Open Status Dashboard"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:577
+#: htdocs/luci-static/resources/view/rtp2httpd.js:610
 msgid ""
 "Path to FFmpeg executable. Leave empty to use system PATH (default: ffmpeg)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:372
+#: htdocs/luci-static/resources/view/rtp2httpd.js:385
 msgid ""
 "Periodic multicast rejoin interval in seconds (0=disabled, default 0). "
 "Enable this (e.g., 30-120 seconds) if your network switches timeout "
@@ -277,7 +287,7 @@ msgid ""
 "routing table)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:321
+#: htdocs/luci-static/resources/view/rtp2httpd.js:308
 msgid "Upstream RTSP Interface"
 msgstr ""
 
@@ -289,19 +299,29 @@ msgstr ""
 msgid "Use config file instead of individual options"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:563
+#: htdocs/luci-static/resources/view/rtp2httpd.js:596
 msgid "Video Snapshot"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:419
+#: htdocs/luci-static/resources/view/rtp2httpd.js:420
 msgid "RTSP STUN Server"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:421
+#: htdocs/luci-static/resources/view/rtp2httpd.js:422
 msgid ""
 "When RTSP server only supports UDP transport and client is behind NAT, try "
 "using STUN for NAT traversal (may not always succeed). Format: host:port or "
 "host (default port 3478). Example: stun.miwifi.com"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:585
+msgid "RTSP User-Agent"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:587
+msgid ""
+"User-Agent header used for upstream RTSP requests. Leave empty to use the "
+"default rtp2httpd/{version}."
 msgstr ""
 
 #: htdocs/luci-static/resources/view/rtp2httpd.js:531
@@ -313,7 +333,7 @@ msgid ""
 "com/rtp2httpd, and ensure the reverse proxy forwards the Host header."
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:553
+#: htdocs/luci-static/resources/view/rtp2httpd.js:564
 msgid ""
 "When enabled, uses HTTP X-Forwarded-For header as client address for status "
 "page display. Only enable when running behind a reverse proxy."
@@ -323,7 +343,7 @@ msgstr ""
 msgid "Workers"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:551
+#: htdocs/luci-static/resources/view/rtp2httpd.js:562
 msgid "X-Forwarded-For"
 msgstr ""
 

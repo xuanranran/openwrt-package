@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:600
+#: htdocs/luci-static/resources/view/rtp2httpd.js:622
 msgid ""
 "Additional FFmpeg arguments for snapshot generation. Common options: -"
 "hwaccel none, -hwaccel auto, -hwaccel vaapi (for Intel GPU)"
@@ -54,7 +54,7 @@ msgstr "所有上游流量（组播、FCC 和 RTSP）使用的默认接口。留
 msgid "Edit the content of /etc/rtp2httpd.conf"
 msgstr "编辑 /etc/rtp2httpd.conf 的内容"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:565
+#: htdocs/luci-static/resources/view/rtp2httpd.js:598
 msgid ""
 "Enable video snapshot feature. When enabled, clients can request snapshots "
 "with snapshot=1 query parameter"
@@ -95,11 +95,11 @@ msgstr ""
 msgid "FCC Listen Port Range"
 msgstr "FCC 监听端口范围"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:587
+#: htdocs/luci-static/resources/view/rtp2httpd.js:620
 msgid "FFmpeg Arguments"
 msgstr "FFmpeg 参数"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:575
+#: htdocs/luci-static/resources/view/rtp2httpd.js:608
 msgid "FFmpeg Path"
 msgstr "FFmpeg 路径"
 
@@ -118,6 +118,18 @@ msgstr "为 luci-app-rtp2httpd 授予 UCI 的访问权限"
 #: htdocs/luci-static/resources/view/rtp2httpd.js:529
 msgid "Hostname"
 msgstr "主机名/域名"
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:574
+msgid "HTTP Proxy User-Agent"
+msgstr "HTTP 代理 User-Agent"
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:576
+msgid ""
+"Override the User-Agent header sent to upstream HTTP proxy requests. Leave "
+"empty to forward the client User-Agent as-is."
+msgstr ""
+"覆盖发送给上游 HTTP 代理请求的 User-Agent 请求头。留空则按原样转发客户端的 "
+"User-Agent。"
 
 #: htdocs/luci-static/resources/view/rtp2httpd.js:542
 msgid ""
@@ -146,7 +158,7 @@ msgid ""
 "routing table)"
 msgstr "用于组播（RTP/UDP）上游媒体流的接口（默认：使用路由表）"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:385
+#: htdocs/luci-static/resources/view/rtp2httpd.js:398
 msgid ""
 "Local UDP port range for FCC client sockets (format: start-end, e.g., "
 "40000-40100). Leave empty to use random ports."
@@ -175,7 +187,7 @@ msgstr ""
 msgid "Monitoring & Advanced"
 msgstr "监控与高级功能"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:370
+#: htdocs/luci-static/resources/view/rtp2httpd.js:383
 msgid "Multicast Rejoin Interval"
 msgstr "组播周期性重新加入间隔"
 
@@ -202,12 +214,12 @@ msgstr "打开播放器页面"
 msgid "Open Status Dashboard"
 msgstr "打开状态面板"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:577
+#: htdocs/luci-static/resources/view/rtp2httpd.js:610
 msgid ""
 "Path to FFmpeg executable. Leave empty to use system PATH (default: ffmpeg)"
 msgstr "FFmpeg 可执行文件的路径。留空则使用系统 PATH（默认：ffmpeg）"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:372
+#: htdocs/luci-static/resources/view/rtp2httpd.js:385
 msgid ""
 "Periodic multicast rejoin interval in seconds (0=disabled, default 0). "
 "Enable this (e.g., 30-120 seconds) if your network switches timeout "
@@ -310,7 +322,7 @@ msgstr "使用配置文件"
 msgid "Use config file instead of individual options"
 msgstr "使用配置文件而不是单独的选项"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:563
+#: htdocs/luci-static/resources/view/rtp2httpd.js:596
 msgid "Video Snapshot"
 msgstr "视频快照"
 
@@ -327,7 +339,7 @@ msgstr ""
 "问地址（包括 http(s):// 和路径前缀），例如 https://my-domain.com/rtp2httpd，"
 "并且需要反向代理透传 Host 头。"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:553
+#: htdocs/luci-static/resources/view/rtp2httpd.js:564
 msgid ""
 "When enabled, uses HTTP X-Forwarded-For header as client address for status "
 "page display. Only enable when running behind a reverse proxy."
@@ -339,7 +351,7 @@ msgstr ""
 msgid "Workers"
 msgstr "工作进程数"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:551
+#: htdocs/luci-static/resources/view/rtp2httpd.js:562
 msgid "X-Forwarded-For"
 msgstr "X-Forwarded-For"
 
@@ -368,11 +380,11 @@ msgid ""
 "routing table)"
 msgstr "用于 HTTP 反向代理上游请求的接口（默认：使用路由表）"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:419
+#: htdocs/luci-static/resources/view/rtp2httpd.js:420
 msgid "RTSP STUN Server"
 msgstr "RTSP STUN 服务器"
 
-#: htdocs/luci-static/resources/view/rtp2httpd.js:421
+#: htdocs/luci-static/resources/view/rtp2httpd.js:422
 msgid ""
 "When RTSP server only supports UDP transport and client is behind NAT, try "
 "using STUN for NAT traversal (may not always succeed). Format: host:port or "
@@ -381,3 +393,14 @@ msgstr ""
 "当 RTSP 服务器仅支持 UDP 传输且客户端位于 NAT 后面时，尝试使用 STUN 进行 NAT "
 "穿透（可能不总是成功）。格式：host:port 或 host（默认端口 3478）。示例："
 "stun.miwifi.com"
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:585
+msgid "RTSP User-Agent"
+msgstr "RTSP User-Agent"
+
+#: htdocs/luci-static/resources/view/rtp2httpd.js:587
+msgid ""
+"User-Agent header used for upstream RTSP requests. Leave empty to use the "
+"default rtp2httpd/{version}."
+msgstr ""
+"用于上游 RTSP 请求的 User-Agent 请求头。留空则使用默认的 rtp2httpd/{version}。"
