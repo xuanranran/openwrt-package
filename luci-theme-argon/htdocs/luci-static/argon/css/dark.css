@@ -305,6 +305,14 @@ h3 {
   /*background: -webkit-linear-gradient(45deg,#4600da 10%,#b38fff);*/
 }
 
+body[data-page="admin-status-overview"] .cbi-progressbar {
+  background: conic-gradient(var(--primary) var(--progress, 0%), #58657a 0);
+}
+
+body[data-page="admin-status-overview"] .cbi-progressbar::before {
+  background: #2c323c;
+}
+
 .cbi-section-table .cbi-section-table-titles .cbi-section-table-cell {
   background-color: #1e1e1f;
 }

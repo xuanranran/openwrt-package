@@ -231,6 +231,153 @@ return baseclass.extend({
 		if (darkMask) {
 			darkMask.addEventListener('click', ui.createHandlerFn(this, 'handleSidebarToggle'));
 		}
+
+		// Initialize circular progress bars
+		this.initCircularProgressBars();
+	},
+
+	/**
+	 * Updates a single progress bar's appearance based on its data.
+	 */
+	updateProgressBarAppearance: function(bar) {
+		const innerDiv = bar.querySelector('div');
+		if (!innerDiv) return;
+
+		const progressPercentage = innerDiv.style.width;
+		const title = bar.getAttribute('title') || '';
+		const percentageMatch = title.match(/\((\d+\.?\d*|\d+)%\)/);
+		
+		let percentageText = progressPercentage;
+		if (percentageMatch && percentageMatch[0]) {
+			percentageText = percentageMatch[0].replace(/[()]/g, '');
+		}
+
+		// Update the data element text
+		const item = bar.closest('.cbi-progressbar-item');
+		if (item) {
+			const dataEl = item.querySelector('.cbi-progressbar-data');
+			if (dataEl) {
+				let titleText = title.replace(/\s*\([^)]*\)$/, '');
+				if (dataEl.textContent !== titleText) {
+					dataEl.textContent = titleText;
+				}
+			}
+		}
+
+		if (bar.style.getPropertyValue('--progress') !== progressPercentage) {
+			bar.style.setProperty('--progress', progressPercentage);
+		}
+		
+		if (innerDiv.textContent !== percentageText) {
+			innerDiv.textContent = percentageText;
+		}
+	},
+
+	/**
+	 * Sets up observers for a specific progress bar to handle dynamic updates.
+	 */
+	setupProgressBar: function(bar) {
+		if (bar.dataset.progressObserverAttached) return;
+
+		const observer = new MutationObserver(L.bind(this.updateProgressBarAppearance, this, bar));
+
+		const innerDiv = bar.querySelector('div');
+		if (innerDiv) {
+			observer.observe(bar, { attributes: true, attributeFilter: ['title'] });
+			observer.observe(innerDiv, { attributes: true, attributeFilter: ['style'] });
+			bar.dataset.progressObserverAttached = 'true';
+		}
+		
+		// Initial update
+		this.updateProgressBarAppearance(bar);
+	},
+
+	/**
+	 * Initializes circular progress bars and sets up a MutationObserver to detect new ones.
+	 */
+	initCircularProgressBars: function() {
+		if (document.body.dataset.page !== 'admin-status-overview') {
+			return;
+		}
+		const setup = L.bind(this.setupProgressBar, this);
+		const transform = L.bind(this.transformProgressbarTable, this);
+
+		// Initial run for existing elements
+		document.querySelectorAll('table.table').forEach(transform);
+		document.querySelectorAll('.cbi-progressbar').forEach(setup);
+
+		const observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				mutation.addedNodes.forEach(function(node) {
+					if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+					// If a table is added, try to transform it
+					if (node.tagName === 'TABLE' && node.classList.contains('table')) {
+						transform(node);
+					} else if (node.querySelectorAll) {
+						node.querySelectorAll('table.table').forEach(transform);
+					}
+
+					// If a progressbar is added, set it up
+					if (node.classList.contains('cbi-progressbar')) {
+						setup(node);
+					} else if (node.querySelectorAll) {
+						node.querySelectorAll('.cbi-progressbar').forEach(setup);
+					}
+				});
+			});
+		});
+		observer.observe(document.body, { childList: true, subtree: true });
+	},
+
+	transformProgressbarTable: function(table) {
+		// Check if the first row looks like a progress bar row
+		const firstRow = table.querySelector('tr');
+		if (!firstRow || !firstRow.querySelector('.cbi-progressbar')) {
+			return; // Not a progress bar table
+		}
+
+		// Check if we haven't transformed this table already
+		if (table.dataset.transformed === 'true') {
+			return;
+		}
+
+		const parent = table.parentNode;
+		const container = document.createElement('div');
+		container.className = 'cbi-progressbar-grid';
+
+		const rows = table.querySelectorAll('tr');
+		rows.forEach(row => {
+			const labelTd = row.cells[0];
+			const progressTd = row.cells[1];
+
+			if (labelTd && progressTd && progressTd.querySelector('.cbi-progressbar')) {
+				const item = document.createElement('div');
+				item.className = 'cbi-progressbar-item';
+
+				const label = document.createElement('div');
+				label.className = 'cbi-progressbar-label';
+				label.textContent = labelTd.textContent.trim();
+
+				const progressbar = progressTd.querySelector('.cbi-progressbar');
+
+				const data = document.createElement('div');
+				data.className = 'cbi-progressbar-data';
+				let titleText = progressbar.getAttribute('title') || '';
+				data.textContent = titleText.replace(/\s*\([^)]*\)$/, '');
+
+				item.appendChild(progressbar); // Move the progressbar
+				item.appendChild(label);
+				item.appendChild(data);
+				container.appendChild(item);
+			}
+		});
+
+		if (container.children.length > 0) {
+			parent.insertBefore(container, table);
+			table.style.display = 'none'; // Hide the original table
+			table.dataset.transformed = 'true';
+		}
 	},
 
 	/**

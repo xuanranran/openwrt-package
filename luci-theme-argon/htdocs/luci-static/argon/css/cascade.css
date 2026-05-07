@@ -89,11 +89,21 @@ body {
   font-size: 16px;
   font-family: var(--font-family-sans-serif);
   scrollbar-width: none;
+  background-color: var(--background-color);
 }
 
 html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 body {
@@ -434,7 +444,7 @@ h5 {
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   background-color: #000;
   background-color: var(--darker);
   overflow: hidden
@@ -743,7 +753,7 @@ small {
   font-weight: bold;
   text-decoration: none;
   text-align: center;
-  cursor: default;
+  cursor: pointer;
   margin: 0 2rem
 }
 
@@ -1438,8 +1448,8 @@ h5 {
 .cbi-section-descr {
   font-size: small;
   font-weight: var(--font-weight);
-  line-height: 1.42857143;
-  padding: 0.5rem 1.5rem;
+  /* line-height: 1.42857143; */
+  padding: 0 0 0 1.35rem;
 }
 
 .cbi-map-descr+fieldset {
@@ -1485,11 +1495,11 @@ fieldset>fieldset,
 [data-tab-title]>h3:first-child,
 [data-tab-title]>h4:first-child,
 [data-tab-title]>p:first-child {
-  padding: 1rem;
+  padding: 0.375rem;
 }
 
 .cbi-section p {
-  padding: 1rem;
+  padding: 0.375rem;
 }
 
 table {
@@ -1998,7 +2008,8 @@ td>table>tbody>tr>td,
   height: auto;
   opacity: 1;
   transition: opacity .25s ease-in;
-  /* margin: inherit !important */
+  margin: inherit !important;
+  padding: .35rem .35rem !important
 }
 
 .cbi-filebrowser {
@@ -2754,6 +2765,89 @@ td>table>tbody>tr>td,
   white-space: pre;
   text-overflow: ellipsis;
 }
+body[data-page="admin-status-overview"] .cbi-progressbar,
+body[data-page=""] .cbi-progressbar {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--primary) var(--progress, 0%), #eee 0);
+  border: none;
+  color: transparent;
+  min-width: 0;
+  overflow: visible;
+}
+
+body[data-page="admin-status-overview"] .cbi-progressbar::before,
+body[data-page=""] .cbi-progressbar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--background-color);
+}
+
+body[data-page="admin-status-overview"] .cbi-progressbar > div,
+body[data-page=""] .cbi-progressbar > div {
+  width: 100% !important; /* Override inline style */
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--primary);
+  background: none !important; /* Override inline background */
+  transition: none; /* Disable width transition */
+}
+
+/* Hide the old ::after pseudo-element that shows the title */
+body[data-page="admin-status-overview"] .cbi-progressbar::after,
+body[data-page=""] .cbi-progressbar::after {
+  display: none;
+}
+
+body[data-page="admin-status-overview"] .cbi-progressbar-grid,
+body[data-page=""] .cbi-progressbar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+body[data-page="admin-status-overview"] .cbi-progressbar-item,
+body[data-page=""] .cbi-progressbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+}
+
+body[data-page="admin-status-overview"] .cbi-progressbar-label,
+body[data-page=""] .cbi-progressbar-label {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--font-color);
+  text-align: center;
+}
+
+body[data-page="admin-status-overview"] .cbi-progressbar-data,
+body[data-page=""] .cbi-progressbar-data {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--font-color-2);
+  text-align: center;
+  word-break: break-all;
+  max-width: 100%;
+}
 
 #modal_overlay {
   position: fixed;
@@ -2800,9 +2894,9 @@ td>table>tbody>tr>td,
   padding: 8.5px;
   cursor: auto;
   /* white-space: pre-wrap; */
-  color: #ffc100;
+  color: #48439b;
   outline: 0;
-  background-color: #101010;
+  background-color: #c2c2c25e;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 2px 0 rgba(0, 0, 0, 0.12);
 }
 
@@ -2942,6 +3036,7 @@ body.modal-overlay-active #modal_overlay {
 }
 
 #view {
+  animation: fade-in .5s;
   border-radius: .375rem;
   overflow: visible
 }
@@ -5319,6 +5414,7 @@ div#add_link_div {
 #cbi-smartdns .cbi-section-node {
   padding: 16px
 }
+
 
 /* luci-app-ota */
 div#upgrade_log {
