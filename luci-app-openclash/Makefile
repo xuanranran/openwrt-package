@@ -152,7 +152,8 @@ define Package/$(PKG_NAME)/postrm
 	uci -q delete ucitrack.@openclash[-1]
 	uci -q commit ucitrack
 	}
-	rm -rf /tmp/luci-*
+	rm -rf /tmp/luci-indexcache /tmp/luci-indexcache.* /var/luci-indexcache /var/luci-indexcache.* >/dev/null 2>&1
+	rm -rf /tmp/luci-modulecache /var/luci-modulecache >/dev/null 2>&1
 	exit 0
 endef
 

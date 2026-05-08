@@ -3881,3 +3881,9 @@ msgstr "配置已选择"
 
 msgid "Global User-Agent"
 msgstr "全局 User-Agent"
+
+msgid "depended package reinstalling..."
+msgstr "依赖正在重新安装..."
+
+msgid "failed to install, please try to install it manually..."
+msgstr "依赖安装失败，请重试手动安装..."
