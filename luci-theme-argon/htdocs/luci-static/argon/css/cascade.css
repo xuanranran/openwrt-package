@@ -90,6 +90,7 @@ body {
   font-family: var(--font-family-sans-serif);
   scrollbar-width: none;
   background-color: var(--background-color);
+  overscroll-behavior: none;
 }
 
 html {
@@ -726,7 +727,8 @@ small {
   overflow-y: auto;
   height: 100%;
   display: flex;
-  flex-direction: row
+  flex-direction: row;
+  overscroll-behavior: none
 }
 
 .main-left {
@@ -736,7 +738,8 @@ small {
   background-color: var(--menu-bg-color);
   box-shadow: rgba(0, 0, 0, 0.75) 0 0 15px -5px;
   overflow-x: auto;
-  z-index: 100
+  z-index: 100;
+  overscroll-behavior: none
 }
 
 .main-left .sidenav-header {
@@ -783,7 +786,7 @@ small {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  background-color: var(--background-color)
+  overscroll-behavior: none
 }
 
 .main-right>#maincontent {
@@ -2766,88 +2769,90 @@ td>table>tbody>tr>td,
   white-space: pre;
   text-overflow: ellipsis;
 }
-body[data-page="admin-status-overview"] .cbi-progressbar,
-body[data-page=""] .cbi-progressbar {
-  position: relative;
-  width: 60px;
-  height: 60px;
-  margin: 0;
-  border-radius: 50%;
-  background: conic-gradient(var(--primary) var(--progress, 0%), #eee 0);
-  border: none;
-  color: transparent;
-  min-width: 0;
-  overflow: visible;
-}
+@supports (background: conic-gradient(red 0%, blue 100%)) {
+  body[data-page="admin-status-overview"] .cbi-progressbar,
+  body[data-page=""] .cbi-progressbar {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin: 0;
+    border-radius: 50%;
+    background: conic-gradient(var(--primary) var(--progress, 0%), #eee 0);
+    border: none;
+    color: transparent;
+    min-width: 0;
+    overflow: visible;
+  }
 
-body[data-page="admin-status-overview"] .cbi-progressbar::before,
-body[data-page=""] .cbi-progressbar::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: var(--background-color);
-}
+  body[data-page="admin-status-overview"] .cbi-progressbar::before,
+  body[data-page=""] .cbi-progressbar::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--background-color);
+  }
 
-body[data-page="admin-status-overview"] .cbi-progressbar > div,
-body[data-page=""] .cbi-progressbar > div {
-  width: 100% !important; /* Override inline style */
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  color: var(--primary);
-  background: none !important; /* Override inline background */
-  transition: none; /* Disable width transition */
-}
+  body[data-page="admin-status-overview"] .cbi-progressbar > div,
+  body[data-page=""] .cbi-progressbar > div {
+    width: 100% !important; /* Override inline style */
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--primary);
+    background: none !important; /* Override inline background */
+    transition: none; /* Disable width transition */
+  }
 
-/* Hide the old ::after pseudo-element that shows the title */
-body[data-page="admin-status-overview"] .cbi-progressbar::after,
-body[data-page=""] .cbi-progressbar::after {
-  display: none;
-}
+  /* Hide the old ::after pseudo-element that shows the title */
+  body[data-page="admin-status-overview"] .cbi-progressbar::after,
+  body[data-page=""] .cbi-progressbar::after {
+    display: none;
+  }
 
-body[data-page="admin-status-overview"] .cbi-progressbar-grid,
-body[data-page=""] .cbi-progressbar-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  gap: 20px;
-  padding: 10px 0;
-}
+  body[data-page="admin-status-overview"] .cbi-progressbar-grid,
+  body[data-page=""] .cbi-progressbar-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 20px;
+    padding: 10px 0;
+  }
 
-body[data-page="admin-status-overview"] .cbi-progressbar-item,
-body[data-page=""] .cbi-progressbar-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 90px;
-}
+  body[data-page="admin-status-overview"] .cbi-progressbar-item,
+  body[data-page=""] .cbi-progressbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
+  }
 
-body[data-page="admin-status-overview"] .cbi-progressbar-label,
-body[data-page=""] .cbi-progressbar-label {
-  margin-top: 8px;
-  font-size: 14px;
-  color: var(--font-color);
-  text-align: center;
-}
+  body[data-page="admin-status-overview"] .cbi-progressbar-label,
+  body[data-page=""] .cbi-progressbar-label {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--font-color);
+    text-align: center;
+  }
 
-body[data-page="admin-status-overview"] .cbi-progressbar-data,
-body[data-page=""] .cbi-progressbar-data {
-  margin-top: 4px;
-  font-size: 11px;
-  color: var(--font-color-2);
-  text-align: center;
-  word-break: break-all;
-  max-width: 100%;
+  body[data-page="admin-status-overview"] .cbi-progressbar-data,
+  body[data-page=""] .cbi-progressbar-data {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--font-color-2);
+    text-align: center;
+    word-break: break-all;
+    max-width: 100%;
+  }
 }
 
 #modal_overlay {
