@@ -2271,12 +2271,7 @@ td>table>tbody>tr>td,
   justify-content: space-between;
 }
 
-.cbi-section.fade-in .cbi-title>div:last-child {
-  position: absolute;
-  right: 1rem
-}
-
-.cbi-section.fade-in .cbi-title>div:last-child span.label {
+.cbi-section.fade-in .cbi-title h3 span.label {
   background: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -2285,10 +2280,6 @@ td>table>tbody>tr>td,
   border-radius: 0;
   min-width: auto;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent
-}
-
-.cbi-section.fade-in .cbi-title>div:last-child span {
   font-size: 0;
   display: inline-flex;
   align-items: center;
@@ -2296,7 +2287,7 @@ td>table>tbody>tr>td,
   -webkit-tap-highlight-color: transparent;
 }
 
-.cbi-section.fade-in .cbi-title>div:last-child span::after {
+.cbi-section.fade-in .cbi-title h3 span.label::after {
   content: "\e90f";
   font-family: 'argon' !important;
   font-size: 1.1rem;
@@ -2306,13 +2297,15 @@ td>table>tbody>tr>td,
   -webkit-font-smoothing: antialiased;
 }
 
-.cbi-section.fade-in .cbi-title>div:last-child span[data-style='inactive']::after {
+.cbi-section.fade-in
+.cbi-title h3 span.label[data-style='inactive']::after {
   transform: rotate(90deg);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .cbi-section.fade-in .cbi-title>div:last-child span:hover::after {
-    color: var(--primary)
+@media (hover:hover) and (pointer:fine) {
+  .cbi-section.fade-in
+  .cbi-title h3 span.label:hover::after {
+    color: var(--primary);
   }
 }
 
