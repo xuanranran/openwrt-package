@@ -296,7 +296,7 @@ return baseclass.extend({
 	 * Initializes circular progress bars and sets up a MutationObserver to detect new ones.
 	 */
 	initCircularProgressBars: function() {
-		if (document.body.dataset.page !== 'admin-status-overview') {
+		if (!['admin-status-overview', ''].includes(document.body.dataset.page)) {
 			return;
 		}
 		const setup = L.bind(this.setupProgressBar, this);

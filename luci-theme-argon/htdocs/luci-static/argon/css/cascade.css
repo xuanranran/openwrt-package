@@ -2271,7 +2271,12 @@ td>table>tbody>tr>td,
   justify-content: space-between;
 }
 
-.cbi-section.fade-in .cbi-title h3 span.label {
+.cbi-section.fade-in .cbi-title>div:last-child {
+  position: absolute;
+  right: 1rem
+}
+
+.cbi-section.fade-in .cbi-title>div:last-child span.label {
   background: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -2280,6 +2285,10 @@ td>table>tbody>tr>td,
   border-radius: 0;
   min-width: auto;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent
+}
+
+.cbi-section.fade-in .cbi-title>div:last-child span {
   font-size: 0;
   display: inline-flex;
   align-items: center;
@@ -2287,7 +2296,7 @@ td>table>tbody>tr>td,
   -webkit-tap-highlight-color: transparent;
 }
 
-.cbi-section.fade-in .cbi-title h3 span.label::after {
+.cbi-section.fade-in .cbi-title>div:last-child span::after {
   content: "\e90f";
   font-family: 'argon' !important;
   font-size: 1.1rem;
@@ -2297,13 +2306,13 @@ td>table>tbody>tr>td,
   -webkit-font-smoothing: antialiased;
 }
 
-.cbi-section.fade-in .cbi-title h3 span.label[data-style='inactive']::after {
+.cbi-section.fade-in .cbi-title>div:last-child span[data-style='inactive']::after {
   transform: rotate(90deg);
 }
 
-@media (hover:hover) and (pointer:fine) {
-  .cbi-section.fade-in .cbi-title h3 span.label:hover::after {
-    color: var(--primary);
+@media (hover: hover) and (pointer: fine) {
+  .cbi-section.fade-in .cbi-title>div:last-child span:hover::after {
+    color: var(--primary)
   }
 }
 
@@ -5408,6 +5417,11 @@ div#add_link_div {
   border-bottom: 1px solid #eef0f6;
 }
 
+/* luci-app-ota */
+div#upgrade_log {
+  padding: 15px;
+}
+
 #cbi-openclash .announcement-card {
   width: auto !important;
   margin: 10px !important
@@ -5419,10 +5433,4 @@ div#add_link_div {
 
 #cbi-smartdns .cbi-section-node {
   padding: 16px
-}
-
-
-/* luci-app-ota */
-div#upgrade_log {
-  padding: 15px;
 }
