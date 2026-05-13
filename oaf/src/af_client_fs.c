@@ -282,6 +282,7 @@ int init_af_client_procfs(void)
     if (!pde)
     {
         AF_ERROR("client visiting proc file created error\n");
+        remove_proc_entry(AF_CLIENT_PROC_STR, net->proc_net);
         return -1;
     }
     return 0;

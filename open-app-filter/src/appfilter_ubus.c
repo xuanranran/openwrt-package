@@ -202,6 +202,11 @@ appfilter_handle_dev_visit_list(struct ubus_context *ctx, struct ubus_object *ob
             char *latest_time_str = format_time(p_info->latest_time);
             int total_time = p_info->latest_time - p_info->first_time;
             if (strlen(get_app_name_by_id(p_info->appid)) == 0){
+                p_info = p_info->next;
+                if (first_time_str)
+                    free(first_time_str);
+                if (latest_time_str)
+                    free(latest_time_str);
                 continue;
             }
             struct json_object *visit_obj = json_object_new_object();

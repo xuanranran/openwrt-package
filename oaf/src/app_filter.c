@@ -445,14 +445,13 @@ void load_feature_buf_from_file(char **config_buf)
 	size = inode->i_size;
 	if (size == 0)
 	{
-		return;
+		goto close_fp;
 	}
 	*config_buf = (char *)kzalloc(sizeof(char) * size, GFP_ATOMIC);
 	if (NULL == *config_buf)
 	{
 		AF_ERROR("alloc buf fail\n");
-		filp_close(fp, NULL);
-		return;
+		goto close_fp;
 	}
 
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(5, 7, 19)
@@ -469,6 +468,7 @@ void load_feature_buf_from_file(char **config_buf)
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(5, 7, 19)
 	set_fs(fs);
 #endif
+close_fp:
 	filp_close(fp, NULL);
 }
 
@@ -501,10 +501,9 @@ int load_feature_config(void)
 		}
 	}
 
-	if (p != begin)
+	if (p != begin &&
+		!(p - begin < MIN_FEATURE_LINE_LEN || p - begin > MAX_FEATURE_LINE_LEN))
 	{
-		if (p - begin < MIN_FEATURE_LINE_LEN || p - begin > MAX_FEATURE_LINE_LEN)
-			return 0;
 		memset(line, 0x0, sizeof(line));
 		strncpy(line, begin, p - begin);
 		af_init_feature(line);

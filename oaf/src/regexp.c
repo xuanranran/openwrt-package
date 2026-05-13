@@ -54,6 +54,8 @@ static void regexp_free(RE *regexp)
 	for(; regexp; regexp = tmp)
 	{
 		tmp = regexp->next;
+		if (regexp->type == LIST && regexp->ccl)
+			kfree(regexp->ccl);
 		kfree(regexp);
 	}
 }
