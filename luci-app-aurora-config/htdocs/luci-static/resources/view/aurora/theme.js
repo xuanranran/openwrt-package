@@ -323,6 +323,15 @@ const renderContainerMaxWidthControl = createRangeControlRenderer({
   displayWidth: 80,
 });
 
+const renderRadiusControl = createRangeControlRenderer({
+  min: "0",
+  max: "1.5",
+  step: "0.125",
+  default: 0.5,
+  precision: 3,
+  displayWidth: 70,
+});
+
 const createIconUploadButton = (ss, tmpPath) => {
   const so = ss.option(form.Button, "_upload_icon", _("Upload Icon"));
   so.inputstyle = "add";
@@ -1105,6 +1114,16 @@ return view.extend({
     so.placeholder = "0.25rem";
     so.rmempty = false;
     so.render = renderSpacingControl;
+
+    so = structureSubsection.option(
+      form.Value,
+      "struct_radius_base",
+      _("Border Radius"),
+    );
+    so.default = "0.5rem";
+    so.placeholder = "0.5rem";
+    so.rmempty = false;
+    so.render = renderRadiusControl;
 
     so = structureSubsection.option(
       form.Value,
