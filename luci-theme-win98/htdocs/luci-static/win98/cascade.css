@@ -1,0 +1,4127 @@
+@import url("/luci-static/openwrt.org/cascade.css");
+
+@font-face {
+	font-family: "Pixelated MS Sans Serif";
+	src: url("/luci-static/win98/fonts/pixelated-ms-sans-serif.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Pixelated MS Sans Serif";
+	src: url("/luci-static/win98/fonts/pixelated-ms-sans-serif-bold.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+}
+
+:root {
+	--win98-desktop: #008080;
+	--win98-face: #c0c0c0;
+	--win98-light: #ffffff;
+	--win98-mid: #dfdfdf;
+	--win98-shadow: #808080;
+	--win98-dark: #000000;
+	--win98-title: #000080;
+	--win98-title-soft: #1084d0;
+	--win98-text: #000000;
+	--win98-muted: #404040;
+	--win98-link: #000080;
+	--win98-danger: #800000;
+	--win98-warning: #ffffcc;
+	--win98-logo: url("/luci-static/win98/win98-logo.svg");
+	--win98-start-logo: url("/luci-static/win98/win98-start.svg");
+	--font-sans: "Pixelated MS Sans Serif", "MS Sans Serif", "Microsoft Sans Serif", Tahoma, SimSun, "Microsoft YaHei", sans-serif;
+}
+
+html {
+	height: 100%;
+	min-height: 100%;
+	overflow: hidden;
+	background: var(--win98-desktop);
+}
+
+body {
+	height: 100%;
+	min-height: 0;
+	padding: 0;
+	box-sizing: border-box;
+	overflow: hidden;
+	background: transparent;
+	color: var(--win98-text);
+	font-family: var(--font-sans);
+	font-size: 13px;
+	line-height: 1.35;
+}
+
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+legend,
+label,
+button,
+input,
+select,
+textarea,
+table,
+.table,
+.tr,
+.th,
+.td,
+.btn,
+.cbi-button,
+.cbi-dropdown,
+.cbi-value,
+.cbi-section,
+.cbi-map,
+.win98-window,
+.win98-start-menu,
+.win98-footer-wrap {
+	font-family: var(--font-sans) !important;
+}
+
+* {
+	scrollbar-width: auto;
+	scrollbar-color: var(--win98-shadow) var(--win98-face);
+}
+
+html,
+body,
+.win98-framed-page,
+.win98-framed-page body,
+.win98-framed-page #maincontent,
+.win98-window-body,
+.win98-window-content {
+	scrollbar-width: auto;
+	scrollbar-color: var(--win98-shadow) var(--win98-face);
+}
+
+*::-webkit-scrollbar {
+	width: 16px;
+	height: 16px;
+	background: var(--win98-face);
+}
+
+*::-webkit-scrollbar-button {
+	width: 16px;
+	height: 16px;
+	background-color: var(--win98-face);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 7px 7px;
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+*::-webkit-scrollbar-button:hover,
+*::-webkit-scrollbar-button:active {
+	background-color: var(--win98-face);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 7px 7px;
+}
+
+*::-webkit-scrollbar-button:vertical:decrement {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M3 1H4V2H5V3H6V4H1V3H2V2H3Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+*::-webkit-scrollbar-button:vertical:increment {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M1 2H6V3H5V4H4V5H3V4H2V3H1Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+*::-webkit-scrollbar-button:horizontal:decrement {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M1 3H2V2H3V1H4V6H3V5H2V4H1Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+*::-webkit-scrollbar-button:horizontal:increment {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M3 1H4V2H5V3H6V4H5V5H4V6H3Z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.win98-framed-page::-webkit-scrollbar,
+.win98-framed-page body::-webkit-scrollbar,
+.win98-framed-page #maincontent::-webkit-scrollbar,
+.win98-window-body::-webkit-scrollbar,
+.win98-window-content::-webkit-scrollbar {
+	width: 16px;
+	height: 16px;
+	background: var(--win98-face);
+}
+
+*::-webkit-scrollbar-track {
+	background:
+		linear-gradient(45deg, var(--win98-mid) 25%, transparent 25% 75%, var(--win98-mid) 75%),
+		linear-gradient(45deg, var(--win98-mid) 25%, transparent 25% 75%, var(--win98-mid) 75%),
+		var(--win98-light);
+	background-position: 0 0, 2px 2px, 0 0;
+	background-size: 4px 4px, 4px 4px, auto;
+	border: 1px solid var(--win98-shadow);
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.win98-framed-page::-webkit-scrollbar-track,
+.win98-framed-page body::-webkit-scrollbar-track,
+.win98-framed-page #maincontent::-webkit-scrollbar-track,
+.win98-window-body::-webkit-scrollbar-track,
+.win98-window-content::-webkit-scrollbar-track {
+	background:
+		linear-gradient(45deg, var(--win98-mid) 25%, transparent 25% 75%, var(--win98-mid) 75%),
+		linear-gradient(45deg, var(--win98-mid) 25%, transparent 25% 75%, var(--win98-mid) 75%),
+		var(--win98-light);
+	background-position: 0 0, 2px 2px, 0 0;
+	background-size: 4px 4px, 4px 4px, auto;
+	border: 1px solid var(--win98-shadow);
+}
+
+*::-webkit-scrollbar-thumb {
+	min-width: 16px;
+	min-height: 16px;
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.win98-framed-page::-webkit-scrollbar-thumb,
+.win98-framed-page body::-webkit-scrollbar-thumb,
+.win98-framed-page #maincontent::-webkit-scrollbar-thumb,
+.win98-window-body::-webkit-scrollbar-thumb,
+.win98-window-content::-webkit-scrollbar-thumb {
+	min-width: 16px;
+	min-height: 16px;
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+*::-webkit-scrollbar-thumb:active,
+*::-webkit-scrollbar-button:active {
+	border-top-color: var(--win98-dark);
+	border-left-color: var(--win98-dark);
+	border-right-color: var(--win98-light);
+	border-bottom-color: var(--win98-light);
+	box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid);
+}
+
+html::-webkit-scrollbar-thumb:active,
+body::-webkit-scrollbar-thumb:active,
+.win98-framed-page::-webkit-scrollbar-thumb:active,
+.win98-framed-page body::-webkit-scrollbar-thumb:active,
+.win98-framed-page #maincontent::-webkit-scrollbar-thumb:active,
+.win98-window-body::-webkit-scrollbar-thumb:active,
+.win98-window-content::-webkit-scrollbar-thumb:active,
+html::-webkit-scrollbar-button:active,
+body::-webkit-scrollbar-button:active,
+.win98-framed-page::-webkit-scrollbar-button:active,
+.win98-framed-page body::-webkit-scrollbar-button:active,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:active,
+.win98-window-body::-webkit-scrollbar-button:active,
+.win98-window-content::-webkit-scrollbar-button:active {
+	border-top-color: var(--win98-dark);
+	border-left-color: var(--win98-dark);
+	border-right-color: var(--win98-light);
+	border-bottom-color: var(--win98-light);
+	box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid);
+}
+
+*::-webkit-scrollbar-corner {
+	background: var(--win98-face);
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+}
+
+html::-webkit-scrollbar-corner,
+body::-webkit-scrollbar-corner,
+.win98-framed-page::-webkit-scrollbar-corner,
+.win98-framed-page body::-webkit-scrollbar-corner,
+.win98-framed-page #maincontent::-webkit-scrollbar-corner,
+.win98-window-body::-webkit-scrollbar-corner,
+.win98-window-content::-webkit-scrollbar-corner {
+	background: var(--win98-face);
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+}
+
+*::-webkit-scrollbar-button {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: var(--win98-face);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button,
+.win98-framed-page::-webkit-scrollbar-button,
+.win98-framed-page body::-webkit-scrollbar-button,
+.win98-framed-page #maincontent::-webkit-scrollbar-button,
+.win98-window-body::-webkit-scrollbar-button,
+.win98-window-content::-webkit-scrollbar-button {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: var(--win98-face);
+	background-repeat: no-repeat;
+	background-position: center;
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+*::-webkit-scrollbar-button:vertical:decrement {
+	background-image:
+		linear-gradient(45deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(135deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 4px 5px, 7px 5px;
+}
+
+html::-webkit-scrollbar-button:vertical:decrement,
+body::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page body::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:vertical:decrement,
+.win98-window-body::-webkit-scrollbar-button:vertical:decrement,
+.win98-window-content::-webkit-scrollbar-button:vertical:decrement {
+	background-image:
+		linear-gradient(45deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(135deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 4px 5px, 7px 5px;
+}
+
+*::-webkit-scrollbar-button:vertical:increment {
+	background-image:
+		linear-gradient(135deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(45deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 4px 7px, 7px 7px;
+}
+
+html::-webkit-scrollbar-button:vertical:increment,
+body::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page body::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:vertical:increment,
+.win98-window-body::-webkit-scrollbar-button:vertical:increment,
+.win98-window-content::-webkit-scrollbar-button:vertical:increment {
+	background-image:
+		linear-gradient(135deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(45deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 4px 7px, 7px 7px;
+}
+
+*::-webkit-scrollbar-button:horizontal:decrement {
+	background-image:
+		linear-gradient(135deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(45deg, transparent 50%, var(--win98-dark) 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 5px 4px, 5px 7px;
+}
+
+html::-webkit-scrollbar-button:horizontal:decrement,
+body::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page body::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:horizontal:decrement,
+.win98-window-body::-webkit-scrollbar-button:horizontal:decrement,
+.win98-window-content::-webkit-scrollbar-button:horizontal:decrement {
+	background-image:
+		linear-gradient(135deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(45deg, transparent 50%, var(--win98-dark) 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 5px 4px, 5px 7px;
+}
+
+*::-webkit-scrollbar-button:horizontal:increment {
+	background-image:
+		linear-gradient(45deg, var(--win98-dark) 50%, transparent 50%),
+		linear-gradient(135deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 7px 4px, 7px 7px;
+}
+
+html::-webkit-scrollbar-button:horizontal:increment,
+body::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page body::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:horizontal:increment,
+.win98-window-body::-webkit-scrollbar-button:horizontal:increment,
+.win98-window-content::-webkit-scrollbar-button:horizontal:increment {
+	background-image:
+		linear-gradient(45deg, var(--win98-dark) 50%, transparent 50%),
+		linear-gradient(135deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 7px 4px, 7px 7px;
+}
+
+html:not(.win98-framed-page),
+html:not(.win98-framed-page) body {
+	scrollbar-width: none;
+}
+
+html:not(.win98-framed-page)::-webkit-scrollbar,
+html:not(.win98-framed-page) body::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.win98-framed-page,
+.win98-framed-page body {
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
+	background: #ffffff;
+}
+
+.win98-framed-page body {
+	padding: 0;
+}
+
+.win98-framed-page #menubar,
+.win98-framed-page #mainmenu,
+.win98-framed-page .win98-footer-wrap,
+.win98-framed-page .skiplink {
+	display: none !important;
+}
+
+.win98-framed-page #maincontainer {
+	display: block;
+	width: auto;
+	height: auto;
+	margin: 0;
+}
+
+.win98-framed-page #maincontent {
+	width: auto;
+	height: 100vh;
+	min-height: 0;
+	padding: 6px 23px 23px 6px;
+	box-sizing: border-box;
+	overflow: auto;
+	border: 0;
+	box-shadow: none;
+	background: var(--win98-face);
+}
+
+.win98-custom-scrollbars,
+.win98-custom-scrollbars body,
+.win98-custom-scrollbars #maincontent,
+.win98-custom-scrollbars .win98-scrollbar-scroller {
+	scrollbar-width: none !important;
+}
+
+.win98-custom-scrollbars::-webkit-scrollbar,
+.win98-custom-scrollbars body::-webkit-scrollbar,
+.win98-custom-scrollbars #maincontent::-webkit-scrollbar,
+.win98-custom-scrollbars .win98-scrollbar-scroller::-webkit-scrollbar {
+	display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+}
+
+.win98-scrollbar,
+.win98-scrollbar-corner {
+	position: fixed;
+	z-index: 99999;
+	background: var(--win98-face);
+}
+
+.win98-scrollbar.is-contained,
+.win98-scrollbar-corner.is-contained {
+	position: absolute;
+	z-index: 8;
+}
+
+.win98-scrollbar.is-inner,
+.win98-scrollbar-corner.is-inner {
+	position: absolute;
+	z-index: 9;
+}
+
+.win98-scrollbar-vertical {
+	top: 0;
+	right: 0;
+	bottom: 17px;
+	width: 17px;
+}
+
+.win98-scrollbar-horizontal {
+	left: 0;
+	right: 17px;
+	bottom: 0;
+	height: 17px;
+}
+
+.win98-scrollbar-corner {
+	right: 0;
+	bottom: 0;
+	width: 17px;
+	height: 17px;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+}
+
+.win98-scrollbar-vertical.is-contained {
+	top: 4px;
+	right: 4px;
+	bottom: 4px;
+}
+
+.win98-scrollbar-horizontal.is-contained {
+	left: 4px;
+	right: 4px;
+	bottom: 4px;
+}
+
+.win98-scrollbar-corner.is-contained {
+	right: 4px;
+	bottom: 4px;
+}
+
+.win98-scrollbar-vertical.is-inner {
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.win98-scrollbar-horizontal.is-inner {
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.win98-scrollbar-corner.is-inner {
+	right: 0;
+	bottom: 0;
+}
+
+.win98-scrollbar[hidden],
+.win98-scrollbar-corner[hidden] {
+	display: none !important;
+}
+
+.win98-scrollbar-button,
+.win98-scrollbar-thumb {
+	position: absolute;
+	display: block !important;
+	box-sizing: border-box;
+	min-width: 0 !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	border-radius: 0;
+	background-color: var(--win98-face);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 7px 7px;
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+	font-size: 0;
+	line-height: 0;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.win98-scrollbar-button {
+	width: 17px !important;
+	height: 17px !important;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 7px 7px;
+}
+
+.win98-scrollbar-button:hover {
+	background-color: var(--win98-face);
+}
+
+.win98-scrollbar-button:active {
+	border-top-color: var(--win98-dark) !important;
+	border-left-color: var(--win98-dark) !important;
+	border-right-color: var(--win98-light) !important;
+	border-bottom-color: var(--win98-light) !important;
+	box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid) !important;
+}
+
+.win98-scrollbar-button::before {
+	content: none !important;
+	position: absolute;
+	left: 5px;
+	top: 5px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	display: none !important;
+}
+
+.win98-scrollbar-button::after {
+	content: none !important;
+	display: none !important;
+}
+
+.win98-scrollbar-button.is-up {
+	top: 0;
+	left: 0;
+}
+
+.win98-scrollbar-button.is-down {
+	left: 0;
+	bottom: 0;
+}
+
+.win98-scrollbar-button.is-left {
+	left: 0;
+	top: 0;
+}
+
+.win98-scrollbar-button.is-right {
+	right: 0;
+	top: 0;
+}
+
+.win98-scrollbar-button.is-up::before {
+	border-width: 0;
+}
+
+.win98-scrollbar-button.is-down::before {
+	border-width: 0;
+}
+
+.win98-scrollbar-button.is-left::before {
+	border-width: 0;
+}
+
+.win98-scrollbar-button.is-right::before {
+	border-width: 0;
+}
+
+.win98-scrollbar-button.is-up {
+	--win98-scrollbar-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M3 1H4V2H5V3H6V4H1V3H2V2H3Z' fill='%23000'/%3E%3C/svg%3E");
+	background-image: var(--win98-scrollbar-arrow);
+}
+
+.win98-scrollbar-button.is-down {
+	--win98-scrollbar-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M1 2H6V3H5V4H4V5H3V4H2V3H1Z' fill='%23000'/%3E%3C/svg%3E");
+	background-image: var(--win98-scrollbar-arrow);
+}
+
+.win98-scrollbar-button.is-left {
+	--win98-scrollbar-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M1 3H2V2H3V1H4V6H3V5H2V4H1Z' fill='%23000'/%3E%3C/svg%3E");
+	background-image: var(--win98-scrollbar-arrow);
+}
+
+.win98-scrollbar-button.is-right {
+	--win98-scrollbar-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M3 1H4V2H5V3H6V4H5V5H4V6H3Z' fill='%23000'/%3E%3C/svg%3E");
+	background-image: var(--win98-scrollbar-arrow);
+}
+
+.win98-scrollbar-button,
+.win98-scrollbar-button:hover,
+.win98-scrollbar-button:focus,
+.win98-scrollbar-button:active {
+	background-color: var(--win98-face) !important;
+	background-image: var(--win98-scrollbar-arrow) !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+	background-size: 7px 7px !important;
+}
+
+.win98-scrollbar-track {
+	position: absolute;
+	background:
+		linear-gradient(45deg, var(--win98-mid) 25%, transparent 25% 75%, var(--win98-mid) 75%),
+		linear-gradient(45deg, var(--win98-mid) 25%, transparent 25% 75%, var(--win98-mid) 75%),
+		var(--win98-light);
+	background-position: 0 0, 2px 2px, 0 0;
+	background-size: 4px 4px, 4px 4px, auto;
+}
+
+.win98-scrollbar-vertical .win98-scrollbar-track {
+	top: 17px;
+	bottom: 17px;
+	left: 0;
+	width: 17px;
+}
+
+.win98-scrollbar-horizontal .win98-scrollbar-track {
+	left: 17px;
+	right: 17px;
+	top: 0;
+	height: 17px;
+}
+
+.win98-scrollbar-vertical .win98-scrollbar-thumb {
+	left: 0;
+	top: 0;
+	width: 17px !important;
+}
+
+.win98-scrollbar-horizontal .win98-scrollbar-thumb {
+	left: 0;
+	top: 0;
+	height: 17px !important;
+}
+
+a {
+	color: var(--win98-link);
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #ff0000;
+}
+
+#menubar,
+#maincontainer,
+.win98-footer-wrap {
+	width: 100%;
+	max-width: none;
+	margin-left: 0;
+	margin-right: 0;
+	box-sizing: border-box;
+}
+
+.win98-auth-shell {
+	width: calc(100% - 24px);
+	max-width: 980px;
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
+}
+
+#menubar,
+#mainmenu,
+#maincontent,
+.win98-footer-wrap,
+.win98-auth-hero,
+.win98-auth-panel,
+#view .main,
+#view .login-box,
+#view .login-form {
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+#menubar {
+	display: none;
+	flex-wrap: wrap;
+	align-items: center;
+	min-height: 28px;
+	margin-top: 0;
+	padding: 2px;
+	color: var(--win98-text);
+}
+
+div.hostinfo {
+	position: relative;
+	min-height: 18px;
+	padding: 3px 8px 3px 26px;
+	background: linear-gradient(90deg, var(--win98-title), var(--win98-title-soft));
+	color: #ffffff;
+	font-weight: bold;
+	line-height: 18px;
+}
+
+div.hostinfo::before {
+	content: "";
+	position: absolute;
+	left: 6px;
+	top: 4px;
+	width: 14px;
+	height: 14px;
+	background:
+		linear-gradient(90deg, #ff0000 0 50%, #00a000 50% 100%),
+		linear-gradient(#0000ff 0 50%, #ffff00 50% 100%);
+	background-blend-mode: screen;
+	border: 1px solid #ffffff;
+	box-sizing: border-box;
+}
+
+#modemenu {
+	margin-left: auto;
+	padding-right: 2px;
+}
+
+#modemenu > * {
+	padding: 0;
+}
+
+#modemenu li {
+	float: none;
+}
+
+#modemenu a {
+	display: block;
+	min-height: 18px;
+	margin-left: 2px;
+	padding: 3px 9px;
+	border-top: 1px solid var(--win98-light);
+	border-left: 1px solid var(--win98-light);
+	border-right: 1px solid var(--win98-shadow);
+	border-bottom: 1px solid var(--win98-shadow);
+	background: var(--win98-face) !important;
+	color: var(--win98-text) !important;
+	text-decoration: none;
+}
+
+#modemenu a:hover,
+#modemenu a.active,
+#modemenu a.preactive {
+	border-top-color: var(--win98-shadow);
+	border-left-color: var(--win98-shadow);
+	border-right-color: var(--win98-light);
+	border-bottom-color: var(--win98-light);
+	background: #000080 !important;
+	color: #ffffff !important;
+}
+
+#indicators {
+	margin-right: 6px;
+}
+
+#indicators > :not([id="xhr_poll_status"]),
+#indicators > #xhr_poll_status > * {
+	margin: 2px 0 2px 4px;
+	padding: 2px 6px;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	background: var(--win98-face) !important;
+	color: var(--win98-text) !important;
+	font-size: 10px;
+	font-weight: normal;
+}
+
+#indicators > [data-style="inactive"],
+#indicators > * > #xhr_poll_status_off {
+	color: var(--win98-muted) !important;
+}
+
+#maincontainer {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 34px;
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 8px;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+html.win98-framed-page #maincontainer {
+	position: static;
+	display: block;
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 0;
+	overflow: visible;
+}
+
+#mainmenu {
+	display: none !important;
+}
+
+#mainmenu ul {
+	margin: 0;
+	padding: 0;
+}
+
+#mainmenu ul li {
+	margin: 0;
+}
+
+#mainmenu ul.l1 > li > a,
+.win98-window-titlebar {
+	margin: 0;
+	padding: 3px 6px;
+	border: 0;
+	background: var(--win98-shadow);
+	color: #ffffff;
+	font-family: var(--font-sans);
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 18px;
+	text-shadow: none;
+}
+
+#maincontent > h2:first-of-type,
+.cbi-map > h2:first-child,
+h2.navigation {
+	margin: 0 0 6px;
+	padding: 4px 6px;
+	border-top: 1px solid var(--win98-light);
+	border-left: 1px solid var(--win98-light);
+	border-right: 1px solid var(--win98-shadow);
+	border-bottom: 1px solid var(--win98-shadow);
+	background: var(--win98-face);
+	color: var(--win98-text);
+	font-family: var(--font-sans);
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 18px;
+	text-shadow: none;
+}
+
+h3,
+h4,
+h5,
+legend,
+.cbi-section > h3:first-child,
+.cbi-section > legend:first-child {
+	display: inline-block;
+	position: relative;
+	z-index: 1;
+	margin: 7px 0 -1px 8px;
+	padding: 0 4px;
+	border: 0;
+	background: var(--win98-face);
+	color: var(--win98-text);
+	font-family: var(--font-sans);
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 14px;
+	text-shadow: none;
+}
+
+#mainmenu ul.l1 > li > a {
+	display: block;
+	margin-bottom: 1px;
+	text-decoration: none;
+}
+
+#mainmenu ul.l1 > li.selected > a,
+#mainmenu ul.l1 > li > a:hover {
+	background: #000080;
+	color: #ffffff;
+}
+
+#mainmenu ul.l1 > li > ul {
+	background: #ffffff;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+}
+
+#mainmenu ul.l1 > li.selected > ul,
+#mainmenu ul.l1 > li.active > ul {
+	max-height: 1000px;
+	visibility: visible;
+}
+
+#mainmenu ul.l2 > li > a {
+	display: block;
+	padding: 4px 8px 4px 20px;
+	background: #ffffff;
+	color: var(--win98-text);
+	font-size: 13px;
+	text-decoration: none;
+}
+
+#mainmenu ul.l2 > li > a::before {
+	content: "\25b8";
+	margin-left: -12px;
+	margin-right: 5px;
+	color: var(--win98-text);
+}
+
+#mainmenu ul li.selected ul li.selected > a,
+#mainmenu ul.l2 > li > a:hover {
+	background: #000080;
+	color: #ffffff;
+}
+
+#mainmenu ul li.mainmenu-item-logout {
+	margin-top: 2px;
+}
+
+#maincontent {
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 2px;
+	color: var(--win98-text);
+}
+
+#maincontent.win98-desktop-host {
+	position: relative;
+	align-self: stretch;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+	overflow: hidden;
+}
+
+.win98-desktop {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	min-height: 420px;
+	overflow: hidden;
+}
+
+.win98-desktop-icon {
+	position: absolute;
+	left: 14px;
+	top: 14px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 76px;
+	min-width: 76px;
+	height: 78px;
+	margin: 0;
+	padding: 4px 2px;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	color: #ffffff !important;
+	text-align: center;
+	text-shadow: 1px 1px 0 #000000;
+	line-height: 14px;
+	cursor: default;
+	appearance: none;
+	-webkit-appearance: none;
+	z-index: 0;
+}
+
+.win98-desktop-icon:hover,
+.win98-desktop-icon:focus,
+.win98-desktop-icon:active {
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	outline: none;
+	color: #ffffff !important;
+	padding: 4px 2px;
+}
+
+.win98-desktop-icon-image {
+	display: block;
+	width: 32px;
+	height: 32px;
+	margin: 0 auto 4px;
+	background-image: var(--win98-desktop-icon, url("/luci-static/win98/icons/menu/large/control-panel.png"));
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	image-rendering: pixelated;
+}
+
+.win98-desktop-icon-label {
+	display: inline-block;
+	max-width: 72px;
+	padding: 1px 2px;
+	color: inherit;
+	text-shadow: 1px 1px 0 #000000;
+}
+
+.win98-desktop-icon.is-selected .win98-desktop-icon-label {
+	background: #000080;
+	color: #ffffff;
+	outline: 1px dotted #ffffff;
+	outline-offset: -1px;
+	text-shadow: none;
+}
+
+.win98-window {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	min-width: 320px;
+	min-height: 180px;
+	background: var(--win98-face);
+	border: none;
+	padding: 3px;
+	box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-mid),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-light);
+	resize: both;
+	overflow: hidden;
+}
+
+.win98-window.is-minimized {
+	display: none;
+}
+
+.win98-window.is-maximized {
+	left: 0 !important;
+	top: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	resize: none;
+}
+
+.win98-window-titlebar {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex: 0 0 auto;
+	padding: 3px 2px 3px 3px;
+	box-sizing: border-box;
+	font-size: 11px;
+	line-height: 1;
+	background: linear-gradient(90deg, var(--win98-shadow), #b5b5b5);
+	color: #c0c0c0;
+	cursor: move;
+	user-select: none;
+}
+
+.win98-window.is-maximized .win98-window-titlebar {
+	cursor: default;
+}
+
+.win98-window.is-active .win98-window-titlebar {
+	background: linear-gradient(90deg, var(--win98-title), var(--win98-title-soft));
+	color: #ffffff;
+}
+
+.win98-window-title {
+	display: block;
+	flex: 1 1 auto;
+	min-width: 0;
+	margin-right: 24px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: left;
+	font-weight: 700;
+	letter-spacing: 0;
+	line-height: 1;
+}
+
+.win98-window-title-icon {
+	display: block;
+	flex: 0 0 14px;
+	width: 14px;
+	height: 14px;
+	margin-right: 3px;
+	background-image: var(--win98-title-icon, url("/luci-static/win98/icons/menu/large/app.png"));
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 14px 14px;
+	image-rendering: pixelated;
+}
+
+.win98-window-controls {
+	display: flex;
+	align-items: flex-start;
+	gap: 0;
+	margin-left: auto;
+	flex: 0 0 auto;
+}
+
+.win98-window-button {
+	display: block;
+	width: 16px;
+	height: 14px;
+	min-width: 16px;
+	min-height: 14px;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	position: relative;
+	font-size: 0;
+	line-height: 0;
+	vertical-align: top;
+	background: var(--win98-face);
+	background-repeat: no-repeat;
+	background-size: auto;
+	border: none;
+	box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid);
+	color: transparent !important;
+	text-shadow: none;
+	appearance: none;
+	-webkit-appearance: none;
+	flex: 0 0 16px;
+}
+
+.win98-window-button:hover,
+.win98-window-button:focus {
+	background-color: var(--win98-face);
+	background-repeat: no-repeat;
+	background-size: auto;
+	outline: none !important;
+	box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid);
+}
+
+.win98-window-button:active {
+	padding: 0;
+	background-color: var(--win98-face);
+	background-repeat: no-repeat;
+	background-size: auto;
+	box-shadow:
+		inset -1px -1px var(--win98-light),
+		inset 1px 1px var(--win98-dark),
+		inset -2px -2px var(--win98-mid),
+		inset 2px 2px var(--win98-shadow);
+}
+
+.win98-window-button::before,
+.win98-window-button::after {
+	content: "";
+	position: absolute;
+	box-sizing: border-box;
+	display: none;
+}
+
+.win98-window-button[data-window-action="minimize"] {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='6' height='2' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M0 0h6v2H0z'/%3E%3C/svg%3E");
+	background-position: bottom 3px left 4px;
+}
+
+.win98-window-button[data-window-action="maximize"] {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='9' height='9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9 0H0v9h9V0zM8 2H1v6h7V2z' fill='%23000'/%3E%3C/svg%3E");
+	background-position: top 2px left 3px;
+}
+
+.win98-window-button[data-window-action="restore"] {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='8' height='9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M2 0h6v2H2zM7 2h1v4H7zM2 2h1v1H2zM6 5h1v1H6zM0 3h6v2H0zM5 5h1v4H5zM0 5h1v4H0zM1 8h4v1H1z'/%3E%3C/svg%3E");
+	background-position: top 2px left 3px;
+}
+
+.win98-window-button[data-window-action="close"] {
+	margin-left: 2px;
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='8' height='7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0V0z' fill='%23000'/%3E%3C/svg%3E");
+	background-position: top 3px left 4px;
+}
+
+.win98-window-body {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	margin: 2px;
+	padding: 0;
+	overflow: hidden;
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-shadow);
+	border-left: 2px solid var(--win98-shadow);
+	border-right: 2px solid var(--win98-light);
+	border-bottom: 2px solid var(--win98-light);
+	color: var(--win98-text);
+}
+
+.win98-window-menu {
+	display: flex;
+	align-items: stretch;
+	flex: 0 0 auto;
+	min-height: 20px;
+	padding: 1px 2px;
+	border-bottom: 1px solid var(--win98-shadow);
+	background: var(--win98-face);
+}
+
+.win98-window-menu::before {
+	content: "";
+	flex: 0 0 2px;
+	width: 2px;
+	margin: 2px 5px 2px 0;
+	border-left: 1px solid var(--win98-light);
+	border-right: 1px solid var(--win98-shadow);
+	box-sizing: border-box;
+}
+
+.win98-window-menu button {
+	display: block;
+	width: auto;
+	min-width: 0;
+	height: 18px;
+	min-height: 18px;
+	margin: 0;
+	padding: 1px 7px;
+	border: 1px solid transparent;
+	box-shadow: none !important;
+	background: transparent !important;
+	color: var(--win98-text) !important;
+	font-weight: normal;
+	line-height: 14px;
+	text-shadow: none;
+}
+
+.win98-window-menu button:hover {
+	border-top-color: var(--win98-light);
+	border-left-color: var(--win98-light);
+	border-right-color: var(--win98-shadow);
+	border-bottom-color: var(--win98-shadow);
+	outline: none !important;
+	box-shadow: none !important;
+	background: transparent !important;
+}
+
+.win98-window-menu button:focus {
+	border-color: transparent;
+	outline: none !important;
+	box-shadow: none !important;
+	background: transparent !important;
+}
+
+.win98-window-menu button:active {
+	padding: 1px 7px;
+	border-top-color: var(--win98-shadow);
+	border-left-color: var(--win98-shadow);
+	border-right-color: var(--win98-light);
+	border-bottom-color: var(--win98-light);
+	outline: none !important;
+	box-shadow: none !important;
+	background: transparent !important;
+}
+
+.win98-window-menu-badge {
+	position: relative;
+	display: block;
+	width: 34px;
+	margin-left: auto;
+	background: #000000;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+}
+
+.win98-window-menu-badge::before {
+	content: "";
+	position: absolute;
+	left: 8px;
+	top: 1px;
+	width: 18px;
+	height: 16px;
+	background-image: var(--win98-start-logo);
+	background-size: 18px auto;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.win98-window-toolbar {
+	display: flex;
+	align-items: stretch;
+	flex: 0 0 auto;
+	min-height: 42px;
+	padding: 2px 3px;
+	background: var(--win98-face);
+	border-top: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-shadow);
+}
+
+.win98-window-toolbar::before {
+	content: "";
+	width: 2px;
+	margin: 1px 5px 1px 0;
+	border-left: 1px solid var(--win98-light);
+	border-right: 1px solid var(--win98-shadow);
+}
+
+.win98-window-toolbar::after {
+	content: ">>";
+	align-self: flex-start;
+	margin-left: auto;
+	padding: 1px 4px;
+	color: var(--win98-text);
+}
+
+.win98-window-tool {
+	position: relative;
+	width: 72px;
+	height: 38px;
+	min-height: 38px;
+	margin: 0 1px;
+	padding: 22px 4px 2px;
+	border: 1px solid transparent;
+	box-shadow: none;
+	background: transparent;
+	color: var(--win98-text) !important;
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 12px;
+}
+
+.win98-window-tool:hover,
+.win98-window-tool:focus {
+	border-top-color: var(--win98-light);
+	border-left-color: var(--win98-light);
+	border-right-color: var(--win98-shadow);
+	border-bottom-color: var(--win98-shadow);
+	outline: none;
+}
+
+.win98-window-tool:active {
+	padding: 22px 4px 2px;
+	box-shadow: none;
+}
+
+.win98-window-tool:disabled,
+.win98-window-tool:disabled:hover,
+.win98-window-tool:disabled:focus,
+.win98-window-tool:disabled:active {
+	border-color: transparent;
+	background: transparent;
+	color: var(--win98-shadow) !important;
+	outline: none;
+	padding: 22px 4px 2px;
+	box-shadow: none;
+	text-shadow: 1px 1px 0 var(--win98-light);
+}
+
+.win98-window-tool:disabled::before {
+	opacity: 0.45;
+	filter: grayscale(1);
+}
+
+.win98-window-tool::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 3px;
+	width: 20px;
+	height: 20px;
+	transform: translateX(-50%);
+	background-size: 20px 20px;
+	background-repeat: no-repeat;
+	background-position: center;
+	image-rendering: pixelated;
+}
+
+.win98-window-tool-back::before {
+	background-image: url("/luci-static/win98/icons/menu/go-previous.png");
+}
+
+.win98-window-tool-forward::before {
+	background-image: url("/luci-static/win98/icons/menu/go-next.png");
+}
+
+.win98-window-tool-up::before {
+	background-image: url("/luci-static/win98/icons/menu/large/folder.png");
+}
+
+.win98-window-content {
+	flex: 1 1 auto;
+	min-height: 0;
+	padding: 4px;
+	overflow: auto;
+	background: var(--win98-face);
+	color: var(--win98-text);
+	scrollbar-width: auto;
+	scrollbar-color: var(--win98-shadow) var(--win98-face);
+}
+
+.win98-window-content.has-custom-scrollbar {
+	position: relative;
+	padding: 0;
+	overflow: hidden;
+}
+
+.win98-window-scroller {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	bottom: 4px;
+	left: 4px;
+	overflow: auto;
+	background: var(--win98-face);
+	scrollbar-width: none;
+}
+
+.win98-window-scroller *,
+.win98-window-scroller *::before,
+.win98-window-scroller *::after {
+	box-sizing: border-box;
+}
+
+.win98-window-scroller::-webkit-scrollbar {
+	display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+}
+
+.win98-window-content::-webkit-scrollbar,
+html.win98-framed-page::-webkit-scrollbar,
+.win98-framed-page::-webkit-scrollbar,
+.win98-framed-page body::-webkit-scrollbar,
+.win98-framed-page #maincontent::-webkit-scrollbar {
+	display: block !important;
+	width: 17px !important;
+	height: 17px !important;
+	background: var(--win98-face) !important;
+}
+
+.win98-window-content::-webkit-scrollbar-track,
+html.win98-framed-page::-webkit-scrollbar-track,
+.win98-framed-page::-webkit-scrollbar-track,
+.win98-framed-page body::-webkit-scrollbar-track,
+.win98-framed-page #maincontent::-webkit-scrollbar-track {
+	background:
+		linear-gradient(45deg, var(--win98-mid) 25%, transparent 25% 75%, var(--win98-mid) 75%),
+		linear-gradient(45deg, var(--win98-mid) 25%, transparent 25% 75%, var(--win98-mid) 75%),
+		var(--win98-light);
+	background-position: 0 0, 2px 2px, 0 0;
+	background-size: 4px 4px, 4px 4px, auto;
+	border: 1px solid var(--win98-shadow) !important;
+}
+
+.win98-window-content::-webkit-scrollbar-thumb,
+html.win98-framed-page::-webkit-scrollbar-thumb,
+.win98-framed-page::-webkit-scrollbar-thumb,
+.win98-framed-page body::-webkit-scrollbar-thumb,
+.win98-framed-page #maincontent::-webkit-scrollbar-thumb {
+	min-width: 17px;
+	min-height: 17px;
+	background: var(--win98-face) !important;
+	border-top: 2px solid var(--win98-light) !important;
+	border-left: 2px solid var(--win98-light) !important;
+	border-right: 2px solid var(--win98-dark) !important;
+	border-bottom: 2px solid var(--win98-dark) !important;
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+.win98-window-content::-webkit-scrollbar-button,
+html.win98-framed-page::-webkit-scrollbar-button,
+.win98-framed-page::-webkit-scrollbar-button,
+.win98-framed-page body::-webkit-scrollbar-button,
+.win98-framed-page #maincontent::-webkit-scrollbar-button {
+	display: block !important;
+	width: 17px !important;
+	height: 17px !important;
+	background-color: var(--win98-face) !important;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-top: 2px solid var(--win98-light) !important;
+	border-left: 2px solid var(--win98-light) !important;
+	border-right: 2px solid var(--win98-dark) !important;
+	border-bottom: 2px solid var(--win98-dark) !important;
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+.win98-window-content::-webkit-scrollbar-button:vertical:decrement,
+html.win98-framed-page::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page body::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:vertical:decrement {
+	background-image:
+		linear-gradient(45deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(135deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 5px 6px, 8px 6px;
+}
+
+.win98-window-content::-webkit-scrollbar-button:vertical:increment,
+html.win98-framed-page::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page body::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:vertical:increment {
+	background-image:
+		linear-gradient(135deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(45deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 5px 8px, 8px 8px;
+}
+
+.win98-window-content::-webkit-scrollbar-button:horizontal:decrement,
+html.win98-framed-page::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page body::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:horizontal:decrement {
+	background-image:
+		linear-gradient(135deg, transparent 50%, var(--win98-dark) 50%),
+		linear-gradient(45deg, transparent 50%, var(--win98-dark) 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 6px 5px, 6px 8px;
+}
+
+.win98-window-content::-webkit-scrollbar-button:horizontal:increment,
+html.win98-framed-page::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page body::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:horizontal:increment {
+	background-image:
+		linear-gradient(45deg, var(--win98-dark) 50%, transparent 50%),
+		linear-gradient(135deg, var(--win98-dark) 50%, transparent 50%);
+	background-size: 5px 5px, 5px 5px;
+	background-position: 8px 5px, 8px 8px;
+}
+
+.win98-window-content::-webkit-scrollbar-button:vertical:decrement,
+html.win98-framed-page::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page body::-webkit-scrollbar-button:vertical:decrement,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:vertical:decrement {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M3 1H4V2H5V3H6V4H1V3H2V2H3Z' fill='%23000'/%3E%3C/svg%3E") !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+	background-size: 7px 7px !important;
+}
+
+.win98-window-content::-webkit-scrollbar-button:vertical:increment,
+html.win98-framed-page::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page body::-webkit-scrollbar-button:vertical:increment,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:vertical:increment {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M1 2H6V3H5V4H4V5H3V4H2V3H1Z' fill='%23000'/%3E%3C/svg%3E") !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+	background-size: 7px 7px !important;
+}
+
+.win98-window-content::-webkit-scrollbar-button:horizontal:decrement,
+html.win98-framed-page::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page body::-webkit-scrollbar-button:horizontal:decrement,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:horizontal:decrement {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M1 3H2V2H3V1H4V6H3V5H2V4H1Z' fill='%23000'/%3E%3C/svg%3E") !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+	background-size: 7px 7px !important;
+}
+
+.win98-window-content::-webkit-scrollbar-button:horizontal:increment,
+html.win98-framed-page::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page body::-webkit-scrollbar-button:horizontal:increment,
+.win98-framed-page #maincontent::-webkit-scrollbar-button:horizontal:increment {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M3 1H4V2H5V3H6V4H5V5H4V6H3Z' fill='%23000'/%3E%3C/svg%3E") !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+	background-size: 7px 7px !important;
+}
+
+.win98-window-content.has-frame {
+	padding: 0;
+	background: #ffffff;
+}
+
+.win98-window-content.is-control-panel {
+	padding: 0;
+	background: #ffffff;
+}
+
+.win98-folder-shell {
+	display: grid;
+	grid-template-columns: 152px minmax(0, 1fr);
+	width: 100%;
+	height: calc(100% - 20px);
+	min-height: 0;
+	background: #ffffff;
+	color: var(--win98-text);
+}
+
+.win98-folder-statusbar {
+	display: grid;
+	grid-template-columns: minmax(120px, 240px) 38px minmax(150px, 1fr);
+	align-items: stretch;
+	height: 20px;
+	padding: 1px 2px 2px;
+	box-sizing: border-box;
+	background: var(--win98-face);
+	color: var(--win98-text);
+	border-top: 1px solid var(--win98-shadow);
+}
+
+.win98-folder-statusbar-pane {
+	display: block;
+	min-width: 0;
+	margin: 0 1px 0 0;
+	padding: 1px 4px;
+	box-sizing: border-box;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	background: var(--win98-face);
+	font-size: 12px;
+	line-height: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.win98-folder-statusbar-pane.is-spacer {
+	padding: 0;
+}
+
+.win98-folder-statusbar-pane.is-title {
+	position: relative;
+	padding-left: 22px;
+}
+
+.win98-folder-statusbar-pane.is-title::before {
+	content: "";
+	position: absolute;
+	left: 4px;
+	top: 1px;
+	width: 14px;
+	height: 14px;
+	background-image: var(--win98-status-icon, url("/luci-static/win98/icons/menu/large/folder.png"));
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 14px 14px;
+	image-rendering: pixelated;
+}
+
+.win98-folder-sidebar {
+	position: relative;
+	padding: 16px 10px 12px 16px;
+	box-sizing: border-box;
+	background:
+		linear-gradient(135deg, rgba(255, 255, 255, 0) 0 28%, rgba(255, 255, 255, .58) 46%, #ffffff 66%) left top / 152px 122px no-repeat,
+		linear-gradient(180deg, rgba(255, 255, 255, 0) 0 62%, #ffffff 92%) left top / 152px 122px no-repeat,
+		linear-gradient(90deg, rgba(255, 255, 255, 0) 0 64%, #ffffff 92%) left top / 152px 122px no-repeat,
+		url("/luci-static/win98/icons/menu/webview-clouds-strip.jpg") left top / 152px 114px no-repeat,
+		#ffffff;
+	overflow: hidden;
+}
+
+.win98-folder-sidebar-icon {
+	display: block;
+	width: 32px;
+	height: 32px;
+	margin: 0 0 2px;
+	background-image: var(--win98-sidebar-icon, url("/luci-static/win98/icons/menu/large/folder.png"));
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 32px 32px;
+	image-rendering: pixelated;
+}
+
+.win98-folder-sidebar-title {
+	display: block;
+	max-width: 118px;
+	margin: 0;
+	color: var(--win98-text);
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 20px;
+	letter-spacing: 0;
+}
+
+.win98-folder-sidebar-line {
+	display: block;
+	width: 118px;
+	height: 1px;
+	margin: 4px 0 20px;
+	background: linear-gradient(90deg, #ff0000 0 22%, #ffff00 22% 44%, #00a000 44% 66%, #0080ff 66% 100%);
+}
+
+.win98-folder-sidebar-description {
+	max-width: 108px;
+	margin: 0;
+	color: var(--win98-text);
+	font-size: 12px;
+	line-height: 13px;
+}
+
+.win98-control-panel-view {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+	align-content: start;
+	gap: 10px 8px;
+	min-height: 100%;
+	padding: 14px 12px;
+	box-sizing: border-box;
+	background: #ffffff;
+	color: var(--win98-text);
+}
+
+.win98-control-panel-item {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	width: 88px;
+	min-width: 88px;
+	height: 74px;
+	min-height: 74px;
+	margin: 0 auto;
+	padding: 3px 2px;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+	box-sizing: border-box;
+	color: var(--win98-text) !important;
+	font: inherit;
+	line-height: 14px;
+	text-align: center;
+	overflow: hidden;
+}
+
+.win98-control-panel-item:hover,
+.win98-control-panel-item:focus {
+	border: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	outline: none !important;
+	padding: 3px 2px !important;
+}
+
+.win98-control-panel-item:active {
+	border: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	padding: 3px 2px !important;
+}
+
+.win98-control-panel-item::before {
+	content: "";
+	display: block;
+	width: 32px;
+	height: 32px;
+	margin: 0 auto 5px;
+	background-image: var(--win98-item-icon, url("/luci-static/win98/icons/menu/large/app.png"));
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 32px 32px;
+	image-rendering: pixelated;
+}
+
+.win98-control-panel-item span {
+	display: inline-block;
+	max-width: 82px;
+	padding: 1px 2px;
+	color: inherit;
+	overflow-wrap: anywhere;
+}
+
+.win98-control-panel-item.is-selected {
+	border: 0;
+}
+
+.win98-control-panel-item.is-selected span {
+	background: #000080;
+	color: #ffffff;
+	outline: 1px dotted #ffffff;
+	outline-offset: -1px;
+}
+
+.win98-control-panel-item:active span {
+	background: #000080;
+	color: #ffffff;
+	outline: 1px dotted #ffffff;
+	outline-offset: -1px;
+}
+
+.win98-control-panel-empty {
+	grid-column: 1 / -1;
+	margin: 8px;
+	color: var(--win98-muted);
+}
+
+.win98-tooltip {
+	position: fixed;
+	z-index: 200100;
+	display: none;
+	max-width: min(320px, calc(100vw - 16px));
+	padding: 2px 4px;
+	box-sizing: border-box;
+	border: 1px solid #000000;
+	background: #ffffe1;
+	color: #000000;
+	font-family: var(--font-sans);
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 14px;
+	white-space: nowrap;
+	pointer-events: none;
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.win98-window-frame {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	background: #ffffff;
+}
+
+.win98-dragging,
+.win98-dragging * {
+	cursor: move !important;
+	user-select: none !important;
+}
+
+#maincontent > #content + * {
+	margin-top: 0;
+}
+
+#tabmenu {
+	position: relative;
+	z-index: 4;
+	margin: 0 0 -1px;
+	padding: 4px 6px 0;
+	background: var(--win98-face);
+	border: 0;
+}
+
+#tabmenu ul,
+ul.cbi-tabmenu {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0 3px;
+	gap: 0;
+	background: transparent;
+	border: none;
+	vertical-align: middle;
+	align-items: flex-end;
+}
+
+ul.cbi-tabmenu li,
+#tabmenu ul li {
+	position: relative;
+	top: 1px;
+	margin: 0 -1px 0 0;
+	min-height: 20px;
+	border-top: 1px solid var(--win98-light);
+	border-left: 1px solid var(--win98-light);
+	border-right: 2px solid var(--win98-shadow);
+	border-bottom: 1px solid var(--win98-shadow);
+	border-radius: 0;
+	background: var(--win98-face);
+	color: var(--win98-text);
+	box-shadow: none;
+}
+
+ul.cbi-tabmenu li a,
+ul.cbi-tabmenu li a:hover,
+#tabmenu ul li a,
+#tabmenu ul li a:hover {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 18px;
+	padding: 1px 14px 2px;
+	color: inherit;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+ul.cbi-tabmenu li:hover,
+#tabmenu ul li:hover,
+ul.cbi-tabmenu li.cbi-tab,
+#tabmenu ul li.cbi-tab,
+#tabmenu ul li.active {
+	top: 0;
+	min-height: 23px;
+	margin-bottom: -1px;
+	padding-bottom: 1px;
+	border-top-color: var(--win98-light);
+	border-left-color: var(--win98-light);
+	border-right-color: var(--win98-dark);
+	border-bottom: 1px solid var(--win98-face);
+	background: var(--win98-face);
+	color: var(--win98-text);
+	z-index: 5;
+	box-shadow: 0 1px 0 var(--win98-face);
+}
+
+ul.cbi-tabmenu li.cbi-tab-disabled,
+ul.cbi-tabmenu li[data-errors]:not(.cbi-tab) {
+	background: var(--win98-face);
+	color: var(--win98-shadow);
+}
+
+.cbi-map,
+.cbi-section,
+.table,
+.uci-change-list,
+pre,
+#view .main,
+#view .login-box,
+#view .login-form {
+	margin-bottom: 8px;
+}
+
+.cbi-map,
+.cbi-section {
+	background: var(--win98-face);
+	border: 0;
+	box-shadow: none;
+}
+
+#maincontent > h2:first-of-type + *,
+.cbi-map > h2:first-child + *,
+.cbi-section {
+	position: relative;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	box-shadow: none;
+}
+
+#tabmenu + .cbi-map,
+#tabmenu + .cbi-section,
+ul.cbi-tabmenu + .cbi-section,
+ul.cbi-tabmenu + .cbi-section-node {
+	border-top-color: var(--win98-light);
+	border-left-color: var(--win98-light);
+	border-right-color: var(--win98-dark);
+	border-bottom-color: var(--win98-dark);
+	background: var(--win98-face);
+	box-shadow: none;
+	padding-top: 10px;
+}
+
+.cbi-map-descr,
+.cbi-section-descr {
+	margin: 0 0 6px;
+	padding: 6px 8px;
+	background: #ffffff;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	color: var(--win98-muted);
+}
+
+.cbi-section-node {
+	margin: 0;
+	padding: 6px;
+	border: none;
+	background: var(--win98-face);
+}
+
+.cbi-value {
+	clear: both;
+	padding: 7px 8px;
+	border-bottom: 1px solid var(--win98-mid);
+	background: var(--win98-face);
+}
+
+.cbi-value:hover {
+	background: #dcdcdc;
+}
+
+.cbi-value:last-child {
+	border-bottom: none;
+}
+
+.cbi-value-title {
+	width: 180px;
+	color: var(--win98-text);
+	font-weight: bold;
+	line-height: 1.8em;
+}
+
+.cbi-value-field {
+	margin-left: 180px;
+	padding: 0.1em 0;
+}
+
+.cbi-value-description {
+	margin-top: 4px;
+	padding-left: 18px;
+	color: var(--win98-muted);
+}
+
+input,
+select,
+textarea,
+.cbi-dropdown:not(.btn):not(.cbi-button) {
+	appearance: none;
+	-webkit-appearance: none;
+	border: none;
+	border-radius: 0;
+	background: #ffffff;
+	color: var(--win98-text);
+	box-shadow:
+		inset -1px -1px var(--win98-light),
+		inset 1px 1px var(--win98-shadow),
+		inset -2px -2px var(--win98-mid),
+		inset 2px 2px var(--win98-dark);
+	font-family: var(--font-sans);
+	font-size: 13px;
+	box-sizing: border-box;
+	padding: 3px 4px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.cbi-dropdown:not(.btn):not(.cbi-button):focus {
+	outline: 1px dotted var(--win98-dark);
+	outline-offset: -4px;
+	background: #ffffff;
+}
+
+textarea {
+	min-height: 110px;
+}
+
+.win98-inner-scrollbar-wrap {
+	position: relative;
+	display: block;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.win98-inner-scrollbar-scroller {
+	position: absolute !important;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: auto !important;
+	max-width: none !important;
+	height: auto !important;
+	margin: 0 !important;
+	resize: none !important;
+	overflow: auto !important;
+	scrollbar-width: none !important;
+}
+
+.win98-inner-scrollbar-scroller::-webkit-scrollbar {
+	display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+}
+
+.win98-framed-page #syslog {
+	height: min(520px, calc(100vh - 150px)) !important;
+	min-height: 240px !important;
+	font-family: var(--font-sans) !important;
+	font-size: 13px !important;
+	line-height: 16px !important;
+	white-space: pre !important;
+}
+
+.btn,
+.cbi-button,
+.cbi-dropdown.btn,
+.cbi-dropdown.cbi-button,
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	height: 23px;
+	min-height: 23px;
+	min-width: 75px;
+	margin: 2px 3px;
+	padding: 0 12px;
+	border: none;
+	border-radius: 0;
+	background: var(--win98-face);
+	color: transparent !important;
+	font-family: var(--font-sans);
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 17px;
+	box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid);
+	text-shadow: 0 0 var(--win98-text);
+	text-decoration: none;
+}
+
+.btn:hover,
+.cbi-button:hover,
+.cbi-dropdown.btn:hover,
+.cbi-dropdown.cbi-button:hover,
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover {
+	background: var(--win98-face);
+	color: transparent !important;
+	outline: none !important;
+	filter: none !important;
+	-webkit-box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid) !important;
+	box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid) !important;
+}
+
+.btn:focus,
+.btn:focus-visible,
+.cbi-button:focus,
+.cbi-button:focus-visible,
+.cbi-dropdown.btn:focus,
+.cbi-dropdown.btn:focus-visible,
+.cbi-dropdown.cbi-button:focus,
+.cbi-dropdown.cbi-button:focus-visible,
+button:focus,
+button:focus-visible,
+input[type="submit"]:focus,
+input[type="submit"]:focus-visible,
+input[type="button"]:focus,
+input[type="button"]:focus-visible,
+input[type="reset"]:focus,
+input[type="reset"]:focus-visible {
+	outline: 1px dotted var(--win98-dark) !important;
+	outline-offset: -4px;
+	filter: none !important;
+	-webkit-box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid) !important;
+	box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid) !important;
+}
+
+.btn:active,
+.cbi-button:active,
+.cbi-dropdown.btn:active,
+.cbi-dropdown.cbi-button:active,
+button:active,
+input[type="submit"]:active,
+input[type="button"]:active,
+input[type="reset"]:active {
+	padding: 0 12px;
+	outline: none !important;
+	filter: none !important;
+	-webkit-box-shadow:
+		inset -1px -1px var(--win98-light),
+		inset 1px 1px var(--win98-dark),
+		inset -2px -2px var(--win98-mid),
+		inset 2px 2px var(--win98-shadow) !important;
+	box-shadow:
+		inset -1px -1px var(--win98-light),
+		inset 1px 1px var(--win98-dark),
+		inset -2px -2px var(--win98-mid),
+		inset 2px 2px var(--win98-shadow) !important;
+}
+
+.cbi-button-apply,
+.cbi-button-positive,
+.btn.important,
+.cbi-button.important,
+.cbi-dropdown.btn.important,
+.cbi-dropdown.cbi-button.important {
+	background: var(--win98-face);
+	color: var(--win98-text) !important;
+	font-weight: normal;
+	border: none;
+	outline: none !important;
+	padding: 0 12px;
+	box-shadow:
+		inset -2px -2px var(--win98-dark),
+		inset 1px 1px var(--win98-dark),
+		inset 2px 2px var(--win98-light),
+		inset -3px -3px var(--win98-shadow),
+		inset 3px 3px var(--win98-mid);
+	-webkit-box-shadow:
+		inset -2px -2px var(--win98-dark),
+		inset 1px 1px var(--win98-dark),
+		inset 2px 2px var(--win98-light),
+		inset -3px -3px var(--win98-shadow),
+		inset 3px 3px var(--win98-mid);
+}
+
+.cbi-button-apply:hover,
+.cbi-button-positive:hover,
+.btn.important:hover,
+.cbi-button.important:hover,
+.cbi-dropdown.btn.important:hover,
+.cbi-dropdown.cbi-button.important:hover,
+.cbi-button-apply:focus,
+.cbi-button-positive:focus,
+.btn.important:focus,
+.cbi-button.important:focus,
+.cbi-dropdown.btn.important:focus,
+.cbi-dropdown.cbi-button.important:focus {
+	border: none;
+	outline: none !important;
+	background: var(--win98-face);
+	box-shadow:
+		inset -2px -2px var(--win98-dark),
+		inset 1px 1px var(--win98-dark),
+		inset 2px 2px var(--win98-light),
+		inset -3px -3px var(--win98-shadow),
+		inset 3px 3px var(--win98-mid) !important;
+	-webkit-box-shadow:
+		inset -2px -2px var(--win98-dark),
+		inset 1px 1px var(--win98-dark),
+		inset 2px 2px var(--win98-light),
+		inset -3px -3px var(--win98-shadow),
+		inset 3px 3px var(--win98-mid) !important;
+}
+
+.cbi-button-apply:active,
+.cbi-button-positive:active,
+.btn.important:active,
+.cbi-button.important:active,
+.cbi-dropdown.btn.important:active,
+.cbi-dropdown.cbi-button.important:active {
+	border: none;
+	outline: none !important;
+	padding: 0 12px;
+	box-shadow:
+		inset 2px 2px var(--win98-dark),
+		inset -1px -1px var(--win98-dark),
+		inset -2px -2px var(--win98-light),
+		inset 3px 3px var(--win98-shadow),
+		inset -3px -3px var(--win98-mid) !important;
+	-webkit-box-shadow:
+		inset 2px 2px var(--win98-dark),
+		inset -1px -1px var(--win98-dark),
+		inset -2px -2px var(--win98-light),
+		inset 3px 3px var(--win98-shadow),
+		inset -3px -3px var(--win98-mid) !important;
+}
+
+button.win98-control-panel-item,
+button.win98-control-panel-item:hover,
+button.win98-control-panel-item:focus,
+button.win98-control-panel-item:focus-visible,
+button.win98-control-panel-item:active,
+button.win98-control-panel-item.is-selected {
+	width: 88px;
+	min-width: 88px;
+	height: 74px;
+	min-height: 74px;
+	margin: 0 auto;
+	padding: 3px 2px !important;
+	border: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	color: var(--win98-text) !important;
+	outline: none !important;
+	filter: none !important;
+}
+
+button.win98-desktop-icon,
+button.win98-desktop-icon:hover,
+button.win98-desktop-icon:focus,
+button.win98-desktop-icon:focus-visible,
+button.win98-desktop-icon:active,
+button.win98-desktop-icon.is-selected {
+	width: 76px;
+	min-width: 76px;
+	height: 78px;
+	min-height: 78px;
+	margin: 0;
+	padding: 4px 2px !important;
+	border: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	color: #ffffff !important;
+	outline: none !important;
+	filter: none !important;
+	text-shadow: 1px 1px 0 #000000;
+}
+
+.cbi-page-actions .cbi-dropdown,
+.actions .cbi-dropdown {
+	height: 26px;
+	min-height: 26px;
+	margin: 0;
+	vertical-align: top;
+}
+
+.cbi-page-actions .cbi-dropdown > *,
+.actions .cbi-dropdown > * {
+	box-sizing: border-box;
+	min-height: 0;
+}
+
+.cbi-dropdown.btn::after,
+.cbi-dropdown.cbi-button::after,
+.cbi-page-actions .cbi-dropdown::after,
+.actions .cbi-dropdown::after {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	margin: -1px -10px -1px 8px;
+	border-left: 1px solid var(--win98-shadow);
+	background: var(--win98-face);
+	color: var(--win98-text);
+	line-height: 20px;
+}
+
+.cbi-page-actions,
+.actions {
+	display: flex;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 0;
+	margin: 6px 0 10px;
+	padding: 8px;
+	background: var(--win98-face);
+	border-top: 1px solid var(--win98-light);
+	border-left: 1px solid var(--win98-light);
+	border-right: 1px solid var(--win98-shadow);
+	border-bottom: 1px solid var(--win98-shadow);
+}
+
+.cbi-page-actions > *,
+.cbi-page-actions > form {
+	margin: 0;
+}
+
+.cbi-page-actions .btn,
+.cbi-page-actions .cbi-button,
+.cbi-page-actions .cbi-dropdown,
+.actions .btn,
+.actions .cbi-button,
+.actions .cbi-dropdown,
+.td .btn,
+.td .cbi-button,
+.td button {
+	margin: 3px 0;
+}
+
+.cbi-page-actions .btn + .btn,
+.cbi-page-actions .btn + .cbi-button,
+.cbi-page-actions .btn + .cbi-dropdown,
+.cbi-page-actions .cbi-button + .btn,
+.cbi-page-actions .cbi-button + .cbi-button,
+.cbi-page-actions .cbi-button + .cbi-dropdown,
+.cbi-page-actions .cbi-dropdown + .btn,
+.cbi-page-actions .cbi-dropdown + .cbi-button,
+.cbi-page-actions .cbi-dropdown + .cbi-dropdown,
+.actions .btn + .btn,
+.actions .btn + .cbi-button,
+.actions .btn + .cbi-dropdown,
+.actions .cbi-button + .btn,
+.actions .cbi-button + .cbi-button,
+.actions .cbi-button + .cbi-dropdown,
+.actions .cbi-dropdown + .btn,
+.actions .cbi-dropdown + .cbi-button,
+.actions .cbi-dropdown + .cbi-dropdown {
+	margin-left: -1px;
+}
+
+.cbi-page-actions input[type="reset"],
+.cbi-page-actions .cbi-button-reset,
+.cbi-page-actions .cbi-button-negative,
+.cbi-page-actions .cbi-button-remove,
+.cbi-page-actions .cbi-button-neutral,
+.actions input[type="reset"],
+.actions .cbi-button-reset,
+.actions .cbi-button-negative,
+.actions .cbi-button-remove,
+.actions .cbi-button-neutral {
+	margin-left: 8px;
+}
+
+.table {
+	border-collapse: collapse;
+	background: #ffffff;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	box-shadow: none;
+}
+
+.tr.table-titles,
+.tr.cbi-section-table-titles,
+.tr.cbi-section-table-titles .th,
+.cbi-rowstyle-2 {
+	background: var(--win98-face);
+}
+
+.th,
+.td {
+	padding: 5px 7px;
+	border-top: 0;
+	border-right: 1px solid var(--win98-mid);
+	border-bottom: 1px solid var(--win98-mid);
+}
+
+.th:last-child,
+.td:last-child {
+	border-right: none;
+}
+
+.th {
+	background: var(--win98-face);
+	color: var(--win98-text);
+	font-weight: bold;
+	border-top: 1px solid var(--win98-light);
+	border-left: 1px solid var(--win98-light);
+	border-right: 1px solid var(--win98-shadow);
+	border-bottom: 1px solid var(--win98-shadow);
+}
+
+.table .tr:nth-child(odd) .td,
+.table .tr:nth-child(even) .td {
+	background: #ffffff;
+}
+
+.cbi-section-table-row:hover .td,
+.cbi-section-table-row:hover .th,
+.table .tr:hover .td {
+	background: #000080;
+	color: #ffffff;
+}
+
+.alert-message {
+	margin-bottom: 8px;
+	padding: 8px 10px;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	border-radius: 0;
+	background: #ffffff;
+	box-shadow: none;
+}
+
+.alert-message.warning {
+	background: var(--win98-warning);
+	color: var(--win98-text);
+}
+
+.alert-message.error {
+	background: #ffffff;
+	color: var(--win98-danger);
+}
+
+.alert-message.notice,
+.alert-message.success {
+	background: #ffffff;
+	color: var(--win98-text);
+}
+
+#modal_overlay {
+	position: fixed !important;
+	inset: 0 !important;
+	z-index: 200000 !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 16px !important;
+	box-sizing: border-box !important;
+	background: transparent !important;
+}
+
+#modal_overlay > .modal,
+#modal_overlay .modal {
+	position: relative !important;
+	inset: auto !important;
+	display: block !important;
+	width: min(430px, calc(100vw - 32px)) !important;
+	min-width: 0 !important;
+	max-width: none !important;
+	margin: 0 !important;
+	padding: 2px !important;
+	box-sizing: border-box !important;
+	border-top: 2px solid var(--win98-light) !important;
+	border-left: 2px solid var(--win98-light) !important;
+	border-right: 2px solid var(--win98-dark) !important;
+	border-bottom: 2px solid var(--win98-dark) !important;
+	border-radius: 0 !important;
+	background: var(--win98-face) !important;
+	color: var(--win98-text) !important;
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid) !important;
+}
+
+#modal_overlay .modal > h1:first-child,
+#modal_overlay .modal > h2:first-child,
+#modal_overlay .modal > h3:first-child,
+#modal_overlay .modal > h4:first-child,
+#modal_overlay .modal > .modal-title:first-child,
+#modal_overlay .modal > .title:first-child {
+	display: flex !important;
+	align-items: center !important;
+	height: 18px !important;
+	min-height: 18px !important;
+	margin: 0 !important;
+	padding: 0 22px 0 3px !important;
+	box-sizing: border-box !important;
+	background: var(--win98-title) !important;
+	color: #ffffff !important;
+	border: 0 !important;
+	font-size: 13px !important;
+	font-weight: bold !important;
+	line-height: 18px !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+}
+
+#modal_overlay .modal > h1:first-child::after,
+#modal_overlay .modal > h2:first-child::after,
+#modal_overlay .modal > h3:first-child::after,
+#modal_overlay .modal > h4:first-child::after,
+#modal_overlay .modal > .modal-title:first-child::after,
+#modal_overlay .modal > .title:first-child::after {
+	content: "x";
+	position: absolute;
+	right: 5px;
+	top: 4px;
+	display: block;
+	width: 16px;
+	height: 14px;
+	box-sizing: border-box;
+	border-top: 1px solid var(--win98-light);
+	border-left: 1px solid var(--win98-light);
+	border-right: 1px solid var(--win98-dark);
+	border-bottom: 1px solid var(--win98-dark);
+	background: var(--win98-face);
+	color: var(--win98-text);
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 11px;
+	text-align: center;
+}
+
+#modal_overlay .modal > p,
+#modal_overlay .modal > div:not(.right):not(.buttons):not(.cbi-page-actions):not(.actions),
+#modal_overlay .modal > form {
+	position: relative;
+	margin: 0 !important;
+	padding: 22px 16px 14px 56px !important;
+	background: var(--win98-face) !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	color: var(--win98-text) !important;
+}
+
+#modal_overlay .modal > p:first-of-type::before,
+#modal_overlay .modal > div:not(.right):not(.buttons):not(.cbi-page-actions):not(.actions):first-of-type::before,
+#modal_overlay .modal > form:first-of-type::before {
+	content: "";
+	position: absolute;
+	left: 12px;
+	top: 20px;
+	width: 32px;
+	height: 32px;
+	background-image: url("/luci-static/win98/icons/menu/msg_information.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 32px 32px;
+	image-rendering: pixelated;
+}
+
+#modal_overlay .modal > .right,
+#modal_overlay .modal > .buttons,
+#modal_overlay .modal > .cbi-page-actions,
+#modal_overlay .modal > .actions,
+#modal_overlay .modal .right,
+#modal_overlay .modal .buttons {
+	display: flex !important;
+	justify-content: center !important;
+	flex-wrap: wrap !important;
+	gap: 0 74px !important;
+	margin: 0 !important;
+	padding: 8px 16px 14px !important;
+	border: 0 !important;
+	background: var(--win98-face) !important;
+	box-shadow: none !important;
+}
+
+#modal_overlay .modal .btn,
+#modal_overlay .modal .cbi-button,
+#modal_overlay .modal button,
+#modal_overlay .modal input[type="submit"],
+#modal_overlay .modal input[type="button"],
+#modal_overlay .modal input[type="reset"] {
+	min-width: 78px !important;
+	width: auto !important;
+	margin: 0 !important;
+}
+
+pre,
+.uci-change-list {
+	padding: 10px;
+	border-radius: 0;
+	background: #ffffff;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	box-shadow: none;
+}
+
+.ifacebox,
+.ifacebadge,
+.zonebadge,
+.cbi-progressbar,
+.cbi-tooltip,
+.cbi-dynlist > .item,
+.cbi-dynlist > .item::after {
+	border-radius: 0;
+}
+
+.ifacebox,
+.ifacebadge {
+	border-color: var(--win98-shadow);
+	background: #ffffff;
+}
+
+.ifacebox-head {
+	background: var(--win98-face);
+}
+
+.cbi-progressbar {
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	background: #ffffff;
+}
+
+.cbi-progressbar > div {
+	background: #000080;
+}
+
+.win98-footer-wrap {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	min-height: 30px;
+	margin: 0;
+	padding: 3px 4px 3px 3px;
+	box-sizing: border-box;
+	border-top: 1px solid var(--win98-light);
+	border-left: 0;
+	border-right: 0;
+	border-bottom: 0;
+	background: var(--win98-face);
+	box-shadow: inset 0 1px 0 var(--win98-mid);
+	color: var(--win98-text);
+}
+
+.win98-footer-stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
+	align-items: center;
+	padding: 0;
+	border: none;
+	background: transparent;
+	min-width: 0;
+}
+
+.win98-start {
+	display: inline-flex;
+	align-items: center;
+	flex: 0 0 auto;
+	position: relative;
+	height: 24px;
+	margin: 0 9px 0 0;
+	padding: 0;
+}
+
+.win98-start::after {
+	content: "";
+	position: absolute;
+	right: -7px;
+	top: 1px;
+	width: 3px;
+	height: 22px;
+	border-left: 1px solid var(--win98-light);
+	border-right: 1px solid var(--win98-shadow);
+	box-sizing: border-box;
+}
+
+.win98-start > summary {
+	list-style: none;
+}
+
+.win98-start > summary::-webkit-details-marker {
+	display: none;
+}
+
+.win98-footer-stats span,
+.win98-start-button,
+.win98-task-button {
+	display: inline-flex;
+	align-items: center;
+	max-width: 220px;
+	margin: 0;
+	height: 24px;
+	min-height: 24px;
+	padding: 2px 9px;
+	box-sizing: border-box;
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	background: var(--win98-face);
+	color: var(--win98-text);
+	text-decoration: none;
+	line-height: 16px;
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.win98-start-button {
+	flex: 0 0 auto;
+	min-width: 64px;
+	padding-left: 27px;
+	background:
+		linear-gradient(90deg, transparent 0 19px, var(--win98-face) 19px),
+		var(--win98-face);
+	font-weight: bold;
+	position: relative;
+	cursor: pointer;
+	user-select: none;
+}
+
+.win98-start-button::before {
+	content: "";
+	position: absolute;
+	left: 4px;
+	top: 2px;
+	width: 20px;
+	height: 18px;
+	background-image: var(--win98-start-logo);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.win98-start[open] .win98-start-button {
+	border-top-color: var(--win98-dark);
+	border-left-color: var(--win98-dark);
+	border-right-color: var(--win98-light);
+	border-bottom-color: var(--win98-light);
+	box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid);
+}
+
+.win98-task-button {
+	flex: 0 0 auto;
+	min-width: 130px;
+	max-width: 220px;
+	position: relative;
+	justify-content: flex-start;
+	padding: 2px 9px 2px 27px;
+	text-align: left;
+}
+
+.win98-task-button:hover,
+.win98-task-button:focus {
+	border-top-color: var(--win98-light);
+	border-left-color: var(--win98-light);
+	border-right-color: var(--win98-dark);
+	border-bottom-color: var(--win98-dark);
+	background: var(--win98-face);
+	color: var(--win98-text) !important;
+	outline: none !important;
+	padding: 2px 9px 2px 27px;
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid) !important;
+	-webkit-box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid) !important;
+}
+
+.win98-task-button.is-active:hover,
+.win98-task-button.is-active:focus {
+	border-top-color: var(--win98-dark);
+	border-left-color: var(--win98-dark);
+	border-right-color: var(--win98-light);
+	border-bottom-color: var(--win98-light);
+	background: #d4d0c8;
+	box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid) !important;
+	-webkit-box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid) !important;
+}
+
+.win98-task-button::before {
+	content: "";
+	position: absolute;
+	left: 7px;
+	top: 4px;
+	width: 14px;
+	height: 14px;
+	background: #ffffff;
+	border: 1px solid var(--win98-dark);
+	box-shadow: 1px 1px 0 var(--win98-shadow);
+	box-sizing: border-box;
+}
+
+.win98-task-button.is-active {
+	border-top-color: var(--win98-dark);
+	border-left-color: var(--win98-dark);
+	border-right-color: var(--win98-light);
+	border-bottom-color: var(--win98-light);
+	background: #d4d0c8;
+	box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid);
+}
+
+.win98-task-button:active {
+	border-top-color: var(--win98-dark);
+	border-left-color: var(--win98-dark);
+	border-right-color: var(--win98-light);
+	border-bottom-color: var(--win98-light);
+	padding: 2px 9px 2px 27px;
+	background: #d4d0c8;
+	box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid) !important;
+	-webkit-box-shadow:
+		inset 1px 1px 0 var(--win98-shadow),
+		inset -1px -1px 0 var(--win98-mid) !important;
+}
+
+.win98-task-button.is-minimized {
+	color: var(--win98-muted);
+}
+
+.win98-start-menu {
+	position: fixed;
+	left: 2px;
+	bottom: 30px;
+	z-index: 100002;
+	display: none;
+	width: 240px;
+	min-height: 380px;
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+.win98-start[open] .win98-start-menu {
+	display: flex;
+}
+
+.win98-start-menu-brand {
+	position: relative;
+	flex: 0 0 28px;
+	width: 28px;
+	padding: 8px 3px;
+	box-sizing: border-box;
+	background: linear-gradient(180deg, #000080, #1084d0);
+	color: #ffffff;
+	font-size: 0;
+	line-height: 0;
+	overflow: hidden;
+}
+
+.win98-start-menu-brand::before {
+	content: "OpenWrt";
+	position: absolute;
+	left: 3px;
+	bottom: 10px;
+	width: 22px;
+	font-family: Arial, Helvetica, sans-serif !important;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 1;
+	text-align: center;
+	text-orientation: mixed;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
+}
+
+.win98-start-menu-items {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 380px;
+	padding: 4px;
+	box-sizing: border-box;
+}
+
+.win98-start-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.win98-start-menu-items > .win98-start-list {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	min-height: 100%;
+}
+
+.win98-start-list ul {
+	position: absolute;
+	left: 100%;
+	top: -6px;
+	display: none;
+	z-index: 100003;
+	width: 230px;
+	margin: 0;
+	padding: 4px;
+	list-style: none;
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+.win98-start-list li {
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+.win98-start-menu a {
+	display: block;
+	min-height: 24px;
+	padding: 5px 8px 5px 28px;
+	color: var(--win98-text);
+	text-decoration: none;
+	line-height: 14px;
+	position: relative;
+}
+
+.win98-start-list li.has-children > a {
+	padding-right: 22px;
+}
+
+.win98-start-menu-items > .win98-start-list > li > a {
+	min-height: 54px;
+	padding: 10px 26px 10px 56px;
+	box-sizing: border-box;
+	font-size: 20px;
+	line-height: 32px;
+}
+
+.win98-start-menu-items > .win98-start-list > li.has-children > a {
+	padding-right: 30px;
+}
+
+.win98-start-menu-items > .win98-start-list > li.has-children > a::after {
+	right: 8px;
+	top: 50%;
+	margin-top: -9px;
+	font-size: 20px;
+	line-height: 18px;
+}
+
+.win98-start-menu-items > .win98-start-list > li.is-start-logout {
+	margin-top: auto;
+	padding-top: 6px;
+}
+
+.win98-start-menu-items > .win98-start-list > li.is-start-logout::before {
+	content: "";
+	display: block;
+	height: 2px;
+	margin: 0 0 5px;
+	border-top: 1px solid var(--win98-shadow);
+	border-bottom: 1px solid var(--win98-light);
+	box-sizing: border-box;
+}
+
+.win98-start-menu-items > .win98-start-list > li.is-start-logout > a {
+	min-height: 54px;
+}
+
+.win98-start-list li.has-children > a::after {
+	content: "\25b8";
+	position: absolute;
+	right: 8px;
+	color: inherit;
+}
+
+.win98-start-list li:hover > ul,
+.win98-start-list li:focus-within > ul {
+	display: block;
+}
+
+.win98-start-menu a::before {
+	content: "";
+	position: absolute;
+	left: 7px;
+	top: 7px;
+	width: 14px;
+	height: 14px;
+	background: #ffffff;
+	border: 1px solid var(--win98-dark);
+	box-shadow: 1px 1px 0 var(--win98-shadow);
+}
+
+.win98-start-list li.is-folder > a::before {
+	background:
+		linear-gradient(#f7df75 0 0) 1px 4px / 12px 8px no-repeat,
+		linear-gradient(#f4c542 0 0) 3px 2px / 7px 4px no-repeat;
+}
+
+.win98-start-list li.icon-status > a::before,
+.win98-task-button.icon-status::before {
+	background:
+		linear-gradient(90deg, #000080 0 3px, transparent 3px 5px, #008000 5px 8px, transparent 8px 10px, #800000 10px 13px),
+		#ffffff;
+}
+
+.win98-start-list li.icon-overview > a::before,
+.win98-task-button.icon-overview::before {
+	background:
+		linear-gradient(#000080 0 0) 2px 2px / 10px 7px no-repeat,
+		linear-gradient(#008080 0 0) 4px 10px / 6px 2px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-system > a::before,
+.win98-task-button.icon-system::before {
+	background:
+		linear-gradient(#000080 0 0) 2px 3px / 10px 6px no-repeat,
+		linear-gradient(#c0c0c0 0 0) 4px 10px / 6px 2px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-admin > a::before,
+.win98-task-button.icon-admin::before {
+	background:
+		linear-gradient(#c0c0c0 0 0) 4px 6px / 7px 6px no-repeat,
+		radial-gradient(circle at 7px 5px, #ffcc99 0 3px, transparent 3px),
+		linear-gradient(#000080 0 0) 2px 11px / 10px 2px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-services > a::before,
+.win98-task-button.icon-services::before {
+	background:
+		radial-gradient(circle at 7px 7px, #808080 0 2px, transparent 2px),
+		linear-gradient(45deg, transparent 35%, #808080 35% 65%, transparent 65%),
+		linear-gradient(-45deg, transparent 35%, #808080 35% 65%, transparent 65%),
+		#ffffff;
+}
+
+.win98-start-list li.icon-network > a::before,
+.win98-task-button.icon-network::before {
+	background:
+		linear-gradient(#000080 0 0) 1px 2px / 5px 4px no-repeat,
+		linear-gradient(#000080 0 0) 8px 2px / 5px 4px no-repeat,
+		linear-gradient(#008080 0 0) 4px 9px / 6px 2px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-interfaces > a::before,
+.win98-task-button.icon-interfaces::before {
+	background:
+		linear-gradient(#008080 0 0) 2px 2px / 10px 4px no-repeat,
+		linear-gradient(#000080 0 0) 2px 8px / 10px 4px no-repeat,
+		linear-gradient(90deg, #ffffff 0 1px, transparent 1px 4px, #ffffff 4px 5px, transparent 5px),
+		#ffffff;
+}
+
+.win98-start-list li.icon-firewall > a::before,
+.win98-task-button.icon-firewall::before {
+	background:
+		repeating-linear-gradient(0deg, #b22222 0 3px, #ffffff 3px 4px),
+		repeating-linear-gradient(90deg, transparent 0 5px, #ffffff 5px 6px);
+}
+
+.win98-start-list li.icon-log > a::before,
+.win98-task-button.icon-log::before {
+	background:
+		linear-gradient(#ffffff 0 0) 2px 1px / 10px 12px no-repeat,
+		repeating-linear-gradient(0deg, #000080 0 1px, transparent 1px 3px);
+}
+
+.win98-start-list li.icon-processes > a::before,
+.win98-task-button.icon-processes::before {
+	background:
+		linear-gradient(#c0c0c0 0 0) 2px 2px / 10px 10px no-repeat,
+		linear-gradient(90deg, #000080 0 2px, transparent 2px 4px, #008000 4px 6px, transparent 6px 8px, #800000 8px 10px) 2px 4px / 10px 2px no-repeat,
+		repeating-linear-gradient(0deg, transparent 0 3px, #000000 3px 4px);
+}
+
+.win98-start-list li.icon-realtime > a::before,
+.win98-task-button.icon-realtime::before {
+	background:
+		linear-gradient(135deg, transparent 0 35%, #008000 35% 46%, transparent 46%),
+		linear-gradient(45deg, transparent 0 55%, #000080 55% 66%, transparent 66%),
+		#ffffff;
+}
+
+.win98-start-list li.icon-routes > a::before,
+.win98-task-button.icon-routes::before {
+	background:
+		linear-gradient(90deg, #000080 0 4px, transparent 4px 10px, #008080 10px 14px),
+		linear-gradient(#808080 0 0) 4px 6px / 6px 2px no-repeat,
+		linear-gradient(45deg, transparent 45%, #808080 45% 55%, transparent 55%);
+}
+
+.win98-start-list li.icon-mwan > a::before,
+.win98-task-button.icon-mwan::before {
+	background:
+		linear-gradient(#000080 0 0) 1px 2px / 4px 4px no-repeat,
+		linear-gradient(#008000 0 0) 9px 2px / 4px 4px no-repeat,
+		linear-gradient(#800000 0 0) 5px 9px / 4px 4px no-repeat,
+		linear-gradient(45deg, transparent 40%, #808080 40% 60%, transparent 60%),
+		linear-gradient(-45deg, transparent 40%, #808080 40% 60%, transparent 60%),
+		#ffffff;
+}
+
+.win98-start-list li.icon-software > a::before,
+.win98-task-button.icon-software::before {
+	background:
+		linear-gradient(#c0c0c0 0 0) 2px 2px / 10px 10px no-repeat,
+		linear-gradient(#000080 0 0) 4px 4px / 6px 3px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-startup > a::before,
+.win98-task-button.icon-startup::before {
+	background:
+		linear-gradient(#000080 0 0) 2px 3px / 10px 6px no-repeat,
+		linear-gradient(90deg, transparent 0 5px, #008000 5px 10px, transparent 10px) 1px 10px / 12px 3px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-crontab > a::before,
+.win98-task-button.icon-crontab::before {
+	background:
+		radial-gradient(circle at 7px 7px, #ffffff 0 4px, #000080 4px 5px, transparent 5px),
+		linear-gradient(#000080 0 0) 7px 4px / 1px 4px no-repeat,
+		linear-gradient(#000080 0 0) 7px 7px / 4px 1px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-flash > a::before,
+.win98-task-button.icon-flash::before {
+	background:
+		linear-gradient(#000000 0 0) 3px 2px / 8px 10px no-repeat,
+		linear-gradient(#c0c0c0 0 0) 5px 4px / 4px 3px no-repeat,
+		linear-gradient(#ffff00 0 0) 4px 10px / 6px 2px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-reboot > a::before,
+.win98-task-button.icon-reboot::before {
+	background:
+		radial-gradient(circle at 7px 7px, transparent 0 4px, #008000 4px 5px, transparent 5px),
+		linear-gradient(45deg, transparent 0 45%, #008000 45% 60%, transparent 60%),
+		#ffffff;
+}
+
+.win98-start-list li.icon-bandwidth > a::before,
+.win98-task-button.icon-bandwidth::before {
+	background:
+		linear-gradient(#008000 0 0) 2px 9px / 2px 4px no-repeat,
+		linear-gradient(#000080 0 0) 6px 5px / 2px 8px no-repeat,
+		linear-gradient(#800000 0 0) 10px 2px / 2px 11px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.icon-upnp > a::before,
+.win98-task-button.icon-upnp::before {
+	background:
+		radial-gradient(circle at 3px 7px, #000080 0 2px, transparent 2px),
+		radial-gradient(circle at 11px 4px, #008000 0 2px, transparent 2px),
+		radial-gradient(circle at 11px 11px, #800000 0 2px, transparent 2px),
+		linear-gradient(25deg, transparent 0 45%, #808080 45% 55%, transparent 55%),
+		linear-gradient(-25deg, transparent 0 45%, #808080 45% 55%, transparent 55%),
+		#ffffff;
+}
+
+.win98-start-list li.icon-dhcp > a::before,
+.win98-task-button.icon-dhcp::before {
+	background:
+		linear-gradient(#000080 0 0) 2px 2px / 10px 3px no-repeat,
+		repeating-linear-gradient(0deg, transparent 0 3px, #008080 3px 4px),
+		#ffffff;
+}
+
+.win98-start-list li.icon-binding > a::before,
+.win98-task-button.icon-binding::before {
+	background:
+		linear-gradient(#ffff00 0 0) 2px 6px / 8px 3px no-repeat,
+		radial-gradient(circle at 10px 7px, transparent 0 2px, #000000 2px 3px, transparent 3px),
+		#ffffff;
+}
+
+.win98-start-list li.icon-diagnostics > a::before,
+.win98-task-button.icon-diagnostics::before {
+	background:
+		linear-gradient(45deg, transparent 0 40%, #808080 40% 62%, transparent 62%),
+		radial-gradient(circle at 5px 5px, #c0c0c0 0 4px, #000000 4px 5px, transparent 5px),
+		#ffffff;
+}
+
+.win98-start-list li.icon-speedtest > a::before,
+.win98-task-button.icon-speedtest::before {
+	background:
+		radial-gradient(circle at 7px 10px, transparent 0 5px, #000080 5px 6px, transparent 6px),
+		linear-gradient(135deg, transparent 0 48%, #800000 48% 58%, transparent 58%),
+		#ffffff;
+}
+
+.win98-start-list li.icon-logout > a::before,
+.win98-task-button.icon-logout::before {
+	background:
+		linear-gradient(#804000 0 0) 2px 1px / 7px 12px no-repeat,
+		radial-gradient(circle at 8px 7px, #ffff00 0 1px, transparent 2px),
+		#ffffff;
+}
+
+.win98-start-list li.icon-app > a::before,
+.win98-task-button.icon-app::before {
+	background:
+		linear-gradient(#000080 0 0) 2px 2px / 10px 8px no-repeat,
+		linear-gradient(#c0c0c0 0 0) 4px 11px / 6px 2px no-repeat,
+		#ffffff;
+}
+
+.win98-start-list li.is-folder > a::before,
+.win98-start-list li.icon-status > a::before,
+.win98-start-list li.icon-overview > a::before,
+.win98-start-list li.icon-control-panel > a::before,
+.win98-start-list li.icon-system > a::before,
+.win98-start-list li.icon-admin > a::before,
+.win98-start-list li.icon-services > a::before,
+.win98-start-list li.icon-network > a::before,
+.win98-start-list li.icon-interfaces > a::before,
+.win98-start-list li.icon-firewall > a::before,
+.win98-start-list li.icon-log > a::before,
+.win98-start-list li.icon-processes > a::before,
+.win98-start-list li.icon-realtime > a::before,
+.win98-start-list li.icon-routes > a::before,
+.win98-start-list li.icon-mwan > a::before,
+.win98-start-list li.icon-software > a::before,
+.win98-start-list li.icon-startup > a::before,
+.win98-start-list li.icon-crontab > a::before,
+.win98-start-list li.icon-flash > a::before,
+.win98-start-list li.icon-reboot > a::before,
+.win98-start-list li.icon-bandwidth > a::before,
+.win98-start-list li.icon-upnp > a::before,
+.win98-start-list li.icon-dhcp > a::before,
+.win98-start-list li.icon-binding > a::before,
+.win98-start-list li.icon-diagnostics > a::before,
+.win98-start-list li.icon-speedtest > a::before,
+.win98-start-list li.icon-logout > a::before,
+.win98-start-list li.icon-app > a::before,
+.win98-task-button.icon-status::before,
+.win98-task-button.icon-overview::before,
+.win98-task-button.icon-control-panel::before,
+.win98-task-button.icon-system::before,
+.win98-task-button.icon-admin::before,
+.win98-task-button.icon-services::before,
+.win98-task-button.icon-network::before,
+.win98-task-button.icon-interfaces::before,
+.win98-task-button.icon-firewall::before,
+.win98-task-button.icon-log::before,
+.win98-task-button.icon-processes::before,
+.win98-task-button.icon-realtime::before,
+.win98-task-button.icon-routes::before,
+.win98-task-button.icon-mwan::before,
+.win98-task-button.icon-software::before,
+.win98-task-button.icon-startup::before,
+.win98-task-button.icon-crontab::before,
+.win98-task-button.icon-flash::before,
+.win98-task-button.icon-reboot::before,
+.win98-task-button.icon-bandwidth::before,
+.win98-task-button.icon-upnp::before,
+.win98-task-button.icon-dhcp::before,
+.win98-task-button.icon-binding::before,
+.win98-task-button.icon-diagnostics::before,
+.win98-task-button.icon-speedtest::before,
+.win98-task-button.icon-logout::before,
+.win98-task-button.icon-app::before {
+	background-color: transparent;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 16px 16px;
+	border: 0;
+	box-shadow: none;
+	image-rendering: pixelated;
+}
+
+.win98-start-list li.is-folder > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/folder.png");
+}
+
+.win98-start-list li.icon-status > a::before,
+.win98-task-button.icon-status::before {
+	background-image: url("/luci-static/win98/icons/menu/large/status.png");
+}
+
+.win98-start-list li.is-leaf.icon-status > a::before,
+.win98-task-button.icon-status::before {
+	background-image: url("/luci-static/win98/icons/menu/large/status.png");
+}
+
+.win98-start-list li.icon-overview > a::before,
+.win98-task-button.icon-overview::before {
+	background-image: url("/luci-static/win98/icons/menu/large/overview.png");
+}
+
+.win98-start-list li.icon-control-panel > a::before,
+.win98-task-button.icon-control-panel::before {
+	background-image: url("/luci-static/win98/icons/menu/large/control-panel.png");
+}
+
+.win98-start-list li.icon-system > a::before,
+.win98-task-button.icon-system::before {
+	background-image: url("/luci-static/win98/icons/menu/large/system-detail.png");
+}
+
+.win98-start-list li.icon-admin > a::before,
+.win98-task-button.icon-admin::before {
+	background-image: url("/luci-static/win98/icons/menu/large/admin-detail.png");
+}
+
+.win98-start-list li.icon-services > a::before,
+.win98-task-button.icon-services::before {
+	background-image: url("/luci-static/win98/icons/menu/large/services.png");
+}
+
+.win98-start-list li.icon-network > a::before,
+.win98-task-button.icon-network::before {
+	background-image: url("/luci-static/win98/icons/menu/large/network.png");
+}
+
+.win98-start-list li.icon-interfaces > a::before,
+.win98-task-button.icon-interfaces::before {
+	background-image: url("/luci-static/win98/icons/menu/large/interfaces.png");
+}
+
+.win98-start-list li.icon-firewall > a::before,
+.win98-task-button.icon-firewall::before {
+	background-image: url("/luci-static/win98/icons/menu/large/firewall.png");
+}
+
+.win98-start-list li.icon-log > a::before,
+.win98-task-button.icon-log::before {
+	background-image: url("/luci-static/win98/icons/menu/large/log-detail.png");
+}
+
+.win98-start-list li.icon-processes > a::before,
+.win98-task-button.icon-processes::before {
+	background-image: url("/luci-static/win98/icons/menu/large/process-detail.png");
+}
+
+.win98-start-list li.icon-realtime > a::before,
+.win98-task-button.icon-realtime::before {
+	background-image: url("/luci-static/win98/icons/menu/large/realtime.png");
+}
+
+.win98-start-list li.icon-routes > a::before,
+.win98-task-button.icon-routes::before {
+	background-image: url("/luci-static/win98/icons/menu/large/routes.png");
+}
+
+.win98-start-list li.icon-mwan > a::before,
+.win98-task-button.icon-mwan::before {
+	background-image: url("/luci-static/win98/icons/menu/large/mwan.png");
+}
+
+.win98-start-list li.icon-software > a::before,
+.win98-task-button.icon-software::before {
+	background-image: url("/luci-static/win98/icons/menu/large/software-detail.png");
+}
+
+.win98-start-list li.icon-startup > a::before,
+.win98-task-button.icon-startup::before {
+	background-image: url("/luci-static/win98/icons/menu/large/startup-detail.png");
+}
+
+.win98-start-list li.icon-crontab > a::before,
+.win98-task-button.icon-crontab::before {
+	background-image: url("/luci-static/win98/icons/menu/large/crontab-detail.png");
+}
+
+.win98-start-list li.icon-flash > a::before,
+.win98-task-button.icon-flash::before {
+	background-image: url("/luci-static/win98/icons/menu/large/flash-detail.png");
+}
+
+.win98-start-list li.icon-reboot > a::before,
+.win98-task-button.icon-reboot::before {
+	background-image: url("/luci-static/win98/icons/menu/large/reboot-detail.png");
+}
+
+.win98-start-list li.icon-bandwidth > a::before,
+.win98-task-button.icon-bandwidth::before {
+	background-image: url("/luci-static/win98/icons/menu/large/bandwidth-detail.png");
+}
+
+.win98-start-list li.icon-upnp > a::before,
+.win98-task-button.icon-upnp::before {
+	background-image: url("/luci-static/win98/icons/menu/large/upnp-detail.png");
+}
+
+.win98-start-list li.icon-dhcp > a::before,
+.win98-task-button.icon-dhcp::before {
+	background-image: url("/luci-static/win98/icons/menu/large/dhcp-detail.png");
+}
+
+.win98-start-list li.icon-binding > a::before,
+.win98-task-button.icon-binding::before {
+	background-image: url("/luci-static/win98/icons/menu/large/binding-detail.png");
+}
+
+.win98-start-list li.icon-diagnostics > a::before,
+.win98-task-button.icon-diagnostics::before {
+	background-image: url("/luci-static/win98/icons/menu/large/diagnostics-detail.png");
+}
+
+.win98-start-list li.icon-speedtest > a::before,
+.win98-task-button.icon-speedtest::before {
+	background-image: url("/luci-static/win98/icons/menu/large/speedtest-detail.png");
+}
+
+.win98-start-list li.icon-logout > a::before,
+.win98-task-button.icon-logout::before {
+	background-image: url("/luci-static/win98/icons/menu/large/logout.png");
+}
+
+.win98-start-list li.icon-app > a::before,
+.win98-task-button.icon-app::before {
+	background-image: url("/luci-static/win98/icons/menu/large/app.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li > a::before {
+	left: 12px;
+	top: 50%;
+	width: 32px;
+	height: 32px;
+	margin-top: -16px;
+	background-size: 32px 32px;
+}
+
+.win98-start-menu-items > .win98-start-list > li.is-folder > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/folder.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li.icon-status > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/status.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li.icon-overview > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/overview.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li.icon-control-panel > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/control-panel.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li.icon-system > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/system-detail.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li.icon-admin > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/admin-detail.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li.icon-services > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/services.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li.icon-network > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/network.png");
+}
+
+.win98-start-menu-items > .win98-start-list > li.icon-logout > a::before {
+	background-image: url("/luci-static/win98/icons/menu/large/logout.png");
+}
+
+.win98-start-menu a:hover,
+.win98-start-menu a:focus {
+	background: #000080;
+	color: #ffffff;
+	outline: none;
+}
+
+.win98-tray {
+	position: static;
+	left: auto;
+	bottom: auto;
+	height: 24px;
+	margin: 0 0 0 auto;
+	min-width: 58px;
+	padding: 3px 8px 2px;
+	box-sizing: border-box;
+	border-top: 1px solid var(--win98-shadow);
+	border-left: 1px solid var(--win98-shadow);
+	border-right: 1px solid var(--win98-light);
+	border-bottom: 1px solid var(--win98-light);
+	box-shadow:
+		inset 1px 1px 0 var(--win98-dark),
+		inset -1px -1px 0 var(--win98-mid);
+	color: var(--win98-text);
+	font-size: 13px;
+	line-height: 16px;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.win98-footer-wrap a,
+.win98-tray a {
+	color: var(--win98-link);
+}
+
+.win98-start-menu a {
+	color: var(--win98-text);
+}
+
+.win98-start-menu a:hover,
+.win98-start-menu a:focus {
+	color: #ffffff;
+}
+
+.win98-blankpage {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 0;
+	box-sizing: border-box;
+	background: var(--win98-desktop);
+	overflow: hidden;
+}
+
+.win98-logon-desktop {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	width: 100%;
+	min-height: 100vh;
+	padding-top: 14vh;
+	box-sizing: border-box;
+}
+
+.win98-logon-dialog {
+	display: block;
+	width: min(560px, calc(100vw - 32px));
+	margin: 0;
+	padding: 2px;
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+}
+
+.win98-auth-titlebar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 3px 2px 3px 3px;
+	box-sizing: border-box;
+	background: linear-gradient(90deg, var(--win98-title), var(--win98-title-soft));
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 1;
+}
+
+.win98-auth-titlebar-buttons {
+	display: flex;
+	gap: 0;
+}
+
+.win98-auth-titlebar-buttons span {
+	display: block;
+	width: 16px;
+	min-width: 16px;
+	height: 14px;
+	min-height: 14px;
+	margin-left: 0;
+	padding: 0;
+	border: none;
+	background: var(--win98-face);
+	color: transparent;
+	text-align: center;
+	line-height: 0;
+	box-sizing: border-box;
+	background-repeat: no-repeat;
+	background-size: auto;
+	box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid);
+}
+
+.win98-auth-titlebar-buttons .is-help {
+	font-size: 0;
+	line-height: 0;
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='6' height='9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M0 1h2v2H0zM1 0h4v1H1zM4 1h2v2H4zM3 3h2v1H3zM2 4h2v2H2zM2 7h2v2H2z'/%3E%3C/svg%3E");
+	background-position: top 2px left 5px;
+}
+
+.win98-auth-titlebar-buttons .is-close {
+	margin-left: 2px;
+	font-size: 0;
+	line-height: 0;
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='8' height='7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0V0z' fill='%23000'/%3E%3C/svg%3E");
+	background-position: top 3px left 4px;
+}
+
+#view .main,
+#view .login-box,
+#view .login-form,
+#view .cbi-map {
+	margin-bottom: 0;
+}
+
+.win98-logon-content {
+	position: relative;
+	min-height: 118px;
+	padding: 26px 112px 18px 112px;
+	box-sizing: border-box;
+	background: var(--win98-face);
+}
+
+.win98-logon-content::before {
+	content: "";
+	position: absolute;
+	left: 25px;
+	top: 31px;
+	width: 40px;
+	height: 40px;
+	background-image: url("/luci-static/win98/icons/menu/logon-key.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	image-rendering: pixelated;
+}
+
+.win98-logon-message {
+	margin: 0 0 14px;
+	color: var(--win98-text);
+	max-width: 100%;
+	line-height: 16px;
+	white-space: normal;
+}
+
+.win98-logon-fields {
+	display: grid;
+	grid-template-columns: 78px 200px;
+	align-items: center;
+	gap: 8px 6px;
+}
+
+.win98-logon-fields label {
+	text-align: right;
+	white-space: nowrap;
+}
+
+.win98-logon-fields input {
+	width: 200px;
+	height: 23px;
+	box-sizing: border-box;
+}
+
+.win98-logon-fields input[data-win98-password-mask] {
+	font-family: var(--font-sans) !important;
+	letter-spacing: 1px;
+}
+
+.win98-logon-fields input::placeholder,
+.win98-logon-dialog #view input::placeholder {
+	color: var(--win98-text);
+	font-family: var(--font-sans) !important;
+	opacity: 1;
+}
+
+.win98-logon-actions {
+	position: absolute;
+	right: 12px;
+	top: 30px;
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
+
+.win98-logon-actions button {
+	width: 74px;
+	height: 23px;
+	min-width: 74px;
+	box-sizing: border-box;
+}
+
+.win98-logon-extra {
+	position: absolute;
+	left: 112px;
+	right: 112px;
+	bottom: 4px;
+	margin: 0;
+	color: #800000;
+}
+
+.win98-message-box {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 100010;
+	width: min(430px, calc(100vw - 28px));
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+	box-shadow:
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 1px 1px 0 var(--win98-mid);
+	transform: translate(-50%, -50%);
+}
+
+.win98-message-box[hidden] {
+	display: none !important;
+}
+
+.win98-logon-message-box {
+	top: calc(14vh + 215px);
+	transform: translateX(-50%);
+}
+
+.win98-message-box-titlebar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 3px 2px 3px 3px;
+	box-sizing: border-box;
+	background: linear-gradient(90deg, var(--win98-title), var(--win98-title-soft));
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 11px;
+	line-height: 1;
+}
+
+.win98-message-box-titlebar button {
+	display: block;
+	flex: 0 0 16px;
+	width: 16px;
+	height: 14px;
+	min-width: 16px;
+	min-height: 14px;
+	margin: 0 0 0 2px;
+	padding: 0;
+	border: none;
+	background: var(--win98-face);
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='8' height='7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0V0z' fill='%23000'/%3E%3C/svg%3E");
+	background-position: top 3px left 4px;
+	background-repeat: no-repeat;
+	background-size: auto;
+	color: transparent;
+	font-size: 0;
+	font-weight: bold;
+	line-height: 0;
+	text-align: center;
+	box-shadow:
+		inset -1px -1px var(--win98-dark),
+		inset 1px 1px var(--win98-light),
+		inset -2px -2px var(--win98-shadow),
+		inset 2px 2px var(--win98-mid);
+}
+
+.win98-message-box-body {
+	display: grid;
+	grid-template-columns: 38px 1fr;
+	gap: 12px;
+	min-height: 54px;
+	padding: 16px 18px 8px;
+	box-sizing: border-box;
+	align-items: start;
+}
+
+.win98-message-box-icon {
+	position: relative;
+	width: 32px;
+	height: 32px;
+}
+
+.win98-message-box-icon.is-error {
+	border: 0;
+	background-color: transparent;
+	background-image: url("/luci-static/win98/icons/menu/msg_error.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 32px 32px;
+	box-shadow: none;
+	image-rendering: pixelated;
+}
+
+.win98-message-box-icon.is-error::before,
+.win98-message-box-icon.is-error::after {
+	display: none;
+	content: none;
+}
+
+.win98-message-box-text {
+	padding-top: 4px;
+	color: var(--win98-text);
+	line-height: 16px;
+}
+
+.win98-message-box-actions {
+	display: flex;
+	justify-content: center;
+	gap: 74px;
+	padding: 8px 12px 14px;
+}
+
+.win98-message-box-actions button {
+	width: 78px;
+	height: 24px;
+	min-width: 78px;
+	box-sizing: border-box;
+}
+
+.win98-message-box-actions button:first-child {
+	border: 2px solid var(--win98-dark);
+	padding: 0 10px 1px;
+	outline: none !important;
+	box-shadow:
+		inset 1px 1px 0 var(--win98-light),
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 2px 2px 0 var(--win98-mid) !important;
+}
+
+.win98-logon-dialog #view .main,
+.win98-logon-dialog #view .login-box,
+.win98-logon-dialog #view .login-form,
+.win98-logon-dialog #view .cbi-map,
+.win98-logon-dialog #view .cbi-section,
+.win98-logon-dialog #view .cbi-section-node {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.win98-logon-dialog #view .cbi-value {
+	display: grid;
+	grid-template-columns: 68px 136px;
+	align-items: center;
+	gap: 6px;
+	margin: 0 0 8px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+}
+
+.win98-logon-dialog #view .cbi-value-title {
+	width: auto;
+	min-width: 0;
+	padding: 0;
+	font-weight: normal;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.win98-logon-dialog #view .cbi-value-field {
+	width: auto;
+	min-width: 0;
+}
+
+.win98-logon-dialog #view input[type="text"],
+.win98-logon-dialog #view input[type="password"] {
+	width: 136px;
+	height: 23px;
+	box-sizing: border-box;
+}
+
+.win98-logon-dialog #view hr {
+	display: none;
+	border: 0;
+	border-top: 1px solid var(--win98-shadow);
+	border-bottom: 1px solid var(--win98-light);
+}
+
+.win98-logon-dialog #view .alert-message {
+	position: absolute;
+	left: 92px;
+	right: 92px;
+	bottom: 4px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: #800000;
+}
+
+.win98-logon-dialog #view .btn,
+.win98-logon-dialog #view .cbi-button,
+.win98-logon-dialog #view button,
+.win98-logon-cancel {
+	min-width: 74px;
+	width: 74px;
+	height: 23px;
+	box-sizing: border-box;
+}
+
+.win98-logon-dialog #view .btn.important,
+.win98-logon-dialog #view .cbi-button.important,
+.win98-logon-dialog #view .cbi-button-positive {
+	position: absolute;
+	right: 12px;
+	top: 30px;
+	margin: 0;
+	border: 2px solid var(--win98-dark);
+	outline: none !important;
+	padding: 0 10px 1px;
+	box-shadow:
+		inset 1px 1px 0 var(--win98-light),
+		inset -1px -1px 0 var(--win98-shadow),
+		inset 2px 2px 0 var(--win98-mid) !important;
+}
+
+.win98-logon-dialog #view .btn.important::before,
+.win98-logon-dialog #view .cbi-button.important::before,
+.win98-logon-dialog #view .cbi-button-positive::before {
+	content: "OK";
+}
+
+.win98-logon-dialog #view .btn.important,
+.win98-logon-dialog #view .cbi-button.important,
+.win98-logon-dialog #view .cbi-button-positive {
+	font-size: 0;
+}
+
+.win98-logon-dialog #view .btn.important::before,
+.win98-logon-dialog #view .cbi-button.important::before,
+.win98-logon-dialog #view .cbi-button-positive::before {
+	font-size: 13px;
+}
+
+.win98-logon-cancel {
+	position: absolute;
+	right: 12px;
+	top: 60px;
+}
+
+#view > div.spinning:first-child {
+	display: table;
+	margin: 8vh auto;
+	padding: 10px;
+	background: var(--win98-face);
+	border-top: 2px solid var(--win98-light);
+	border-left: 2px solid var(--win98-light);
+	border-right: 2px solid var(--win98-dark);
+	border-bottom: 2px solid var(--win98-dark);
+}
+
+@media screen and (max-width: 900px) {
+	#maincontainer {
+		flex-direction: column;
+	}
+
+	#mainmenu {
+		width: 100%;
+		flex-basis: auto;
+	}
+
+	#maincontent {
+		width: 100%;
+	}
+
+	.win98-auth-shell {
+		grid-template-columns: 1fr;
+	}
+}

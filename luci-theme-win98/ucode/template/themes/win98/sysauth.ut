@@ -1,0 +1,174 @@
+{#
+ Copyright 2022 Jo-Philipp Wich <jo@mein.io>
+ Licensed to the public under the Apache License 2.0.
+-#}
+
+{% include('header', { blank_page: true }) %}
+
+<div class="win98-logon-desktop">
+	<form method="post" class="win98-logon-dialog">
+		<div class="win98-auth-titlebar">
+			<span>Welcome to OpenWrt</span>
+			<div class="win98-auth-titlebar-buttons" aria-hidden="true">
+				<span class="is-help">?</span>
+				<span class="is-close"></span>
+			</div>
+		</div>
+
+		<div class="win98-logon-content">
+			<p class="win98-logon-message">Type a user name and password to log on to OpenWrt.</p>
+
+			<div class="win98-logon-fields">
+				<label for="luci_username">User name:</label>
+				<input name="luci_username" id="luci_username" type="text" autocomplete="username" value="{{ entityencode(duser, true) }}">
+
+				<label for="luci_password">Password:</label>
+				<input id="luci_password" type="text" autocomplete="off" data-win98-password-mask autofocus>
+				<input name="luci_password" id="luci_password_real" type="hidden" autocomplete="current-password">
+
+				{% if (auth_fields): %}
+					{% for (let field in auth_fields): %}
+						<label for="{{ field.name }}">{{ _(field.label ?? field.name) }}</label>
+						<input
+							name="{{ field.name }}"
+							id="{{ field.name }}"
+							type="{{ field.type ?? 'text' }}"
+							{% if (field.placeholder): %}placeholder="{{ field.placeholder }}"{% endif %}
+							{% if (field.inputmode): %}inputmode="{{ field.inputmode }}"{% endif %}
+							{% if (field.pattern): %}pattern="{{ field.pattern }}"{% endif %}
+							{% if (field.maxlength): %}maxlength="{{ field.maxlength }}"{% endif %}
+							{% if (field.autocomplete): %}autocomplete="{{ field.autocomplete }}"{% endif %}
+							{% if (field.required): %}required{% endif %}
+						>
+					{% endfor %}
+				{% endif %}
+			</div>
+
+			<div class="win98-logon-actions">
+				<button type="submit" class="cbi-button cbi-button-positive">OK</button>
+				<button type="reset">Cancel</button>
+			</div>
+
+			{% if (auth_html): %}
+				<div class="win98-logon-extra">
+					{{ auth_html }}
+				</div>
+			{% endif %}
+
+		</div>
+
+		{% if (auth_assets): %}
+			{% for (let asset in auth_assets): %}
+				{% if (asset.type == 'script'): %}
+					<script src="{{ asset.src }}"></script>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	</form>
+
+	<script>
+	(function() {
+		var field = document.getElementById('luci_password');
+		var real = document.getElementById('luci_password_real');
+		var form = field && field.form;
+		var password = '';
+
+		if (!field || !real)
+			return;
+
+		function maskLength(value) {
+			return Array.from(value).length;
+		}
+
+		function render(position) {
+			var caret = Math.max(0, Math.min(maskLength(password), position == null ? maskLength(password) : position));
+			field.value = '*'.repeat(maskLength(password));
+			real.value = password;
+			try {
+				field.setSelectionRange(caret, caret);
+			} catch (e) {}
+		}
+
+		function splice(value, start, end, insert) {
+			var chars = Array.from(value);
+			chars.splice.apply(chars, [start, end - start].concat(Array.from(insert || '')));
+			return chars.join('');
+		}
+
+		field.addEventListener('beforeinput', function(event) {
+			var start = field.selectionStart || 0;
+			var end = field.selectionEnd == null ? start : field.selectionEnd;
+			var insert = event.data || '';
+
+			if (event.inputType === 'deleteContentBackward') {
+				if (start === end && start > 0)
+					start -= 1;
+				password = splice(password, start, end, '');
+				event.preventDefault();
+				render(start);
+			} else if (event.inputType === 'deleteContentForward') {
+				if (start === end)
+					end += 1;
+				password = splice(password, start, end, '');
+				event.preventDefault();
+				render(start);
+			} else if (event.inputType === 'insertText' || event.inputType === 'insertCompositionText' || event.inputType === 'insertFromPaste') {
+				if (!insert && event.dataTransfer)
+					insert = event.dataTransfer.getData('text') || '';
+				password = splice(password, start, end, insert);
+				event.preventDefault();
+				render(start + maskLength(insert));
+			}
+		});
+
+		field.addEventListener('paste', function(event) {
+			var text = event.clipboardData ? event.clipboardData.getData('text') : '';
+			if (!text)
+				return;
+
+			var start = field.selectionStart || 0;
+			var end = field.selectionEnd == null ? start : field.selectionEnd;
+			password = splice(password, start, end, text);
+			event.preventDefault();
+			render(start + maskLength(text));
+		});
+
+		field.addEventListener('input', function() {
+			render(maskLength(password));
+		});
+
+		if (form) {
+			form.addEventListener('reset', function() {
+				password = '';
+				setTimeout(function() { render(0); }, 0);
+			});
+		}
+
+		render(0);
+	})();
+	</script>
+
+	{% if (auth_message || fuser): %}
+		<div class="win98-message-box win98-logon-message-box" role="alertdialog" aria-modal="true" aria-labelledby="win98-logon-message-title">
+			<div class="win98-message-box-titlebar">
+				<span id="win98-logon-message-title">OpenWrt</span>
+				<button type="button" aria-label="Close" onclick="this.closest('.win98-message-box').hidden = true">x</button>
+			</div>
+			<div class="win98-message-box-body">
+				<div class="win98-message-box-icon is-error" aria-hidden="true"></div>
+				<div class="win98-message-box-text">
+					{% if (auth_message): %}
+						{{ auth_message }}
+					{% else %}
+						{{ _('Invalid username and/or password! Please try again.') }}
+					{% endif %}
+				</div>
+			</div>
+			<div class="win98-message-box-actions">
+				<button type="button" onclick="this.closest('.win98-message-box').hidden = true">OK</button>
+			</div>
+		</div>
+	{% endif %}
+</div>
+
+{% include('footer', { blank_page: true }) %}

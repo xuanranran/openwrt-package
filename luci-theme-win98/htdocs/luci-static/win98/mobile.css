@@ -1,0 +1,181 @@
+@import url("/luci-static/openwrt.org/mobile.css");
+
+body {
+	padding: 0 0 42px;
+	font-size: 14px;
+}
+
+#menubar,
+#maincontainer,
+.win98-auth-shell {
+	width: auto;
+	max-width: none;
+	margin-left: 6px;
+	margin-right: 6px;
+}
+
+#menubar {
+	margin-top: 6px;
+}
+
+div.hostinfo {
+	flex: 1 1 100%;
+	box-sizing: border-box;
+}
+
+#indicators,
+#modemenu {
+	flex: 1 1 100%;
+	margin: 2px 0 0;
+}
+
+#modemenu {
+	padding-right: 0;
+}
+
+#modemenu a {
+	margin: 0 2px 2px 0;
+	padding: 5px 8px;
+}
+
+#mainmenu {
+	background: #c0c0c0;
+}
+
+#mainmenu ul.l1 > li > a {
+	background: linear-gradient(90deg, #000080, #1084d0);
+	color: #ffffff;
+}
+
+#mainmenu ul.l1 ul.l2 {
+	top: 2.2em;
+	background: #ffffff;
+	box-shadow: none;
+}
+
+#mainmenu ul.l2 > li > a {
+	padding: 6px 10px 6px 20px;
+}
+
+#maincontent {
+	padding: 2px;
+}
+
+#maincontainer {
+	height: calc(100vh - 44px);
+}
+
+#maincontent.win98-desktop-host {
+	padding: 0;
+}
+
+.win98-desktop {
+	min-height: 360px;
+}
+
+.win98-window {
+	left: 0 !important;
+	top: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	min-width: 0;
+	resize: none;
+}
+
+#tabmenu {
+	margin: 0 0 -1px;
+	padding: 6px 4px 0;
+}
+
+#tabmenu::before {
+	display: block;
+	margin: 0 0 6px;
+}
+
+ul.cbi-tabmenu {
+	padding-left: 0;
+}
+
+ul.cbi-tabmenu li,
+#tabmenu ul li {
+	flex: 0 1 auto;
+	margin-bottom: 0;
+}
+
+ul.cbi-tabmenu li a,
+#tabmenu ul li a {
+	justify-content: center;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.cbi-value {
+	padding: 7px;
+}
+
+.cbi-value-title {
+	float: none;
+	width: 100%;
+	line-height: 1.4;
+}
+
+.cbi-value-field {
+	width: 100%;
+	margin: 0;
+	padding-top: 4px;
+}
+
+.cbi-value-description {
+	margin-top: 6px;
+}
+
+.cbi-page-actions,
+.actions {
+	gap: 7px;
+	padding: 8px;
+}
+
+.win98-footer-wrap {
+	min-height: 32px;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+
+.win98-start-menu {
+	bottom: 34px;
+	width: min(220px, calc(100vw - 8px));
+	min-height: min(380px, calc(100vh - 48px));
+}
+
+.win98-start-list ul {
+	left: 18px;
+	top: 100%;
+	width: min(220px, calc(100vw - 36px));
+	z-index: 2;
+}
+
+.win98-footer-stats,
+.win98-tray {
+	flex: 0 0 auto;
+}
+
+.win98-task-button {
+	min-width: 92px;
+	max-width: 130px;
+}
+
+.win98-tray {
+	margin-left: 4px;
+}
+
+.win98-auth-shell {
+	margin-top: 0;
+}
+
+.win98-auth-body {
+	padding: 12px;
+}
+
+.win98-auth-hero h1 {
+	font-size: 20px;
+}

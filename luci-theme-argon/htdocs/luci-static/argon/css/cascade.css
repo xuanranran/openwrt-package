@@ -90,6 +90,7 @@ body {
   font-family: var(--font-family-sans-serif);
   scrollbar-width: none;
   background-color: var(--background-color);
+  overflow: hidden;
   overscroll-behavior: none;
 }
 

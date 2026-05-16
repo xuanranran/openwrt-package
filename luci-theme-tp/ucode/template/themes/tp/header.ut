@@ -1,0 +1,123 @@
+{#
+ Copyright 2008 Steven Barth <steven@midlink.org>
+ Copyright 2012 David Menting <david@nut-bolt.nl>
+ Copyright 2008-2022 Jo-Philipp Wich <jo@mein.io>
+ Licensed to the public under the Apache License 2.0.
+-#}
+
+{%
+	import { getuid, getspnam } from 'luci.core';
+
+	const boardinfo = ubus.call('system', 'board') ?? {};
+
+	http.prepare_content('text/html; charset=UTF-8');
+-%}
+
+<!DOCTYPE html>
+<html lang="{{ dispatcher.lang }}">
+	<head>
+		<meta charset="utf-8">
+		<title>{{ striptags(`${boardinfo.hostname ?? '?'}${dispatched?.title ? ` | ${_(dispatched.title)}` : ''}`) }}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="darkreader-lock">
+		<link rel="stylesheet" href="{{ media }}/cascade.css">
+		<link rel="icon" href="{{ media }}/imgs/header.png" sizes="any">
+		{% if (node?.css): %}
+		<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
+		{% endif %}
+		{% if (css): %}
+		<style title="text/css">{{ css }}</style>
+		{% endif %}
+		<script src="{{ dispatcher.build_url('admin/translations', dispatcher.lang) }}"></script>
+		<script src="{{ resource }}/cbi.js"></script>
+	</head>
+
+	<body class="lang_{{ dispatcher.lang }} {{ entityencode(striptags(node?.title ?? ''), true) }}" data-page="{{ entityencode(join('-', ctx.request_path), true) }}">
+		{% if (!blank_page): %}
+		<header>
+			<div class="header-top">
+				<div class="header-logo">
+					<a id="tp-brand" href="{{ dispatcher.build_url() }}">
+						<span class="tp-brand-hostname">{{ boardinfo.hostname ?? '?' }}</span>
+						<img class="tp-brand-logo" src="{{ media }}/imgs/logo.svg" alt="TP-Link">
+					</a>
+				</div>
+				<div class="header-banner">
+					<img src="{{ media }}/imgs/header.png" alt="TP-Link">
+				</div>
+			</div>
+			<script>
+				(function() {
+					var brand = document.getElementById('tp-brand');
+					var key = 'luci-theme-tp-brand-logo';
+
+					if (!brand)
+						return;
+
+					if (window.localStorage && localStorage.getItem(key) === '1')
+						brand.classList.add('logo-mode');
+
+					document.body.classList.toggle('tp-logo-mode', brand.classList.contains('logo-mode'));
+
+					brand.addEventListener('click', function(ev) {
+						ev.preventDefault();
+						brand.classList.toggle('logo-mode');
+						document.body.classList.toggle('tp-logo-mode', brand.classList.contains('logo-mode'));
+
+						if (window.localStorage) {
+							if (brand.classList.contains('logo-mode'))
+								localStorage.setItem(key, '1');
+							else
+								localStorage.removeItem(key);
+						}
+					});
+				})();
+			</script>
+			<div class="header-nav">
+				<ul class="nav" id="topmenu" style="display:none"></ul>
+				<div id="indicators" class="header-indicators" style="display:none"></div>
+			</div>
+		</header>
+
+		<div class="page-wrapper">
+			<aside class="sidebar" id="sidebar">
+				<ul id="sidemenu" style="display:none"></ul>
+				<div class="sidebar-footer">
+					<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">更多 TP-LINK 产品，</br>请点击查看 >>...</a>
+				</div>
+			</aside>
+
+			<div id="maincontent">
+				<div class="content-margin">
+					<div class="tp-section-box">
+				{% if (getuid() == 0 && getspnam('root')?.pwdp === ''): %}
+					<div class="alert-message warning">
+						<h4>{{ _('No password set!') }}</h4>
+						<p>{{ _('There is no password set on this router. Please configure a root password to protect the web interface.') }}</p>
+						{% if (dispatcher.lookup("admin/system/admin")): %}
+						  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/admin") }}">{{ _('Go to password configuration...') }}</a></div>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				{% if (boardinfo.rootfs_type == "initramfs"): %}
+					<div class="alert-message warning">
+						<h4>{{ _('System running in recovery (initramfs) mode.') }}</h4>
+						<p>{{ _('No changes to settings will be stored and are lost after rebooting. This mode should only be used to install a firmware upgrade') }}</p>
+						{% if (dispatcher.lookup("admin/system/flash")): %}
+						  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/flash") }}">{{ _('Go to firmware upgrade...') }}</a></div>
+						{% endif %}
+					</div>
+				{% endif %}
+
+				<noscript>
+					<div class="alert-message warning">
+						<h4>{{ _('JavaScript required!') }}</h4>
+						<p>{{ _('You must enable JavaScript in your browser or LuCI will not work properly.') }}</p>
+					</div>
+				</noscript>
+
+				<div id="tabmenu" style="display:none"></div>
+		{% else %}
+			<div id="maincontent">
+		{% endif %}

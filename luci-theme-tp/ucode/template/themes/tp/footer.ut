@@ -1,0 +1,31 @@
+{#
+ Copyright 2022 Jo-Philipp Wich <jo@mein.io>
+ Licensed to the public under the Apache License 2.0.
+-#}
+{%
+	const boardinfo = ubus.call('system', 'board') ?? {};
+-%}
+
+		{% if (!blank_page): %}
+					</div><!-- /tp-section-box -->
+				</div><!-- /content-margin -->
+			</div><!-- /maincontent -->
+		</div><!-- /page-wrapper -->
+		{% else %}
+			</div><!-- /maincontent -->
+		{% endif %}
+
+		{% if (!blank_page): %}
+		<footer>
+			<div class="footer-left">
+				{{ _('Software Version:') }} {{ version.distversion }} ({{ version.distrevision }})
+			</div>
+			<div class="footer-right">
+				{{ _('Hardware Version:') }} {{ boardinfo.model ?? 'OpenWrt Device' }}
+			</div>
+			<ul class="breadcrumb pull-right" id="modemenu" style="display:none"></ul>
+		</footer>
+		<script>L.require('menu-tp')</script>
+		{% endif %}
+	</body>
+</html>

@@ -1,0 +1,57 @@
+{% if (!blank_page): %}
+<div class="clear"></div>
+</div>
+</div>
+
+<div class="win98-footer-wrap">
+	<div class="win98-footer-stats">
+		<details class="win98-start">
+			<summary id="win98-start-button" class="win98-start-button">Start</summary>
+			<div class="win98-start-menu" role="menu" aria-labelledby="win98-start-button">
+				<div class="win98-start-menu-brand">OpenWrt</div>
+				<div class="win98-start-menu-items" data-win98-start-menu>
+					<a role="menuitem" href="{{ dispatcher.build_url('admin/status') }}">{{ _('Status') }}</a>
+					<a role="menuitem" href="{{ dispatcher.build_url('admin/system') }}">{{ _('System') }}</a>
+					<a role="menuitem" href="{{ dispatcher.build_url('admin/services') }}">{{ _('Services') }}</a>
+					<a role="menuitem" href="{{ dispatcher.build_url('admin/network') }}">{{ _('Network') }}</a>
+					<a role="menuitem" href="{{ dispatcher.build_url('admin/logout') }}">{{ _('Log out') }}</a>
+				</div>
+			</div>
+		</details>
+	</div>
+
+	<div class="win98-tray" aria-label="{{ _('Local time') }}" data-win98-clock>--:--</div>
+</div>
+
+<script>L.require('menu-openwrt')</script>
+<script src="{{ media }}/window-manager.js"></script>
+<script>
+(function() {
+	function updateWin98Clock() {
+		var clock = document.querySelector('[data-win98-clock]');
+		var now = new Date();
+		if (clock)
+			clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+	}
+
+	function bindClockWindow() {
+		var clock = document.querySelector('[data-win98-clock]');
+		if (!clock)
+			return;
+
+		clock.title = '{{ _('Date and Time') }}';
+		clock.addEventListener('dblclick', function() {
+			if (window.win98Theme && typeof window.win98Theme.openWindow === 'function')
+				window.win98Theme.openWindow('{{ _('System') }}', '{{ dispatcher.build_url('admin/system/system') }}');
+		});
+	}
+
+	updateWin98Clock();
+	bindClockWindow();
+	setInterval(updateWin98Clock, 30000);
+})();
+</script>
+{% endif %}
+
+</body>
+</html>
