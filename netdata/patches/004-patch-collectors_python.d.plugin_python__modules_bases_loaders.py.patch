@@ -1,0 +1,11 @@
+--- a/src/collectors/python.d.plugin/python_modules/bases/loaders.py
++++ b/src/collectors/python.d.plugin/python_modules/bases/loaders.py
+@@ -4,7 +4,7 @@
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ 
+ try:
+-    from pyyaml3 import SafeLoader as YamlSafeLoader
++    from yaml import SafeLoader as YamlSafeLoader
+ except ImportError:
+     from yaml import SafeLoader as YamlSafeLoader
+ 
