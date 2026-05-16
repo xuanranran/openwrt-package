@@ -7,6 +7,14 @@ APPBINARY=/usr/sbin/netdata
 CONFIGFILE=/etc/netdata/netdata.conf
 
 start_service() {
+	mkdir -m 0755 -p /etc/netdata
+	if [ ! -f "$CONFIGFILE" ] && [ -f /usr/lib/netdata/conf.d/netdata.conf.openwrt ]; then
+		cp /usr/lib/netdata/conf.d/netdata.conf.openwrt "$CONFIGFILE"
+	fi
+	[ -f /etc/netdata/claim.conf ] || touch /etc/netdata/claim.conf
+	chmod 640 /etc/netdata/claim.conf 2>/dev/null || true
+	touch /etc/netdata/.opt-out-from-anonymous-statistics
+
 	mkdir -m 0755 -p /var/cache/netdata
 	chown nobody /var/cache/netdata
 	mkdir -m 0755 -p /var/lib/netdata

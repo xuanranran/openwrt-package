@@ -29,7 +29,7 @@ PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=no-mips16 gc-sections
 
-PKG_BUILD_DEPENDS:=protobuf/host
+PKG_BUILD_DEPENDS:=protobuf/host rust/host
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -87,6 +87,7 @@ CMAKE_OPTIONS += \
 	-DENABLE_LIBUNWIND=Off \
 	-DENABLE_LOGS_MANAGEMENT_TESTS=Off \
 	-DENABLE_ML=Off \
+	-DENABLE_NETDATA_JOURNAL_FILE_READER=On \
 	-DENABLE_PLUGIN_APPS=Off \
 	-DENABLE_PLUGIN_IBM=Off \
 	-DENABLE_PLUGIN_CGROUP_NETWORK=Off \
@@ -96,7 +97,7 @@ CMAKE_OPTIONS += \
 	-DENABLE_PLUGIN_FREEIPMI=Off \
 	-DENABLE_PLUGIN_GO=Off \
 	-DENABLE_PLUGIN_LOCAL_LISTENERS=Off \
-	-DENABLE_PLUGIN_LOGS_MANAGEMENT=Off \
+	-DENABLE_PLUGIN_LOGS_MANAGEMENT=On \
 	-DENABLE_PLUGIN_NETWORK_VIEWER=Off \
 	-DENABLE_PLUGIN_NFACCT=Off \
 	-DENABLE_PLUGIN_OTEL=Off \
@@ -104,24 +105,25 @@ CMAKE_OPTIONS += \
 	-DENABLE_PLUGIN_PERF=Off \
 	-DENABLE_PLUGIN_SCRIPTS=Off \
 	-DENABLE_PLUGIN_SLABINFO=Off \
-	-DENABLE_PLUGIN_SYSTEMD_JOURNAL=Off \
+	-DENABLE_PLUGIN_SYSTEMD_JOURNAL=On \
 	-DENABLE_PLUGIN_SYSTEMD_UNITS=Off \
 	-DENABLE_PLUGIN_XENSTAT=Off \
 	-DENABLE_SYSTEMD_DBUS=Off \
 	-DENABLE_WEBRTC=Off
 
-define Package/netdata/conffiles
-/etc/netdata/
-endef
-
 define Package/netdata/install
 	#netdata binary
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/netdata $(1)/usr/sbin
+	if [ -f $(PKG_INSTALL_DIR)/usr/bin/log2journal ]; then \
+		$(INSTALL_DIR) $(1)/usr/bin; \
+		$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/log2journal $(1)/usr/bin/; \
+	fi
 
 	#netdata libs
 	$(INSTALL_DIR) $(1)/usr/lib/netdata
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/netdata/conf.d $(1)/usr/lib/netdata
+	$(INSTALL_DATA) ./files/netdata.conf $(1)/usr/lib/netdata/conf.d/netdata.conf.openwrt
 
 	#netdata plugins
 	$(INSTALL_DIR) $(1)/usr/libexec/netdata
@@ -131,16 +133,34 @@ define Package/netdata/install
 
 	#netdata configuration
 	$(INSTALL_DIR) $(1)/etc/netdata
-	$(CP) $(PKG_INSTALL_DIR)/etc/netdata $(1)/etc
-	$(INSTALL_DATA) ./files/netdata.conf $(1)/etc/netdata
-	touch $(1)/etc/netdata/.opt-out-from-anonymous-statistics
-	touch $(1)/etc/netdata/claim.conf
-	chmod 640 $(1)/etc/netdata/claim.conf
 	
 	#netdata init
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/netdata.init $(1)/etc/init.d/netdata
 
+	#sysupgrade keep list
+	$(INSTALL_DIR) $(1)/lib/upgrade/keep.d
+	$(INSTALL_DATA) ./files/netdata.sysupgrade $(1)/lib/upgrade/keep.d/netdata
+
+endef
+
+define Package/netdata/postinst
+#!/bin/sh
+root="$${IPKG_INSTROOT}"
+mkdir -p "$${root}/etc/netdata" "$${root}/var/lib/netdata/cloud.d"
+
+if [ ! -e "$${root}/etc/netdata/netdata.conf" ]; then
+	cp "$${root}/usr/lib/netdata/conf.d/netdata.conf.openwrt" "$${root}/etc/netdata/netdata.conf"
+fi
+
+if [ ! -e "$${root}/etc/netdata/claim.conf" ]; then
+	: > "$${root}/etc/netdata/claim.conf"
+fi
+
+touch "$${root}/etc/netdata/.opt-out-from-anonymous-statistics"
+chmod 640 "$${root}/etc/netdata/claim.conf" 2>/dev/null || true
+rm -f "$${root}"/etc/netdata/*.apk-new 2>/dev/null || true
+exit 0
 endef
 
 define Package/netdata-dashboard-v3/install

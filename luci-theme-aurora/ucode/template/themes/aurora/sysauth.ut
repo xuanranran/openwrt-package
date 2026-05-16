@@ -11,6 +11,9 @@
 {% include('header', { blank_page: true }) %}
 
 <div class="login-screen">
+	<div class="login-aurora" aria-hidden="true">
+		<div class="login-aurora-inner"></div>
+	</div>
 	<div class="login-shell">
 		<form method="post" class="login-card">
 			<div class="login-brand">
