@@ -140,6 +140,7 @@ define Package/netdata/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/libexec/netdata/charts.d $(1)/usr/libexec/netdata
 	$(CP) $(PKG_INSTALL_DIR)/usr/libexec/netdata/plugins.d $(1)/usr/libexec/netdata
 	$(CP) $(PKG_INSTALL_DIR)/usr/libexec/netdata/python.d $(1)/usr/libexec/netdata
+	$(INSTALL_BIN) ./files/logread.plugin $(1)/usr/libexec/netdata/plugins.d/logread.plugin
 
 	#netdata configuration
 	$(INSTALL_DIR) $(1)/etc/netdata
