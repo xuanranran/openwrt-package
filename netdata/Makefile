@@ -29,7 +29,7 @@ PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=no-mips16 gc-sections
 
-PKG_BUILD_DEPENDS:=protobuf/host rust/host
+PKG_BUILD_DEPENDS:=protobuf/host rust/host libunwind
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -52,7 +52,7 @@ $(eval $(call Download,netdata-dashboard))
 define Package/netdata
   SECTION:=admin
   CATEGORY:=Administration
-  DEPENDS:=+zlib +libstdcpp +libuuid +libuv +libmnl +liblz4 +libjson-c +libyaml +libopenssl +libcurl +protobuf +libzstd
+  DEPENDS:=+zlib +libstdcpp +libuuid +libuv +libmnl +liblz4 +libjson-c +libyaml +libopenssl +libcurl +protobuf +libzstd +libunwind
   TITLE:=Real-time performance monitoring tool
   URL:=https://www.netdata.cloud/
 endef
@@ -90,7 +90,7 @@ CMAKE_OPTIONS += \
 	-DENABLE_EXPORTER_MONGODB=Off \
 	-DENABLE_H2O=Off \
 	-DENABLE_LIBBACKTRACE=Off \
-	-DENABLE_LIBUNWIND=Off \
+	-DENABLE_LIBUNWIND=On \
 	-DENABLE_LOGS_MANAGEMENT_TESTS=Off \
 	-DENABLE_ML=Off \
 	-DENABLE_NETDATA_JOURNAL_FILE_READER=On \
