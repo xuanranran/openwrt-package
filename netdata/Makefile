@@ -35,6 +35,12 @@ include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 include $(INCLUDE_DIR)/nls.mk
 
+ifeq ($(ARCH),x86_64)
+RUST_CARGO_TARGET:=x86_64-unknown-linux-musl
+else ifeq ($(ARCH),aarch64)
+RUST_CARGO_TARGET:=aarch64-unknown-linux-musl
+endif
+
 define Download/netdata-dashboard
 	FILE:=$(DASHBOARD_SOURCE)
 	URL:=$(DASHBOARD_SOURCE_URL)
@@ -110,6 +116,10 @@ CMAKE_OPTIONS += \
 	-DENABLE_PLUGIN_XENSTAT=Off \
 	-DENABLE_SYSTEMD_DBUS=Off \
 	-DENABLE_WEBRTC=Off
+
+ifneq ($(RUST_CARGO_TARGET),)
+CMAKE_OPTIONS += -DRust_CARGO_TARGET=$(RUST_CARGO_TARGET)
+endif
 
 define Package/netdata/install
 	#netdata binary
