@@ -81,7 +81,7 @@ source_selected() {
 		*'"source"'*) case "$payload" in *"\"$id\""*) return 0 ;; *) return 1 ;; esac ;;
 	esac
 
-	return 0
+	[ "$id" = "openwrt-logread" ]
 }
 
 append_file_source() {
@@ -131,7 +131,7 @@ append_kernel_dmesg_source() {
 
 	source_selected "$payload" kernel-dmesg || return
 
-	dmesg -r 2>/dev/null |
+	dmesg -r 2>/dev/null | tail -n "$limit" |
 		while IFS= read -r file_line; do
 			printf '__NETDATA_FILE__%s\t%s\t%s\n' "Kernel dmesg" info "$file_line"
 		done >>"$out"
@@ -258,7 +258,7 @@ send_logs() {
 	printf ','
 	printf '"data":['
 
-	awk -v now_text="$(date '+%m-%d %H:%M:%S')" -v boot_epoch="$(awk '/^btime / { print $2; exit }' /proc/stat 2>/dev/null)" -v query="$query" -v max="$last" -v count_file="$count_tmp" -v facet_file="$facet_tmp" '
+	awk -v now_text="$(date '+%m-%d %H:%M:%S')" -v query="$query" -v max="$last" -v count_file="$count_tmp" -v facet_file="$facet_tmp" '
 	function esc(s, out, i, c) {
 		out = "";
 		for (i = 1; i <= length(s); i++) {
@@ -306,20 +306,7 @@ send_logs() {
 		}
 		return date_part " " time_part;
 	}
-	function dmesg_time(line, inner, seconds, epoch) {
-		if (boot_epoch == "") return "";
-		if (match(line, /\[[[:space:]]*[0-9]+(\.[0-9]+)?\]/)) {
-			inner = substr(line, RSTART + 1, RLENGTH - 2);
-			gsub(/^[[:space:]]+/, "", inner);
-			seconds = int(inner + 0);
-			epoch = int(boot_epoch + seconds);
-			return strftime("%m-%d %H:%M:%S", epoch);
-		}
-		return "";
-	}
-	function log_time(line, parts, mon, date_part, dt) {
-		dt = dmesg_time(line);
-		if (dt != "") return dt;
+	function log_time(line, parts, mon, date_part) {
 		if (match(line, /[0-9][0-9][0-9][0-9][-\/][0-9][0-9][-\/][0-9][0-9][T ][0-9][0-9]:[0-9][0-9]:[0-9][0-9]/)) {
 			date_part = substr(line, RSTART, 10);
 			return format_time(date_part, substr(line, RSTART + 11, 8));
