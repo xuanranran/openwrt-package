@@ -8,6 +8,7 @@ CONFIGFILE=/etc/netdata/netdata.conf
 
 start_service() {
 	mkdir -m 0755 -p /etc/netdata
+	mkdir -m 0755 -p /etc/netdata/custom-plugins.d
 	if [ ! -f "$CONFIGFILE" ] && [ -f /usr/lib/netdata/conf.d/netdata.conf.openwrt ]; then
 		cp /usr/lib/netdata/conf.d/netdata.conf.openwrt "$CONFIGFILE"
 	fi

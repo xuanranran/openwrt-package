@@ -1,0 +1,33 @@
+#!/bin/sh
+
+root="${IPKG_INSTROOT}"
+mkdir -p "${root}/etc/netdata/custom-plugins.d" "${root}/var/lib/netdata/cloud.d"
+
+if [ ! -e "${root}/etc/netdata/netdata.conf" ]; then
+	cp "${root}/usr/lib/netdata/conf.d/netdata.conf.openwrt" "${root}/etc/netdata/netdata.conf"
+fi
+
+config="${root}/etc/netdata/netdata.conf"
+if [ -f "${config}" ]; then
+	if ! sed -n '/^\[plugins\]/,/^\[/{/^[[:space:]]*logread[[:space:]]*=/p}' "${config}" | grep -q .; then
+		if grep -q '^\[plugins\]' "${config}"; then
+			tmp_config="${config}.tmp"
+			awk '1; /^\[plugins\]$/ { print "\tlogread = yes" }' "${config}" > "${tmp_config}" && mv "${tmp_config}" "${config}"
+		else
+			printf '\n[plugins]\n\tlogread = yes\n' >> "${config}"
+		fi
+	fi
+
+	if ! grep -q '^\[plugin:logread\]' "${config}"; then
+		printf '\n[plugin:logread]\n\tupdate every = 1s\n' >> "${config}"
+	fi
+fi
+
+if [ ! -e "${root}/etc/netdata/claim.conf" ]; then
+	: > "${root}/etc/netdata/claim.conf"
+fi
+
+touch "${root}/etc/netdata/.opt-out-from-anonymous-statistics"
+chmod 640 "${root}/etc/netdata/claim.conf" 2>/dev/null || true
+rm -f "${root}"/etc/netdata/*.apk-new 2>/dev/null || true
+exit 0

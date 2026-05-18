@@ -29,11 +29,12 @@ PKG_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 PKG_BUILD_FLAGS:=no-mips16 gc-sections
 
-PKG_BUILD_DEPENDS:=protobuf/host
+PKG_BUILD_DEPENDS:=protobuf/host rust/host libunwind
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 include $(INCLUDE_DIR)/nls.mk
+include ./rust-targets.mk
 
 define Download/netdata-dashboard
 	FILE:=$(DASHBOARD_SOURCE)
@@ -46,7 +47,7 @@ $(eval $(call Download,netdata-dashboard))
 define Package/netdata
   SECTION:=admin
   CATEGORY:=Administration
-  DEPENDS:=+zlib +libstdcpp +libuuid +libuv +libmnl +liblz4 +libjson-c +libyaml +libopenssl +libcurl +protobuf +libzstd
+  DEPENDS:=+zlib +libstdcpp +libuuid +libuv +libmnl +liblz4 +libjson-c +libyaml +libopenssl +libcurl +protobuf +libzstd +libunwind
   TITLE:=Real-time performance monitoring tool
   URL:=https://www.netdata.cloud/
 endef
@@ -84,9 +85,10 @@ CMAKE_OPTIONS += \
 	-DENABLE_EXPORTER_MONGODB=Off \
 	-DENABLE_H2O=Off \
 	-DENABLE_LIBBACKTRACE=Off \
-	-DENABLE_LIBUNWIND=Off \
+	-DENABLE_LIBUNWIND=On \
 	-DENABLE_LOGS_MANAGEMENT_TESTS=Off \
 	-DENABLE_ML=Off \
+	-DENABLE_NETDATA_JOURNAL_FILE_READER=On \
 	-DENABLE_PLUGIN_APPS=Off \
 	-DENABLE_PLUGIN_IBM=Off \
 	-DENABLE_PLUGIN_CGROUP_NETWORK=Off \
@@ -96,7 +98,7 @@ CMAKE_OPTIONS += \
 	-DENABLE_PLUGIN_FREEIPMI=Off \
 	-DENABLE_PLUGIN_GO=Off \
 	-DENABLE_PLUGIN_LOCAL_LISTENERS=Off \
-	-DENABLE_PLUGIN_LOGS_MANAGEMENT=Off \
+	-DENABLE_PLUGIN_LOGS_MANAGEMENT=On \
 	-DENABLE_PLUGIN_NETWORK_VIEWER=Off \
 	-DENABLE_PLUGIN_NFACCT=Off \
 	-DENABLE_PLUGIN_OTEL=Off \
@@ -104,16 +106,24 @@ CMAKE_OPTIONS += \
 	-DENABLE_PLUGIN_PERF=Off \
 	-DENABLE_PLUGIN_SCRIPTS=Off \
 	-DENABLE_PLUGIN_SLABINFO=Off \
-	-DENABLE_PLUGIN_SYSTEMD_JOURNAL=Off \
+	-DENABLE_PLUGIN_SYSTEMD_JOURNAL=On \
 	-DENABLE_PLUGIN_SYSTEMD_UNITS=Off \
 	-DENABLE_PLUGIN_XENSTAT=Off \
 	-DENABLE_SYSTEMD_DBUS=Off \
 	-DENABLE_WEBRTC=Off
 
+ifneq ($(RUST_CARGO_TARGET),)
+CMAKE_OPTIONS += -DRust_CARGO_TARGET=$(RUST_CARGO_TARGET)
+endif
+
 define Package/netdata/install
 	#netdata binary
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/netdata $(1)/usr/sbin
+	if [ -f $(PKG_INSTALL_DIR)/usr/bin/log2journal ]; then \
+		$(INSTALL_DIR) $(1)/usr/bin; \
+		$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/log2journal $(1)/usr/bin/; \
+	fi
 
 	#netdata libs
 	$(INSTALL_DIR) $(1)/usr/lib/netdata
@@ -125,6 +135,7 @@ define Package/netdata/install
 	$(CP) $(PKG_INSTALL_DIR)/usr/libexec/netdata/charts.d $(1)/usr/libexec/netdata
 	$(CP) $(PKG_INSTALL_DIR)/usr/libexec/netdata/plugins.d $(1)/usr/libexec/netdata
 	$(CP) $(PKG_INSTALL_DIR)/usr/libexec/netdata/python.d $(1)/usr/libexec/netdata
+	$(INSTALL_BIN) ./files/logread.plugin $(1)/usr/libexec/netdata/plugins.d/logread.plugin
 
 	#netdata configuration
 	$(INSTALL_DIR) $(1)/etc/netdata
@@ -140,22 +151,7 @@ define Package/netdata/install
 endef
 
 define Package/netdata/postinst
-#!/bin/sh
-root="$${IPKG_INSTROOT}"
-mkdir -p "$${root}/etc/netdata" "$${root}/var/lib/netdata/cloud.d"
-
-if [ ! -e "$${root}/etc/netdata/netdata.conf" ]; then
-	cp "$${root}/usr/lib/netdata/conf.d/netdata.conf.openwrt" "$${root}/etc/netdata/netdata.conf"
-fi
-
-if [ ! -e "$${root}/etc/netdata/claim.conf" ]; then
-	: > "$${root}/etc/netdata/claim.conf"
-fi
-
-touch "$${root}/etc/netdata/.opt-out-from-anonymous-statistics"
-chmod 640 "$${root}/etc/netdata/claim.conf" 2>/dev/null || true
-rm -f "$${root}"/etc/netdata/*.apk-new 2>/dev/null || true
-exit 0
+$(file <./files/netdata.postinst)
 endef
 
 define Package/netdata-dashboard-v3/install
