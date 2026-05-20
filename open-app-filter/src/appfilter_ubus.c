@@ -82,7 +82,7 @@ int check_app_icon_exist(int app_id)
     return with_icon;
 }
 
-void ubus_dump_visit_list(struct blob_buf *b, char *mac)
+void ubus_dump_visit_list(struct blob_buf *b, const char *mac)
 {
     int i, j;
     void *c, *array;
@@ -180,7 +180,7 @@ appfilter_handle_dev_visit_list(struct ubus_context *ctx, struct ubus_object *ob
         return 0;
     }
 
-    char *mac = json_object_get_string(mac_obj);
+    const char *mac = json_object_get_string(mac_obj);
     dev_node_t *node = find_dev_node(mac);
 
     if (!node)
@@ -244,7 +244,7 @@ appfilter_handle_dev_visit_list(struct ubus_context *ctx, struct ubus_object *ob
 }
 
 
-void update_app_visit_time_list(char *mac, struct app_visit_stat_info *visit_info)
+void update_app_visit_time_list(const char *mac, struct app_visit_stat_info *visit_info)
 {
     int i, j, s;
     int num = 0;
@@ -292,7 +292,7 @@ void update_app_visit_time_list(char *mac, struct app_visit_stat_info *visit_inf
         visit_info->num = MAX_APP_STAT_NUM;
 }
 
-void update_app_class_visit_time_list(char *mac, int *visit_time)
+void update_app_class_visit_time_list(const char *mac, int *visit_time)
 {
     int i, j, s;
     int num = 0;

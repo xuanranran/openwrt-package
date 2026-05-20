@@ -36,12 +36,12 @@ THE SOFTWARE.
 
 dev_node_t *dev_hash_table[MAX_DEV_NODE_HASH_SIZE];
 int g_cur_user_num = 0;
-unsigned int hash_mac(unsigned char *mac)
+unsigned int hash_mac(const char *mac)
 {
     if (!mac)
         return 0;
     else
-        return mac[0] & (MAX_DEV_NODE_HASH_SIZE - 1);
+        return (unsigned char)mac[0] & (MAX_DEV_NODE_HASH_SIZE - 1);
 }
 
 int hash_appid(int appid)
@@ -72,7 +72,7 @@ void init_dev_node_htable()
     printf("init dev node htable ok...\n");
 }
 
-dev_node_t *add_dev_node(char *mac)
+dev_node_t *add_dev_node(const char *mac)
 {
     unsigned int hash = 0;
     hash = hash_mac(mac);
@@ -99,7 +99,7 @@ dev_node_t *add_dev_node(char *mac)
     return node;
 }
 
-dev_node_t *find_dev_node(char *mac)
+dev_node_t *find_dev_node(const char *mac)
 {
     unsigned int hash = 0;
     dev_node_t *p = NULL;

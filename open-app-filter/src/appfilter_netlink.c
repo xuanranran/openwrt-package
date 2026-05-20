@@ -51,7 +51,7 @@ void appfilter_nl_handler(struct uloop_fd *u, unsigned int ev)
     struct nlmsghdr *h;
     int type;
     int id;
-    char *mac = NULL;
+    const char *mac = NULL;
     u_int32_t cur_time = get_timestamp();
 
     struct msghdr msg = {

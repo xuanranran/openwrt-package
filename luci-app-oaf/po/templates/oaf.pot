@@ -1,0 +1,746 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:232
+msgid "Access Records"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:87
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:131
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:143
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:159
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:76
+msgid "Actions"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:73
+msgid "Active App"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:96
+msgid "Add Time Period"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:170
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:207
+msgid "Add User"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:213
+msgid "Add Whitelist User"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:531
+msgid "Add successful."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:306
+msgid "Add to Whitelist"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:404
+msgid "Add to whitelist successful."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:501
+msgid "Adding selected devices..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:388
+msgid "Adding to whitelist..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:68
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:50
+msgid "Advanced Settings"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:78
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:42
+msgid "App Feature"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:71
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:88
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:3
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:18
+msgid "App Filter"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:245
+msgid "App Name"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:101
+msgid "App Record"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:132
+msgid "App Selection"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:228
+msgid "App Statistics"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:480
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:513
+msgid "App Time Statistics"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:94
+msgid "App number"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:312
+msgid "Applying changes..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:100
+msgid "Auto-load oaf driver"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:107
+msgid "Automatic Mode"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:124
+msgid "Bypass Mode"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:479
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:325
+msgid "Cancel"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:268
+msgid "Close"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:80
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:253
+msgid "Collecting data..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:72
+msgid "Common App(TOP5)"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:91
+msgid ""
+"Configure application filtering user modes, managed terminals, and "
+"whitelists."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:69
+msgid ""
+"Configure driver autoloading, network acceleration bypass, and custom LAN "
+"interfaces."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:40
+msgid "Configure effective time rules for application filtering."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:125
+msgid "Controlled Terminals"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:74
+msgid "Current URL"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:367
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:372
+msgid "Current time is not within the time range"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:86
+msgid "Current version"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:148
+msgid "Daily Study Time Range"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:254
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:254
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:348
+msgid "Delete"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:379
+msgid "Delete successful."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:371
+msgid "Deleting user..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:197
+msgid "Deselect All"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:197
+msgid "Details"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:260
+msgid "Device Details"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:70
+msgid "Device Info"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:120
+msgid "Disable Duration Each Time (Break Time)"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:86
+msgid "Disable Software/Hardware Acceleration"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:248
+msgid "Duration"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:55
+msgid "Dynamic Time"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:105
+msgid "Dynamic Time Rules"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:107
+msgid ""
+"Dynamic time mode refers to dynamically adjusting app filter switches, such "
+"as allowing children to play games for 20 minutes after studying for 1 hour, "
+"automatically enabling filtering after exceeding entertainment time, and "
+"repeating the cycle."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:137
+msgid "Effective Users"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:112
+msgid "Enable Duration Each Time (Study Time)"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:86
+msgid "End Time"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:299
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:330
+msgid "End time must be greater than start time."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:307
+msgid "Enter nickname or remark"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:534
+msgid "Failed to add devices:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:407
+msgid "Failed to add whitelist:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:320
+msgid "Failed to apply settings:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:382
+msgid "Failed to delete user:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:432
+msgid "Failed to remove from whitelist:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:184
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:336
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:355
+msgid "Failed to save settings:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:365
+msgid "Failed to switch mode:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:360
+msgid "Failed to update remark:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:167
+msgid "Failed to upgrade feature file:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:171
+msgid "Failed to upload file:"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:106
+msgid "Feature Library Update"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:98
+msgid "Feature download"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:90
+msgid "Feature format"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:115
+msgid ""
+"Feature library files can be downloaded from the official website. After "
+"downloading, upload to upgrade. Note the feature code format version, which "
+"needs to be consistent with the current feature code format!"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:97
+msgid "Filter Mode"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:249
+msgid "Filter Status"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:72
+msgid ""
+"Filter target internet applications, view running status, and customize "
+"blocking rules."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:425
+msgid "Filtered"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:54
+msgid "Fixed Time"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:70
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:136
+msgid "Fri"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:123
+msgid "Gateway Mode"
+msgstr ""
+
+#: luci-app-oaf/root/usr/share/rpcd/acl.d/luci-app-oaf.json:3
+msgid "Grant access to OpenAppFilter configuration"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:129
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:141
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:157
+msgid "Hostname"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:71
+msgid "IP Address"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:133
+msgid ""
+"If the App you want is not in the list, you can upgrade the feature library "
+"of the official website or customize the App."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:108
+msgid ""
+"If the oaf driver cannot be manually unloaded or the current driver is "
+"unstable, you can turn off auto-loading at startup and manually install a "
+"suitable driver. It is recommended to use the official stable OpenWrt "
+"firmware."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:193
+msgid ""
+"In automatic mode, all newly joined terminals will be controlled, and random "
+"MAC addresses on mobile phones are also applicable."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:195
+msgid "In manual mode, only specified terminals are controlled."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:168
+msgid ""
+"Invalid LAN interface name. Please ensure it is 2-16 characters long and "
+"contains only letters, numbers, dots, and hyphens."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:135
+msgid "Invalid file format. Please upload a .bin feature package."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:293
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:325
+msgid "Invalid time format, please enter HH:MM."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:114
+msgid "LAN Interface"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:247
+msgid "Last Access Time"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:128
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:140
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:156
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:313
+msgid "MAC Address"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:117
+msgid "Manual Mode"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:47
+msgid "Mode Selection"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:362
+msgid "Mode switch successful."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:310
+msgid "Modify Remark"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:66
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:132
+msgid "Mon"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:147
+msgid "No Users Available"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:419
+msgid "No access records found"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:449
+msgid "No new devices available"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:123
+msgid "No online devices found"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:350
+msgid "Not Configured"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:81
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:363
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:377
+msgid "Not Running"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:80
+msgid "OAF Driver Version"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:76
+msgid "OAF Version"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:484
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:330
+msgid "OK"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:184
+msgid "Offline"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:182
+msgid "Online"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:75
+msgid "Online Status"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:540
+msgid "Percentage"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:310
+msgid "Please add at least one time period."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:346
+msgid "Please enter a valid remark (no spaces, quotes, and max 32 characters)."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:129
+msgid "Please select a file to upload."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:274
+msgid "Please select at least one weekday."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:335
+msgid "Please set valid duration minutes."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:130
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:142
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:158
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:203
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:317
+msgid "Remark"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:429
+msgid "Remove from whitelist successful."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:413
+msgid "Removing from whitelist..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:355
+msgid "Running"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:79
+msgid "Running Status"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:71
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:137
+msgid "Sat"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:137
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:142
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:167
+msgid "Save"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:172
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:326
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:340
+msgid "Saving configuration..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:197
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:203
+msgid "Select All"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:471
+msgid "Select Devices (Controlled)"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:471
+msgid "Select Devices (Whitelist)"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:190
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:238
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:264
+msgid "Selected"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:316
+msgid "Settings applied successfully."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:176
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:332
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:352
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:352
+msgid "Settings saved successfully."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:94
+msgid ""
+"Software and hardware acceleration, NAT offload and other modules may affect "
+"filtering or statistics functions. This interface only attempts to turn them "
+"off, but may not be completely successful. Please check the status in the "
+"firewall or network acceleration menu. Re-enabling acceleration requires a "
+"device restart to take effect."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:246
+msgid "Start Access Time"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:85
+msgid "Start Time"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:72
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:138
+msgid "Sun"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:356
+msgid "Switching mode..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:153
+msgid "Terminals in the whitelist are not filtered."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:79
+msgid ""
+"The feature library is used to describe App features, App filtering effect "
+"and number-dependent feature library."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:126
+msgid ""
+"The name of the LAN interface, used for detecting terminal information. The "
+"system default is bridge interface (br-lan). If the LAN port has been "
+"modified to a physical interface, please modify it to the corresponding "
+"name, such as eth0, support fuzzy matching. For example, you can setup lan "
+"to match br-lan and br-lan2."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:153
+msgid ""
+"This time range represents the daily school time period, which is a "
+"continuous time period. During this time period, filtering rules are "
+"dynamically enabled and disabled. Outside the time range, filtering is "
+"disabled by default."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:69
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:135
+msgid "Thur"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:39
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:34
+msgid "Time Configuration"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:81
+msgid "Time Periods"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:315
+msgid "Time periods cannot exceed 64 entries."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:67
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:133
+msgid "Tue"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:426
+msgid "Unfiltered"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:14
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:33
+msgid "Unknown"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:159
+msgid "Update the feature file successfully."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:139
+msgid "Updating, please wait..."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:114
+msgid "Upload"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:154
+msgid "Upload failed."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:90
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:26
+msgid "User Configuration"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:64
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:10
+msgid "User List"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:65
+msgid "View online devices, application statistics, and manage user remarks."
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:539
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:556
+msgid "Visit Time"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:68
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:134
+msgid "Wed"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:63
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:129
+msgid "Weekday Selection"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:152
+msgid "Whitelist Users"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:358
+msgid "Will close in"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:369
+msgid "Will start in"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:115
+msgid "Work Mode"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:396
+msgid "h"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:188
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:190
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:238
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:264
+msgid "items"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:396
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:401
+msgid "m"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:358
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:369
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:115
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:123
+msgid "minutes"
+msgstr ""
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:379
+msgid ""
+"oaf driver not loaded, please download the oaf.ko driver file corresponding "
+"to the kernel version of this firmware for installation, and enable auto-"
+"loading. Current kernel version is"
+msgstr ""

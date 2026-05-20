@@ -1,0 +1,112 @@
+#appContainer {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 20px
+}
+
+.arrow {
+	width: 12px;
+	height: 12px;
+	background-image: url('/luci-static/resources/view/oaf/icons/arrow.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	transition: transform 0.3s ease;
+	display: inline-block;
+	transform: rotate(0deg);
+	margin-left: 8px
+}
+
+.arrow.expanded {
+	transform: rotate(90deg)
+}
+
+.category-title {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	cursor: pointer;
+	padding: 10px 15px;
+	user-select: none;
+	transition: background-color 0.2s ease
+}
+
+.category-title:hover {
+	background-color: rgba(127, 127, 127, 0.15);
+	border-radius: 4px
+}
+
+.category-name {
+	font-size: 14px;
+	font-weight: bold
+}
+
+.app-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	padding: 15px;
+	flex-direction: column
+}
+
+.app-items-row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	gap: 10px
+}
+
+.app-item {
+	width: 160px;
+	box-sizing: border-box;
+	padding: 5px;
+	display: flex;
+	align-items: center
+}
+
+.app-item label {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	text-align: left;
+	cursor: pointer
+}
+
+.app-item input[type="checkbox"] {
+	margin: 0 8px 0 0;
+	vertical-align: middle
+}
+
+.app-item img {
+	vertical-align: middle;
+	display: inline-block;
+	border-radius: 4px;
+	margin-right: 6px
+}
+
+.select-all-container {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+	padding-bottom: 8px;
+	width: 100%;
+	gap: 8px
+}
+
+.select-all-container input[type="checkbox"] {
+	margin: 0;
+	cursor: pointer
+}
+
+.select-all-label {
+	font-size: 13px;
+	color: #666;
+	cursor: pointer;
+	font-weight: 500
+}
+
+@media (max-width: 600px) {
+	.app-item {
+		width: 50%
+	}
+}

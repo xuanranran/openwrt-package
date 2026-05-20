@@ -1,0 +1,57 @@
+{
+	"admin/services/appfilter": {
+		"title": "App Filter",
+		"action": {
+			"type": "alias",
+			"path": "admin/services/appfilter/app_filter"
+		}
+	},
+	"admin/services/appfilter/user_list": {
+		"title": "User List",
+		"order": 10,
+		"action": {
+			"type": "view",
+			"path": "oaf/user_list"
+		}
+	},
+	"admin/services/appfilter/app_filter": {
+		"title": "App Filter",
+		"order": 20,
+		"action": {
+			"type": "view",
+			"path": "oaf/app_filter"
+		}
+	},
+	"admin/services/appfilter/user": {
+		"title": "User Configuration",
+		"order": 30,
+		"action": {
+			"type": "view",
+			"path": "oaf/user"
+		}
+	},
+	"admin/services/appfilter/time": {
+		"title": "Time Configuration",
+		"order": 40,
+		"action": {
+			"type": "view",
+			"path": "oaf/time"
+		}
+	},
+	"admin/services/appfilter/feature": {
+		"title": "App Feature",
+		"order": 50,
+		"action": {
+			"type": "view",
+			"path": "oaf/feature"
+		}
+	},
+	"admin/services/appfilter/advance": {
+		"title": "Advanced Settings",
+		"order": 60,
+		"action": {
+			"type": "view",
+			"path": "oaf/advance"
+		}
+	}
+}

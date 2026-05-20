@@ -1,0 +1,93 @@
+'use strict';
+
+const fs = require('fs');
+
+return {
+	'luci.oaf': {
+		upgrade_feature: {
+			args: {
+				file: 'string'
+			},
+			call: function(req) {
+				const uploaded_file = req.args.file;
+				if (!uploaded_file) {
+					return { success: false, error: "No file provided" };
+				}
+
+				// check upload file exist
+				if (!fs.access(uploaded_file, 'f')) {
+					return { success: false, error: "File not found: " + uploaded_file };
+				}
+
+				// create tmp folder
+				system("mkdir -p /tmp/upload_oaf");
+
+				// unzip file
+				const tar_cmd = "tar -zxvf " + uploaded_file + " -C /tmp/upload_oaf >/dev/null";
+				const tar_res = system(tar_cmd);
+				if (tar_res != 0) {
+					system("rm -rf /tmp/upload_oaf");
+					return { success: false, error: "Failed to extract feature file, format error" };
+				}
+
+				const extracted_cfg = "/tmp/upload_oaf/feature.cfg";
+				const fd = fs.open(extracted_cfg, "r");
+				if (!fd) {
+					system("rm -rf /tmp/upload_oaf");
+					return { success: false, error: "Failed to extract feature file, file not found" };
+				}
+
+				const version_line = fd.read("line");
+				const format_line = fd.read("line");
+				fd.close();
+
+				if (!version_line) {
+					system("rm -rf /tmp/upload_oaf");
+					return { success: false, error: "Failed to read version from feature file" };
+				}
+
+				// check version header
+				if (index(version_line, "#version") == -1) {
+					system("rm -rf /tmp/upload_oaf");
+					return { success: false, error: "Failed to update feature file, version format error" };
+				}
+
+				let f_format = "v3.0";
+				if (format_line && index(format_line, "#format") != -1) {
+					// get format
+					let parts = split(format_line, /[ \t\r\n]+/);
+					if (length(parts) >= 2) {
+						f_format = parts[1];
+					}
+				}
+
+				if (f_format != "v3.0") {
+					system("rm -rf /tmp/upload_oaf");
+					return { success: false, error: "Failed to update feature file, format error. Feature format: " + f_format };
+				}
+
+				// copy file to system
+				const cp_cfg_res = system("cp /tmp/upload_oaf/feature.cfg /etc/appfilter/feature.cfg");
+				if (cp_cfg_res != 0) {
+					system("rm -rf /tmp/upload_oaf");
+					return { success: false, error: "Failed to copy feature.cfg to /etc/appfilter/" };
+				}
+				system("chmod 666 /etc/appfilter/feature.cfg");
+
+				// copy icon files
+				system("rm -rf /www/luci-static/resources/app_icons/*");
+				system("mkdir -p /www/luci-static/resources/app_icons/");
+				system("cp -rf /tmp/upload_oaf/app_icons/* /www/luci-static/resources/app_icons/ 2>/dev/null");
+
+				// reload driver signal
+				system("killall -SIGUSR1 oafd");
+
+				// clean tmp
+				system("rm -rf /tmp/upload_oaf");
+				system("rm -f " + uploaded_file);
+
+				return { success: true, message: "Update the feature file successfully, please refresh the page" };
+			}
+		}
+	}
+};

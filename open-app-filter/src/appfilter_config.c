@@ -148,7 +148,9 @@ int af_uci_add_list(struct uci_context *ctx, char *key, char *value)
         return -1;
     }
     char param_tmp[MAX_PARAM_LIST_LEN] = {0};    
-    sprintf(param_tmp, "%s=%s", key, value);
+    strcpy(param_tmp, key);
+    strcat(param_tmp, "=");
+    strcat(param_tmp, value);
     if (uci_lookup_ptr(ctx, &ptr, param_tmp, true) != UCI_OK) {
         ret = 1;
         return ret;
@@ -257,7 +259,7 @@ int af_uci_del_list(struct uci_context *ctx, char *key, char *value)
 }
 
 
-int af_uci_set_value(struct uci_context *ctx, char *key, char *value)
+int af_uci_set_value(struct uci_context *ctx, char *key, const char *value)
 {
     struct uci_element *e;
     struct uci_ptr ptr;
@@ -310,7 +312,7 @@ int af_uci_del_array_value(struct uci_context *ctx, char *key_fmt, int index){
     return af_uci_delete(ctx, key);
 }
 
-int af_uci_set_array_value(struct uci_context *ctx, char *key_fmt, int index, char *value){
+int af_uci_set_array_value(struct uci_context *ctx, char *key_fmt, int index, const char *value){
     char key[128] = {0};
     sprintf(key, key_fmt, index);
     return af_uci_set_value(ctx, key, value);
@@ -322,7 +324,9 @@ int af_uci_commit(struct uci_context *ctx, const char * package) {
     if (!package){
         return -1;
     }
-    if (uci_lookup_ptr(ctx, &ptr, package, true) != UCI_OK) {
+    char pkg_tmp[128] = {0};
+    strncpy(pkg_tmp, package, sizeof(pkg_tmp) - 1);
+    if (uci_lookup_ptr(ctx, &ptr, pkg_tmp, true) != UCI_OK) {
         return -1;
     }   
 

@@ -90,11 +90,11 @@ typedef void (*iter_func)(void *arg, dev_node_t *dev);
 //todo:dev for each
 extern dev_node_t *dev_hash_table[MAX_DEV_NODE_HASH_SIZE];
 
-dev_node_t *add_dev_node(char *mac);
+dev_node_t *add_dev_node(const char *mac);
 void init_dev_node_htable();
 void dump_dev_list(void);
 void dump_dev_visit_list(void);
-dev_node_t *find_dev_node(char *mac);
+dev_node_t *find_dev_node(const char *mac);
 void dev_foreach(void *arg, iter_func iter);
 void add_visit_info_node(visit_info_t **head, visit_info_t *node);
 void check_dev_visit_info_expire(void);

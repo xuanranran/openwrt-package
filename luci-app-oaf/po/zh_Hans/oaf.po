@@ -1,0 +1,759 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:232
+msgid "Access Records"
+msgstr "访问记录"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:87
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:131
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:143
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:159
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:76
+msgid "Actions"
+msgstr "操作"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:73
+msgid "Active App"
+msgstr "活跃 APP"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:96
+msgid "Add Time Period"
+msgstr "添加时间段"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:170
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:207
+msgid "Add User"
+msgstr "添加用户"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:213
+msgid "Add Whitelist User"
+msgstr "添加白名单用户"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:531
+msgid "Add successful."
+msgstr "添加成功"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:306
+msgid "Add to Whitelist"
+msgstr "添加到白名单"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:404
+msgid "Add to whitelist successful."
+msgstr "添加到白名单成功"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:501
+msgid "Adding selected devices..."
+msgstr "正在添加选中的设备..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:388
+msgid "Adding to whitelist..."
+msgstr "正在添加到白名单..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:68
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:50
+msgid "Advanced Settings"
+msgstr "高级设置"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:78
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:42
+msgid "App Feature"
+msgstr "特征库"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:71
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:88
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:3
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:18
+msgid "App Filter"
+msgstr "应用过滤"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:245
+msgid "App Name"
+msgstr "APP 名称"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:101
+msgid "App Record"
+msgstr "应用记录"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:132
+msgid "App Selection"
+msgstr "应用选择"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:228
+msgid "App Statistics"
+msgstr "APP 统计"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:480
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:513
+msgid "App Time Statistics"
+msgstr "APP 时间统计"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:94
+msgid "App number"
+msgstr "APP 个数"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:312
+msgid "Applying changes..."
+msgstr "正在应用更改..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:100
+msgid "Auto-load oaf driver"
+msgstr "自动加载 oaf 驱动"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:107
+msgid "Automatic Mode"
+msgstr "自动模式"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:124
+msgid "Bypass Mode"
+msgstr "旁路模式"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:479
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:325
+msgid "Cancel"
+msgstr "取消"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:268
+msgid "Close"
+msgstr "关闭"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:80
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:253
+msgid "Collecting data..."
+msgstr "正在收集数据..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:72
+msgid "Common App(TOP5)"
+msgstr "常用 APP (TOP5)"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:91
+msgid ""
+"Configure application filtering user modes, managed terminals, and "
+"whitelists."
+msgstr "配置应用过滤用户模式、管控终端和白名单。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:69
+msgid ""
+"Configure driver autoloading, network acceleration bypass, and custom LAN "
+"interfaces."
+msgstr "配置驱动自动加载、网络加速旁路和自定义 LAN 接口。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:40
+msgid "Configure effective time rules for application filtering."
+msgstr "配置应用过滤的生效时间规则。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:125
+msgid "Controlled Terminals"
+msgstr "管控终端"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:74
+msgid "Current URL"
+msgstr "正在访问 URL"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:367
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:372
+msgid "Current time is not within the time range"
+msgstr "当前时间不在时间范围内"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:86
+msgid "Current version"
+msgstr "当前版本"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:148
+msgid "Daily Study Time Range"
+msgstr "每天学习时间范围"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:254
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:254
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:348
+msgid "Delete"
+msgstr "删除"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:379
+msgid "Delete successful."
+msgstr "删除成功"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:371
+msgid "Deleting user..."
+msgstr "正在删除用户..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:197
+msgid "Deselect All"
+msgstr "取消全选"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:197
+msgid "Details"
+msgstr "详情"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:260
+msgid "Device Details"
+msgstr "设备详情"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:70
+msgid "Device Info"
+msgstr "设备信息"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:120
+msgid "Disable Duration Each Time (Break Time)"
+msgstr "每次关闭时长（课余时间）"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:86
+msgid "Disable Software/Hardware Acceleration"
+msgstr "关闭软/硬件加速"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:248
+msgid "Duration"
+msgstr "访问时长"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:55
+msgid "Dynamic Time"
+msgstr "动态时间"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:105
+msgid "Dynamic Time Rules"
+msgstr "动态时间规则"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:107
+msgid ""
+"Dynamic time mode refers to dynamically adjusting app filter switches, such "
+"as allowing children to play games for 20 minutes after studying for 1 hour, "
+"automatically enabling filtering after exceeding entertainment time, and "
+"repeating the cycle."
+msgstr ""
+"动态时间模式是指动态调整应用过滤开关，比如小孩学习1个小时后奖励20分钟玩游戏，"
+"超过娱乐时间后自动开启过滤，反复循环。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:137
+msgid "Effective Users"
+msgstr "生效的用户"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:112
+msgid "Enable Duration Each Time (Study Time)"
+msgstr "每次启用时长（学习时间）"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:86
+msgid "End Time"
+msgstr "结束时间"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:299
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:330
+msgid "End time must be greater than start time."
+msgstr "结束时间必须大于开始时间。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:307
+msgid "Enter nickname or remark"
+msgstr "输入昵称或备注"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:534
+msgid "Failed to add devices:"
+msgstr "添加设备失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:407
+msgid "Failed to add whitelist:"
+msgstr "添加白名单失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:320
+msgid "Failed to apply settings:"
+msgstr "应用设置失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:382
+msgid "Failed to delete user:"
+msgstr "删除用户失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:432
+msgid "Failed to remove from whitelist:"
+msgstr "从白名单移除失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:184
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:336
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:355
+msgid "Failed to save settings:"
+msgstr "保存设置失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:365
+msgid "Failed to switch mode:"
+msgstr "切换模式失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:360
+msgid "Failed to update remark:"
+msgstr "更新备注失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:167
+msgid "Failed to upgrade feature file:"
+msgstr "升级特征库文件失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:171
+msgid "Failed to upload file:"
+msgstr "上传文件失败："
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:106
+msgid "Feature Library Update"
+msgstr "特征库升级"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:98
+msgid "Feature download"
+msgstr "特征库下载"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:90
+msgid "Feature format"
+msgstr "特征码格式"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:115
+msgid ""
+"Feature library files can be downloaded from the official website. After "
+"downloading, upload to upgrade. Note the feature code format version, which "
+"needs to be consistent with the current feature code format!"
+msgstr ""
+"特征库文件可以通过官网下载，下载后上传升级，注意特征码格式版本，需要和当前特"
+"征码格式一致！"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:97
+msgid "Filter Mode"
+msgstr "过滤模式"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:249
+msgid "Filter Status"
+msgstr "过滤状态"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:72
+msgid ""
+"Filter target internet applications, view running status, and customize "
+"blocking rules."
+msgstr "过滤目标互联网应用，查看运行状态，并自定义拦截规则。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:425
+msgid "Filtered"
+msgstr "已过滤"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:54
+msgid "Fixed Time"
+msgstr "固定时间"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:70
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:136
+msgid "Fri"
+msgstr "周五"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:123
+msgid "Gateway Mode"
+msgstr "网关模式"
+
+#: luci-app-oaf/root/usr/share/rpcd/acl.d/luci-app-oaf.json:3
+msgid "Grant access to OpenAppFilter configuration"
+msgstr "授予对 OpenAppFilter 配置的访问权限"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:129
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:141
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:157
+msgid "Hostname"
+msgstr "主机名"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:71
+msgid "IP Address"
+msgstr "IP 地址"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:133
+msgid ""
+"If the App you want is not in the list, you can upgrade the feature library "
+"of the official website or customize the App."
+msgstr "如果列表中没有你想要的 APP，可以通过升级官网的特征库或者自定义 APP。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:108
+msgid ""
+"If the oaf driver cannot be manually unloaded or the current driver is "
+"unstable, you can turn off auto-loading at startup and manually install a "
+"suitable driver. It is recommended to use the official stable OpenWrt "
+"firmware."
+msgstr ""
+"如果 oaf 驱动无法手动卸载或者当前驱动不稳定，可以关闭开机自动加载，然后手动安"
+"装合适的驱动，建议用 openwrt 官方稳定版固件。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:193
+msgid ""
+"In automatic mode, all newly joined terminals will be controlled, and random "
+"MAC addresses on mobile phones are also applicable."
+msgstr "自动模式下，所有新加入的终端将会被管控，手机随机 MAC 也适用。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:195
+msgid "In manual mode, only specified terminals are controlled."
+msgstr "手动模式下，只有指定终端被管控。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:168
+msgid ""
+"Invalid LAN interface name. Please ensure it is 2-16 characters long and "
+"contains only letters, numbers, dots, and hyphens."
+msgstr "LAN 接口名称无效。请确保其长度在 2-16 个字符之间，且只包含字母、数字、小数点和短横线。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:135
+msgid "Invalid file format. Please upload a .bin feature package."
+msgstr "文件格式无效，请上传 .bin 格式的特征库包。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:293
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:325
+msgid "Invalid time format, please enter HH:MM."
+msgstr "时间格式无效，请输入 HH:MM 格式。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:114
+msgid "LAN Interface"
+msgstr "LAN 接口"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:247
+msgid "Last Access Time"
+msgstr "最后访问时间"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:128
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:140
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:156
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:313
+msgid "MAC Address"
+msgstr "MAC地址"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:117
+msgid "Manual Mode"
+msgstr "手动模式"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:47
+msgid "Mode Selection"
+msgstr "模式选择"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:362
+msgid "Mode switch successful."
+msgstr "模式切换成功"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:310
+msgid "Modify Remark"
+msgstr "修改备注"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:66
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:132
+msgid "Mon"
+msgstr "周一"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:147
+msgid "No Users Available"
+msgstr "暂无用户"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:419
+msgid "No access records found"
+msgstr "未找到访问记录"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:449
+msgid "No new devices available"
+msgstr "无可用新设备"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:123
+msgid "No online devices found"
+msgstr "未找到在线设备"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:350
+msgid "Not Configured"
+msgstr "未配置"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:81
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:363
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:377
+msgid "Not Running"
+msgstr "未运行"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:80
+msgid "OAF Driver Version"
+msgstr "OAF 驱动版本"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:76
+msgid "OAF Version"
+msgstr "OAF 版本"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:484
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:330
+msgid "OK"
+msgstr "确定"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:184
+msgid "Offline"
+msgstr "离线"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:182
+msgid "Online"
+msgstr "在线"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:75
+msgid "Online Status"
+msgstr "在线状态"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:540
+msgid "Percentage"
+msgstr "占比"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:310
+msgid "Please add at least one time period."
+msgstr "请至少添加一个时间段"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:346
+msgid "Please enter a valid remark (no spaces, quotes, and max 32 characters)."
+msgstr "请输入有效的备注（不含空格、引号，且长度不超过 32 个字符）。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:129
+msgid "Please select a file to upload."
+msgstr "请选择要上传的文件"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:274
+msgid "Please select at least one weekday."
+msgstr "请至少选择一个星期"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:335
+msgid "Please set valid duration minutes."
+msgstr "请设置有效的持续时间（分钟）。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:130
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:142
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:158
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:203
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:317
+msgid "Remark"
+msgstr "备注"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:429
+msgid "Remove from whitelist successful."
+msgstr "从白名单移除成功"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:413
+msgid "Removing from whitelist..."
+msgstr "正在从白名单中移除..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:355
+msgid "Running"
+msgstr "运行中"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:79
+msgid "Running Status"
+msgstr "运行状态"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:71
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:137
+msgid "Sat"
+msgstr "周六"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:137
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:142
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:167
+msgid "Save"
+msgstr "保存"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:172
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:326
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:340
+msgid "Saving configuration..."
+msgstr "正在保存配置..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:197
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:203
+msgid "Select All"
+msgstr "全选"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:471
+msgid "Select Devices (Controlled)"
+msgstr "选择设备（管控）"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:471
+msgid "Select Devices (Whitelist)"
+msgstr "选择设备（白名单）"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:190
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:238
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:264
+msgid "Selected"
+msgstr "已选"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:316
+msgid "Settings applied successfully."
+msgstr "设置应用成功"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:176
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:332
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:352
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:352
+msgid "Settings saved successfully."
+msgstr "设置保存成功"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:94
+msgid ""
+"Software and hardware acceleration, NAT offload and other modules may affect "
+"filtering or statistics functions. This interface only attempts to turn them "
+"off, but may not be completely successful. Please check the status in the "
+"firewall or network acceleration menu. Re-enabling acceleration requires a "
+"device restart to take effect."
+msgstr ""
+"软硬件加速、NAT Offload 等模块会影响过滤或统计功能，在该界面只是尝试关闭，不"
+"一定能够完全成功，请在防火墙或者网络加速菜单中查看关闭状态，重新开启加速需要"
+"重启设备生效。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:246
+msgid "Start Access Time"
+msgstr "开始访问时间"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:85
+msgid "Start Time"
+msgstr "开始时间"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:72
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:138
+msgid "Sun"
+msgstr "周日"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:356
+msgid "Switching mode..."
+msgstr "正在切换模式..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:153
+msgid "Terminals in the whitelist are not filtered."
+msgstr "白名单中的终端不受过滤。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:79
+msgid ""
+"The feature library is used to describe App features, App filtering effect "
+"and number-dependent feature library."
+msgstr "特征库用于描述 APP 特征，APP 过滤效果和个数依赖特征库。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:126
+msgid ""
+"The name of the LAN interface, used for detecting terminal information. The "
+"system default is bridge interface (br-lan). If the LAN port has been "
+"modified to a physical interface, please modify it to the corresponding "
+"name, such as eth0, support fuzzy matching. For example, you can setup lan "
+"to match br-lan and br-lan2."
+msgstr "LAN 接口的名称，用于探测终端信息，系统默认为桥接口 (br-lan)，如果将 LAN 口修改成了物理接口，请修改为对应的名称，比如：eth0，支持模糊匹配，例如可以设置 lan 用来匹配 br-lan 和 br-lan2。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:153
+msgid ""
+"This time range represents the daily school time period, which is a "
+"continuous time period. During this time period, filtering rules are "
+"dynamically enabled and disabled. Outside the time range, filtering is "
+"disabled by default."
+msgstr ""
+"该时间范围表示每天上学的时间段，是一段连续时间，在该时间段内实行过滤规则动态"
+"开启关闭，时间范围外默认关闭过滤"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:69
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:135
+msgid "Thur"
+msgstr "周四"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:39
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:34
+msgid "Time Configuration"
+msgstr "时间配置"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:81
+msgid "Time Periods"
+msgstr "时间段"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:315
+msgid "Time periods cannot exceed 64 entries."
+msgstr "时间段不能超过 64 条"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:67
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:133
+msgid "Tue"
+msgstr "周二"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:426
+msgid "Unfiltered"
+msgstr "未过滤"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:14
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:33
+msgid "Unknown"
+msgstr "未知"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:159
+msgid "Update the feature file successfully."
+msgstr "更新特征码文件成功"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:139
+msgid "Updating, please wait..."
+msgstr "正在更新，请稍后..."
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:114
+msgid "Upload"
+msgstr "上传"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:154
+msgid "Upload failed."
+msgstr "上传失败"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:90
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:26
+msgid "User Configuration"
+msgstr "用户配置"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:64
+#: luci-app-oaf/root/usr/share/luci/menu.d/luci-app-oaf.json:10
+msgid "User List"
+msgstr "用户列表"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:65
+msgid "View online devices, application statistics, and manage user remarks."
+msgstr "查看在线设备、应用统计并管理用户备注。"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:539
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:556
+msgid "Visit Time"
+msgstr "访问时间"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:68
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:134
+msgid "Wed"
+msgstr "周三"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:63
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:129
+msgid "Weekday Selection"
+msgstr "星期选择"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user.js:152
+msgid "Whitelist Users"
+msgstr "白名单用户"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:358
+msgid "Will close in"
+msgstr "分钟后关闭"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:369
+msgid "Will start in"
+msgstr "分钟后开启"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:115
+msgid "Work Mode"
+msgstr "工作模式"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:396
+msgid "h"
+msgstr "小时"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:188
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:190
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:238
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:264
+msgid "items"
+msgstr "个"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:396
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/user_list.js:401
+msgid "m"
+msgstr "分"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:358
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:369
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:115
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:123
+msgid "minutes"
+msgstr "分钟"
+
+#: luci-app-oaf/htdocs/luci-static/resources/view/oaf/app_filter.js:379
+msgid ""
+"oaf driver not loaded, please download the oaf.ko driver file corresponding "
+"to the kernel version of this firmware for installation, and enable auto-"
+"loading. Current kernel version is"
+msgstr ""
+"oaf 驱动未加载,请下载该固件对应内核版本的 oaf.ko 驱动文件进行安装，并开启自动"
+"加载，当前内核版本为"
