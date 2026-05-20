@@ -6,26 +6,28 @@ if [ x"1" != x"$disable_hnat" ];then
     return
 fi
 
-[ "$(uci -q get appfilter.global.enable)" != "1" ] && exit 0
+if [ "$1" != "restore" ]; then
+	[ "$(uci -q get appfilter.global.enable)" != "1" ] && exit 0
 
-# mt798x                                          
-test -d /sys/kernel/debug/hnat  && {              
-    echo 0 >/sys/kernel/debug/hnat/hook_toggle    
-}                                                                                 
-# qca ecm                                                                         
-test -d /sys/kernel/debug/ecm/ && {                                               
-    echo "1000000" > /sys/kernel/debug/ecm/ecm_classifier_default/accel_delay_pkts
-}                                      
+	# mt798x
+	test -d /sys/kernel/debug/hnat && {
+		echo 0 >/sys/kernel/debug/hnat/hook_toggle
+	}
+	# qca ecm
+	test -d /sys/kernel/debug/ecm && {
+		echo "1000000" > /sys/kernel/debug/ecm/ecm_classifier_default/accel_delay_pkts
+	}
 
-# turbo acc
-test -f /etc/config/turboacc && {
-    uci -q set "turboacc.config.fastpath_fo_hw"="0"
-    uci -q set "turboacc.config.fastpath_fc_ipv6"="0"
-    uci -q set "turboacc.config.fastpath"="none"
-    uci -q set "turboacc.config.fullcone"="0"
-    uci -q commit turboacc
-    /etc/init.d/turboacc restart &
-}
+	# turbo acc
+	test -f /etc/config/turboacc && {
+		uci -q set "turboacc.config.fastpath_fo_hw"="0"
+		uci -q set "turboacc.config.fastpath_fc_ipv6"="0"
+		uci -q set "turboacc.config.fastpath"="none"
+		uci -q set "turboacc.config.fullcone"="0"
+		uci -q commit turboacc
+		/etc/init.d/turboacc restart &
+	}
+fi
 
 disable_offload_nat6()
 {
