@@ -7,18 +7,24 @@ PKG_VERSION:=6.1.6
 PKG_RELEASE:=2
 include $(INCLUDE_DIR)/package.mk
 
+PKG_AUTOLOAD:=oaf
+RSTRIP:=:
+
 define KernelPackage/oaf
   SECTION:=TT Apps
   CATEGORY:=TT Apps
   TITLE:=OAF kernel DPI driver
   FILES:=$(PKG_BUILD_DIR)/oaf.ko
   DEPENDS:=+kmod-nf-conntrack +kmod-nf-reject
-  # AUTOLOAD:=$(call AutoLoad,0,oaf)
+  # AUTOLOAD:=$(call AutoLoad,0,$(PKG_AUTOLOAD))
 endef
 
 define KernelPackage/oaf/description
   open appfilter kernel module
 endef
+
+EXTRA_CFLAGS:=-Wno-unused-variable -Wno-unused-function -Wno-missing-prototypes \
+	-Wno-implicit-fallthrough -Wno-missing-braces -Wno-parentheses
 
 MAKE_OPTS:= \
 	$(KERNEL_MAKE_FLAGS) \
@@ -33,4 +39,3 @@ define Build/Compile
 endef
 
 $(eval $(call KernelPackage,oaf))
-
