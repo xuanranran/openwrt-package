@@ -90,7 +90,7 @@ body {
   font-family: var(--font-family-sans-serif);
   scrollbar-width: none;
   background-color: var(--background-color);
-  overflow: hidden;
+  overflow: hidden !important;
   overscroll-behavior: none;
 }
 
@@ -2874,7 +2874,6 @@ td>table>tbody>tr>td,
 
 .modal {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
   width: 90%;
   min-width: 270px;
@@ -3095,7 +3094,7 @@ body.modal-overlay-active #modal_overlay {
 }
 
 .cbi-page-actions {
-  padding: 1rem;
+  padding: 0 4rem 0 0;
   position: absolute;
   right: 0;
   justify-content: flex-end
