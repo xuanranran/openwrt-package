@@ -27,6 +27,14 @@ const callListIcons = rpc.declare({
   method: "list_icons",
 });
 
+let _iconsPromise = null;
+const getIconsOnce = () => {
+  if (!_iconsPromise)
+    _iconsPromise = L.resolveDefault(callListIcons(), { icons: [] });
+  return _iconsPromise;
+};
+
+
 const callRemoveIcon = rpc.declare({
   object: "luci.aurora",
   method: "remove_icon",
@@ -38,10 +46,6 @@ const callGetThemeConfig = rpc.declare({
   method: "get_theme_config",
 });
 
-const callGetThemePresets = rpc.declare({
-  object: "luci.aurora",
-  method: "get_theme_presets",
-});
 
 const callGetFontPresets = rpc.declare({
   object: "luci.aurora",
@@ -362,17 +366,16 @@ return view.extend({
     return Promise.all([
       uci.load("aurora"),
       L.resolveDefault(callGetThemeConfig(), {}),
-      L.resolveDefault(callGetThemePresets(), {}),
       L.resolveDefault(utils_version_api.callGetInstalledVersions(), {}),
       L.resolveDefault(callGetFontPresets(), {}),
+      getIconsOnce(),
     ]);
   },
 
   render(loadData) {
     const themeConfig = loadData[1]?.theme || {};
-    const themePresets = loadData[2]?.presets || [];
-    const installedVersions = loadData[3];
-    const fontPresetsBySlot = loadData[4]?.fonts || {};
+    const installedVersions = loadData[2];
+    const fontPresetsBySlot = loadData[3]?.fonts || {};
 
     // Order matches luci-theme-aurora/.dev/src/media/main.css @theme inline
     const baseColorVars = [
@@ -457,24 +460,13 @@ return view.extend({
     let so;
     const viewCtx = this;
 
-    const buildPresetOptions = () => {
-      if (themePresets.length > 0) {
-        const options = themePresets
-          .filter((preset) => preset?.name)
-          .map((preset) => ({
-            name: preset.name,
-            label: preset.label || preset.name,
-          }));
-        if (options.length > 0) return options;
-      }
-      return [
-        { name: "classic", label: _("Classic") },
-        { name: "monochrome", label: _("Monochrome") },
-        { name: "sage-green", label: _("Sage Green") },
-        { name: "amber-sand", label: _("Amber Sand") },
-        { name: "sky-blue", label: _("Sky Blue") },
-      ];
-    };
+    const buildPresetOptions = () => [
+      { name: "classic", label: _("Classic") },
+      { name: "monochrome", label: _("Monochrome") },
+      { name: "sage-green", label: _("Sage Green") },
+      { name: "amber-sand", label: _("Amber Sand") },
+      { name: "sky-blue", label: _("Sky Blue") },
+    ];
 
     const FONT_DEFAULT_STACKS = {
       sans: '"Lato", ui-sans-serif, system-ui, sans-serif',
@@ -509,16 +501,14 @@ return view.extend({
 
     const buildPresetToolbarNode = () => {
       const presetOptions = buildPresetOptions();
-      const defaultPreset = "classic";
+      const uciPreset = themeConfig.active_preset;
       const storedPreset = localStorage.getItem("aurora.theme_preset");
-      const hasStoredPreset = presetOptions.some(
-        (preset) => preset.name === storedPreset,
-      );
-      const initialPreset = hasStoredPreset ? storedPreset : defaultPreset;
+      const initialPreset =
+        presetOptions.some((p) => p.name === uciPreset) ? uciPreset :
+        presetOptions.some((p) => p.name === storedPreset) ? storedPreset :
+        "classic";
 
-      if (!hasStoredPreset) {
-        localStorage.setItem("aurora.theme_preset", initialPreset);
-      }
+      localStorage.setItem("aurora.theme_preset", initialPreset);
 
       const select = E(
         "select",
@@ -1604,26 +1594,26 @@ return view.extend({
               (window.location.href = L.url("admin/system/aurora/version"));
         });
 
-        const cached = utils_version_api.versionCache.get();
+        const applyUpdateStatus = (data) => {
+          if (!data) return;
+          updateVersionLabel(labels.theme, data.theme?.update_available);
+          updateVersionLabel(labels.config, data.config?.update_available);
+        };
+
+        const cached = utils_version_api.versionCache?.get?.();
         if (cached) {
-          updateVersionLabel(labels.theme, cached?.theme?.update_available);
-          updateVersionLabel(labels.config, cached?.config?.update_available);
+          applyUpdateStatus(cached);
         } else {
-          L.resolveDefault(utils_version_api.callCheckUpdates(), null)
-            .then((updateData) => {
-              if (updateData) {
-                utils_version_api.versionCache.set(updateData);
-                updateVersionLabel(
-                  labels.theme,
-                  updateData?.theme?.update_available,
-                );
-                updateVersionLabel(
-                  labels.config,
-                  updateData?.config?.update_available,
-                );
-              }
-            })
-            .catch((err) => console.error("Failed to check version:", err));
+          setTimeout(() => {
+            L.resolveDefault(utils_version_api.callCheckUpdates(), null)
+              .then((data) => {
+                if (data) {
+                  utils_version_api.versionCache.set(data);
+                  applyUpdateStatus(data);
+                }
+              })
+              .catch(() => {});
+          }, 0);
         }
       });
 

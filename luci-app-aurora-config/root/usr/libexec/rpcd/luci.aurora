@@ -549,11 +549,14 @@ case "$1" in
 	"get_theme_config")
 		json_init
 		json_add_object "theme"
-		keys=$(uci -q show aurora.theme | sed -n 's/^aurora\.theme\.//p' | sed 's/=.*$//')
-		for key in $keys; do
-			value=$(uci -q get "aurora.theme.$key")
-			json_add_string "$key" "$value"
-		done
+		while IFS= read -r _line; do
+			_key="${_line%%=*}"; _key="${_key#aurora.theme.}"
+			[ -z "$_key" ] || [ "$_key" = "$_line" ] && continue
+			_val="${_line#*=}"; _val="${_val#\'}"; _val="${_val%\'}"
+			json_add_string "$_key" "$_val"
+		done <<-EOF
+		$(uci -q show aurora.theme)
+		EOF
 		json_close_object
 		json_dump; json_cleanup
 		;;
@@ -590,15 +593,11 @@ case "$1" in
 		json_add_object "fonts"
 		for slot_name in sans mono; do
 			json_add_array "$slot_name"
-			for font_name in $(list_font_names "$slot_name"); do
-				meta=$(get_font_meta "$slot_name" "$font_name") || continue
-				label=$(echo "$meta" | cut -d'|' -f1)
-				source=$(echo "$meta" | cut -d'|' -f2)
-				family=$(echo "$meta" | cut -d'|' -f3)
-				stack=$(echo "$meta" | cut -d'|' -f4)
-				css_url=$(echo "$meta" | cut -d'|' -f5-)
-				json_add_font "$font_name" "$label" "$source" "$family" "$stack" "$css_url"
-			done
+			while IFS='|' read -r _slot _name _label _source _family _stack _css_url; do
+				case "$_slot" in ""|"#"*) continue ;; esac
+				[ "$_slot" = "$slot_name" ] || continue
+				json_add_font "$_name" "$_label" "$_source" "$_family" "$_stack" "$_css_url"
+			done < "$FONT_PRESETS_FILE"
 			json_close_array
 		done
 		json_close_object
@@ -687,6 +686,8 @@ case "$1" in
 			exit 0
 		fi
 
+		uci -q set aurora.theme.active_preset="$name"
+		uci -q commit aurora
 		chmod 644 "$CONFIG_FILE" 2>/dev/null
 		cleanup_custom_fonts
 		cleanup_legacy_font_options
@@ -736,7 +737,7 @@ case "$1" in
 		json_add_array "icons"
 		if [ -d "$ICON_PATH" ]; then
 			for file in "$ICON_PATH"/*; do
-				[ -f "$file" ] && json_add_string "" "$(basename "$file")"
+				[ -f "$file" ] && json_add_string "" "${file##*/}"
 			done
 		fi
 		json_close_array
@@ -779,13 +780,20 @@ case "$1" in
 		config_i18n_packages=""
 
 		if [ "$pkg_manager" = "opkg" ]; then
-			theme_installed=$(opkg list-installed | grep "^luci-theme-aurora " | awk '{print $3}')
-			config_installed=$(opkg list-installed | grep "^luci-app-aurora-config " | awk '{print $3}')
-			config_i18n_packages=$(opkg list-installed | grep "^luci-i18n-aurora-config-" | awk '{print $1 ":" $3}' | tr '\n' ',' | sed 's/,$//')
+			_sf="/usr/lib/opkg/status"
+			if [ -r "$_sf" ]; then
+				theme_installed=$(awk '/^Package: luci-theme-aurora$/{f=1} f && /^Version:/{print $2; f=0}' "$_sf")
+				config_installed=$(awk '/^Package: luci-app-aurora-config$/{f=1} f && /^Version:/{print $2; f=0}' "$_sf")
+				config_i18n_packages=$(awk '
+					/^Package: luci-i18n-aurora-config-/{pkg=$2; f=1}
+					f && /^Version:/{print pkg ":" $2; f=0}
+				' "$_sf" | tr '\n' ',' | sed 's/,$//')
+			fi
 		elif [ "$pkg_manager" = "apk" ]; then
-			theme_installed=$(apk list -I luci-theme-aurora 2>/dev/null | awk '{print $1}' | sed 's/^luci-theme-aurora-//')
-			config_installed=$(apk list -I luci-app-aurora-config 2>/dev/null | awk '{print $1}' | sed 's/^luci-app-aurora-config-//')
-			config_i18n_packages=$(apk list -I 2>/dev/null | grep "^luci-i18n-aurora-config-" | sed -n 's/^\(luci-i18n-aurora-config-[a-z_-]*\)-\([^ ]*\) .*/\1:\2/p' | tr '\n' ',' | sed 's/,$//')
+			_installed=$(apk list -I 2>/dev/null | grep "^luci-")
+			theme_installed=$(printf '%s\n' "$_installed" | grep "^luci-theme-aurora-" | awk '{print $1}' | head -1 | sed 's/^luci-theme-aurora-//')
+			config_installed=$(printf '%s\n' "$_installed" | grep "^luci-app-aurora-config-" | awk '{print $1}' | head -1 | sed 's/^luci-app-aurora-config-//')
+			config_i18n_packages=$(printf '%s\n' "$_installed" | grep "^luci-i18n-aurora-config-" | sed -n 's/^\(luci-i18n-aurora-config-[a-z_-]*\)-\([^ ]*\) .*/\1:\2/p' | tr '\n' ',' | sed 's/,$//')
 		fi
 
 		json_init
@@ -802,30 +810,44 @@ case "$1" in
 		theme_api="https://api.github.com/repos/eamonxg/luci-theme-aurora/releases/latest"
 		config_api="https://api.github.com/repos/eamonxg/luci-app-aurora-config/releases/latest"
 
-		theme_res=$(wget -qO- --timeout=10 "$theme_api" 2>/dev/null)
-		config_res=$(wget -qO- --timeout=10 "$config_api" 2>/dev/null)
+		_tmp1="/tmp/aurora_upd1_$$"
+		_tmp2="/tmp/aurora_upd2_$$"
+		wget -qO "$_tmp1" --timeout=10 "$theme_api" 2>/dev/null &
+		wget -qO "$_tmp2" --timeout=10 "$config_api" 2>/dev/null &
+
+		if [ "$pkg_manager" = "apk" ]; then
+			_inst=$(apk list -I 2>/dev/null | grep "^luci-")
+			theme_inst=$(printf '%s\n' "$_inst" | grep "^luci-theme-aurora-" | awk '{print $1}' | head -1 | sed 's/^luci-theme-aurora-//')
+			config_inst=$(printf '%s\n' "$_inst" | grep "^luci-app-aurora-config-" | awk '{print $1}' | head -1 | sed 's/^luci-app-aurora-config-//')
+			config_i18n=$(printf '%s\n' "$_inst" | grep "^luci-i18n-aurora-config-" | sed -n 's/^\(luci-i18n-aurora-config-[a-z_-]*\)-\([^ ]*\) .*/\1:\2/p' | tr '\n' ',' | sed 's/,$//')
+		else
+			_inst=$(opkg list-installed 2>/dev/null)
+			theme_inst=$(printf '%s\n' "$_inst" | grep "^luci-theme-aurora " | awk '{print $3}')
+			config_inst=$(printf '%s\n' "$_inst" | grep "^luci-app-aurora-config " | awk '{print $3}')
+			config_i18n=$(printf '%s\n' "$_inst" | grep "^luci-i18n-aurora-config-" | awk '{print $1 ":" $3}' | tr '\n' ',' | sed 's/,$//')
+		fi
+
+		wait
+		theme_res=$(cat "$_tmp1" 2>/dev/null)
+		config_res=$(cat "$_tmp2" 2>/dev/null)
+		rm -f "$_tmp1" "$_tmp2"
 
 		theme_latest=$(extract_detailed_version "$theme_res" "luci-theme-aurora" "$pkg_manager")
 		config_latest=$(extract_detailed_version "$config_res" "luci-app-aurora-config" "$pkg_manager")
-
-		if [ "$pkg_manager" = "apk" ]; then
-			theme_inst=$(apk list -I luci-theme-aurora 2>/dev/null | awk '{print $1}' | sed 's/^luci-theme-aurora-//')
-			config_inst=$(apk list -I luci-app-aurora-config 2>/dev/null | awk '{print $1}' | sed 's/^luci-app-aurora-config-//')
-		else
-			theme_inst=$(opkg list-installed | grep "^luci-theme-aurora " | awk '{print $3}')
-			config_inst=$(opkg list-installed | grep "^luci-app-aurora-config " | awk '{print $3}')
-		fi
 
 		theme_up=0; [ -n "$theme_inst" ] && [ -n "$theme_latest" ] && [ "$(version_compare "$theme_latest" "$theme_inst")" = "1" ] && theme_up=1
 		config_up=0; [ -n "$config_inst" ] && [ -n "$config_latest" ] && [ "$(version_compare "$config_latest" "$config_inst")" = "1" ] && config_up=1
 
 		json_init
 		json_add_object "theme"
+			json_add_string "installed_version" "$theme_inst"
 			json_add_string "latest_version" "$theme_latest"
 			json_add_boolean "update_available" "$theme_up"
 		json_close_object
 
 		json_add_object "config"
+			json_add_string "installed_version" "$config_inst"
+			json_add_string "i18n_packages" "$config_i18n"
 			json_add_string "latest_version" "$config_latest"
 			json_add_boolean "update_available" "$config_up"
 		json_close_object
@@ -833,14 +855,14 @@ case "$1" in
 		json_add_object "i18n"
 		if [ -n "$config_res" ]; then
 			if [ "$pkg_manager" = "apk" ]; then
-				i18n_list=$(apk list -I 2>/dev/null | grep "^luci-i18n-aurora-config-" | while read -r line; do
+				i18n_list=$(printf '%s\n' "$_inst" | grep "^luci-i18n-aurora-config-" | while read -r line; do
 					p_full=$(echo "$line" | awk '{print $1}')
 					l_c=$(echo "$p_full" | sed -n 's/^luci-i18n-aurora-config-\([a-z-]*\)-[0-9].*/\1/p')
 					v_n=$(echo "$p_full" | sed -n 's/^luci-i18n-aurora-config-[a-z-]*-\([0-9].*\)/\1/p')
 					echo "${l_c}:${v_n}"
 				done)
 			else
-				i18n_list=$(opkg list-installed 2>/dev/null | grep "^luci-i18n-aurora-config-" | awk '{print $1 ":" $3}' | sed 's/luci-i18n-aurora-config-//')
+				i18n_list=$(printf '%s\n' "$_inst" | grep "^luci-i18n-aurora-config-" | awk '{print $1 ":" $3}' | sed 's/luci-i18n-aurora-config-//')
 			fi
 			
 			for entry in $i18n_list; do
