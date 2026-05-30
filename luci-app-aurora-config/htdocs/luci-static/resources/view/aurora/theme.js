@@ -332,6 +332,36 @@ const renderRadiusControl = createRangeControlRenderer({
   displayWidth: 70,
 });
 
+const generateLqip = (source) =>
+  new Promise((resolve) => {
+    const img = new Image();
+    const isBlob = source instanceof Blob;
+    const url = isBlob ? URL.createObjectURL(source) : source;
+    const cleanup = () => { if (isBlob) URL.revokeObjectURL(url); };
+
+    img.onload = () => {
+      const W = 32;
+      const canvas = document.createElement("canvas");
+      canvas.width = W;
+      canvas.height = Math.round(img.naturalHeight * (W / img.naturalWidth));
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      cleanup();
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) { resolve(null); return; }
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = () => resolve(null);
+          reader.readAsDataURL(blob);
+        },
+        "image/webp",
+        0.1,
+      );
+    };
+    img.onerror = () => { cleanup(); resolve(null); };
+    img.src = url;
+  });
+
 const toLoginBgUrl = (filename) =>
   "url('/luci-static/aurora/images/" + filename + "')";
 
@@ -1268,6 +1298,9 @@ return view.extend({
           .then(() => {
               return L.resolveDefault(callUploadIcon(file.name), {}).then((ret) => {
                 if (ret?.result === 0) {
+                  if (type === "media") {
+                    localStorage.setItem("aurora.pending_bg", file.name);
+                  }
                   ui.addNotification(null, E("p", _("Uploaded: %s").format(file.name)));
                   window.location.reload();
                 } else {
@@ -1447,9 +1480,45 @@ return view.extend({
       uci.unset("aurora", section_id, "struct_login_bg_media");
       if (!value) {
         uci.unset("aurora", section_id, "struct_login_bg");
+        uci.unset("aurora", section_id, "light_login_bg_lqip");
         return;
       }
       uci.set("aurora", section_id, "struct_login_bg", value);
+    };
+
+    {
+      const _renderBg = so.render.bind(so);
+      so.render = function (option_index, section_id, in_table) {
+        return _renderBg(option_index, section_id, in_table).then((el) => {
+          const select = el.querySelector("select");
+          if (select) {
+            select.addEventListener("change", function () {
+              const lqipEl = document.querySelector(
+                '[name="cbid.aurora.theme.light_login_bg_lqip"]',
+              );
+              if (!this.value) {
+                if (lqipEl) lqipEl.value = "";
+                return;
+              }
+              const m = this.value.match(/url\(["']?(.+?)["']?\)/);
+              if (!m || !lqipEl) return;
+              generateLqip(m[1]).then((data) => {
+                if (data && lqipEl) lqipEl.value = data;
+              });
+            });
+          }
+          return el;
+        });
+      };
+    }
+
+    const lqipSo = logoSubsection.option(form.Value, "light_login_bg_lqip", "");
+    lqipSo.rmempty = true;
+    lqipSo.render = function (option_index, section_id, in_table) {
+      return form.Value.prototype.render.apply(this, arguments).then((el) => {
+        el.style.display = "none";
+        return el;
+      });
     };
 
     const toolbarSection = s.taboption(
@@ -1577,6 +1646,35 @@ return view.extend({
             .catch((err) => console.error("Failed to check version:", err));
         }
       });
+
+        // Auto-select uploaded background and auto-generate LQIP if missing
+        requestAnimationFrame(() => {
+          const bgInput = mapNode.querySelector(
+            '[name="cbid.aurora.theme.struct_login_bg"]',
+          );
+          const lqipInput = mapNode.querySelector(
+            '[name="cbid.aurora.theme.light_login_bg_lqip"]',
+          );
+          if (!bgInput || !lqipInput) return;
+
+          const pending = localStorage.getItem("aurora.pending_bg");
+          if (pending) {
+            localStorage.removeItem("aurora.pending_bg");
+            const pendingUrl = toLoginBgUrl(pending);
+            if (bgInput.querySelector(`option[value="${pendingUrl}"]`)) {
+              bgInput.value = pendingUrl;
+              bgInput.dispatchEvent(new Event("change"));
+              return;
+            }
+          }
+
+          if (bgInput.value && !lqipInput.value) {
+            const bgMatch = bgInput.value.match(/url\(["']?(.+?)["']?\)/);
+            if (bgMatch) {
+              generateLqip(bgMatch[1]).then((d) => { if (d) lqipInput.value = d; });
+            }
+          }
+        });
 
       return mapNode;
     });
