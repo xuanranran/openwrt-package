@@ -1,577 +1,638 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1189
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1731
 msgid "(No icons uploaded)"
 msgstr "(업로드된 아이콘 없음)"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:496
-msgid "Accent"
-msgstr "강조"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1528
+msgid "(None)"
+msgstr "(없음)"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:497
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:423
+msgid "Accent"
+msgstr "강조색"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:424
 msgid "Accent Foreground"
 msgstr "강조 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:373
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1462
 msgid "Actions"
-msgstr "작업"
+msgstr "동작"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:563
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1694
+msgid "Add, remove, and drag to reorder toolbar buttons."
+msgstr "도구 모음 버튼을 추가, 삭제하거나 드래그하여 순서를 변경할 수 있습니다."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:953
+msgid ""
+"Adjust navigation style, element spacing, corner radius, and page container "
+"width."
+msgstr "탐색 스타일, 요소 간격, 모서리 둥글기(반경) 및 페이지 컨테이너 최대 너비를 조정합니다."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:480
 msgid "Amber Sand"
-msgstr "앰버 샌드"
+msgstr "호박색 모래"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:671
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:677
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1565
+msgid "App Icon 192×192"
+msgstr "앱 아이콘 192×192"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1566
+msgid "App Icon 512×512"
+msgstr "앱 아이콘 512×512"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1564
+msgid "Apple Touch Icon"
+msgstr "Apple Touch 아이콘"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:617
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:623
 msgid "Apply"
 msgstr "적용"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:621
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:567
 msgid "Apply Preset"
 msgstr "프리셋 적용"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:625
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:571
 msgid "Apply Theme Preset"
 msgstr "테마 프리셋 적용"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:764
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:710
 msgid "Apply configuration?"
-msgstr "구성을 적용하시겠습니까?"
+msgstr "설정을 적용하시겠습니까?"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:661
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:607
 msgid "Apply failed: %s"
 msgstr "적용 실패: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:641
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:791
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:587
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:737
 msgid "Applying..."
 msgstr "적용 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:856
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:802
 msgid ""
-"Are you sure you want to reset all theme settings (Color, Structure, Icons & "
-"Toolbar) back to the default theme's original configuration? This will "
-"revert everything to the default theme's initial state."
-msgstr ""
-"모든 테마 설정(색상, 구조, 아이콘 및 툴바)을 기본 테마의 원래 구성으로 초기"
-"화하시겠습니까? 이 작업은 모든 것을 기본 테마의 초기 상태로 되돌립니다."
+"Are you sure you want to reset all theme settings (Color, Layout & "
+"Typography, Branding) back to the default theme's original configuration? "
+"This will revert everything to the default theme's initial state."
+msgstr "모든 테마 설정(색상, 레이아웃 및 타이포그래피, 브랜드 식별력)을 기본 테마의 초기 설정으로 재설정하시겠습니까? 테마가 처음 상태로 돌아갑니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:80
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:38
 msgid ""
 "Are you sure you want to update <strong>%h</strong> to version <strong>%h</"
 "strong>?"
-msgstr ""
-"<strong>%h</strong>을(를) 버전 <strong>%h</strong>(으)로 업데이트하시겠습니"
-"까?"
+msgstr "<strong>%h</strong> 패키지를 <strong>%h</strong> 버전으로 업데이트하시겠습니까?"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1178
+msgid "Asset Library"
+msgstr "에셋 라이브러리"
 
 #: applications/luci-app-aurora-config/root/usr/share/luci/menu.d/luci-app-aurora.json:3
 msgid "Aurora Settings"
 msgstr "Aurora 설정"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:539
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:466
 msgid "Aurora Theme Settings"
 msgstr "Aurora 테마 설정"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:468
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:395
 msgid "Background"
 msgstr "배경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:515
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:442
 msgid "Base Colors"
 msgstr "기본 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:474
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:401
 msgid "Border"
-msgstr "테두리"
+msgstr "테두리색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1018
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:981
+msgid "Border Radius"
+msgstr "테두리 둥글기"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:964
 msgid "Boxed Dropdown"
-msgstr "박스형 드롭다운"
+msgstr "카드형 드롭다운"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1166
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:927
+msgid "Branding"
+msgstr "브랜드 식별력"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:509
+msgid "Built-in"
+msgstr "내장형"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1708
 msgid "Button Title"
-msgstr "버튼 제목"
+msgstr "버튼 이름"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1170
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1712
 msgid "Button title cannot be empty"
-msgstr "버튼 제목은 비워둘 수 없습니다"
+msgstr "버튼 이름은 비워둘 수 없습니다"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:389
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:634
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:782
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:860
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:90
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:580
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:728
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:806
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1401
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:48
 msgid "Cancel"
 msgstr "취소"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:425
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:385
 msgid "Check for Updates"
 msgstr "업데이트 확인"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:391
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:351
 msgid ""
 "Check for and install updates for Aurora theme and configuration packages. "
 "Updates are downloaded from the latest releases of the Aurora theme and "
 "configuration plugin GitHub repositories."
-msgstr ""
-"Aurora 테마 및 구성 패키지에 대한 업데이트를 확인하고 설치합니다. 업데이트는 "
-"Aurora 테마 및 구성 플러그인 GitHub 저장소의 최신 릴리스에서 다운로드됩니다."
+msgstr "Aurora 테마 및 설정 패키지의 업데이트를 확인하고 설치합니다. 업데이트는 Aurora 테마 및 설정 플러그인 GitHub 저장소의 최신 릴리스에서 다운로드됩니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:756
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:702
 msgid "Checking file…"
-msgstr "파일 확인 중..."
+msgstr "파일 확인 중…"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:255
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:281
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:213
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:239
 msgid "Checking for updates..."
 msgstr "업데이트 확인 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:269
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:306
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:227
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:264
 msgid "Checking..."
 msgstr "확인 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:560
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1485
+msgid ""
+"Choose the favicon, logo, and login background. Upload images via the Asset "
+"Library above."
+msgstr "파비콘, 로고 및 로그인 페이지 배경을 선택합니다. 위의 에셋 라이브러리를 통해 이미지를 업로드할 수 있습니다."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:477
 msgid "Classic"
 msgstr "클래식"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:310
-msgid "Click me to upload"
-msgstr "클릭하여 업로드"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:155
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:142
 msgid "Click to select color visually"
-msgstr "클릭하여 시각적으로 색상 선택"
+msgstr "시각적으로 색상을 선택하려면 클릭하세요"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:204
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:162
 msgid "Close"
 msgstr "닫기"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:979
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:925
 msgid "Color"
 msgstr "색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:523
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:450
 msgid "Component Colors"
-msgstr "구성 요소 색상"
+msgstr "UI 요소 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:959
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:905
 msgid "Config:"
-msgstr "구성:"
+msgstr "설정:"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:724
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:670
 msgid "Configuration exported successfully."
-msgstr "구성이 성공적으로 내보내졌습니다."
+msgstr "설정을 성공적으로 내보냈습니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:803
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:749
 msgid "Configuration imported successfully."
-msgstr "구성이 성공적으로 가져와졌습니다."
+msgstr "설정을 성공적으로 가져왔습니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:894
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:840
 msgid "Confirm Reset"
 msgstr "초기화 확인"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:822
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:768
 msgid "Continue"
 msgstr "계속"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:525
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:452
 msgid ""
 "Controls colors used by specific UI components: top navigation bar (Header) "
 "and boxed dropdown hover background (Header Interactive), progress bar "
 "gradient (Progress Bar Start/End), log panel (Terminal), overlay mask "
 "(Overlay), links (Link), checked radios/checkboxes (Input Checked), tooltip "
 "bubble (Tooltip), and section header surfaces (Label Surface)."
-msgstr ""
-"특정 UI 구성 요소에서 사용되는 색상을 제어합니다: 상단 내비게이션 바(Header) "
-"및 박스형 드롭다운 호버 배경(Header Interactive), 진행 표시줄 그라데이션"
-"(Progress Bar Start/End), 로그 패널(Terminal), 오버레이 마스크(Overlay), 링"
-"크(Link), 선택된 라디오/체크박스(Input Checked), 툴팁 말풍선(Tooltip) 및 섹"
-"션 헤더 표면(Label Surface)."
+msgstr "특정 UI 컴포넌트에 사용되는 색상을 제어합니다: 상단 탐색 바(Header) 및 해당 드롭다운 호버 배경(Header Interactive), 진행 표시줄 그라데이션(Progress Bar Start/End), 로그 패널(Terminal), 오버레이 마스크(Overlay), 링크(Link), 선택된 라디오/체크박스(Input Checked), 툴팁 말풍선(Tooltip), 구역 헤더 표면(Label Surface)."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1007
-msgid ""
-"Customize the layout of your interface. Control how the navigation menu "
-"displays, adjust the spacing between interface elements, and set the maximum "
-"width of the page content container."
-msgstr ""
-"인터페이스 레이아웃을 사용자 정의합니다. 내비게이션 메뉴 표시 방식을 제어하"
-"고, 인터페이스 요소 간의 간격을 조정하며, 페이지 콘텐츠 컨테이너의 최대 너비"
-"를 설정합니다."
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1151
-msgid ""
-"Customize toolbar buttons by adding new entries, editing existing ones, "
-"removing unwanted items, or dragging rows to reorder them."
-msgstr ""
-"새 항목을 추가하거나, 기존 항목을 편집하거나, 불필요한 항목을 제거하거나, 행"
-"을 드래그하여 순서를 변경하여 툴바 버튼을 사용자 정의합니다."
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:993
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:939
 msgid "Dark Mode"
 msgstr "다크 모드"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:500
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:427
 msgid "Default"
-msgstr "기본값"
+msgstr "기본"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:501
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:428
 msgid "Default Foreground"
 msgstr "기본 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:424
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:430
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1437
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1443
 msgid "Delete"
 msgstr "삭제"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:383
-msgid "Delete Icon"
-msgstr "아이콘 삭제"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1396
+msgid "Delete '%s'?"
+msgstr "'%s' 항목을 삭제하시겠습니까?"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:384
-msgid "Delete icon '%s'?"
-msgstr "'%s' 아이콘을 삭제하시겠습니까?"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1395
+msgid "Delete Asset"
+msgstr "에셋 삭제"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:398
-msgid "Deleting icon..."
-msgstr "아이콘 삭제 중..."
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1418
+msgid "Deleted: %s"
+msgstr "삭제됨: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:397
-msgid "Deleting..."
-msgstr "삭제 중..."
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1409
+msgid "Deleting…"
+msgstr "삭제 중…"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:494
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:421
 msgid "Destructive"
-msgstr "파괴적"
+msgstr "파괴적 동작"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:495
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:422
 msgid "Destructive Foreground"
 msgstr "파괴적 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:109
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:67
 msgid "Downloading update files..."
 msgstr "업데이트 파일 다운로드 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1025
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1276
+msgid "Drop image here, or click to browse"
+msgstr "여기에 이미지를 놓거나 클릭하여 찾아보기"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:971
 msgid "Element Spacing"
 msgstr "요소 간격"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1136
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1680
 msgid "Enable Floating Toolbar"
-msgstr "플로팅 툴바 활성화"
+msgstr "플로팅 도구 모음 활성화"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1139
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1683
 msgid "Enable or disable the floating toolbar on the right side of the screen."
-msgstr "화면 오른쪽의 플로팅 툴바를 활성화하거나 비활성화합니다."
+msgstr "화면 우측에 위치한 플로팅 도구 모음의 활성화 여부를 설정합니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1161
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1703
 msgid "Enabled"
 msgstr "활성화됨"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:508
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:435
 msgid "Error"
 msgstr "오류"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:509
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:436
 msgid "Error Foreground"
 msgstr "오류 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:885
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:831
 msgid "Error: %s"
 msgstr "오류: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:737
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:683
 msgid "Export"
 msgstr "내보내기"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:684
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:630
 msgid "Export Configuration"
-msgstr "구성 내보내기"
+msgstr "설정 내보내기"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:689
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:635
 msgid "Export failed"
 msgstr "내보내기 실패"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:731
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:677
 msgid "Export failed: %s"
 msgstr "내보내기 실패: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:361
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:320
 msgid "Failed to check for updates: %s. Please check your internet connection."
-msgstr "업데이트 확인 실패: %s. 인터넷 연결을 확인하십시오."
+msgstr "업데이트 확인 실패: %s. 인터넷 연결 상태를 확인해 주세요."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:415
-msgid "Failed to delete icon: %s"
-msgstr "아이콘 삭제 실패: %s"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1426
+msgid "Failed to delete: %s"
+msgstr "삭제 실패: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:329
-msgid "Failed to upload icon: %s"
-msgstr "아이콘 업로드 실패: %s"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1542
+msgid "Favicon (ICO / Legacy)"
+msgstr "파비콘 (ICO / 레거시 브라우저용)"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1129
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1516
+msgid "Favicon (PNG)"
+msgstr "파비콘 (PNG)"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1461
+msgid "Filename"
+msgstr "파일명"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1673
 msgid "Floating Toolbar"
-msgstr "플로팅 툴바"
+msgstr "플로팅 도구 모음"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:469
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1087
+msgid "Font CSS file is empty"
+msgstr "폰트 CSS 파일이 비어 있습니다"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1083
+msgid "Font CSS file is not available"
+msgstr "폰트 CSS 파일을 사용할 수 없습니다"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1005
+msgid "Font Settings"
+msgstr "글꼴 설정"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1161
+msgid "Font preparation failed:"
+msgstr "글꼴 준비 실패:"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:396
 msgid "Foreground"
 msgstr "전경색"
 
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1597
+msgid "Full-screen background on the login page."
+msgstr "로그인 페이지의 전체 화면 배경입니다."
+
 #: applications/luci-app-aurora-config/root/usr/share/rpcd/acl.d/luci-app-aurora.json:3
 msgid "Grant access to Aurora theme configuration"
-msgstr "Aurora 테마 구성에 대한 액세스 권한 부여"
+msgstr "Aurora 테마 설정에 대한 접근 권한 부여"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:478
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:405
 msgid "Header Background"
-msgstr "헤더 배경색"
+msgstr "탐색 바 배경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:479
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:406
 msgid "Header Interactive"
-msgstr "헤더 인터랙티브"
+msgstr "탐색 바 상호작용 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1178
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1544
+msgid "ICO favicon served to legacy browsers as fallback."
+msgstr "이전 버전 브라우저와의 호환성을 위해 ICO 파비콘이 대체 수단으로 제공됩니다."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1720
 msgid "Icon"
 msgstr "아이콘"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1049
-msgid "Icon Management"
-msgstr "아이콘 관리"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:372
-msgid "Icon Name"
-msgstr "아이콘 이름"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:406
-msgid "Icon deleted: %s"
-msgstr "아이콘 삭제됨: %s"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:323
-msgid "Icon uploaded successfully: %s"
-msgstr "아이콘이 성공적으로 업로드됨: %s"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:981
-msgid "Icons & Toolbar"
-msgstr "아이콘 & 툴바"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:842
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:788
 msgid "Import"
 msgstr "가져오기"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:744
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:690
 msgid "Import Configuration"
-msgstr "구성 가져오기"
+msgstr "설정 가져오기"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:814
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:831
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:760
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:777
 msgid "Import failed: %s"
 msgstr "가져오기 실패: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:790
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:736
 msgid "Importing..."
 msgstr "가져오는 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:502
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:429
 msgid "Info"
 msgstr "정보"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:503
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:430
 msgid "Info Foreground"
 msgstr "정보 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:487
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:414
 msgid "Input Checked"
-msgstr "입력 선택됨"
+msgstr "입력 구성 요소 선택 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:153
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:111
 msgid "Installation Details"
 msgstr "설치 세부 정보"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:432
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:392
 msgid "Installed Version"
 msgstr "설치된 버전"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:120
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:78
 msgid "Installing update packages..."
 msgstr "업데이트 패키지 설치 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:488
-msgid "Label Surface"
-msgstr "레이블 표면"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1284
+msgid "JPG · PNG · WebP · AVIF · SVG · GIF"
+msgstr "JPG · PNG · WebP · AVIF · SVG · GIF"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:433
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:415
+msgid "Label Surface"
+msgstr "구역 제목 표면색"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:393
 msgid "Latest Version"
 msgstr "최신 버전"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1005
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:951
 msgid "Layout"
 msgstr "레이아웃"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:992
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:926
+msgid "Layout & Typography"
+msgstr "레이아웃 및 타이포그래피"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:938
 msgid "Light Mode"
 msgstr "라이트 모드"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:486
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:413
 msgid "Link"
-msgstr "링크"
+msgstr "링크 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1065
-msgid "Logo Settings"
-msgstr "로고 설정"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1595
+msgid "Login Background"
+msgstr "로그인 배경"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1017
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1490
+msgid "Logo / Favicon"
+msgstr "로고 / 파비콘"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1180
+msgid ""
+"Manage image files used by the theme. All files are stored in <code>/www/"
+"luci-static/aurora/images/</code>."
+msgstr "테마에 사용되는 이미지 파일을 관리합니다. 모든 파일은 <code>/www/luci-static/aurora/images/</code>에 저장됩니다."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:963
 msgid "Mega Menu"
 msgstr "메가 메뉴"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:561
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:478
 msgid "Monochrome"
 msgstr "모노크롬"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:498
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1031
+msgid "Monospace Typeface"
+msgstr "고정폭 글꼴"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1007
+msgid ""
+"Sans-serif sets the global UI typeface for all text and headings. Monospace "
+"is used for code blocks, inline code, and variable references."
+msgstr "산세리프 글꼴은 전체 인터페이스의 기본 글꼴로 텍스트와 제목에 적용됩니다. 고정폭 글꼴은 코드 블록, 인라인 코드, 변수 참조 등에 사용됩니다."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:425
 msgid "Muted"
-msgstr "흐림"
+msgstr "비활성 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:499
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:426
 msgid "Muted Foreground"
-msgstr "흐림 전경색"
+msgstr "비활성 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1015
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:961
 msgid "Navigation Submenu Type"
-msgstr "내비게이션 서브메뉴 유형"
+msgstr "하위 탐색 메뉴 유형"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:315
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:754
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1456
+msgid "No assets uploaded yet."
+msgstr "아직 업로드된 에셋이 없습니다."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:700
 msgid "No file selected or upload failed"
 msgstr "파일이 선택되지 않았거나 업로드에 실패했습니다"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:363
-msgid "No icons uploaded yet."
-msgstr "아직 업로드된 아이콘이 없습니다."
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:315
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:273
 msgid "No packages found. Please check your installation."
-msgstr "패키지를 찾을 수 없습니다. 설치를 확인하십시오."
+msgstr "패키지를 찾을 수 없습니다. 설치 상태를 확인해 주세요."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:254
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1605
+msgid "None"
+msgstr "없음"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:212
 msgid "Not installed"
 msgstr "설치되지 않음"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:485
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1519
+msgid "Optional PNG favicon for browsers that do not support SVG favicons."
+msgstr "SVG 파비콘을 지원하지 않는 브라우저를 위한 선택적 PNG 파비콘입니다."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:412
 msgid "Overlay Base"
-msgstr "오버레이 베이스"
+msgstr "오버레이 기본색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1098
-msgid "PNG Logo (32x32)"
-msgstr "PNG 로고 (32x32)"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:431
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:391
 msgid "Package Name"
-msgstr "패키지 이름"
+msgstr "패키지명"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:470
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:397
 msgid "Page Background"
 msgstr "페이지 배경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1035
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:991
 msgid "Page Container Max Width"
 msgstr "페이지 컨테이너 최대 너비"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:471
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:398
 msgid "Panel Background"
-msgstr "패널 배경색"
+msgstr "카드 패널 배경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1196
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1738
 msgid "Please select an icon"
-msgstr "아이콘을 선택하십시오"
+msgstr "아이콘을 선택해 주세요"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:769
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:715
 msgid ""
 "Please upload the Aurora configuration file named 'aurora'. This will "
 "overwrite the theme configuration at /etc/config/aurora. Press 'Continue' to "
 "apply and reload, or 'Cancel' to abort."
-msgstr ""
-"'aurora'라는 이름의 Aurora 구성 파일을 업로드하십시오. 그러면 /etc/config/"
-"aurora의 테마 구성이 덮어쓰기 됩니다. 적용하고 다시 로드하려면 '계속'을 누르"
-"고, 중단하려면 '취소'를 누르십시오."
+msgstr "'aurora'라는 이름의 Aurora 설정 파일을 업로드해 주세요. 이는 /etc/config/aurora에 있는 테마 설정을 덮어쓰게 됩니다. '계속'을 누르면 적용 후 다시 로드되고, '취소'를 누르면 작업이 중단됩니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:912
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1410
+msgid "Please wait…"
+msgstr "잠시만 기다려 주세요…"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1140
+msgid "Preparing Fonts"
+msgstr "글꼴 준비 중"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1137
+msgid "Preparing selected fonts..."
+msgstr "선택한 글꼴 준비 중..."
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:858
 msgid "Preset"
 msgstr "프리셋"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:652
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:598
 msgid "Preset applied successfully."
 msgstr "프리셋이 성공적으로 적용되었습니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:472
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1460
+msgid "Preview"
+msgstr "미리보기"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:399
 msgid "Primary"
-msgstr "주요 색상"
+msgstr "주 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:473
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:400
 msgid "Primary Foreground"
-msgstr "주요 전경색"
+msgstr "주 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:481
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:408
 msgid "Progress Bar End"
-msgstr "진행 표시줄 끝"
+msgstr "진행 표시줄 끝 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:480
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:407
 msgid "Progress Bar Start"
-msgstr "진행 표시줄 시작"
+msgstr "진행 표시줄 시작 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:337
-msgid "RPC call failed: %s"
-msgstr "RPC 호출 실패: %s"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:182
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:140
 msgid "Reload"
-msgstr "새로 고침"
+msgstr "새로고침"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:900
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:846
 msgid "Reset"
 msgstr "초기화"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:849
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:851
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:795
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:797
 msgid "Reset to Defaults"
-msgstr "기본값으로 초기화"
+msgstr "기본값으로 재설정"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:867
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:813
 msgid "Resetting..."
-msgstr "초기화 중..."
+msgstr "재설정 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:868
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:814
 msgid "Restoring..."
 msgstr "복원 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1072
-msgid "SVG Logo"
-msgstr "SVG 로고"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:562
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:479
 msgid "Sage Green"
 msgstr "세이지 그린"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:492
-msgid "Secondary"
-msgstr "보조"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1031
+msgid "Sans-serif Typeface"
+msgstr "산세리프 글꼴"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:493
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:419
+msgid "Secondary"
+msgstr "보조 색상"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:420
 msgid "Secondary Foreground"
 msgstr "보조 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1067
-msgid ""
-"Select custom logos for your browser tab icon (favicon). For best "
-"compatibility, upload both SVG and PNG formats. Modern browsers will use the "
-"SVG version, while older browsers will fall back to the 32x32 PNG version."
-msgstr ""
-"브라우저 탭 아이콘(파비콘)을 위한 사용자 정의 로고를 선택하십시오. 최상의 호"
-"환성을 위해 SVG 및 PNG 형식을 모두 업로드하십시오. 최신 브라우저는 SVG 버전"
-"을 사용하며, 구형 브라우저는 32x32 PNG 버전을 대신 사용합니다."
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:531
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:458
 msgid "Semantic & Status Colors"
 msgstr "의미 및 상태 색상"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:533
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:460
 msgid ""
 "Semantic colors represent different actions and intents, commonly used in "
 "buttons and badges. For example, destructive (Destructive) maps to high‑risk "
@@ -580,51 +641,49 @@ msgid ""
 "status tags (Tag), and legends (Legend). Each status type (Default, Info, "
 "Warning, Success, Error) has two colors: a background color and a foreground/"
 "text color (Foreground)."
-msgstr ""
-"의미론적 색상은 버튼과 배지에서 일반적으로 사용되는 다양한 작업과 의도를 나타"
-"냅니다. 예를 들어, 파괴적(Destructive)은 삭제 또는 초기화와 같은 고위험 작업"
-"에 매핑됩니다. 상태 색상은 툴팁 메시지(Tooltip), 경고 대화 상자(Alert), 상"
-"태 태그(Tag) 및 범례(Legend)에서 일반적으로 사용되는 시스템 피드백 상태를 나"
-"타냅니다. 각 상태 유형(기본, 정보, 경고, 성공, 오류)에는 배경색과 전경/텍스"
-"트 색상(Foreground)의 두 가지 색상이 있습니다."
+msgstr "의미 색상은 다양한 작업과 의도를 나타내며 주로 버튼과 배지에 사용됩니다. 예를 들어, 파비적 동작(Destructive)은 삭제나 재설정과 같은 고위험 작업에 매핑됩니다. 상태 색상은 시스템 피드백 상태를 나타내며 주로 툴팁 메시지(Tooltip), 알림 대화 상자(Alert), 상태 태그(Tag), 범례(Legend)에 사용됩니다. 각 상태 유형(기본, 정보, 경고, 성공, 오류)은 배경색과 전경색/텍스트 색상(Foreground)의 두 가지 색상을 가집니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:877
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:823
 msgid "Settings reset successfully."
-msgstr "설정이 성공적으로 초기화되었습니다."
+msgstr "설정이 성공적으로 재설정되었습니다."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:564
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1483
+msgid "Site Branding"
+msgstr "사이트 브랜드 표시"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:481
 msgid "Sky Blue"
 msgstr "스카이 블루"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:437
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:397
 msgid "Status"
 msgstr "상태"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:980
-msgid "Structure"
-msgstr "구조"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:506
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:433
 msgid "Success"
 msgstr "성공"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:507
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:434
 msgid "Success Foreground"
 msgstr "성공 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1172
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:508
+msgid "System Mono"
+msgstr "시스템 고정폭 글꼴"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1714
 msgid "Target URL"
 msgstr "대상 URL"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:482
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:409
 msgid "Terminal Background"
 msgstr "터미널 배경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:483
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:410
 msgid "Terminal Foreground"
 msgstr "터미널 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:517
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:444
 msgid ""
 "The theme layout uses three layers: background (Background) → page container "
 "(Page) → panel card (Panel). The Base Colors variables define each layer's "
@@ -632,125 +691,107 @@ msgid ""
 "primary color (Primary) is mainly used for focused/active states of inputs, "
 "selects, radios, checkboxes, and dropdowns, and is also used for key buttons "
 "and the page footer."
-msgstr ""
-"테마 레이아웃은 배경(Background) → 페이지 컨테이너(Page) → 패널 카드"
-"(Panel)의 세 가지 레이어를 사용합니다. 기본 색상(Base Colors) 변수는 각 레이"
-"어의 배경색(Background)과 전경/텍스트 색상(Foreground)을 정의합니다. 주요 색"
-"상(Primary)은 주로 입력, 선택, 라디오, 체크박스 및 드롭다운의 포커스/활성 상"
-"태에 사용되며, 주요 버튼 및 페이지 바닥글에도 사용됩니다."
+msgstr "테마 레이아웃은 세 가지 계층 구조를 사용합니다: 전체 배경(Background) → 페이지 컨테이너(Page) → 카드 패널(Panel). 기본 색상 변수는 각 계층의 배경색(Background)과 전경색/텍스트 색상(Foreground)을 정의합니다. 주 색상(Primary)은 주로 입력창, 선택 상자, 라디오, 체크박스, 드롭다운의 포커스/활성화 상태에 사용되며 주요 버튼과 페이지 하단 푸터에도 적용됩니다."
 
 #: applications/luci-app-aurora-config/root/usr/share/luci/menu.d/luci-app-aurora.json:13
 msgid "Theme Settings"
 msgstr "테마 설정"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:947
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:893
 msgid "Theme:"
 msgstr "테마:"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:630
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:576
 msgid ""
 "This will switch the theme style to the '%s' preset and overwrite the "
 "configuration in /etc/config/aurora. Do you want to continue?"
-msgstr ""
-"이 작업은 테마 스타일을 '%s' 프리셋으로 전환하고 /etc/config/aurora의 구성을 "
-"덮어씁니다. 계속하시겠습니까?"
+msgstr "테마 스타일이 '%s' 프리셋으로 전환되며 /etc/config/aurora에 있는 설정을 덮어쓰게 됩니다. 계속하시겠습니까?"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1149
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1693
 msgid "Toolbar Buttons"
-msgstr "툴바 버튼"
+msgstr "도구 모음 버튼"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:484
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:411
 msgid "Tooltip Background"
 msgstr "툴팁 배경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1176
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1718
 msgid "URL cannot be empty"
 msgstr "URL은 비워둘 수 없습니다"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:219
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:234
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:235
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:255
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:259
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:280
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:285
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:286
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:289
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:177
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:192
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:193
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:213
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:217
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:238
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:243
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:244
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:247
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:237
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:195
 msgid "Up to date"
 msgstr "최신 상태"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:101
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:233
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:59
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:191
 msgid "Update"
 msgstr "업데이트"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:75
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:33
 msgid "Update Package"
 msgstr "패키지 업데이트"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:166
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:124
 msgid ""
 "Update completed successfully! Please reload the page to see the changes. If "
 "the old version still appears, try again in an incognito/private window or "
 "after clearing your browser cache."
-msgstr ""
-"업데이트가 성공적으로 완료되었습니다! 변경 사항을 확인하려면 페이지를 새로 고"
-"치십시오. 여전히 이전 버전이 나타나면 시크릿/프라이빗 창에서 다시 시도하거나 "
-"브라우저 캐시를 지운 후 시도하십시오."
+msgstr "업데이트가 성공적으로 완료되었습니다! 변경 사항을 확인하려면 페이지를 새로고침 하세요. 여전히 이전 버전이 표시되는 경우, 브라우저 캐시를 지우거나 시크릿 모드/비공개 창에서 다시 시도해 보세요."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:193
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:151
 msgid "Update failed: %s"
 msgstr "업데이트 실패: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:108
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:66
 msgid "Updating Package"
 msgstr "패키지 업데이트 중"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:642
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:588
 msgid "Updating theme..."
 msgstr "테마 업데이트 중..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:308
-msgid "Upload Icon"
-msgstr "아이콘 업로드"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1339
+msgid "Upload failed"
+msgstr "업로드 실패"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:345
-msgid "Upload error: %s"
-msgstr "업로드 오류: %s"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1311
+msgid "Upload failed (HTTP %s)"
+msgstr "업로드 실패 (HTTP %s)"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1051
-msgid ""
-"Upload theme branding assets (browser tab favicon) and custom toolbar icons. "
-"Supported formats include SVG, PNG, JPG, and more. Uploaded assets are "
-"stored in<code>/www/luci-static/aurora/images/</code> and can be used "
-"throughout the theme."
-msgstr ""
-"테마 브랜딩 자산(브라우저 탭 파비콘) 및 사용자 정의 툴바 아이콘을 업로드합니"
-"다. 지원되는 형식에는 SVG, PNG, JPG 등이 포함됩니다. 업로드된 자산은 <code>/"
-"www/luci-static/aurora/images/</code>에 저장되며 테마 전체에서 사용할 수 있"
-"습니다."
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1328
+msgid "Upload failed: %s"
+msgstr "업로드 실패: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:353
-msgid "Uploaded Icons"
-msgstr "업로드된 아이콘"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:387
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:347
 #: applications/luci-app-aurora-config/root/usr/share/luci/menu.d/luci-app-aurora.json:21
 msgid "Version Management"
 msgstr "버전 관리"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:504
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:431
 msgid "Warning"
 msgstr "경고"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:505
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:432
 msgid "Warning Foreground"
 msgstr "경고 전경색"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1168
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1710
 msgid "e.g., System Settings"
 msgstr "예: 시스템 설정"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1145
+msgid "unknown error"
+msgstr "알 수 없는 오류"
