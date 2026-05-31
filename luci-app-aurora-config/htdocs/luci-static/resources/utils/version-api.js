@@ -12,7 +12,10 @@ return baseclass.extend({
         const cached = localStorage.getItem(CACHE_KEY);
         if (!cached) return null;
         const { timestamp, value } = JSON.parse(cached);
-        if (Date.now() - timestamp > CACHE_TTL) { this.clear(); return null; }
+        if (Date.now() - timestamp > CACHE_TTL) {
+          this.clear();
+          return null;
+        }
         return value;
       } catch (e) {
         return null;
@@ -31,7 +34,10 @@ return baseclass.extend({
 
     set(value) {
       try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ timestamp: Date.now(), value }));
+        localStorage.setItem(
+          CACHE_KEY,
+          JSON.stringify({ timestamp: Date.now(), value }),
+        );
       } catch (e) {
         console.error("Failed to cache version data:", e);
       }

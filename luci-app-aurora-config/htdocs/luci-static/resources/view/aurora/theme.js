@@ -34,7 +34,6 @@ const getIconsOnce = () => {
   return _iconsPromise;
 };
 
-
 const callRemoveIcon = rpc.declare({
   object: "luci.aurora",
   method: "remove_icon",
@@ -45,7 +44,6 @@ const callGetThemeConfig = rpc.declare({
   object: "luci.aurora",
   method: "get_theme_config",
 });
-
 
 const callGetFontPresets = rpc.declare({
   object: "luci.aurora",
@@ -62,7 +60,9 @@ const callPrepareFont = rpc.declare({
   object: "luci.aurora",
   method: "prepare_font",
   params: ["sans", "mono"],
-  expect: { "": { result: -1, error: "RPC call failed (timeout or transport error)" } },
+  expect: {
+    "": { result: -1, error: "RPC call failed (timeout or transport error)" },
+  },
 });
 
 const callGetFontStatus = rpc.declare({
@@ -305,7 +305,9 @@ const generateLqip = (source) =>
     const img = new Image();
     const isBlob = source instanceof Blob;
     const url = isBlob ? URL.createObjectURL(source) : source;
-    const cleanup = () => { if (isBlob) URL.revokeObjectURL(url); };
+    const cleanup = () => {
+      if (isBlob) URL.revokeObjectURL(url);
+    };
 
     img.onload = () => {
       const W = 32;
@@ -316,7 +318,10 @@ const generateLqip = (source) =>
       cleanup();
       canvas.toBlob(
         (blob) => {
-          if (!blob) { resolve(null); return; }
+          if (!blob) {
+            resolve(null);
+            return;
+          }
           const reader = new FileReader();
           reader.onload = (e) => resolve(e.target.result);
           reader.onerror = () => resolve(null);
@@ -326,7 +331,10 @@ const generateLqip = (source) =>
         0.1,
       );
     };
-    img.onerror = () => { cleanup(); resolve(null); };
+    img.onerror = () => {
+      cleanup();
+      resolve(null);
+    };
     img.src = url;
   });
 
@@ -508,10 +516,11 @@ return view.extend({
       const presetOptions = buildPresetOptions();
       const uciPreset = themeConfig.active_preset;
       const storedPreset = localStorage.getItem("aurora.theme_preset");
-      const initialPreset =
-        presetOptions.some((p) => p.name === uciPreset) ? uciPreset :
-        presetOptions.some((p) => p.name === storedPreset) ? storedPreset :
-        "classic";
+      const initialPreset = presetOptions.some((p) => p.name === uciPreset)
+        ? uciPreset
+        : presetOptions.some((p) => p.name === storedPreset)
+          ? storedPreset
+          : "classic";
 
       localStorage.setItem("aurora.theme_preset", initialPreset);
 
@@ -790,7 +799,7 @@ return view.extend({
                 "p",
                 {},
                 _(
-                  "Are you sure you want to reset all theme settings (Color, Structure, Login & Branding) back to the default theme's original configuration? This will revert everything to the default theme's initial state.",
+                  "Are you sure you want to reset all theme settings (Color, Layout & Typography, Branding) back to the default theme's original configuration? This will revert everything to the default theme's initial state.",
                 ),
               ),
               E("div", { class: "right" }, [
@@ -914,8 +923,7 @@ return view.extend({
     const s = m.section(form.NamedSection, "theme", "aurora");
 
     s.tab("colors", _("Color"));
-    s.tab("structure", _("Structure"));
-    s.tab("fonts", _("Fonts"));
+    s.tab("layout_typography", _("Layout & Typography"));
     s.tab("icons_branding", _("Branding"));
 
     const colorSection = s.taboption(
@@ -934,7 +942,7 @@ return view.extend({
     createColorSections(colorSubsection, "dark", colorGroups, themeConfig);
 
     const structureSection = s.taboption(
-      "structure",
+      "layout_typography",
       form.SectionValue,
       "_structure_layout",
       form.NamedSection,
@@ -942,7 +950,7 @@ return view.extend({
       "aurora",
       _("Layout"),
       _(
-        "Customize the layout of your interface. Control how the navigation menu displays, adjust the spacing between interface elements, and set the maximum width of the page content container.",
+        "Adjust navigation style, element spacing, corner radius, and page container width.",
       ),
     );
     const structureSubsection = structureSection.subsection;
@@ -988,14 +996,16 @@ return view.extend({
     so.render = renderContainerMaxWidthControl;
 
     const fontSection = s.taboption(
-      "fonts",
+      "layout_typography",
       form.SectionValue,
       "_font_settings",
       form.NamedSection,
       "theme",
       "aurora",
       _("Font Settings"),
-      _("Pick a sans-serif font for body text and a monospaced font for code."),
+      _(
+        "Sans-serif sets the global UI typeface for all text and headings. Monospace is used for code blocks, inline code, and variable references.",
+      ),
     );
     const fontSubsection = fontSection.subsection;
 
@@ -1013,11 +1023,6 @@ return view.extend({
     const addFontSlot = (ss, slot) => {
       const options = buildFontOptions(slot);
       const stackKey = "struct_font_" + slot;
-      const legacyPresetKey = "font_" + slot + "_preset";
-      const legacyFont = findFontByPreset(
-        slot,
-        themeConfig[legacyPresetKey] || "default",
-      );
       const defaultFont = getDefaultFont(slot);
 
       const presetOpt = ss.option(
@@ -1025,11 +1030,7 @@ return view.extend({
         stackKey,
         slot === "sans" ? _("Sans-serif Typeface") : _("Monospace Typeface"),
       );
-      presetOpt.default =
-        themeConfig[stackKey] ||
-        legacyFont?.stack ||
-        defaultFont?.stack ||
-        "";
+      presetOpt.default = themeConfig[stackKey] || defaultFont?.stack || "";
       presetOpt.rmempty = false;
       options.forEach((font) => {
         if (font.stack) {
@@ -1052,10 +1053,8 @@ return view.extend({
         (fontSlotOpts[slot] && fontSlotOpts[slot].formvalue("theme")) ||
         getDefaultFont(slot)?.stack ||
         "";
-      const font =
-        findFontByStack(slot, value) ||
-        getDefaultFont(slot) ||
-        { name: "default" };
+      const font = findFontByStack(slot, value) ||
+        getDefaultFont(slot) || { name: "default" };
 
       return {
         preset: font.name || "default",
@@ -1157,7 +1156,10 @@ return view.extend({
           ui.hideModal();
           ui.addNotification(
             null,
-            E("p", _("Font preparation failed: ") + (err.message || String(err))),
+            E(
+              "p",
+              _("Font preparation failed: ") + (err.message || String(err)),
+            ),
             "warning",
           );
           return Promise.reject(err);
@@ -1174,11 +1176,17 @@ return view.extend({
       "theme",
       "aurora",
       _("Asset Library"),
-      _("Manage image files used by the theme. All files are stored in <code>/www/luci-static/aurora/images/</code>."),
+      _(
+        "Manage image files used by the theme. All files are stored in <code>/www/luci-static/aurora/images/</code>.",
+      ),
     );
     const assetSubsection = assetSection.subsection;
 
-    const assetTableSo = assetSubsection.option(form.DummyValue, "_asset_table", " ");
+    const assetTableSo = assetSubsection.option(
+      form.DummyValue,
+      "_asset_table",
+      " ",
+    );
     assetTableSo.load = () => L.resolveDefault(callListIcons(), { icons: [] });
     assetTableSo.cfgvalue = (section_id, data) => data?.icons || [];
     assetTableSo.render = function (option_index, section_id, in_table) {
@@ -1193,20 +1201,36 @@ return view.extend({
         });
 
         const progressBar = E("div", {
-          style: "height:100%;width:0%;transition:width 0.15s;border-radius:2px;background:var(--color-primary,#2196f3);",
+          style:
+            "height:100%;width:0%;transition:width 0.15s;border-radius:2px;background:var(--color-primary,#2196f3);",
         });
         const progressFilename = E("span", {}, "");
         const progressPct = E("span", {}, "0%");
-        const progressRow = E("div", {
-          style: "display:none;margin-bottom:0.75em;padding:0.6em 0.875em;border-radius:0.375em;border:1px solid var(--border-color,#ddd);",
-        }, [
-          E("div", {
-            style: "display:flex;justify-content:space-between;align-items:center;font-size:0.85em;margin-bottom:0.4em;",
-          }, [progressFilename, progressPct]),
-          E("div", {
-            style: "height:4px;border-radius:2px;overflow:hidden;background:var(--border-color,#eee);",
-          }, [progressBar]),
-        ]);
+        const progressRow = E(
+          "div",
+          {
+            style:
+              "display:none;margin-bottom:0.75em;padding:0.6em 0.875em;border-radius:0.375em;border:1px solid var(--border-color,#ddd);",
+          },
+          [
+            E(
+              "div",
+              {
+                style:
+                  "display:flex;justify-content:space-between;align-items:center;font-size:0.85em;margin-bottom:0.4em;",
+              },
+              [progressFilename, progressPct],
+            ),
+            E(
+              "div",
+              {
+                style:
+                  "height:4px;border-radius:2px;overflow:hidden;background:var(--border-color,#eee);",
+              },
+              [progressBar],
+            ),
+          ],
+        );
 
         const setUploading = (busy) => {
           dropzone.style.opacity = busy ? "0.5" : "";
@@ -1214,32 +1238,53 @@ return view.extend({
           progressRow.style.display = busy ? "block" : "none";
         };
 
-        const dropzone = E("div", {
-          style: "border:2px dashed var(--border-color,#aaa);border-radius:0.5em;padding:1.25em 1em;text-align:center;cursor:pointer;margin-bottom:0.75em;transition:border-color 0.15s,background 0.15s;",
-          click: () => fileInput.click(),
-          dragover: (e) => {
-            e.preventDefault();
-            dropzone.style.borderColor = "var(--color-primary,#2196f3)";
-            dropzone.style.background = "rgba(33,150,243,0.06)";
+        const dropzone = E(
+          "div",
+          {
+            style:
+              "border:2px dashed var(--border-color,#aaa);border-radius:0.5em;padding:1.25em 1em;text-align:center;cursor:pointer;margin-bottom:0.75em;transition:border-color 0.15s,background 0.15s;",
+            click: () => fileInput.click(),
+            dragover: (e) => {
+              e.preventDefault();
+              dropzone.style.borderColor = "var(--color-primary,#2196f3)";
+              dropzone.style.background = "rgba(33,150,243,0.06)";
+            },
+            dragleave: () => {
+              dropzone.style.borderColor = "";
+              dropzone.style.background = "";
+            },
+            drop: (e) => {
+              e.preventDefault();
+              dropzone.style.borderColor = "";
+              dropzone.style.background = "";
+              const file = e.dataTransfer.files[0];
+              if (file) uploadFile(file);
+            },
           },
-          dragleave: () => {
-            dropzone.style.borderColor = "";
-            dropzone.style.background = "";
-          },
-          drop: (e) => {
-            e.preventDefault();
-            dropzone.style.borderColor = "";
-            dropzone.style.background = "";
-            const file = e.dataTransfer.files[0];
-            if (file) uploadFile(file);
-          },
-        }, [
-          E("div", { style: "font-size:1.5em;margin-bottom:0.25em;pointer-events:none;" }, "⬆"),
-          E("strong", { style: "pointer-events:none;" }, _("Drop image here, or click to browse")),
-          E("div", {
-            style: "font-size:0.8em;opacity:0.6;margin-top:0.25em;pointer-events:none;",
-          }, _("JPG · PNG · WebP · AVIF · SVG · GIF")),
-        ]);
+          [
+            E(
+              "div",
+              {
+                style:
+                  "font-size:1.5em;margin-bottom:0.25em;pointer-events:none;",
+              },
+              "⬆",
+            ),
+            E(
+              "strong",
+              { style: "pointer-events:none;" },
+              _("Drop image here, or click to browse"),
+            ),
+            E(
+              "div",
+              {
+                style:
+                  "font-size:0.8em;opacity:0.6;margin-top:0.25em;pointer-events:none;",
+              },
+              _("JPG · PNG · WebP · AVIF · SVG · GIF"),
+            ),
+          ],
+        );
 
         const uploadFile = (file) => {
           fileInput.value = "";
@@ -1261,7 +1306,11 @@ return view.extend({
           xhr.addEventListener("load", () => {
             if (xhr.status !== 200) {
               setUploading(false);
-              ui.addNotification(null, E("p", _("Upload failed: HTTP %s").format(xhr.status)), "error");
+              ui.addNotification(
+                null,
+                E("p", _("Upload failed (HTTP %s)").format(xhr.status)),
+                "error",
+              );
               return;
             }
             L.resolveDefault(callUploadIcon(file.name), {}).then((ret) => {
@@ -1272,7 +1321,14 @@ return view.extend({
                 window.location.reload();
               } else {
                 setUploading(false);
-                ui.addNotification(null, E("p", _("Failed to upload: %s").format(ret?.error || "Unknown")), "error");
+                ui.addNotification(
+                  null,
+                  E(
+                    "p",
+                    _("Upload failed: %s").format(ret?.error || "Unknown"),
+                  ),
+                  "error",
+                );
                 L.resolveDefault(fs.remove(tmpPath), {});
               }
             });
@@ -1306,50 +1362,86 @@ return view.extend({
 
         const makeRow = (icon) => {
           const placeholder = E("div", {
-            style: "width:40px;height:40px;border-radius:4px;background:var(--border-color,#eee);",
+            style:
+              "width:40px;height:40px;border-radius:4px;background:var(--border-color,#eee);",
           });
-          const previewCell = E("td", { class: "td", style: "width:56px;" }, placeholder);
+          const previewCell = E(
+            "td",
+            { class: "td", style: "width:56px;" },
+            placeholder,
+          );
 
           idleCallback(() => {
-            generateLqip("/luci-static/aurora/images/" + icon).then((dataUrl) => {
-              if (!dataUrl) return;
-              placeholder.replaceWith(E("img", {
-                src: dataUrl,
-                style: "width:40px;height:40px;object-fit:contain;border-radius:4px;display:block;",
-                alt: "",
-              }));
-            });
+            generateLqip("/luci-static/aurora/images/" + icon).then(
+              (dataUrl) => {
+                if (!dataUrl) return;
+                placeholder.replaceWith(
+                  E("img", {
+                    src: dataUrl,
+                    style:
+                      "width:40px;height:40px;object-fit:contain;border-radius:4px;display:block;",
+                    alt: "",
+                  }),
+                );
+              },
+            );
           });
 
-          const deleteBtn = E("button", {
-            class: "cbi-button cbi-button-remove",
-            click: ui.createHandlerFn(this, () => {
-              return ui.showModal(_("Delete Asset"), [
-                E("p", {}, _("Delete '%s'?").format(icon)),
-                E("div", { class: "right" }, [
-                  E("button", { class: "btn", click: ui.hideModal }, _("Cancel")),
-                  " ",
-                  E("button", {
-                    class: "btn cbi-button-negative",
-                    click: () => {
-                      ui.showModal(_("Deleting…"), [
-                        E("p", { class: "spinning" }, _("Deleting…")),
-                      ]);
-                      L.resolveDefault(callRemoveIcon(icon), {}).then((ret) => {
-                        ui.hideModal();
-                        if (ret?.result === 0) {
-                          ui.addNotification(null, E("p", _("Deleted: %s").format(icon)));
-                          window.location.reload();
-                        } else {
-                          ui.addNotification(null, E("p", _("Failed to delete: %s").format(ret?.error || "Unknown")), "error");
-                        }
-                      });
-                    },
-                  }, _("Delete")),
-                ]),
-              ]);
-            }),
-          }, _("Delete"));
+          const deleteBtn = E(
+            "button",
+            {
+              class: "cbi-button cbi-button-remove",
+              click: ui.createHandlerFn(this, () => {
+                return ui.showModal(_("Delete Asset"), [
+                  E("p", {}, _("Delete '%s'?").format(icon)),
+                  E("div", { class: "right" }, [
+                    E(
+                      "button",
+                      { class: "btn", click: ui.hideModal },
+                      _("Cancel"),
+                    ),
+                    " ",
+                    E(
+                      "button",
+                      {
+                        class: "btn cbi-button-negative",
+                        click: () => {
+                          ui.showModal(_("Deleting…"), [
+                            E("p", { class: "spinning" }, _("Please wait…")),
+                          ]);
+                          L.resolveDefault(callRemoveIcon(icon), {}).then(
+                            (ret) => {
+                              ui.hideModal();
+                              if (ret?.result === 0) {
+                                ui.addNotification(
+                                  null,
+                                  E("p", _("Deleted: %s").format(icon)),
+                                );
+                                window.location.reload();
+                              } else {
+                                ui.addNotification(
+                                  null,
+                                  E(
+                                    "p",
+                                    _("Failed to delete: %s").format(
+                                      ret?.error || "Unknown",
+                                    ),
+                                  ),
+                                  "error",
+                                );
+                              }
+                            },
+                          );
+                        },
+                      },
+                      _("Delete"),
+                    ),
+                  ]),
+                ]);
+              }),
+            },
+            _("Delete"),
+          );
 
           return E("tr", { class: "tr" }, [
             previewCell,
@@ -1358,16 +1450,19 @@ return view.extend({
           ]);
         };
 
-        const tableOrEmpty = icons.length === 0
-          ? E("div", { style: "padding:0.5em 0;" }, [E("em", {}, _("No assets uploaded yet."))])
-          : E("table", { class: "table" }, [
-              E("tr", { class: "tr table-titles" }, [
-                E("th", { class: "th", style: "width:56px;" }, _("Preview")),
-                E("th", { class: "th" }, _("Filename")),
-                E("th", { class: "th center" }, _("Actions")),
-              ]),
-              ...icons.map(makeRow),
-            ]);
+        const tableOrEmpty =
+          icons.length === 0
+            ? E("div", { style: "padding:0.5em 0;" }, [
+                E("em", {}, _("No assets uploaded yet.")),
+              ])
+            : E("table", { class: "table" }, [
+                E("tr", { class: "tr table-titles" }, [
+                  E("th", { class: "th", style: "width:56px;" }, _("Preview")),
+                  E("th", { class: "th" }, _("Filename")),
+                  E("th", { class: "th center" }, _("Actions")),
+                ]),
+                ...icons.map(makeRow),
+              ]);
 
         return E("div", { "data-name": this.option }, [
           fileInput,
@@ -1387,11 +1482,10 @@ return view.extend({
       "aurora",
       _("Site Branding"),
       _(
-        "Select the icon used as the browser tab favicon and login page logo. Upload files using the Asset Library above, then select them here.",
+        "Choose the favicon, logo, and login background. Upload images via the Asset Library above.",
       ),
     );
     const logoSubsection = logoSection.subsection;
-
 
     so = logoSubsection.option(form.ListValue, "logo_svg", _("Logo / Favicon"));
     so.default = "logo.svg";
@@ -1416,8 +1510,14 @@ return view.extend({
       );
     };
 
-    so = logoSubsection.option(form.ListValue, "favicon_png", _("Favicon (PNG)"));
-    so.description = _("Optional PNG favicon for browsers that do not support SVG favicons.");
+    so = logoSubsection.option(
+      form.ListValue,
+      "favicon_png",
+      _("Favicon (PNG)"),
+    );
+    so.description = _(
+      "Optional PNG favicon for browsers that do not support SVG favicons.",
+    );
     so.rmempty = true;
     so.load = function (section_id) {
       return L.resolveDefault(callListIcons(), { icons: [] }).then(
@@ -1426,15 +1526,21 @@ return view.extend({
           this.keylist = [];
           this.vallist = [];
           this.value("", _("(None)"));
-          icons.forEach(L.bind(function (icon) {
-            if (/\.png$/i.test(icon)) this.value(icon, icon);
-          }, this));
+          icons.forEach(
+            L.bind(function (icon) {
+              if (/\.png$/i.test(icon)) this.value(icon, icon);
+            }, this),
+          );
           return form.ListValue.prototype.load.apply(this, [section_id]);
-        }, this)
+        }, this),
       );
     };
 
-    so = logoSubsection.option(form.ListValue, "favicon_ico", _("Favicon (ICO / Legacy)"));
+    so = logoSubsection.option(
+      form.ListValue,
+      "favicon_ico",
+      _("Favicon (ICO / Legacy)"),
+    );
     so.description = _("ICO favicon served to legacy browsers as fallback.");
     so.default = "favicon.ico";
     so.rmempty = false;
@@ -1444,18 +1550,20 @@ return view.extend({
           const icons = response?.icons || [];
           this.keylist = [];
           this.vallist = [];
-          icons.forEach(L.bind(function (icon) {
-            if (/\.ico$/i.test(icon)) this.value(icon, icon);
-          }, this));
+          icons.forEach(
+            L.bind(function (icon) {
+              if (/\.ico$/i.test(icon)) this.value(icon, icon);
+            }, this),
+          );
           return form.ListValue.prototype.load.apply(this, [section_id]);
-        }, this)
+        }, this),
       );
     };
 
     const pwaIconSlots = [
-      ["pwa_apple_touch", _("Apple Touch Icon"),  "apple-touch-icon.png"],
-      ["pwa_icon_192",    _("App Icon 192×192"),  "app-icon-192x192.png"],
-      ["pwa_icon_512",    _("App Icon 512×512"),  "app-icon-512x512.png"],
+      ["pwa_apple_touch", _("Apple Touch Icon"), "apple-touch-icon.png"],
+      ["pwa_icon_192", _("App Icon 192×192"), "app-icon-192x192.png"],
+      ["pwa_icon_512", _("App Icon 512×512"), "app-icon-512x512.png"],
     ];
 
     pwaIconSlots.forEach(function ([key, label, defaultVal]) {
@@ -1468,21 +1576,25 @@ return view.extend({
             const icons = response?.icons || [];
             this.keylist = [];
             this.vallist = [];
-            icons.forEach(L.bind(function (icon) {
-              if (isImageFile(icon) && !/\.svg$/i.test(icon)) {
-                this.value(icon, icon);
-              }
-            }, this));
+            icons.forEach(
+              L.bind(function (icon) {
+                if (isImageFile(icon) && !/\.svg$/i.test(icon)) {
+                  this.value(icon, icon);
+                }
+              }, this),
+            );
             return form.ListValue.prototype.load.apply(this, [section_id]);
-          }, this)
+          }, this),
         );
       };
     });
 
-    so = logoSubsection.option(form.ListValue, "struct_login_bg", _("Login Background"));
-    so.description = _(
-      "Select a static image from the Asset Library. Shown as a full-screen background on the login page.",
+    so = logoSubsection.option(
+      form.ListValue,
+      "struct_login_bg",
+      _("Login Background"),
     );
+    so.description = _("Full-screen background on the login page.");
     so.rmempty = true;
     so.load = function (section_id) {
       return L.resolveDefault(callListIcons(), { icons: [] }).then(
@@ -1490,7 +1602,7 @@ return view.extend({
           const icons = response?.icons || [];
           this.keylist = [];
           this.vallist = [];
-          this.value("", _("None (Animated Aurora)"));
+          this.value("", _("None"));
           if (icons.length > 0) {
             icons.forEach(
               L.bind((icon) => {
@@ -1505,17 +1617,9 @@ return view.extend({
       );
     };
     so.cfgvalue = function (section_id) {
-      let value = uci.get("aurora", section_id, "struct_login_bg");
-      if (!value) {
-        const legacy = uci.get("aurora", section_id, "struct_login_bg_media");
-        if (legacy) value = toLoginBgUrl(legacy);
-      }
-      const file = fromLoginBgUrl(value);
-      if (file && /\.(mp4|webm|ogg)$/i.test(file)) return "";
-      return value || "";
+      return uci.get("aurora", section_id, "struct_login_bg") || "";
     };
     so.write = function (section_id, value) {
-      uci.unset("aurora", section_id, "struct_login_bg_media");
       if (!value) {
         uci.unset("aurora", section_id, "struct_login_bg");
         uci.unset("aurora", section_id, "light_login_bg_lqip");
@@ -1587,9 +1691,7 @@ return view.extend({
       form.GridSection,
       "toolbar_item",
       _("Toolbar Buttons"),
-      _(
-        "Customize toolbar buttons by adding new entries, editing existing ones, removing unwanted items, or dragging rows to reorder them.",
-      ),
+      _("Add, remove, and drag to reorder toolbar buttons."),
     );
     so.depends("toolbar_enabled", "1");
     const toolbarGrid = so.subsection;
@@ -1685,34 +1787,36 @@ return view.extend({
         }
       });
 
-        // Auto-select uploaded background and auto-generate LQIP if missing
-        requestAnimationFrame(() => {
-          const bgInput = mapNode.querySelector(
-            '[name="cbid.aurora.theme.struct_login_bg"]',
-          );
-          const lqipInput = mapNode.querySelector(
-            '[name="cbid.aurora.theme.light_login_bg_lqip"]',
-          );
-          if (!bgInput || !lqipInput) return;
+      // Auto-select uploaded background and auto-generate LQIP if missing
+      requestAnimationFrame(() => {
+        const bgInput = mapNode.querySelector(
+          '[name="cbid.aurora.theme.struct_login_bg"]',
+        );
+        const lqipInput = mapNode.querySelector(
+          '[name="cbid.aurora.theme.light_login_bg_lqip"]',
+        );
+        if (!bgInput || !lqipInput) return;
 
-          const pending = localStorage.getItem("aurora.pending_bg");
-          if (pending) {
-            localStorage.removeItem("aurora.pending_bg");
-            const pendingUrl = toLoginBgUrl(pending);
-            if (bgInput.querySelector(`option[value="${pendingUrl}"]`)) {
-              bgInput.value = pendingUrl;
-              bgInput.dispatchEvent(new Event("change"));
-              return;
-            }
+        const pending = localStorage.getItem("aurora.pending_bg");
+        if (pending) {
+          localStorage.removeItem("aurora.pending_bg");
+          const pendingUrl = toLoginBgUrl(pending);
+          if (bgInput.querySelector(`option[value="${pendingUrl}"]`)) {
+            bgInput.value = pendingUrl;
+            bgInput.dispatchEvent(new Event("change"));
+            return;
           }
+        }
 
-          if (bgInput.value && !lqipInput.value) {
-            const bgMatch = bgInput.value.match(/url\(["']?(.+?)["']?\)/);
-            if (bgMatch) {
-              generateLqip(bgMatch[1]).then((d) => { if (d) lqipInput.value = d; });
-            }
+        if (bgInput.value && !lqipInput.value) {
+          const bgMatch = bgInput.value.match(/url\(["']?(.+?)["']?\)/);
+          if (bgMatch) {
+            generateLqip(bgMatch[1]).then((d) => {
+              if (d) lqipInput.value = d;
+            });
           }
-        });
+        }
+      });
 
       return mapNode;
     });

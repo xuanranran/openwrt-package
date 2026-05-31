@@ -295,7 +295,8 @@ const checkForUpdates = (forceRefresh) => {
 
   updateVersionTable(null);
 
-  utils_version_api.callCheckUpdates()
+  utils_version_api
+    .callCheckUpdates()
     .then((updateData) => {
       utils_version_api.versionCache.set(updateData);
       updateVersionTable(updateData);
@@ -325,7 +326,8 @@ const checkForUpdates = (forceRefresh) => {
 };
 
 return view.extend({
-  load: () => L.resolveDefault(utils_version_api.callGetInstalledVersions(), null),
+  load: () =>
+    L.resolveDefault(utils_version_api.callGetInstalledVersions(), null),
 
   render: (installedData) => {
     if (installedData) {
