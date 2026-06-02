@@ -123,7 +123,7 @@ return L.view.extend({
 									'selected': (name === currentVal) ? 'selected' : null
 								}, name);
 							})),
-							E('div', { 'class': 'cbi-value-description' }, _('The name of the LAN interface, used for detecting terminal information. The system default is bridge interface (br-lan). If the LAN port has been modified to a physical interface, please modify it to the corresponding name, such as eth0, support fuzzy matching. For example, you can setup lan to match br-lan and br-lan2.'))
+							E('div', { 'class': 'cbi-value-description' }, _('The name of the LAN interface, used for detecting terminal information. The system default is bridge interface (br-lan).'))
 						])
 					])
 				])

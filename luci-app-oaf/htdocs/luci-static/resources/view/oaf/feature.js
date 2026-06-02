@@ -97,7 +97,7 @@ return L.view.extend({
 					E('div', { 'class': 'cbi-value' }, [
 						E('label', { 'class': 'cbi-value-title' }, _('Feature download') + ':'),
 						E('div', { 'class': 'cbi-value-field' }, [
-							E('a', { 'href': 'http://www.openappfilter.com', 'target': '_blank' }, 'www.openappfilter.com')
+							E('a', { 'href': 'https://www.openappfilter.com/#/feature', 'target': '_blank' }, 'www.openappfilter.com')
 						])
 					]),
 

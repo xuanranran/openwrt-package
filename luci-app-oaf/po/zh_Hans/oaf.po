@@ -382,7 +382,9 @@ msgstr "手动模式下，只有指定终端被管控。"
 msgid ""
 "Invalid LAN interface name. Please ensure it is 2-16 characters long and "
 "contains only letters, numbers, dots, and hyphens."
-msgstr "LAN 接口名称无效。请确保其长度在 2-16 个字符之间，且只包含字母、数字、小数点和短横线。"
+msgstr ""
+"LAN 接口名称无效。请确保其长度在 2-16 个字符之间，且只包含字母、数字、小数点"
+"和短横线。"
 
 #: luci-app-oaf/htdocs/luci-static/resources/view/oaf/feature.js:135
 msgid "Invalid file format. Please upload a .bin feature package."
@@ -617,11 +619,9 @@ msgstr "特征库用于描述 APP 特征，APP 过滤效果和个数依赖特征
 #: luci-app-oaf/htdocs/luci-static/resources/view/oaf/advance.js:126
 msgid ""
 "The name of the LAN interface, used for detecting terminal information. The "
-"system default is bridge interface (br-lan). If the LAN port has been "
-"modified to a physical interface, please modify it to the corresponding "
-"name, such as eth0, support fuzzy matching. For example, you can setup lan "
-"to match br-lan and br-lan2."
-msgstr "LAN 接口的名称，用于探测终端信息，系统默认为桥接口 (br-lan)，如果将 LAN 口修改成了物理接口，请修改为对应的名称，比如：eth0，支持模糊匹配，例如可以设置 lan 用来匹配 br-lan 和 br-lan2。"
+"system default is bridge interface (br-lan)."
+msgstr ""
+"LAN 接口的名称，用于探测终端信息，系统默认为桥接口（br-lan）。"
 
 #: luci-app-oaf/htdocs/luci-static/resources/view/oaf/time.js:153
 msgid ""
