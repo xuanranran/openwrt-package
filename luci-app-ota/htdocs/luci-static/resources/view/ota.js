@@ -259,17 +259,29 @@ return view.extend({
 					E('p', { 'class': 'spinning' }, _('The system is flashing now.<br /> DO NOT POWER OFF THE DEVICE!<br /> Wait a few minutes before you try to reconnect. It might be necessary to renew the address of your computer to reach the device again, depending on your settings.'))
 				]);
 
-				const interval = window.setInterval(() => {
-					const img = new Image();
-					const target = window.location.protocol + '//' + window.location.host;
+				const preventUnload = (e) => {
+					e.preventDefault();
+					e.returnValue = 'Firmware is flashing, please do not leave or reload this page.';
+					return e.returnValue;
+				};
 
-					img.onload = () => {
-						window.clearInterval(interval);
-						window.location.replace(target);
-					};
+				window.addEventListener('beforeunload', preventUnload);
 
-					img.src = target + L.resource('icons/loading.svg') + '?' + Math.random();
-				}, 10000);
+				window.setTimeout(() => {
+					const interval = window.setInterval(() => {
+						const img = new Image();
+						const target = window.location.protocol + '//' + window.location.host;
+
+						img.onload = () => {
+							window.clearInterval(interval);
+							window.removeEventListener('beforeunload', preventUnload);
+							window.location.replace(target);
+						};
+
+						img.src = target + L.resource('icons/loading.svg') + '?' + Math.random();
+					}, 5000);
+
+				}, 30000);
 
 			} else {
 				ev.target.disabled = false;
