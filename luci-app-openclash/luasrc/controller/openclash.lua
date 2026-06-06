@@ -1868,7 +1868,7 @@ function action_myip_check()
 			url = string.format("http://myip.ipip.net?z=%d", random),
 			parser = function(data)
 				if data and data ~= "" then
-					local ip = string.match(data, "当前 IP：([%d%.]+)")
+					local ip = string.match(data, "当前 IP：([%x:%.]+)")
 					local geo = string.match(data, "来自于：(.+)")
 
 					if ip and geo then
