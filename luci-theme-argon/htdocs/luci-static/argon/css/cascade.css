@@ -725,7 +725,8 @@ small {
   position: relative;
   top: 0;
   bottom: 0;
-  overflow-y: auto;
+  overflow: hidden;
+  overflow: clip;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -4558,11 +4559,6 @@ strong,
 
   header>.fill>.container>.brand {
     position: relative;
-  }
-
-  html,
-  .main {
-    overflow-y: visible;
   }
 
   .main>.loading>span {

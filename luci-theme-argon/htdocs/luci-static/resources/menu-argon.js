@@ -232,8 +232,181 @@ return baseclass.extend({
 			darkMask.addEventListener('click', ui.createHandlerFn(this, 'handleSidebarToggle'));
 		}
 
+		document.addEventListener('click', L.bind(this.handleLogScroll, this), true);
+
 		// Initialize circular progress bars
 		this.initCircularProgressBars();
+		this.initQuickFileFrame();
+	},
+
+	/**
+	 * Keep QuickFile directory navigation from moving the outer page.
+	 */
+	initQuickFileFrame: function () {
+		if (document.body.dataset.page !== 'admin-system-quickfile') {
+			return;
+		}
+
+		var bindFrame = function (iframe) {
+			if (!iframe || iframe.dataset.argonQuickFileBound) {
+				return;
+			}
+
+			iframe.dataset.argonQuickFileBound = 'true';
+			var bindNavigationFix = function () {
+				var doc = iframe.contentDocument;
+
+				if (!doc || doc.documentElement.dataset.argonNavigationFix) {
+					return;
+				}
+
+				doc.documentElement.dataset.argonNavigationFix = 'true';
+				var savedScroll = null;
+
+				var captureScroll = function () {
+					var main = document.querySelector('.main');
+					var content = document.querySelector('.main-right');
+					var scrollingElement = document.scrollingElement;
+					var innerFileArea = doc.querySelector('.file-area');
+					var innerScrollingElement = doc.scrollingElement;
+
+					savedScroll = {
+						mainTop: main ? main.scrollTop : 0,
+						mainLeft: main ? main.scrollLeft : 0,
+						contentTop: content ? content.scrollTop : 0,
+						contentLeft: content ? content.scrollLeft : 0,
+						documentTop: scrollingElement ? scrollingElement.scrollTop : 0,
+						documentLeft: scrollingElement ? scrollingElement.scrollLeft : 0,
+						frameTop: innerScrollingElement ? innerScrollingElement.scrollTop : 0,
+						frameLeft: innerScrollingElement ? innerScrollingElement.scrollLeft : 0,
+						fileTop: innerFileArea ? innerFileArea.scrollTop : 0,
+						fileLeft: innerFileArea ? innerFileArea.scrollLeft : 0
+					};
+				};
+
+				var restoreScroll = function () {
+					if (!savedScroll) {
+						return;
+					}
+
+					var main = document.querySelector('.main');
+					var content = document.querySelector('.main-right');
+					var scrollingElement = document.scrollingElement;
+					var innerFileArea = doc.querySelector('.file-area');
+					var innerScrollingElement = doc.scrollingElement;
+
+					if (main) {
+						main.scrollTop = savedScroll.mainTop;
+						main.scrollLeft = savedScroll.mainLeft;
+					}
+					if (content) {
+						content.scrollTop = savedScroll.contentTop;
+						content.scrollLeft = savedScroll.contentLeft;
+					}
+					if (scrollingElement) {
+						scrollingElement.scrollTop = savedScroll.documentTop;
+						scrollingElement.scrollLeft = savedScroll.documentLeft;
+					}
+					if (innerScrollingElement) {
+						innerScrollingElement.scrollTop = savedScroll.frameTop;
+						innerScrollingElement.scrollLeft = savedScroll.frameLeft;
+					}
+					if (innerFileArea) {
+						innerFileArea.scrollTop = savedScroll.fileTop;
+						innerFileArea.scrollLeft = savedScroll.fileLeft;
+					}
+				};
+
+				doc.addEventListener('click', function (ev) {
+					var folderLink = ev.target.closest('tr[data-isdir="1"] a[href="#"]');
+					var breadcrumb = ev.target.closest('#breadcrumb li, #breadcrumb span');
+
+					if (!folderLink && !breadcrumb) {
+						return;
+					}
+
+					if (folderLink) {
+						ev.preventDefault();
+					}
+
+					captureScroll();
+					requestAnimationFrame(restoreScroll);
+					setTimeout(restoreScroll, 50);
+					setTimeout(restoreScroll, 250);
+					setTimeout(function () {
+						restoreScroll();
+						savedScroll = null;
+					}, 500);
+				}, true);
+
+				var tableBody = doc.getElementById('file-table-body');
+				if (tableBody) {
+					new MutationObserver(function () {
+						requestAnimationFrame(restoreScroll);
+					}).observe(tableBody, { childList: true });
+				}
+			};
+
+			iframe.addEventListener('load', bindNavigationFix);
+			if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+				bindNavigationFix();
+			}
+		};
+
+		var iframe = document.querySelector('.iframe-container iframe');
+		if (iframe) {
+			bindFrame(iframe);
+		}
+
+		var observer = new MutationObserver(function () {
+			var frame = document.querySelector('.iframe-container iframe');
+			if (frame) {
+				bindFrame(frame);
+				observer.disconnect();
+			}
+		});
+		observer.observe(document.getElementById('view') || document.body, {
+			childList: true,
+			subtree: true
+		});
+	},
+
+	/**
+	 * Keep log navigation inside the main content scroller.
+	 * @param {Event} ev - Click event from a log scroll button
+	 */
+	handleLogScroll: function (ev) {
+		var button = ev.target.closest('#scrollDownButton, #scrollUpButton');
+
+		if (!button) {
+			return;
+		}
+
+		var main = document.querySelector('.main');
+		var content = document.querySelector('.main-right');
+		var scrollingElement = document.scrollingElement;
+
+		if (!content) {
+			return;
+		}
+
+		ev.preventDefault();
+		ev.stopImmediatePropagation();
+
+		if (main) {
+			main.scrollTop = 0;
+			main.scrollLeft = 0;
+		}
+		if (scrollingElement) {
+			scrollingElement.scrollTop = 0;
+			scrollingElement.scrollLeft = 0;
+		}
+
+		content.scrollLeft = 0;
+		content.scrollTop = button.id === 'scrollDownButton'
+			? content.scrollHeight - content.clientHeight
+			: 0;
+		button.blur();
 	},
 
 	/**
