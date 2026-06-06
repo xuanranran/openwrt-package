@@ -1406,7 +1406,7 @@ var ConfigUploader = {
 
             if (url && filename) {
                 if (subConvert) {
-                    var linkPattern = /^(?:https?:\/\/|[a-zA-Z]+:\/\/|[^,\s]+,https?:\/\/.+|[^%\s]+%2Chttps?%3A%2F%2F.+)$/i;
+                    var linkPattern = /^(?:https?:\/\/\S+|[a-zA-Z]+:\/\/\S+|[^,\s]+,https?:\/\/\S+|[^%\s]+%2Chttps?%3A%2F%2F\S+)$/i;
 
                     if (url.indexOf('\n') !== -1 || url.indexOf('|') !== -1) {
                         var links = url.split(/[\n|]/);
@@ -1583,7 +1583,7 @@ var ConfigUploader = {
         var isValidFormat = false;
 
         if (subConvert) {
-            var linkPattern = /^(?:https?:\/\/|[a-zA-Z]+:\/\/|[^,\s]+,https?:\/\/.+|[^%\s]+%2Chttps?%3A%2F%2F.+)$/i;
+            var linkPattern = /^(?:https?:\/\/\S+|[a-zA-Z]+:\/\/\S+|[^,\s]+,https?:\/\/\S+|[^%\s]+%2Chttps?%3A%2F%2F\S+)$/i;
 
             if (url.indexOf('\n') !== -1 || url.indexOf('|') !== -1) {
                 var links = url.split(/[\n|]/);
@@ -1690,7 +1690,18 @@ var ConfigUploader = {
 
         if (!filenameInput.value.trim() && url) {
             try {
-                var urlObj = new URL(url);
+                var match = url.match(/https?:\/\/[^,\s|]+/i);
+                if (!match) {
+                    try {
+                        var decoded = decodeURIComponent(url);
+                        match = decoded.match(/https?:\/\/[^,\s|]+/i);
+                    } catch (e) {
+                        match = null;
+                    }
+                }
+
+                var urlToParse = match ? match[0] : url;
+                var urlObj = new URL(urlToParse);
                 var hostname = urlObj.hostname;
 
                 var configName = hostname
