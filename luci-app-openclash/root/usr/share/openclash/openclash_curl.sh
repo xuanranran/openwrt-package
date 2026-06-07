@@ -18,7 +18,11 @@ DOWNLOAD_FILE_CURL() {
     CACHED_ETAG=$(GET_ETAG_BY_PATH "$FILE_PATH")
 
     if [ "$HTTP_CODE" = "200" ] && [ -n "$NEW_ETAG" ] && [ "$NEW_ETAG" = "$CACHED_ETAG" ] && [ -e "$FILE_PATH" ]; then
-        return 2
+        FILE_MTIME=$(date -r "$FILE_PATH" '+%Y-%m-%d %H:%M:%S' 2>/dev/null)
+        LAST_UPDATE=$(GET_ETAG_TIMESTAMP_BY_PATH "$FILE_PATH")
+        if [ -n "$LAST_UPDATE" ] && [ -n "$FILE_MTIME" ] && [ "$LAST_UPDATE" = "$FILE_MTIME" ]; then
+            return 2
+        fi
     fi
 
     if [ "$SHOW_DOWNLOAD_PROGRESS" = "1" ] || [ "$SHOW_DOWNLOAD_PROGRESS" = "true" ]; then
@@ -68,7 +72,7 @@ DOWNLOAD_FILE_CURL() {
 
         if [ "$EXIR_CODE" -ne 0 ]; then
             LOG_OUT "【$DOWNLOAD_PATH】Download Failed:【$OUTPUT】"
-            rm -rf $DOWNLOAD_PATH
+            rm -rf "$DOWNLOAD_PATH"
             SLOG_CLEAN
             return 1
         fi
@@ -80,7 +84,7 @@ DOWNLOAD_FILE_CURL() {
         if [ "$EXIR_CODE" -ne 0 ] || [ "$HTTP_CODE" -ne 200 ]; then
             OUTPUT=$(echo "$CURL_OUTPUT" | sed '$d' | grep -a 'curl:' | tail -n 1)
             LOG_OUT "【$DOWNLOAD_PATH】Download Failed:【$OUTPUT】"
-            rm -rf $DOWNLOAD_PATH
+            rm -rf "$DOWNLOAD_PATH"
             SLOG_CLEAN
             return 1
         fi
