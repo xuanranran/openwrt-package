@@ -1,0 +1,40 @@
+<%+cbi/valueheader%>
+<script type="text/javascript">
+//<![CDATA[
+(function(){
+  var algoSelect = document.querySelector('select[name$="config_age_algo"]') || document.querySelector('select[name*="config_age_algo"]');
+  if (!algoSelect) return;
+  var btn = document.createElement('input');
+  btn.type = 'button';
+  btn.className = 'btn cbi-button cbi-button-apply';
+  btn.id = 'cbi-age-generate-btn';
+  btn.value = '<%:Generate Age Key%>';
+  var parent = algoSelect.parentNode || algoSelect;
+  parent.appendChild(btn);
+
+  btn.onclick = function() {
+    var algo = (algoSelect && algoSelect.value) ? algoSelect.value : 'keygen';
+    btn.disabled = true;
+    var old = btn.value;
+    btn.value = '<%:Generating...%>';
+    XHR.get("<%=luci.dispatcher.build_url('admin','services','openclash','generate_age_key')%>", { algo: algo }, function(xhr, data) {
+      btn.disabled = false;
+      btn.value = old;
+      if (xhr && xhr.status == 200 && data && data.status === 'success') {
+        var secretEl = document.querySelector('input[name$="config_age_secret"]') || document.querySelector('textarea[name$="config_age_secret"]') || document.querySelector('input[name*="config_age_secret"]');
+        var publicEl = document.querySelector('input[name$="config_age_public"]') || document.querySelector('input[name*="config_age_public"]');
+        if (secretEl) secretEl.value = data.secret || '';
+        if (publicEl) publicEl.value = data.public || '';
+        btn.value = '<%:Generate Age Key%>';
+        setTimeout(function(){ btn.value = old; }, 4000);
+      } else {
+        btn.value = '<%:Failed to generate age key%>';
+        setTimeout(function(){ btn.value = old; }, 4000);
+      }
+    });
+    return false;
+  };
+})();
+//]]>
+</script>
+<%+cbi/valuefooter%>

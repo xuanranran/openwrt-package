@@ -95,6 +95,8 @@ function index()
 	entry({"admin", "services", "openclash", "config_file_save"}, call("action_config_file_save"))
 	entry({"admin", "services", "openclash", "upload_config"}, call("action_upload_config"))
 	entry({"admin", "services", "openclash", "add_subscription"}, call("action_add_subscription"))
+	entry({"admin", "services", "openclash", "generate_age_key"}, call("action_generate_age_key"))
+	entry({"admin", "services", "openclash", "add_age_config"}, call("action_add_age_config"))
 	entry({"admin", "services", "openclash", "upload_overwrite"}, call("action_upload_overwrite"))
 	entry({"admin", "services", "openclash", "overwrite_subscribe_info"}, call("action_overwrite_subscribe_info"))
 	entry({"admin", "services", "openclash", "overwrite_file_list"}, call("action_overwrite_file_list"))
@@ -3343,20 +3345,19 @@ function action_add_subscription()
 	local keyword = luci.http.formvalue("keyword") or ""
 	local ex_keyword = luci.http.formvalue("ex_keyword") or ""
 	local de_ex_keyword = luci.http.formvalue("de_ex_keyword") or ""
-
 	luci.http.prepare_content("application/json")
 
-	if not name or not address then
+	if not name then
 		luci.http.write_json({
 			status = "error",
-			message = "Missing name or address parameter"
+			message = "Missing name parameter"
 		})
 		return
 	end
 
 	local is_valid_url = false
 
-	if sub_convert == "1" then
+	if address and address ~= "" and sub_convert == "1" then
 		local prefixed_http_pattern = "^[^,%s]+,https?://.+"
 		local encoded_prefixed_http_pattern = "^[^%%%s]+%%2[Cc]https?%%3[Aa]%%2[Ff]%%2[Ff].+"
 
@@ -3391,10 +3392,12 @@ function action_add_subscription()
 				is_valid_url = true
 			end
 		end
-	else
+	elseif address and address ~= "" then
 		if string.find(address, "^https?://") and not string.find(address, "\n") and not string.find(address, "|") then
 			is_valid_url = true
 		end
+	else
+		is_valid_url = true
 	end
 
 	if not is_valid_url then
@@ -3452,7 +3455,11 @@ function action_add_subscription()
 
 	if section_id then
 		uci:set("openclash", section_id, "name", name)
-		uci:set("openclash", section_id, "address", normalized_address)
+		if normalized_address and normalized_address ~= "" then
+			uci:set("openclash", section_id, "address", normalized_address)
+		else
+			uci:delete("openclash", section_id, "address")
+		end
 		uci:set("openclash", section_id, "sub_ua", sub_ua)
 		uci:set("openclash", section_id, "sub_convert", sub_convert)
 		if sub_convert == "1" then
@@ -4000,6 +4007,15 @@ function action_get_subscribe_data()
 		end
 	end)
 
+	uci:foreach("openclash", "config_age_secret", function(a)
+		if a.name == filename then
+			if a.secret then data.config_age_secret = a.secret end
+			if a.public then data.config_age_public = a.public end
+			if a.algo then data.config_age_algo = a.algo end
+			return false
+		end
+	end)
+
 	luci.http.prepare_content("application/json")
 	luci.http.write_json(data)
 end
@@ -4012,4 +4028,72 @@ function action_get_subscribe_info_data()
 	end
 	luci.http.prepare_content("application/json")
 	luci.http.write_json(get_sub_url(filename))
+end
+
+function action_generate_age_key()
+	local algo = luci.http.formvalue("algo") or "keygen"
+	local cmd = string.format("%s age %s", meta_core_path, (algo == "pq" and "keygen-pq" or "keygen"))
+	local out = luci.sys.exec(cmd .. " 2>/dev/null")
+	local secret = out:match("(AGE%-SECRET%-KEY%-%S+)")
+	local public = out:match("# public key: ([^\n\r]+)")
+	luci.http.prepare_content("application/json")
+	if not secret then
+		luci.http.write_json({status = "error", message = "Failed to generate age key", output = out})
+		return
+	end
+	luci.http.write_json({status = "success", secret = secret, public = public})
+end
+
+function action_add_age_config()
+	local name = luci.http.formvalue("name")
+	local age_secret = luci.http.formvalue("age_secret") or ""
+	local age_public = luci.http.formvalue("age_public") or ""
+	local age_algo = luci.http.formvalue("age_algo") or ""
+
+	luci.http.prepare_content("application/json")
+
+	if not name or name == "" then
+		luci.http.write_json({status = "error", message = "Missing name parameter"})
+		return
+	end
+
+	local age_section_id = nil
+	uci:foreach("openclash", "config_age_secret", function(s)
+		if s.name == name then
+			age_section_id = s['.name']
+			return false
+		end
+	end)
+
+	if not age_section_id and (age_secret ~= "" or age_public ~= "" or age_algo ~= "") then
+		age_section_id = uci:add("openclash", "config_age_secret")
+		if age_section_id then
+			uci:set("openclash", age_section_id, "name", name)
+		end
+	end
+
+	if age_section_id then
+		if (age_secret == "" and age_public == "") then
+			uci:delete("openclash", age_section_id)
+		else
+			if age_secret and age_secret ~= "" then
+				uci:set("openclash", age_section_id, "secret", age_secret)
+			else
+				uci:delete("openclash", age_section_id, "secret")
+			end
+			if age_public and age_public ~= "" then
+				uci:set("openclash", age_section_id, "public", age_public)
+			else
+				uci:delete("openclash", age_section_id, "public")
+			end
+			if age_algo and age_algo ~= "" then
+				uci:set("openclash", age_section_id, "algo", age_algo)
+			else
+				uci:delete("openclash", age_section_id, "algo")
+			end
+		end
+		uci:commit("openclash")
+	end
+
+	luci.http.write_json({status = "success"})
 end
