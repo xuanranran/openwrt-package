@@ -96,6 +96,7 @@ function index()
 	entry({"admin", "services", "openclash", "upload_config"}, call("action_upload_config"))
 	entry({"admin", "services", "openclash", "add_subscription"}, call("action_add_subscription"))
 	entry({"admin", "services", "openclash", "generate_age_key"}, call("action_generate_age_key"))
+	entry({"admin", "services", "openclash", "cal_age_public_key"}, call("action_cal_age_public_key"))
 	entry({"admin", "services", "openclash", "add_age_config"}, call("action_add_age_config"))
 	entry({"admin", "services", "openclash", "upload_overwrite"}, call("action_upload_overwrite"))
 	entry({"admin", "services", "openclash", "overwrite_subscribe_info"}, call("action_overwrite_subscribe_info"))
@@ -2969,12 +2970,26 @@ end
 
 function action_config_file_list()
 	local config_files = {}
+	local age_files = {}
 	local current_config = ""
 
 	local config_path = fs.uci_get_config("config", "config_path")
 	if config_path then
 		current_config = config_path
 	end
+
+	uci:foreach("openclash", "config_age_secret", function(a)
+		if a.name and (a.secret or a.public) then
+			table.insert(age_files, {
+				name = a.name,
+				secret = a.secret or "",
+				public = a.public or ""
+			})
+		else
+			uci:delete("openclash", "config_age_secret", a[".name"])
+			uci:commit("openclash")
+		end
+	end)
 
 	local config_dir = "/etc/openclash/config/"
 	if fs.access(config_dir) then
@@ -2983,13 +2998,29 @@ function action_config_file_list()
 			for _, file in ipairs(files) do
 				local full_path = config_dir .. file
 				local stat = fs.stat(full_path)
+				local name_no_ext = file:match("^(.*)%.ya?ml$")
 				if stat and stat.type == "regular" then
+					if name_no_ext then
+						local cfile = io.open(full_path,"r")
+						if cfile then
+							local content = cfile:read(1024)
+							local age_symbol = content:find("BEGIN AGE ENCRYPTED FILE")
+							for _, age in pairs(age_files) do
+								if age.name == name_no_ext and age.secret and age_symbol then
+									stat.age = true
+									break
+								end
+							end
+						end
+						cfile:close()
+					end
 					if string.match(file, "%.ya?ml$") then
 						table.insert(config_files, {
 							name = file,
 							path = full_path,
 							size = stat.size,
-							mtime = stat.mtime
+							mtime = stat.mtime,
+							age = stat.age or false
 						})
 					end
 				end
@@ -4042,6 +4073,23 @@ function action_generate_age_key()
 		return
 	end
 	luci.http.write_json({status = "success", secret = secret, public = public})
+end
+
+function action_cal_age_public_key()
+	local secret = luci.http.formvalue("secret") or ""
+	if secret == "" then
+		luci.http.prepare_content("application/json")
+		luci.http.write_json({status = "error", message = "Secret key is required"})
+		return
+	end
+	local cmd = string.format("%s age convert %s", meta_core_path, secret)
+	local out = luci.sys.exec(cmd .. " 2>/dev/null")
+	luci.http.prepare_content("application/json")
+	if out and out:match("^age") then
+		luci.http.write_json({status = "success", public = out})
+	else
+		luci.http.write_json({status = "error", message = "Failed to calculate public key, invalid secret key", output = out})
+	end
 end
 
 function action_add_age_config()

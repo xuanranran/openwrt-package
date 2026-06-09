@@ -29,10 +29,10 @@ module YAML
 			secret = kwargs.delete(:secret)
 		end
 
-		if secret && secret.to_s.strip != "" && yaml_content.include?("-----BEGIN AGE ENCRYPTED FILE-----")
+		if secret && secret.to_s.strip != "" && yaml_content.include?("BEGIN AGE ENCRYPTED FILE")
 			begin
 				decrypted = decrypt_content_with_secret(secret.to_s, yaml_content)
-				if decrypted && !decrypted.empty? && !decrypted.include?("-----BEGIN AGE ENCRYPTED FILE-----")
+				if decrypted && !decrypted.empty? && !decrypted.include?("BEGIN AGE ENCRYPTED FILE")
 					processed = fix_short_id_quotes(decrypted)
 					return load(processed, *args, **kwargs)
 				else
@@ -43,12 +43,12 @@ module YAML
 			end
 		end
 
-		if (secret.nil? || secret.to_s.strip == "") && yaml_content.include?("-----BEGIN AGE ENCRYPTED FILE-----")
+		if (secret.nil? || secret.to_s.strip == "") && yaml_content.include?("BEGIN AGE ENCRYPTED FILE")
 			keys = find_age_keys_for_filename(filename)
 			(keys[:secrets] || []).each do |sec|
 				begin
 					decrypted = decrypt_content_with_secret(sec, yaml_content)
-					if decrypted && !decrypted.empty? && !decrypted.include?("-----BEGIN AGE ENCRYPTED FILE-----")
+					if decrypted && !decrypted.empty? && !decrypted.include?("BEGIN AGE ENCRYPTED FILE")
 						processed = fix_short_id_quotes(decrypted)
 						return load(processed, *args, **kwargs)
 					end
@@ -58,7 +58,7 @@ module YAML
 			end
 		end
 
-		if yaml_content.include?("-----BEGIN AGE ENCRYPTED FILE-----")
+		if yaml_content.include?("BEGIN AGE ENCRYPTED FILE")
 			raise "Encrypted file: decryption failed for %s" % [filename]
 		end
 

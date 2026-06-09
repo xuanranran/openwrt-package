@@ -60,14 +60,15 @@ end
 
 ---- UA
 o = s:option(Value, "sub_ua", "User-Agent")
-o.description = font_red..bold_on..translate("Used for Downloading Subscriptions, Defaults to Clash")..bold_off..font_off
+o.default = "clash-verge/v2.4.5"
+o.description = font_red..bold_on..translate("Used for Downloading Subscriptions, Defaults to").." "..o.default..bold_off..font_off
 o:value("clash-verge/v2.4.5")
 o:value("clash.meta/1.19.20")
 o:value("Clash")
-o.default = "clash-verge/v2.4.5"
 o.rmempty = true
 
 o = s:option(ListValue, "config_age_algo", translate("Age Key Type"))
+o.description = font_red..bold_on..translate("Age Encryption For Config, Click For More:")..bold_off..font_off.." ".."<a href='javascript:void(0)' onclick='javascript:return winOpen(\"https://wiki.metacubex.one/config/proxy-providers/?h=age#age-secret-key\")'>"..translate("Age Encryption Introduce").."</a>"
 o:value("keygen", "x25519")
 o:value("pq", "PQ (mlkem768-x25519)")
 o.rmempty = true
@@ -107,10 +108,46 @@ function o.remove(self, section)
 	self:write(section, "")
 end
 
-o = s:option(DummyValue, "_generate_age_btn", "")
-o.template = "openclash/generate_age"
+o = s:option(Value, "config_age_secret", translate("Secret Key"))
+o.rmempty = true
+o.placeholder = "AGE-SECRET-KEY-..."
+function o.cfgvalue(self, section)
+	local name = m.uci:get(openclash, section, "name") or section
+	local v = ""
+	m.uci:foreach(openclash, "config_age_secret", function(s)
+		if s.name == name then
+			v = s.secret or ""
+			age_section = s['.name']
+			return false
+		end
+	end)
+	return v
+end
+function o.write(self, section, value)
+	local name = m.uci:get(openclash, section, "name") or section
+	m.uci:foreach(openclash, "config_age_secret", function(s)
+		if s.name == name then
+			age_section = s['.name']
+			return false
+		end
+	end)
+	if not age_section and value and value ~= "" then
+		age_section = m.uci:add(openclash, "config_age_secret")
+		if age_section then m.uci:set(openclash, age_section, "name", name) end
+	end
+	if age_section then
+		if value and value ~= "" then
+			m.uci:set(openclash, age_section, "secret", value)
+		else
+			m.uci:delete(openclash, age_section, "secret")
+		end
+	end
+end
+function o.remove(self, section)
+	self:write(section, "")
+end
 
-o = s:option(Value, "config_age_public", translate("Age Public Key"))
+o = s:option(Value, "config_age_public", translate("Public Key"))
 o.rmempty = true
 o.placeholder = "age..."
 function o.cfgvalue(self, section)
@@ -149,44 +186,8 @@ function o.remove(self, section)
 	self:write(section, "")
 end
 
-o = s:option(Value, "config_age_secret", translate("Age Secret Key"))
-o.rmempty = true
-o.placeholder = "AGE-SECRET-KEY-..."
-function o.cfgvalue(self, section)
-	local name = m.uci:get(openclash, section, "name") or section
-	local v = ""
-	m.uci:foreach(openclash, "config_age_secret", function(s)
-		if s.name == name then
-			v = s.secret or ""
-			age_section = s['.name']
-			return false
-		end
-	end)
-	return v
-end
-function o.write(self, section, value)
-	local name = m.uci:get(openclash, section, "name") or section
-	m.uci:foreach(openclash, "config_age_secret", function(s)
-		if s.name == name then
-			age_section = s['.name']
-			return false
-		end
-	end)
-	if not age_section and value and value ~= "" then
-		age_section = m.uci:add(openclash, "config_age_secret")
-		if age_section then m.uci:set(openclash, age_section, "name", name) end
-	end
-	if age_section then
-		if value and value ~= "" then
-			m.uci:set(openclash, age_section, "secret", value)
-		else
-			m.uci:delete(openclash, age_section, "secret")
-		end
-	end
-end
-function o.remove(self, section)
-	self:write(section, "")
-end
+o = s:option(DummyValue, "_generate_age_btn", "")
+o.template = "openclash/generate_age"
 
 ---- subconverter
 o = s:option(Flag, "sub_convert", translate("Subscribe Convert Online"))

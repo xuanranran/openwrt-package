@@ -88,11 +88,11 @@ end
 function readfile(filename)
 	local content, err = fs.readfile(filename)
 	if not content then return nil, err end
-	if content:find("-----BEGIN AGE ENCRYPTED FILE-----") or content:find("age-encryption.org/v1") then
+	if content:find("BEGIN AGE ENCRYPTED FILE") then
 		local keys = get_age_keys(filename)
 		if keys and keys.secret and keys.secret ~= "" then
 			local dec = age_decrypt(keys.secret, content)
-			if dec and dec:find("-----BEGIN AGE ENCRYPTED FILE-----") == nil then
+			if dec and dec:find("BEGIN AGE ENCRYPTED FILE") == nil then
 				return dec
 			else
 				return content

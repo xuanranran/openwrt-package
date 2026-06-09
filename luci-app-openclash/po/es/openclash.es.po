@@ -329,6 +329,9 @@ msgstr "Subir"
 msgid "Age Encryption"
 msgstr "Cifrado Age"
 
+msgid "Age Encryption File"
+msgstr "Archivo de cifrado Age"
+
 msgid "Generate Age Key"
 msgstr "Generar clave Age"
 
@@ -341,7 +344,7 @@ msgstr "Clave pública"
 msgid "Secret Key"
 msgstr "Clave secreta"
 
-msgid "Key Type"
+msgid "Age Key Type"
 msgstr "Tipo de clave"
 
 msgid "x25519"
@@ -358,6 +361,21 @@ msgstr "No hay clave pública"
 
 msgid "No secret key"
 msgstr "No hay clave secreta"
+
+msgid "Age Encryption For Config, Click For More:"
+msgstr "Cifrado Age para la configuración. Haz clic aquí para obtener más información:"
+
+msgid "Age Encryption Introduce"
+msgstr "Presentación del cifrado Age"
+
+msgid "Calculate Public Key"
+msgstr "Calcular clave pública"
+
+msgid "Please enter the Age Secret Key to calculate the public key!"
+msgstr "¡Introduce la clave secreta de Age para calcular la clave pública!"
+
+msgid "Failed to calculate public key"
+msgstr "No se ha podido calcular la clave pública"
 
 msgid "Add"
 msgstr "Añadir"
@@ -2790,8 +2808,8 @@ msgstr "Cambia el método de cálculo de latencia para eliminar tiempos extra co
 msgid "If the download fails, try setting the CDN in Overwrite Settings - General Settings - Github Address Modify Options"
 msgstr "Si la descarga falla, prueba a configurar un CDN en Sobrescritura → General → Modificar direcciones de Github."
 
-msgid "Used for Downloading Subscriptions, Defaults to Clash"
-msgstr "User-Agent usado para descargar suscripciones (por defecto: Clash)"
+msgid "Used for Downloading Subscriptions, Defaults to"
+msgstr "User-Agent usado para descargar suscripciones, por defecto:"
 
 msgid "Set Proxies Address Skip Failed,"
 msgstr "Fallo al configurar la omisión de direcciones de proxy,"

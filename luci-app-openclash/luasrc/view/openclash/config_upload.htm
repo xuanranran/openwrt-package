@@ -934,7 +934,7 @@
 
                             <div class="form-group" id="age-encryption-group">
                                 <div class="form-group">
-                                    <label style="display:block; margin-bottom:6px;"><%:Key Type%></label>
+                                    <label style="display:block; margin-bottom:6px;"><%:Age Key Type%></label>
                                     <div style="display:flex; align-items:center;">
                                         <div style="flex:1;">
                                             <div class="form-select-wrapper">
@@ -945,8 +945,21 @@
                                             </div>
                                         </div>
                                         <button type="button" id="age-generate-btn" class="icon-btn" style="margin-left:8px;" title="<%:Generate Age Key%>">
+                                            <svg height="16" viewBox="0 0 16 16" width="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M10.5 0a5.499 5.499 0 1 1-1.288 10.848l-.932.932a.749.749 0 0 1-.53.22H7v.75a.749.749 0 0 1-.22.53l-.5.5a.749.749 0 0 1-.53.22H5v.75a.749.749 0 0 1-.22.53l-.5.5a.749.749 0 0 1-.53.22h-2A1.75 1.75 0 0 1 0 14.25v-2c0-.199.079-.389.22-.53l4.932-4.932A5.5 5.5 0 0 1 10.5 0Zm-4 5.5c-.001.431.069.86.205 1.269a.75.75 0 0 1-.181.768L1.5 12.56v1.69c0 .138.112.25.25.25h1.69l.06-.06v-1.19a.75.75 0 0 1 .75-.75h1.19l.06-.06v-1.19a.75.75 0 0 1 .75-.75h1.19l1.023-1.025a.75.75 0 0 1 .768-.18A4 4 0 1 0 6.5 5.5ZM11 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" fill="currentColor"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div class="form-help"><%:Age Encryption For Config, Click For More:%> <a href="javascript:void(0);" onclick="window.open('https://wiki.metacubex.one/config/proxy-providers/?h=age#age-secret-key', '_blank');" class="help-link"> <%:Age Encryption Introduce%></a></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="age-secret-input"><%:Secret Key%>:</label>
+                                    <div style="display:flex; align-items:center;">
+                                        <input type="text" id="age-secret-input" class="form-input" style="flex:1;" />
+                                        <button type="button" id="age-copy-secret" class="icon-btn" style="margin-left:8px;" title="<%:Copy%>">
                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path d="M20.59 13.41L19 12l1.59-1.41L22 12l-1.41 1.41zM3 12a7 7 0 0014 0 7 7 0 00-1.03-3.5l1.46-1.46A9 9 0 1121 12h-2a7 7 0 10-14 0z" fill="currentColor"/>
+                                                <path d="M16 1H4a2 2 0 00-2 2v12h2V3h12V1zM20 5H8a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2zm0 16H8V7h12v14z" fill="currentColor"/>
                                             </svg>
                                         </button>
                                     </div>
@@ -961,16 +974,13 @@
                                                 <path d="M16 1H4a2 2 0 00-2 2v12h2V3h12V1zM20 5H8a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2zm0 16H8V7h12v14z" fill="currentColor"/>
                                             </svg>
                                         </button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="age-secret-input"><%:Secret Key%>:</label>
-                                    <div style="display:flex; align-items:center;">
-                                        <input type="text" id="age-secret-input" class="form-input" style="flex:1;" />
-                                        <button type="button" id="age-copy-secret" class="icon-btn" style="margin-left:8px;" title="<%:Copy%>">
-                                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path d="M16 1H4a2 2 0 00-2 2v12h2V3h12V1zM20 5H8a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2zm0 16H8V7h12v14z" fill="currentColor"/>
+                                        <button type="button" id="age-calculate-public" class="icon-btn" style="margin-left:8px;" title="<%:Calculate Public Key%>">
+                                            <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M28 32.5H42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M28 41.5H42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M6 13H22" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M14 5L14 21" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M42 5L6 41" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
                                         </button>
                                     </div>
@@ -1173,6 +1183,7 @@ var ConfigUploader = {
         var ageCopySecret = document.getElementById('age-copy-secret');
         var agePublicInput = document.getElementById('age-public-input');
         var ageSecretInput = document.getElementById('age-secret-input');
+        var ageCalPublic = document.getElementById('age-calculate-public');
 
         if (ageGenerateBtn) {
             ageGenerateBtn.addEventListener('click', function() {
@@ -1210,6 +1221,27 @@ var ConfigUploader = {
                 var v = ageSecretInput.value || '';
                 if (v === '') { alert('<%:No secret key%>'); return; }
                 copyToClipboard(v);
+            });
+        }
+
+        if (ageCalPublic) {
+            ageCalPublic.addEventListener('click', function() {
+                var secret = ageSecretInput.value || '';
+                if (secret === '') { alert('<%:Please enter the Age Secret Key to calculate the public key!%>'); return; }
+                ageCalPublic.disabled = true;
+                XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "cal_age_public_key")%>', {
+                    secret: secret
+                }, function(x, data) {
+                    ageCalPublic.disabled = false;
+                    if (x && x.status == 200 && data.status === 'success') {
+                        if (agePublicInput) {
+                            agePublicInput.value = data.public || '';
+                        }
+                        self.updateSubmitButton();
+                    } else {
+                        alert('<%:Failed to calculate public key%>');
+                    }
+                });
             });
         }
 

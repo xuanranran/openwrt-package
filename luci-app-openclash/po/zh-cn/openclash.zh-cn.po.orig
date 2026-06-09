@@ -329,6 +329,9 @@ msgstr "上传"
 msgid "Age Encryption"
 msgstr "Age 加密"
 
+msgid "Age Encryption File"
+msgstr "Age 加密文件"
+
 msgid "Generate Age Key"
 msgstr "生成 Age 密钥"
 
@@ -341,8 +344,8 @@ msgstr "公钥"
 msgid "Secret Key"
 msgstr "私钥"
 
-msgid "Key Type"
-msgstr "密钥类型"
+msgid "Age Key Type"
+msgstr "Age 密钥类型"
 
 msgid "x25519"
 msgstr "x25519"
@@ -358,6 +361,21 @@ msgstr "没有公钥"
 
 msgid "No secret key"
 msgstr "没有私钥"
+
+msgid "Age Encryption For Config, Click For More:"
+msgstr "使用 Age 加密配置，点击获取更多信息："
+
+msgid "Age Encryption Introduce"
+msgstr "Age 加密介绍"
+
+msgid "Calculate Public Key"
+msgstr "计算公钥"
+
+msgid "Please enter the Age Secret Key to calculate the public key!"
+msgstr "请先输入私钥来计算公钥！"
+
+msgid "Failed to calculate public key"
+msgstr "公钥计算失败"
 
 msgid "Add"
 msgstr "添加"
@@ -2796,8 +2814,8 @@ msgstr "更换延迟计算方式，通过去除握手等额外开销来降低延
 msgid "If the download fails, try setting the CDN in Overwrite Settings - General Settings - Github Address Modify Options"
 msgstr "如果下载失败，您可以尝试在覆写设置 - 常规设置 - Github 地址修改选项中设置 CDN"
 
-msgid "Used for Downloading Subscriptions, Defaults to Clash"
-msgstr "用于下载订阅时指定 UA，默认为 Clash"
+msgid "Used for Downloading Subscriptions, Defaults to"
+msgstr "用于下载订阅时指定 UA，默认为"
 
 msgid "Set Proxies Address Skip Failed,"
 msgstr "绕过代理服务器地址设置失败，"
