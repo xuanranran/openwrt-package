@@ -68,7 +68,7 @@ o:value("Clash")
 o.rmempty = true
 
 o = s:option(ListValue, "config_age_algo", translate("Age Key Type"))
-o.description = font_red..bold_on..translate("Age Encryption For Config, Click For More:")..bold_off..font_off.." ".."<a href='javascript:void(0)' onclick='javascript:return winOpen(\"https://wiki.metacubex.one/config/proxy-providers/?h=age#age-secret-key\")'>"..translate("Age Encryption Introduce").."</a>"
+o.description = font_red..bold_on..translate("Age Encryption For Config, Click For More:")..bold_off..font_off.." ".."<a href='javascript:void(0)' onclick='javascript:return winOpen(\"https://wiki.metacubex.one/config/proxy-providers/?age-secret-key#age-secret-key\")'>"..translate("Age Encryption Introduce").."</a>"
 o:value("keygen", "x25519")
 o:value("pq", "PQ (mlkem768-x25519)")
 o.rmempty = true
