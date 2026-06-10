@@ -40,12 +40,12 @@ DOWNLOAD_FILE_CURL() {
 
         (
             if [ -n "$SECRET_KEY" ]; then
-                curl -# -L --connect-timeout 10 -m 60 --speed-time 20 --speed-limit 1 --retry 2 \
+                curl -# -L --connect-timeout 30 -m 180 --speed-time 30 --speed-limit 1 --retry 2 \
                     -H "User-Agent: ${DOWNLOAD_UA}" \
                     -H "X-Age-Public-Key: ${SECRET_KEY}" \
                     "$DOWNLOAD_URL" -o "$DOWNLOAD_PATH" 2>"$TEMP_LOG"
             else
-                curl -# -L --connect-timeout 10 -m 60 --speed-time 20 --speed-limit 1 --retry 2 \
+                curl -# -L --connect-timeout 30 -m 180 --speed-time 30 --speed-limit 1 --retry 2 \
                     -H "User-Agent: ${DOWNLOAD_UA}" \
                     "$DOWNLOAD_URL" -o "$DOWNLOAD_PATH" 2>"$TEMP_LOG"
             fi
@@ -93,12 +93,12 @@ DOWNLOAD_FILE_CURL() {
         fi
     else
         if [ -n "$SECRET_KEY" ]; then
-            CURL_OUTPUT=$(curl -w "\n%{http_code}" -SsL --connect-timeout 30 -m 60 --speed-time 30 --speed-limit 1 --retry 2 \
+            CURL_OUTPUT=$(curl -w "\n%{http_code}" -SsL --connect-timeout 30 -m 180 --speed-time 30 --speed-limit 1 --retry 2 \
                 -H "User-Agent: ${DOWNLOAD_UA}" \
                 -H "X-Age-Public-Key: ${SECRET_KEY}" \
                 "$DOWNLOAD_URL" -o "$DOWNLOAD_PATH" 2>&1)
         else
-            CURL_OUTPUT=$(curl -w "\n%{http_code}" -SsL --connect-timeout 30 -m 60 --speed-time 30 --speed-limit 1 --retry 2 -H "User-Agent: ${DOWNLOAD_UA}" "$DOWNLOAD_URL" -o "$DOWNLOAD_PATH" 2>&1)
+            CURL_OUTPUT=$(curl -w "\n%{http_code}" -SsL --connect-timeout 30 -m 180 --speed-time 30 --speed-limit 1 --retry 2 -H "User-Agent: ${DOWNLOAD_UA}" "$DOWNLOAD_URL" -o "$DOWNLOAD_PATH" 2>&1)
         fi
         EXIR_CODE=$?
         HTTP_CODE=$(echo "$CURL_OUTPUT" | tail -n1)
