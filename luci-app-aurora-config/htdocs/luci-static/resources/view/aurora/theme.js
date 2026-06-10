@@ -962,6 +962,7 @@ return view.extend({
     );
     so.value("mega-menu", _("Mega Menu"));
     so.value("boxed-dropdown", _("Boxed Dropdown"));
+    so.value("sidebar", _("Sidebar"));
     so.default = "mega-menu";
     so.rmempty = false;
 
