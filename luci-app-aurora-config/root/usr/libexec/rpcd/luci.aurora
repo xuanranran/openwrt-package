@@ -131,14 +131,15 @@ is_color_token_key() {
 }
 
 load_preset_snapshot() {
-	local template="$1" count mode token value
+	local template="$1" count expected_count mode token value
 
 	cleanup_preset_snapshot
 	[ -f "$template" ] || return 1
 	grep -Eq "^config[[:space:]]+aurora" "$template" 2>/dev/null || return 1
 
 	count=$(grep -Ec "^[[:space:]]*option[[:space:]]+(light|dark)_" "$template" || true)
-	[ "$count" -eq 134 ] || return 1
+	expected_count=$(( $(printf '%s\n' $COLOR_TOKEN_KEYS | grep -c .) * 2 ))
+	[ "$count" -eq "$expected_count" ] || return 1
 
 	PRESET_UCI_DIR=$(mktemp -d /tmp/aurora-preset.XXXXXX) || return 1
 	cp "$template" "$PRESET_UCI_DIR/$PRESET_UCI_PACKAGE" || {
