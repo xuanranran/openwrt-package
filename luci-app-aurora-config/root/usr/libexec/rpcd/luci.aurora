@@ -53,6 +53,7 @@ danger_surface
 danger_surface_hover
 scrim
 mega_menu_bg
+mega_menu_scrim
 "
 
 PRESET_UCI_DIR=""
