@@ -9,8 +9,7 @@
           "get_installed_versions",
           "check_updates",
           "get_system_info",
-          "get_theme_config",
-          "get_theme_presets",
+          "get_init_data",
           "get_theme_preset",
           "get_font_presets",
           "get_font_status",
@@ -38,8 +37,7 @@
           "reset_defaults",
           "import_config",
           "apply_theme_preset",
-          "prepare_font",
-          "apply_font"
+          "prepare_font"
         ],
         "file": ["write", "remove", "exec", "stat"]
       },

@@ -308,13 +308,6 @@ write_default_font_face() {
 EOF
 }
 
-get_font_stack() {
-	local slot="$1" preset="$2" meta
-
-	meta=$(get_font_meta "$slot" "$preset") || return 1
-	echo "$meta" | cut -d'|' -f4
-}
-
 get_font_preset_by_stack() {
 	local slot="$1" stack="$2" font_name meta meta_stack
 
@@ -631,6 +624,108 @@ extract_detailed_version() {
     fi
 }
 
+parse_installed_packages() {
+	local pkg_manager="$1" status_file installed
+
+	theme_inst=""
+	config_inst=""
+	config_i18n=""
+
+	case "$pkg_manager" in
+	opkg)
+		status_file="/usr/lib/opkg/status"
+		if [ -r "$status_file" ]; then
+			theme_inst=$(awk '/^Package: luci-theme-aurora$/{f=1} f && /^Version:/{print $2; f=0}' "$status_file")
+			config_inst=$(awk '/^Package: luci-app-aurora-config$/{f=1} f && /^Version:/{print $2; f=0}' "$status_file")
+			config_i18n=$(awk '
+				/^Package: luci-i18n-aurora-config-/{pkg=$2; f=1}
+				f && /^Version:/{print pkg ":" $2; f=0}
+			' "$status_file" | tr '\n' ',' | sed 's/,$//')
+		elif command -v opkg >/dev/null 2>&1; then
+			installed=$(opkg list-installed 2>/dev/null)
+			theme_inst=$(printf '%s\n' "$installed" | grep "^luci-theme-aurora " | awk '{print $3}')
+			config_inst=$(printf '%s\n' "$installed" | grep "^luci-app-aurora-config " | awk '{print $3}')
+			config_i18n=$(printf '%s\n' "$installed" | grep "^luci-i18n-aurora-config-" | awk '{print $1 ":" $3}' | tr '\n' ',' | sed 's/,$//')
+		fi
+		;;
+	apk)
+		installed=$(apk list -I 2>/dev/null | grep "^luci-")
+		theme_inst=$(printf '%s\n' "$installed" | grep "^luci-theme-aurora-" | awk '{print $1}' | head -1 | sed 's/^luci-theme-aurora-//')
+		config_inst=$(printf '%s\n' "$installed" | grep "^luci-app-aurora-config-" | awk '{print $1}' | head -1 | sed 's/^luci-app-aurora-config-//')
+		config_i18n=$(printf '%s\n' "$installed" | grep "^luci-i18n-aurora-config-" | sed -n 's/^\(luci-i18n-aurora-config-[a-z_-]*\)-\([^ ]*\) .*/\1:\2/p' | tr '\n' ',' | sed 's/,$//')
+		;;
+	esac
+}
+
+json_add_installed_versions() {
+	local pkg_manager
+
+	pkg_manager=$(detect_package_manager)
+	parse_installed_packages "$pkg_manager"
+
+	json_add_object "theme"; json_add_string "installed_version" "$theme_inst"; json_close_object
+	json_add_object "config"
+		json_add_string "installed_version" "$config_inst"
+		json_add_string "i18n_packages" "$config_i18n"
+	json_close_object
+}
+
+json_add_font_presets() {
+	local slot_name
+
+	json_add_object "fonts"
+	for slot_name in sans mono; do
+		json_add_array "$slot_name"
+		while IFS='|' read -r _slot _name _label _source _family _stack _css_url; do
+			case "$_slot" in ""|"#"*) continue ;; esac
+			[ "$_slot" = "$slot_name" ] || continue
+			json_add_font "$_name" "$_label" "$_source" "$_family" "$_stack" "$_css_url"
+		done < "$FONT_PRESETS_FILE"
+		json_close_array
+	done
+	json_close_object
+}
+
+json_add_icons() {
+	local file
+
+	json_add_array "icons"
+	if [ -d "$ICON_PATH" ]; then
+		for file in "$ICON_PATH"/*; do
+			[ -f "$file" ] && json_add_string "" "${file##*/}"
+		done
+	fi
+	json_close_array
+}
+
+json_add_theme_preset_snapshot() {
+	local name="$1" template mode token value
+
+	template=$(resolve_preset_path "$name") || {
+		json_add_int "result" 1
+		json_add_string "error" "Unknown preset"
+		return
+	}
+
+	if ! load_preset_snapshot "$template"; then
+		json_add_int "result" 1
+		json_add_string "error" "Invalid preset content"
+		return
+	fi
+
+	json_add_int "result" 0
+	json_add_string "name" "$name"
+	json_add_object "colors"
+	for mode in light dark; do
+		for token in $COLOR_TOKEN_KEYS; do
+			value=$(uci -c "$PRESET_UCI_DIR" -q get "aurora.theme.${mode}_${token}")
+			json_add_string "${mode}_${token}" "$value"
+		done
+	done
+	json_close_object
+	cleanup_preset_snapshot
+}
+
 case "$1" in
 "list")
 	json_init
@@ -642,8 +737,7 @@ case "$1" in
 		json_add_string "filename" "filename"
 	json_close_object
 	json_add_object "reset_defaults"; json_close_object
-	json_add_object "get_theme_config"; json_close_object
-	json_add_object "get_theme_presets"; json_close_object
+	json_add_object "get_init_data"; json_close_object
 	json_add_object "get_theme_preset"
 		json_add_string "name" "name"
 	json_close_object
@@ -652,10 +746,6 @@ case "$1" in
 		json_add_string "job_id" "job_id"
 	json_close_object
 	json_add_object "prepare_font"
-		json_add_string "sans" "sans"
-		json_add_string "mono" "mono"
-	json_close_object
-	json_add_object "apply_font"
 		json_add_string "sans" "sans"
 		json_add_string "mono" "mono"
 	json_close_object
@@ -683,6 +773,23 @@ case "$1" in
 
 "call")
 	case "$2" in
+	"get_init_data")
+		active_preset=$(uci -q get aurora.theme.active_preset)
+		[ -n "$active_preset" ] || active_preset="classic"
+
+		json_init
+		json_add_string "active_preset" "$active_preset"
+		json_add_object "versions"
+			json_add_installed_versions
+		json_close_object
+		json_add_font_presets
+		json_add_icons
+		json_add_object "theme_preset"
+			json_add_theme_preset_snapshot "$active_preset"
+		json_close_object
+		json_dump; json_cleanup
+		;;
+
 	"reset_defaults")
 		if [ -f "$CLASSIC_TEMPLATE" ]; then
 			cp "$CLASSIC_TEMPLATE" "$CONFIG_FILE"
@@ -696,91 +803,19 @@ case "$1" in
 		fi
 		;;
 
-	"get_theme_config")
-		json_init
-		json_add_object "theme"
-		while IFS= read -r _line; do
-			_key="${_line%%=*}"; _key="${_key#aurora.theme.}"
-			[ -z "$_key" ] || [ "$_key" = "$_line" ] && continue
-			_val="${_line#*=}"; _val="${_val#\'}"; _val="${_val%\'}"
-			json_add_string "$_key" "$_val"
-		done <<-EOF
-		$(uci -q show aurora.theme)
-		EOF
-		json_close_object
-		json_dump; json_cleanup
-		;;
-
-	"get_theme_presets")
-		json_init
-	json_add_array "presets"
-	json_add_object ""
-		json_add_string "name" "classic"
-		json_add_string "label" "Classic"
-	json_close_object
-	json_add_object ""
-		json_add_string "name" "monochrome"
-		json_add_string "label" "Monochrome"
-	json_close_object
-	json_add_object ""
-		json_add_string "name" "sage-green"
-		json_add_string "label" "Sage Green"
-	json_close_object
-	json_add_object ""
-		json_add_string "name" "amber-sand"
-		json_add_string "label" "Amber Sand"
-	json_close_object
-	json_add_object ""
-		json_add_string "name" "sky-blue"
-		json_add_string "label" "Sky Blue"
-	json_close_object
-		json_close_array
-		json_dump; json_cleanup
-		;;
-
 	"get_theme_preset")
 		read -r input; json_load "$input" 2>/dev/null
 		json_get_var name "name"
 		json_cleanup
 
-		template=$(resolve_preset_path "$name") || {
-			echo '{ "result": 1, "error": "Unknown preset" }'
-			exit 0
-		}
-
-		if ! load_preset_snapshot "$template"; then
-			echo '{ "result": 1, "error": "Invalid preset content" }'
-			exit 0
-		fi
-
 		json_init
-		json_add_int "result" 0
-		json_add_string "name" "$name"
-		json_add_object "colors"
-		for mode in light dark; do
-			for token in $COLOR_TOKEN_KEYS; do
-				value=$(uci -c "$PRESET_UCI_DIR" -q get "aurora.theme.${mode}_${token}")
-				json_add_string "${mode}_${token}" "$value"
-			done
-		done
-		json_close_object
+		json_add_theme_preset_snapshot "$name"
 		json_dump; json_cleanup
-		cleanup_preset_snapshot
 		;;
 
 	"get_font_presets")
 		json_init
-		json_add_object "fonts"
-		for slot_name in sans mono; do
-			json_add_array "$slot_name"
-			while IFS='|' read -r _slot _name _label _source _family _stack _css_url; do
-				case "$_slot" in ""|"#"*) continue ;; esac
-				[ "$_slot" = "$slot_name" ] || continue
-				json_add_font "$_name" "$_label" "$_source" "$_family" "$_stack" "$_css_url"
-			done < "$FONT_PRESETS_FILE"
-			json_close_array
-		done
-		json_close_object
+		json_add_font_presets
 		json_dump; json_cleanup
 		;;
 
@@ -817,7 +852,7 @@ case "$1" in
 		fi
 		;;
 
-	"prepare_font"|"apply_font")
+	"prepare_font")
 		read -r input; json_load "$input" 2>/dev/null
 		json_get_var sans_preset "sans"
 		json_get_var mono_preset "mono"
@@ -903,13 +938,7 @@ case "$1" in
 
 	"list_icons")
 		json_init
-		json_add_array "icons"
-		if [ -d "$ICON_PATH" ]; then
-			for file in "$ICON_PATH"/*; do
-				[ -f "$file" ] && json_add_string "" "${file##*/}"
-			done
-		fi
-		json_close_array
+		json_add_icons
 		json_dump; json_cleanup
 		;;
 
@@ -986,34 +1015,8 @@ MANIFEST
 		;;
 
 	"get_installed_versions")
-		pkg_manager=$(detect_package_manager)
-		theme_installed=""
-		config_installed=""
-		config_i18n_packages=""
-
-		if [ "$pkg_manager" = "opkg" ]; then
-			_sf="/usr/lib/opkg/status"
-			if [ -r "$_sf" ]; then
-				theme_installed=$(awk '/^Package: luci-theme-aurora$/{f=1} f && /^Version:/{print $2; f=0}' "$_sf")
-				config_installed=$(awk '/^Package: luci-app-aurora-config$/{f=1} f && /^Version:/{print $2; f=0}' "$_sf")
-				config_i18n_packages=$(awk '
-					/^Package: luci-i18n-aurora-config-/{pkg=$2; f=1}
-					f && /^Version:/{print pkg ":" $2; f=0}
-				' "$_sf" | tr '\n' ',' | sed 's/,$//')
-			fi
-		elif [ "$pkg_manager" = "apk" ]; then
-			_installed=$(apk list -I 2>/dev/null | grep "^luci-")
-			theme_installed=$(printf '%s\n' "$_installed" | grep "^luci-theme-aurora-" | awk '{print $1}' | head -1 | sed 's/^luci-theme-aurora-//')
-			config_installed=$(printf '%s\n' "$_installed" | grep "^luci-app-aurora-config-" | awk '{print $1}' | head -1 | sed 's/^luci-app-aurora-config-//')
-			config_i18n_packages=$(printf '%s\n' "$_installed" | grep "^luci-i18n-aurora-config-" | sed -n 's/^\(luci-i18n-aurora-config-[a-z_-]*\)-\([^ ]*\) .*/\1:\2/p' | tr '\n' ',' | sed 's/,$//')
-		fi
-
 		json_init
-		json_add_object "theme"; json_add_string "installed_version" "$theme_installed"; json_close_object
-		json_add_object "config"
-			json_add_string "installed_version" "$config_installed"
-			json_add_string "i18n_packages" "$config_i18n_packages"
-		json_close_object
+		json_add_installed_versions
 		json_dump; json_cleanup
 		;;
 
@@ -1027,17 +1030,7 @@ MANIFEST
 		wget -qO "$_tmp1" --timeout=10 "$theme_api" 2>/dev/null &
 		wget -qO "$_tmp2" --timeout=10 "$config_api" 2>/dev/null &
 
-		if [ "$pkg_manager" = "apk" ]; then
-			_inst=$(apk list -I 2>/dev/null | grep "^luci-")
-			theme_inst=$(printf '%s\n' "$_inst" | grep "^luci-theme-aurora-" | awk '{print $1}' | head -1 | sed 's/^luci-theme-aurora-//')
-			config_inst=$(printf '%s\n' "$_inst" | grep "^luci-app-aurora-config-" | awk '{print $1}' | head -1 | sed 's/^luci-app-aurora-config-//')
-			config_i18n=$(printf '%s\n' "$_inst" | grep "^luci-i18n-aurora-config-" | sed -n 's/^\(luci-i18n-aurora-config-[a-z_-]*\)-\([^ ]*\) .*/\1:\2/p' | tr '\n' ',' | sed 's/,$//')
-		else
-			_inst=$(opkg list-installed 2>/dev/null)
-			theme_inst=$(printf '%s\n' "$_inst" | grep "^luci-theme-aurora " | awk '{print $3}')
-			config_inst=$(printf '%s\n' "$_inst" | grep "^luci-app-aurora-config " | awk '{print $3}')
-			config_i18n=$(printf '%s\n' "$_inst" | grep "^luci-i18n-aurora-config-" | awk '{print $1 ":" $3}' | tr '\n' ',' | sed 's/,$//')
-		fi
+		parse_installed_packages "$pkg_manager"
 
 		wait
 		theme_res=$(cat "$_tmp1" 2>/dev/null)
@@ -1066,26 +1059,18 @@ MANIFEST
 
 		json_add_object "i18n"
 		if [ -n "$config_res" ]; then
-			if [ "$pkg_manager" = "apk" ]; then
-				i18n_list=$(printf '%s\n' "$_inst" | grep "^luci-i18n-aurora-config-" | while read -r line; do
-					p_full=$(echo "$line" | awk '{print $1}')
-					l_c=$(echo "$p_full" | sed -n 's/^luci-i18n-aurora-config-\([a-z-]*\)-[0-9].*/\1/p')
-					v_n=$(echo "$p_full" | sed -n 's/^luci-i18n-aurora-config-[a-z-]*-\([0-9].*\)/\1/p')
-					echo "${l_c}:${v_n}"
-				done)
-			else
-				i18n_list=$(printf '%s\n' "$_inst" | grep "^luci-i18n-aurora-config-" | awk '{print $1 ":" $3}' | sed 's/luci-i18n-aurora-config-//')
-			fi
-			
+			i18n_list=$(printf '%s' "$config_i18n" | tr ',' '\n' | sed 's/^luci-i18n-aurora-config-//')
+
 			for entry in $i18n_list; do
+				[ -n "$entry" ] || continue
 				l_code=$(echo "$entry" | cut -d: -f1); pkg_ver=$(echo "$entry" | cut -d: -f2)
 				pkg_name="luci-i18n-aurora-config-${l_code}"
-				
+
 				latest_i18n_ver=$(extract_detailed_version "$config_res" "$pkg_name" "$pkg_manager")
-				
+
 				is_up=0
 				[ -n "$latest_i18n_ver" ] && [ "$(version_compare "$latest_i18n_ver" "$pkg_ver")" = "1" ] && is_up=1
-				
+
 				json_add_object "$pkg_name"
 					json_add_string "latest_version" "$latest_i18n_ver"
 					json_add_boolean "update_available" "$is_up"

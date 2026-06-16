@@ -203,12 +203,12 @@ the `case "$1" in "list")` block at the end of the script. Common methods:
 
 | Method | Purpose |
 | --- | --- |
-| `get_theme_config` | Read the entire `aurora.theme` section (initial UI state) |
-| `get_theme_preset` / `get_theme_presets` | Read a preset snapshot / list (UI placeholders & comparison) |
+| `get_init_data` | Read first-paint data in one RPC: installed versions, font presets, icons, and the active preset snapshot |
+| `get_theme_preset` | Read a preset snapshot for UI placeholders and comparison |
 | `apply_theme_preset` | Apply a preset (replaces all colors; keeps branding, fonts, layout, toolbar) |
 | `export_config` / `import_config` | Configuration import/export |
 | `list_icons` / `upload_icon` / `remove_icon` | Icon management |
-| `*_font` / `get_font_presets` | Font handling |
+| `prepare_font` / `get_font_presets` / `get_font_status` | Font handling |
 | `get_installed_versions` / `check_updates` / `download_package` / `install_package` | Versioning & one-click updates |
 
 ACLs live in `root/usr/share/rpcd/acl.d/luci-app-aurora.json`; the menu entry in

@@ -45,6 +45,11 @@ const callListIcons = rpc.declare({
   method: "list_icons",
 });
 
+const callGetInitData = rpc.declare({
+  object: "luci.aurora",
+  method: "get_init_data",
+});
+
 let _iconsPromise = null;
 const getIconsOnce = () => {
   if (!_iconsPromise)
@@ -56,22 +61,6 @@ const callRemoveIcon = rpc.declare({
   object: "luci.aurora",
   method: "remove_icon",
   params: ["filename"],
-});
-
-const callGetThemeConfig = rpc.declare({
-  object: "luci.aurora",
-  method: "get_theme_config",
-});
-
-const callGetThemePreset = rpc.declare({
-  object: "luci.aurora",
-  method: "get_theme_preset",
-  params: ["name"],
-});
-
-const callGetFontPresets = rpc.declare({
-  object: "luci.aurora",
-  method: "get_font_presets",
 });
 
 const callApplyThemePreset = rpc.declare({
@@ -121,70 +110,60 @@ const COLOR_TOKENS = [
     key: "bg",
     label: _("Background"),
     description: _("The outer application background."),
-    layer: 1,
     group: "foundation",
   },
   {
     key: "surface",
     label: _("Surface"),
     description: _("Cards, panels, forms, and page content background."),
-    layer: 1,
     group: "foundation",
   },
   {
     key: "text",
     label: _("Text"),
     description: _("The primary text and icon color."),
-    layer: 1,
     group: "identity",
   },
   {
     key: "brand",
     label: _("Brand"),
     description: _("The main interactive and branded accent."),
-    layer: 1,
     group: "identity",
   },
   {
     key: "on_brand",
     label: _("Content on Brand"),
     description: _("Text and icons shown on the brand color."),
-    layer: 1,
     group: "identity",
   },
   {
     key: "link",
     label: _("Link"),
     description: _("Text links and link-like actions."),
-    layer: 1,
     group: "identity",
   },
   {
     key: "info",
     label: _("Info Accent"),
     description: _("The accent used for informational feedback."),
-    layer: 1,
     group: "status",
   },
   {
     key: "warning",
     label: _("Warning Accent"),
     description: _("The accent used for warning feedback."),
-    layer: 1,
     group: "status",
   },
   {
     key: "success",
     label: _("Success Accent"),
     description: _("The accent used for successful feedback."),
-    layer: 1,
     group: "status",
   },
   {
     key: "danger",
     label: _("Danger Accent"),
     description: _("The accent used for errors and destructive actions."),
-    layer: 1,
     group: "status",
   },
 ];
@@ -194,7 +173,6 @@ const COLOR_GROUPS = [
     key: "foundation",
     title: _("Surfaces"),
     description: _("Set the application background and surface colors."),
-    advanced: false,
   },
   {
     key: "identity",
@@ -202,18 +180,33 @@ const COLOR_GROUPS = [
     description: _(
       "Set primary text, brand, content on brand, and link colors.",
     ),
-    advanced: false,
   },
   {
     key: "status",
     title: _("Status Accents"),
     description: _("Set the broad accents used by status families."),
-    advanced: false,
   },
 ];
 
 const cssTokenName = (key) => key.replaceAll("_", "-");
 const colorOptionName = (mode, key) => `${mode}_${key}`;
+
+const readThemeConfigFromUci = () => {
+  const config = {};
+  const copyOption = (option) => {
+    const value = uci.get("aurora", "theme", option);
+    if (value != null) config[option] = value;
+  };
+
+  copyOption("active_preset");
+  copyOption("struct_font_sans");
+  copyOption("struct_font_mono");
+  ["light", "dark"].forEach((mode) => {
+    COLOR_TOKENS.forEach(({ key }) => copyOption(colorOptionName(mode, key)));
+  });
+
+  return config;
+};
 
 const createColorResolver = () => {
   let framePromise = null;
@@ -468,21 +461,7 @@ const createColorEditor = (themeConfig, presetColors) => {
       field.picker.value = hex;
       field.swatch.style.backgroundColor = result.color;
       field.swatch.title = `${_("Resolved color")}: ${result.color}`;
-      if (field.token.layer === 1) {
-        field.status.textContent = "";
-        triggerValidation(field);
-        return;
-      }
-      const expression = field.input.value.trim();
-      const dependencies = Array.from(
-        expression.matchAll(/--([a-z0-9-]+)/g),
-        (match) => match[1],
-      );
-      field.status.textContent = expression
-        ? dependencies.length
-          ? _("Formula: %s").format(dependencies.join(", "))
-          : _("Literal")
-        : _("Following theme stylesheet");
+      field.status.textContent = "";
     } catch (error) {
       state.valid = false;
       state.error = _("Resolved color cannot be shown by the picker.");
@@ -634,27 +613,6 @@ const renderColorField = function (optionIndex, sectionId, inTable) {
     input.parentNode.appendChild(controls);
     input.parentNode.appendChild(status);
 
-    if (token.layer === 2) {
-      const restore = E(
-        "button",
-        {
-          type: "button",
-          class: "cbi-button",
-          style: "margin-left:.5rem;",
-          disabled: presetValue ? null : "disabled",
-          title: _("Restore the active preset expression for this token"),
-          click: (event) => {
-            event.preventDefault();
-            if (!presetValue) return;
-            input.value = presetValue;
-            input.dispatchEvent(new Event("input", { bubbles: true }));
-          },
-        },
-        _("Restore Preset Formula"),
-      );
-      controls.appendChild(restore);
-    }
-
     picker.addEventListener("change", () => {
       try {
         input.value = new Color(picker.value)
@@ -720,30 +678,9 @@ const createColorSections = (section, mode, editor) => {
       form.NamedSection,
       "theme",
       "aurora",
-      group.advanced ? "" : group.title,
-      group.advanced ? "" : group.description,
+      group.title,
+      group.description,
     );
-    if (group.advanced) {
-      const baseRender = sectionValue.render.bind(sectionValue);
-      sectionValue.render = (...args) =>
-        Promise.resolve(baseRender(...args)).then((node) =>
-          E("details", { class: "cbi-section aurora-advanced-group" }, [
-            E(
-              "summary",
-              { style: "cursor:pointer;font-weight:600;margin:.5em 0;" },
-              group.title,
-            ),
-            group.description
-              ? E(
-                  "div",
-                  { style: "opacity:.75;margin:.25em 0 .5em;" },
-                  group.description,
-                )
-              : "",
-            node,
-          ]),
-        );
-    }
     addColorInputs(sectionValue.subsection, mode, tokens, editor);
   });
 };
@@ -906,6 +843,28 @@ const fromLoginBgUrl = (value) => {
 const isImageFile = (filename) =>
   /\.(jpg|jpeg|png|gif|webp|avif|svg|bmp|ico)$/i.test(filename);
 
+const makeIconListLoader = (
+  filterFn,
+  { prepend = [], empty = [], valueForIcon = (icon) => icon } = {},
+) =>
+  function (section_id) {
+    return getIconsOnce().then(
+      L.bind(function (response) {
+        const icons = response?.icons || [];
+        const matches = icons.filter(filterFn);
+        this.keylist = [];
+        this.vallist = [];
+        prepend.forEach(([value, label]) => this.value(value, label));
+        if (matches.length > 0) {
+          matches.forEach((icon) => this.value(valueForIcon(icon), icon));
+        } else {
+          empty.forEach(([value, label]) => this.value(value, label));
+        }
+        return form.ListValue.prototype.load.apply(this, [section_id]);
+      }, this),
+    );
+  };
+
 // Expand the 10 editable inputs into the full resolved token set and stage every
 // resulting key (inputs + derived) into UCI so the saved snapshot fully overrides
 // the theme's baked _tokens.css defaults. No-op until the engine is loaded and all
@@ -921,57 +880,40 @@ const persistDerivedTokens = (editor) => {
   });
 };
 
+const runSavePipeline = function (ev, after) {
+  const save = L.bind(function () {
+    return colorLibraryReady
+      .catch(() => {})
+      .then(() => persistDerivedTokens(this.colorEditor))
+      .then(() => this.super("handleSave", [ev]));
+  }, this);
+  const writePwa = () => L.resolveDefault(callWritePwaManifest(), {});
+  const cleanup = () => this.colorEditor?.cleanupPreview();
+  const handleFailure = (error) => {
+    cleanup();
+    throw error;
+  };
+  const saveReady =
+    typeof this.prepareAuroraFonts === "function"
+      ? this.prepareAuroraFonts().then(save)
+      : save();
+
+  return saveReady.then(writePwa).then(after).catch(handleFailure);
+};
+
 return view.extend({
   handleSave: function (ev) {
-    const save = L.bind(function () {
-      return colorLibraryReady
-        .catch(() => {})
-        .then(() => persistDerivedTokens(this.colorEditor))
-        .then(() => this.super("handleSave", [ev]));
-    }, this);
-    const writePwa = () => L.resolveDefault(callWritePwaManifest(), {});
-    const cleanup = () => this.colorEditor?.cleanupPreview();
-    const handleFailure = (error) => {
-      cleanup();
-      throw error;
-    };
-
-    if (typeof this.prepareAuroraFonts === "function") {
-      return this.prepareAuroraFonts()
-        .then(save)
-        .then(writePwa)
-        .then(cleanup)
-        .catch(handleFailure);
-    }
-    return save().then(writePwa).then(cleanup).catch(handleFailure);
+    return runSavePipeline.call(this, ev, () =>
+      this.colorEditor?.cleanupPreview(),
+    );
   },
 
   handleSaveApply: function (ev, mode) {
-    const save = L.bind(function () {
-      return colorLibraryReady
-        .catch(() => {})
-        .then(() => persistDerivedTokens(this.colorEditor))
-        .then(() => this.super("handleSave", [ev]));
-    }, this);
-    const writePwa = () => L.resolveDefault(callWritePwaManifest(), {});
-    const cleanup = () => this.colorEditor?.cleanupPreview();
     const apply = () => {
-      cleanup();
+      this.colorEditor?.cleanupPreview();
       ui.changes.apply(mode === "0");
     };
-    const handleFailure = (error) => {
-      cleanup();
-      throw error;
-    };
-
-    if (typeof this.prepareAuroraFonts === "function") {
-      return this.prepareAuroraFonts()
-        .then(save)
-        .then(writePwa)
-        .then(apply)
-        .catch(handleFailure);
-    }
-    return save().then(writePwa).then(apply).catch(handleFailure);
+    return runSavePipeline.call(this, ev, apply);
   },
 
   handleReset: function (ev) {
@@ -985,16 +927,27 @@ return view.extend({
   load: function () {
     return Promise.all([
       uci.load("aurora"),
-      L.resolveDefault(callGetThemeConfig(), {}),
-      L.resolveDefault(utils_version_api.callGetInstalledVersions(), {}),
-      L.resolveDefault(callGetFontPresets(), {}),
-      getIconsOnce(),
-    ]).then((loadData) => {
-      const activePreset = loadData[1]?.theme?.active_preset || "classic";
-      return L.resolveDefault(callGetThemePreset(activePreset), {
-        result: -1,
-        colors: {},
-      }).then((preset) => loadData.concat(preset));
+      L.resolveDefault(callGetInitData(), {}),
+    ]).then(([uciData, initData]) => {
+      // Theme config comes from the uci cache populated by uci.load("aurora")
+      // above, so no separate theme-config RPC is needed.
+      const themeConfig = readThemeConfigFromUci();
+      const iconsData = {
+        icons: Array.isArray(initData?.icons) ? initData.icons : [],
+      };
+      if (Array.isArray(initData?.icons))
+        _iconsPromise = Promise.resolve(iconsData);
+
+      // Preserve the positional layout render() expects:
+      // [0]=uci [1]={theme} [2]=versions [3]=fonts [4]=icons [5]=preset
+      return [
+        uciData,
+        { theme: themeConfig },
+        initData?.versions || {},
+        { fonts: initData?.fonts || {} },
+        iconsData,
+        initData?.theme_preset || { result: -1, colors: {} },
+      ];
     });
   },
 
@@ -1716,7 +1669,7 @@ return view.extend({
       "_asset_table",
       " ",
     );
-    assetTableSo.load = () => L.resolveDefault(callListIcons(), { icons: [] });
+    assetTableSo.load = () => getIconsOnce();
     assetTableSo.cfgvalue = (section_id, data) => data?.icons || [];
     assetTableSo.render = function (option_index, section_id, in_table) {
       return this.load(section_id).then((data) => {
@@ -2019,25 +1972,7 @@ return view.extend({
     so = logoSubsection.option(form.ListValue, "logo_svg", _("Logo / Favicon"));
     so.default = "logo.svg";
     so.rmempty = false;
-    so.load = function (section_id) {
-      return L.resolveDefault(callListIcons(), { icons: [] }).then(
-        L.bind((response) => {
-          const icons = response?.icons || [];
-          this.keylist = [];
-          this.vallist = [];
-          if (icons.length > 0) {
-            icons.forEach(
-              L.bind((icon) => {
-                if (isImageFile(icon)) {
-                  this.value(icon, icon);
-                }
-              }, this),
-            );
-          }
-          return form.ListValue.prototype.load.apply(this, [section_id]);
-        }, this),
-      );
-    };
+    so.load = makeIconListLoader(isImageFile);
 
     so = logoSubsection.option(
       form.ListValue,
@@ -2048,22 +1983,9 @@ return view.extend({
       "Optional PNG favicon for browsers that do not support SVG favicons.",
     );
     so.rmempty = true;
-    so.load = function (section_id) {
-      return L.resolveDefault(callListIcons(), { icons: [] }).then(
-        L.bind(function (response) {
-          const icons = response?.icons || [];
-          this.keylist = [];
-          this.vallist = [];
-          this.value("", _("(None)"));
-          icons.forEach(
-            L.bind(function (icon) {
-              if (/\.png$/i.test(icon)) this.value(icon, icon);
-            }, this),
-          );
-          return form.ListValue.prototype.load.apply(this, [section_id]);
-        }, this),
-      );
-    };
+    so.load = makeIconListLoader((icon) => /\.png$/i.test(icon), {
+      prepend: [["", _("(None)")]],
+    });
 
     so = logoSubsection.option(
       form.ListValue,
@@ -2073,21 +1995,7 @@ return view.extend({
     so.description = _("ICO favicon served to legacy browsers as fallback.");
     so.default = "favicon.ico";
     so.rmempty = false;
-    so.load = function (section_id) {
-      return L.resolveDefault(callListIcons(), { icons: [] }).then(
-        L.bind(function (response) {
-          const icons = response?.icons || [];
-          this.keylist = [];
-          this.vallist = [];
-          icons.forEach(
-            L.bind(function (icon) {
-              if (/\.ico$/i.test(icon)) this.value(icon, icon);
-            }, this),
-          );
-          return form.ListValue.prototype.load.apply(this, [section_id]);
-        }, this),
-      );
-    };
+    so.load = makeIconListLoader((icon) => /\.ico$/i.test(icon));
 
     const pwaIconSlots = [
       ["pwa_apple_touch", _("Apple Touch Icon"), "apple-touch-icon.png"],
@@ -2099,23 +2007,9 @@ return view.extend({
       so = logoSubsection.option(form.ListValue, key, label);
       so.default = defaultVal;
       so.rmempty = false;
-      so.load = function (section_id) {
-        return L.resolveDefault(callListIcons(), { icons: [] }).then(
-          L.bind(function (response) {
-            const icons = response?.icons || [];
-            this.keylist = [];
-            this.vallist = [];
-            icons.forEach(
-              L.bind(function (icon) {
-                if (isImageFile(icon) && !/\.svg$/i.test(icon)) {
-                  this.value(icon, icon);
-                }
-              }, this),
-            );
-            return form.ListValue.prototype.load.apply(this, [section_id]);
-          }, this),
-        );
-      };
+      so.load = makeIconListLoader(
+        (icon) => isImageFile(icon) && !/\.svg$/i.test(icon),
+      );
     });
 
     so = logoSubsection.option(
@@ -2125,26 +2019,13 @@ return view.extend({
     );
     so.description = _("Full-screen background on the login page.");
     so.rmempty = true;
-    so.load = function (section_id) {
-      return L.resolveDefault(callListIcons(), { icons: [] }).then(
-        L.bind((response) => {
-          const icons = response?.icons || [];
-          this.keylist = [];
-          this.vallist = [];
-          this.value("", _("None"));
-          if (icons.length > 0) {
-            icons.forEach(
-              L.bind((icon) => {
-                if (isImageFile(icon) && !icon.endsWith(".svg")) {
-                  this.value(toLoginBgUrl(icon), icon);
-                }
-              }, this),
-            );
-          }
-          return form.ListValue.prototype.load.apply(this, [section_id]);
-        }, this),
-      );
-    };
+    so.load = makeIconListLoader(
+      (icon) => isImageFile(icon) && !icon.endsWith(".svg"),
+      {
+        prepend: [["", _("None")]],
+        valueForIcon: toLoginBgUrl,
+      },
+    );
     so.cfgvalue = function (section_id) {
       return uci.get("aurora", section_id, "struct_login_bg") || "";
     };
@@ -2252,21 +2133,9 @@ return view.extend({
 
     so = toolbarGrid.option(form.ListValue, "icon", _("Icon"));
     so.rmempty = false;
-    so.load = function (section_id) {
-      return L.resolveDefault(callListIcons(), { icons: [] }).then(
-        L.bind((response) => {
-          const icons = response?.icons || [];
-          this.keylist = [];
-          this.vallist = [];
-          if (icons.length > 0) {
-            icons.forEach(L.bind((icon) => this.value(icon, icon), this));
-          } else {
-            this.value("", _("(No icons uploaded)"));
-          }
-          return form.ListValue.prototype.load.apply(this, [section_id]);
-        }, this),
-      );
-    };
+    so.load = makeIconListLoader(() => true, {
+      empty: [["", _("(No icons uploaded)")]],
+    });
     so.validate = (section_id, value) =>
       !value?.trim() ? _("Please select an icon") : true;
 
