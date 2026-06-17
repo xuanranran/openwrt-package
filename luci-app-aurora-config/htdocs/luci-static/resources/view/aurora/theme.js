@@ -108,62 +108,62 @@ const callWritePwaManifest = rpc.declare({
 const COLOR_TOKENS = [
   {
     key: "bg",
-    label: _("Background"),
-    description: _("The outer application background."),
+    label: _("App Background"),
+    description: _("Canvas color behind pages, menus, and empty space."),
     group: "foundation",
   },
   {
     key: "surface",
-    label: _("Surface"),
-    description: _("Cards, panels, forms, and page content background."),
+    label: _("Content Surface"),
+    description: _("Main background for panels, cards, forms, and page content."),
     group: "foundation",
   },
   {
     key: "text",
-    label: _("Text"),
-    description: _("The primary text and icon color."),
+    label: _("Primary Text"),
+    description: _("Default text and icon color on content surfaces."),
     group: "identity",
   },
   {
     key: "brand",
-    label: _("Brand"),
-    description: _("The main interactive and branded accent."),
+    label: _("Brand Accent"),
+    description: _("Main action color for buttons, active items, and selected states."),
     group: "identity",
   },
   {
     key: "on_brand",
-    label: _("Content on Brand"),
-    description: _("Text and icons shown on the brand color."),
+    label: _("Text on Brand"),
+    description: _("Text and icons placed on brand-filled buttons and badges."),
     group: "identity",
   },
   {
     key: "link",
-    label: _("Link"),
-    description: _("Text links and link-like actions."),
+    label: _("Link Color"),
+    description: _("Standalone links and navigation-style text actions."),
     group: "identity",
   },
   {
     key: "info",
-    label: _("Info Accent"),
-    description: _("The accent used for informational feedback."),
+    label: _("Info"),
+    description: _("Accent for neutral information messages and tags."),
     group: "status",
   },
   {
     key: "warning",
-    label: _("Warning Accent"),
-    description: _("The accent used for warning feedback."),
+    label: _("Warning"),
+    description: _("Accent for warnings and attention-needed states."),
     group: "status",
   },
   {
     key: "success",
-    label: _("Success Accent"),
-    description: _("The accent used for successful feedback."),
+    label: _("Success"),
+    description: _("Accent for successful, healthy, or enabled states."),
     group: "status",
   },
   {
     key: "danger",
-    label: _("Danger Accent"),
-    description: _("The accent used for errors and destructive actions."),
+    label: _("Danger"),
+    description: _("Accent for errors, failures, and destructive actions."),
     group: "status",
   },
 ];
@@ -171,141 +171,141 @@ const COLOR_TOKENS = [
 const DERIVED_COLOR_TOKENS = [
   {
     key: "text_muted",
-    label: _("Text Muted"),
-    description: _("Muted secondary text. Source: Text + Background."),
+    label: _("Muted Text"),
+    description: _("Secondary labels and helper text. Generated from Primary Text and App Background."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "text_subtle",
-    label: _("Text Subtle"),
-    description: _("Lowest-emphasis text. Source: Text + Background."),
+    label: _("Subtle Text"),
+    description: _("Lowest-emphasis text such as disabled hints. Generated from Primary Text and App Background."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "surface_sunken",
-    label: _("Surface Sunken"),
-    description: _("Inset backgrounds. Source: Background or Surface."),
+    label: _("Inset Surface"),
+    description: _("Recessed areas such as code blocks, tables, and empty states. Generated from the surface stack."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "surface_overlay",
-    label: _("Surface Overlay"),
-    description: _("Raised panel backgrounds. Source: Background or Surface."),
+    label: _("Raised Surface"),
+    description: _("Popovers, elevated panels, and menu layers. Generated from the surface stack."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "hairline",
-    label: _("Hairline"),
-    description: _("Subtle borders and dividers. Source: Text."),
+    label: _("Divider"),
+    description: _("Thin borders and separators. Generated from Primary Text with low opacity."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "hover_faint",
-    label: _("Hover Faint"),
-    description: _("Neutral hover fill. Source: Background or Text."),
+    label: _("Neutral Hover"),
+    description: _("Soft hover fill for non-brand rows, controls, and menu items."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "brand_hover",
     label: _("Brand Hover"),
-    description: _("Branded hover color. Source: Brand."),
+    description: _("Hover color for brand-filled buttons and active controls."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "brand_subtle",
-    label: _("Brand Subtle"),
-    description: _("Soft brand background. Source: Brand + Background."),
+    label: _("Brand Tint"),
+    description: _("Soft brand-tinted background for selected rows, pills, and quiet emphasis."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "brand_subtle_hover",
-    label: _("Brand Subtle Hover"),
-    description: _("Soft brand hover fill. Source: Brand Subtle."),
+    label: _("Brand Tint Hover"),
+    description: _("Hover fill for controls that use Brand Tint instead of solid Brand Accent."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "focus_ring",
     label: _("Focus Ring"),
-    description: _("Keyboard focus outline. Source: Brand."),
+    description: _("Keyboard focus outline generated from Brand Accent."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "progress_start",
     label: _("Progress Start"),
-    description: _("Progress gradient start. Source: Brand + Surface Sunken."),
+    description: _("Start color for progress gradients, mixed from Brand Accent and Inset Surface."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "progress_end",
     label: _("Progress End"),
-    description: _("Progress gradient end. Source: Brand."),
+    description: _("End color for progress gradients. Follows Brand Accent by default."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "info_surface",
-    label: _("Info Surface"),
-    description: _("Info message background. Source: Info Accent."),
+    label: _("Info Background"),
+    description: _("Background for information alerts and tags. Generated from Info."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "warning_surface",
-    label: _("Warning Surface"),
-    description: _("Warning message background. Source: Warning Accent."),
+    label: _("Warning Background"),
+    description: _("Background for warning alerts and tags. Generated from Warning."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "success_surface",
-    label: _("Success Surface"),
-    description: _("Success message background. Source: Success Accent."),
+    label: _("Success Background"),
+    description: _("Background for success alerts and tags. Generated from Success."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "danger_surface",
-    label: _("Danger Surface"),
-    description: _("Danger message background. Source: Danger Accent."),
+    label: _("Danger Background"),
+    description: _("Background for error and destructive-action messages. Generated from Danger."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "danger_surface_hover",
-    label: _("Danger Surface Hover"),
-    description: _("Danger surface hover fill. Source: Danger Surface."),
+    label: _("Danger Background Hover"),
+    description: _("Hover fill for quiet destructive actions. Generated from Danger Background."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "scrim",
     label: _("Scrim"),
-    description: _("Modal backdrop overlay. Source: Theme default."),
+    description: _("Backdrop overlay behind dialogs and blocking panels."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "mega_menu_bg",
     label: _("Mega Menu Background"),
-    description: _("Mega menu panel background. Source: Surface layer."),
+    description: _("Background for expanded mega menu panels."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "mega_menu_scrim",
     label: _("Mega Menu Scrim"),
-    description: _("Mega menu backdrop overlay. Source: Theme default."),
+    description: _("Backdrop overlay shown behind expanded mega menus."),
     group: "hierarchy",
     derived: true,
   },
@@ -315,19 +315,19 @@ const COLOR_GROUPS = [
   {
     key: "foundation",
     title: _("Surfaces"),
-    description: _("Set the application background and surface colors."),
+    description: _("Set the page canvas and the main content layer."),
   },
   {
     key: "identity",
     title: _("Content & Identity"),
     description: _(
-      "Set primary text, brand, content on brand, and link colors.",
+      "Set readable text, the main action color, text on that action color, and links.",
     ),
   },
   {
     key: "status",
     title: _("Status Accents"),
-    description: _("Set the broad accents used by status families."),
+    description: _("Set the source colors for info, warning, success, and danger feedback."),
   },
 ];
 
@@ -335,23 +335,23 @@ const DERIVED_COLOR_GROUPS = [
   {
     key: "brand_interaction",
     title: _("Brand Interaction"),
-    description: _("Derived from Brand for interaction details."),
+    description: _("Generated from Brand Accent for hover, focus, tint, and progress details."),
   },
   {
     key: "hierarchy",
     title: _("Text & Surface Hierarchy"),
-    description: _("Derived from Text, Background, and Surface."),
+    description: _("Generated from App Background, Content Surface, and Primary Text."),
   },
   {
     key: "status_surfaces",
     title: _("Status Surfaces"),
-    description: _("Derived from status accent colors."),
+    description: _("Generated from the four status accents for alert and tag backgrounds."),
   },
 ];
 
 const ALL_COLOR_TOKENS = COLOR_TOKENS.concat(DERIVED_COLOR_TOKENS);
 const COLOR_FORMAT_HELP = _(
-  "Color fields accept #hex, rgb(), hsl(), lab(), and oklch(). The picker fills hex.",
+  "Color fields accept #hex, rgb(), hsl(), lab(), and oklch(). The picker fills hex; advanced values can be typed manually.",
 );
 
 const cssTokenName = (key) => key.replaceAll("_", "-");
@@ -673,7 +673,8 @@ const createColorEditor = (themeConfig, presetColors) => {
     if (mapRoot) ui.tabs.updateTabs(null, mapRoot);
   };
 
-  const updateField = (mode, key, result) => {
+  const updateField = (mode, key, result, options = {}) => {
+    const shouldValidate = options.validateKeys?.has(key) ?? false;
     const field = fields[mode].get(key);
     const state = stateFor(mode, key);
     state.pending = false;
@@ -686,7 +687,7 @@ const createColorEditor = (themeConfig, presetColors) => {
 
     if (!state.valid) {
       field.status.textContent = state.error;
-      triggerValidation(field);
+      if (shouldValidate) triggerValidation(field);
       return;
     }
 
@@ -711,11 +712,13 @@ const createColorEditor = (themeConfig, presetColors) => {
       field.element.classList.add("cbi-value-error");
       field.status.textContent = state.error;
     }
-    triggerValidation(field);
+    if (shouldValidate) triggerValidation(field);
   };
 
-  const refresh = (mode) =>
-    colorLibraryReady
+  const refresh = (mode, options = {}) => {
+    const validateKeys = options.validateKeys || new Set();
+
+    return colorLibraryReady
       .then(() => {
         const automatic = automaticForMode(mode);
         syncDerivedInitialState(mode, automatic);
@@ -732,7 +735,7 @@ const createColorEditor = (themeConfig, presetColors) => {
       })
       .then((results) => {
         COLOR_TOKENS.forEach(({ key }) => {
-          updateField(mode, key, results.results.get(key));
+          updateField(mode, key, results.results.get(key), { validateKeys });
         });
 
         DERIVED_COLOR_TOKENS.forEach(({ key }) => {
@@ -741,7 +744,7 @@ const createColorEditor = (themeConfig, presetColors) => {
             updateField(mode, key, {
               ...result,
               autoValue: results.automatic?.[key] || "",
-            });
+            }, { validateKeys });
             return;
           }
 
@@ -751,7 +754,9 @@ const createColorEditor = (themeConfig, presetColors) => {
             : {
                 valid: false,
                 error: _("Unable to generate the automatic derived value."),
-              });
+              },
+            { validateKeys },
+          );
         });
         applyPreview(mode);
       })
@@ -760,18 +765,34 @@ const createColorEditor = (themeConfig, presetColors) => {
           updateField(mode, key, {
             valid: false,
             error: error?.message || _("Unable to resolve color expressions."),
-          });
+          }, { validateKeys });
         });
       })
       .finally(() => refreshTabErrors(mode));
+  };
 
-  const schedule = (mode) => {
+  const affectedKeysFor = (key) => {
+    if (!key) return ALL_COLOR_TOKENS.map((token) => token.key);
+    if (isInputToken(key))
+      return COLOR_TOKENS.concat(DERIVED_COLOR_TOKENS).map(
+        (token) => token.key,
+      );
+    return [key];
+  };
+
+  const schedule = (mode, key, options = {}) => {
+    const affectedKeys = affectedKeysFor(key);
+    const validateKeys = new Set(options.validate ? [key].filter(Boolean) : []);
+
     window.clearTimeout(timers[mode]);
-    ALL_COLOR_TOKENS.forEach(({ key }) => {
-      const state = stateFor(mode, key);
+    affectedKeys.forEach((affectedKey) => {
+      const state = stateFor(mode, affectedKey);
       state.pending = true;
     });
-    timers[mode] = window.setTimeout(() => refresh(mode), 120);
+    timers[mode] = window.setTimeout(
+      () => refresh(mode, { validateKeys }),
+      120,
+    );
   };
 
   const register = (
@@ -794,7 +815,7 @@ const createColorEditor = (themeConfig, presetColors) => {
     input.addEventListener("input", () => {
       themeConfig[colorOptionName(mode, token.key)] = input.value;
       if (token.derived) setDerivedOverride(mode, token.key, Boolean(input.value.trim()));
-      schedule(mode);
+      schedule(mode, token.key, { validate: true });
     });
     schedule(mode);
   };
@@ -802,7 +823,8 @@ const createColorEditor = (themeConfig, presetColors) => {
   const validate = (mode, key, value) => {
     if (!value?.trim()) return true;
     const state = stateFor(mode, key);
-    if (state.pending) return _("Color expression is still resolving.");
+    if (state.pending)
+      return state.valid || state.error == null ? true : state.error;
     return state.valid
       ? true
       : state.error || _("Invalid color expression.");
@@ -832,10 +854,17 @@ const createColorEditor = (themeConfig, presetColors) => {
     resolver.destroy();
   };
 
+  const flush = () => {
+    window.clearTimeout(timers.light);
+    window.clearTimeout(timers.dark);
+    return Promise.all([refresh("light"), refresh("dark")]);
+  };
+
   return {
     attach,
     cleanupPreview,
     destroy,
+    flush,
     presetColors,
     register,
     resolvedForMode,
@@ -865,8 +894,8 @@ const renderColorField = function (optionIndex, sectionId, inTable) {
     element.dataset.auroraColorKind = token.derived ? "derived" : "base";
     element.dataset.auroraColorGroup = token.group || "";
     input.placeholder = token.derived
-      ? _("Automatic from base colors")
-      : presetValue || _("Follow theme stylesheet");
+      ? _("Automatic unless overridden")
+      : presetValue || _("Use the active preset value");
 
     const picker = E("input", {
       type: "color",
@@ -895,8 +924,7 @@ const renderColorField = function (optionIndex, sectionId, inTable) {
     picker.addEventListener("change", () => {
       try {
         input.value = picker.value;
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-        input.dispatchEvent(new Event("change", { bubbles: true }));
+        input.dispatchEvent(new Event("input"));
       } catch (error) {
         input.setCustomValidity(_("Unable to convert the selected color."));
       }
@@ -933,11 +961,6 @@ const addColorInputs = (section, mode, tokens, editor) => {
       editor.validate(mode, token.key, value);
     option.write = (sectionId, value) => {
       const trimmed = value?.trim();
-      if (token.derived) {
-        if (trimmed)
-          uci.set("aurora", sectionId, optionKey, toRuntimeColor(trimmed));
-        return;
-      }
       if (trimmed) {
         uci.set("aurora", sectionId, optionKey, toRuntimeColor(trimmed));
       } else {
@@ -945,7 +968,6 @@ const addColorInputs = (section, mode, tokens, editor) => {
       }
     };
     option.remove = (sectionId) => {
-      if (token.derived) return;
       uci.unset("aurora", sectionId, optionKey);
     };
   });
@@ -961,7 +983,7 @@ const createColorSections = (section, mode, editor) => {
     "aurora",
     _("Base Colors"),
     _(
-      "These are the main input colors. Derived variables are generated from these values.",
+      "Edit the 10 source colors. Aurora generates hover states, focus rings, status backgrounds, progress colors, and menu overlays from them.",
     ) + ` ${COLOR_FORMAT_HELP}`,
   );
   addColorInputs(baseSection.subsection, mode, COLOR_TOKENS, editor);
@@ -973,9 +995,9 @@ const createColorSections = (section, mode, editor) => {
     form.NamedSection,
     "theme",
     "aurora",
-    _("Derived Variables"),
+    _("Generated Colors"),
     _(
-      "Detail colors generated from base colors. Leave a field empty to follow its source; enter a value to override it. Clear an override to restore automatic updates.",
+      "These detail colors are computed from the source colors. Leave fields empty to keep them automatic; enter a value only when a specific UI detail needs a manual override.",
     ) + ` ${COLOR_FORMAT_HELP}`,
   );
   addColorInputs(
@@ -1311,6 +1333,7 @@ const runSavePipeline = function (ev, after) {
   const save = L.bind(function () {
     return colorLibraryReady
       .catch(() => {})
+      .then(() => this.colorEditor?.flush?.())
       .then(() => persistDerivedTokens(this.colorEditor))
       .then(() => this.super("handleSave", [ev]));
   }, this);
@@ -1398,11 +1421,31 @@ return view.extend({
     const viewCtx = this;
 
     const buildPresetOptions = () => [
-      { name: "classic", label: _("Classic") },
-      { name: "monochrome", label: _("Monochrome") },
-      { name: "sage-green", label: _("Sage Green") },
-      { name: "amber-sand", label: _("Amber Sand") },
-      { name: "sky-blue", label: _("Sky Blue") },
+      {
+        name: "classic",
+        label: _("Classic"),
+        description: _("Balanced Aurora default with cool brand colors and a crisp dark mode."),
+      },
+      {
+        name: "monochrome",
+        label: _("Monochrome"),
+        description: _("Black, white, and gray for a restrained high-contrast interface."),
+      },
+      {
+        name: "sage-green",
+        label: _("Sage Green"),
+        description: _("Muted green accents with soft neutral surfaces."),
+      },
+      {
+        name: "amber-sand",
+        label: _("Amber Sand"),
+        description: _("Warm sand surfaces with an amber action color."),
+      },
+      {
+        name: "sky-blue",
+        label: _("Sky Blue"),
+        description: _("Bright blue accents with clean, airy surfaces."),
+      },
     ];
 
     const FONT_DEFAULT_STACKS = {
@@ -1460,6 +1503,21 @@ return view.extend({
         ),
       );
 
+      const selectedPresetDescription = () =>
+        presetOptions.find((preset) => preset.name === select.value)
+          ?.description || "";
+      const presetHelp = E(
+        "small",
+        {
+          style:
+            "color:var(--text-muted);flex-basis:100%;font-size:.875em;line-height:1.35;",
+        },
+        selectedPresetDescription(),
+      );
+      select.addEventListener("change", () => {
+        presetHelp.textContent = selectedPresetDescription();
+      });
+
       const resolvePresetSelection = () => {
         const presetName = select.value || "classic";
         const presetLabel =
@@ -1471,16 +1529,16 @@ return view.extend({
         "button",
         {
           class: "cbi-button cbi-button-apply",
-          title: _("Apply Preset"),
+          title: _("Apply Color Preset"),
           click: ui.createHandlerFn(viewCtx, () => {
             const { presetName, presetLabel } = resolvePresetSelection();
 
-            return ui.showModal(_("Apply Theme Preset"), [
+            return ui.showModal(_("Apply Color Preset"), [
               E(
                 "p",
                 {},
                 _(
-                  "Applying '%s' replaces all light and dark color values. Layout, branding, fonts, assets, navigation, login background, and toolbar settings are preserved. Continue?",
+                  "Applying '%s' replaces the full light and dark color token set, including generated colors. Layout, fonts, branding, uploaded assets, login background, navigation, and toolbar settings stay unchanged. Continue?",
                 ).format(presetLabel),
               ),
               E("div", { class: "right" }, [
@@ -1535,7 +1593,7 @@ return view.extend({
         "button",
         {
           class: "cbi-button cbi-button-apply",
-          title: _("Export Configuration"),
+          title: _("Export All Settings"),
           click: ui.createHandlerFn(viewCtx, () => {
             return L.resolveDefault(callExportConfig(), null)
               .then((res) => {
@@ -1595,7 +1653,7 @@ return view.extend({
         "button",
         {
           class: "cbi-button cbi-button-add",
-          title: _("Import Configuration"),
+          title: _("Import All Settings"),
           click: ui.createHandlerFn(viewCtx, function (ev) {
             const btn = ev.currentTarget || ev.target;
             const originalLabel = btn?.firstChild?.data;
@@ -1620,7 +1678,7 @@ return view.extend({
                       "p",
                       {},
                       _(
-                        "Please upload the Aurora configuration file named 'aurora'. This will overwrite the theme configuration at /etc/config/aurora. Press 'Continue' to apply and reload, or 'Cancel' to abort.",
+                        "Review the uploaded Aurora configuration below. Importing replaces /etc/config/aurora and reloads this page; uploaded image files are not removed.",
                       ),
                     ),
                     E("pre", {}, preview),
@@ -1700,14 +1758,14 @@ return view.extend({
         "button",
         {
           class: "cbi-button cbi-button-reset",
-          title: _("Reset to Defaults"),
+          title: _("Reset All Settings"),
           click: ui.createHandlerFn(viewCtx, () => {
-            return ui.showModal(_("Reset to Defaults"), [
+            return ui.showModal(_("Reset All Settings"), [
               E(
                 "p",
                 {},
                 _(
-                  "Are you sure you want to reset all theme settings (Color, Layout & Typography, Branding) back to the default theme's original configuration? This will revert everything to the default theme's initial state.",
+                  "Reset Aurora settings to the packaged Classic preset, including colors, layout, fonts, branding choices, navigation, and toolbar entries. Uploaded image files stay on disk, but any selected custom assets must be chosen again if they are not in the default preset.",
                 ),
               ),
               E("div", { class: "right" }, [
@@ -1763,10 +1821,11 @@ return view.extend({
           E(
             "span",
             { style: "font-weight: 600; white-space: nowrap;" },
-            _("Preset"),
+            _("Color Preset"),
           ),
           select,
           applyButton,
+          presetHelp,
         ],
       );
 
@@ -1830,9 +1889,9 @@ return view.extend({
 
     const s = m.section(form.NamedSection, "theme", "aurora");
 
-    s.tab("colors", _("Color"));
+    s.tab("colors", _("Colors"));
     s.tab("layout_typography", _("Layout & Typography"));
-    s.tab("icons_branding", _("Branding"));
+    s.tab("icons_branding", _("Branding & Shortcuts"));
 
     const colorSection = s.taboption(
       "colors",
@@ -1858,18 +1917,21 @@ return view.extend({
       "aurora",
       _("Layout"),
       _(
-        "Adjust navigation style, element spacing, corner radius, and page container width.",
+        "Tune the structure of the interface: navigation style, density, corner roundness, and page width.",
       ),
     );
     const structureSubsection = structureSection.subsection;
 
     so = structureSubsection.option(
       form.ListValue,
-      "nav_submenu_type",
-      _("Navigation Submenu Type"),
+      "nav_type",
+      _("Navigation Style"),
+    );
+    so.description = _(
+      "Choose how top navigation expands: a wide mega menu, a compact dropdown, or a sidebar-style panel.",
     );
     so.value("mega-menu", _("Mega Menu"));
-    so.value("boxed-dropdown", _("Boxed Dropdown"));
+    so.value("dropdown", _("Dropdown"));
     so.value("sidebar", _("Sidebar"));
     so.default = "mega-menu";
     so.rmempty = false;
@@ -1879,6 +1941,9 @@ return view.extend({
       "struct_spacing",
       _("Element Spacing"),
     );
+    so.description = _(
+      "Controls the base spacing scale. Lower values make the interface denser; higher values add more breathing room.",
+    );
     so.default = "0.25rem";
     so.placeholder = "0.25rem";
     so.rmempty = false;
@@ -1887,7 +1952,10 @@ return view.extend({
     so = structureSubsection.option(
       form.Value,
       "struct_radius_base",
-      _("Border Radius"),
+      _("Corner Radius"),
+    );
+    so.description = _(
+      "Controls corner roundness for buttons, panels, inputs, and menus.",
     );
     so.default = "0.5rem";
     so.placeholder = "0.5rem";
@@ -1897,7 +1965,10 @@ return view.extend({
     so = structureSubsection.option(
       form.Value,
       "struct_container_max_width",
-      _("Page Container Max Width"),
+      _("Page Width Limit"),
+    );
+    so.description = _(
+      "Limits how wide content can grow on large screens while keeping mobile layouts fluid.",
     );
     so.default = "80rem";
     so.placeholder = "80rem";
@@ -1913,7 +1984,7 @@ return view.extend({
       "aurora",
       _("Font Settings"),
       _(
-        "Sans-serif sets the global UI typeface for all text and headings. Monospace is used for code blocks, inline code, and variable references.",
+        "Choose the UI typeface and the code typeface. Remote font presets are prepared when you save, then cached for the theme to use.",
       ),
     );
     const fontSubsection = fontSection.subsection;
@@ -1937,7 +2008,7 @@ return view.extend({
       const presetOpt = ss.option(
         form.ListValue,
         stackKey,
-        slot === "sans" ? _("Sans-serif Typeface") : _("Monospace Typeface"),
+        slot === "sans" ? _("UI Typeface") : _("Code Typeface"),
       );
       presetOpt.default = themeConfig[stackKey] || defaultFont?.stack || "";
       presetOpt.rmempty = false;
@@ -2086,7 +2157,7 @@ return view.extend({
       "aurora",
       _("Asset Library"),
       _(
-        "Manage image files used by the theme. All files are stored in <code>/www/luci-static/aurora/images/</code>.",
+        "Upload and manage image files used by branding, favicons, app icons, and the login background. Files are stored in <code>/www/luci-static/aurora/images/</code>.",
       ),
     );
     const assetSubsection = assetSection.subsection;
@@ -2391,12 +2462,13 @@ return view.extend({
       "aurora",
       _("Site Branding"),
       _(
-        "Choose the favicon, logo, and login background. Upload images via the Asset Library above.",
+        "Choose which uploaded images the theme uses for the header logo, browser icons, app icons, and login background.",
       ),
     );
     const logoSubsection = logoSection.subsection;
 
-    so = logoSubsection.option(form.ListValue, "logo_svg", _("Logo / Favicon"));
+    so = logoSubsection.option(form.ListValue, "logo_svg", _("Header Logo"));
+    so.description = _("Main logo shown in the theme header and navigation.");
     so.default = "logo.svg";
     so.rmempty = false;
     so.load = makeIconListLoader(isImageFile);
@@ -2407,7 +2479,7 @@ return view.extend({
       _("Favicon (PNG)"),
     );
     so.description = _(
-      "Optional PNG favicon for browsers that do not support SVG favicons.",
+      "Optional PNG favicon for browsers or platforms that prefer PNG icons.",
     );
     so.rmempty = true;
     so.load = makeIconListLoader((icon) => /\.png$/i.test(icon), {
@@ -2419,7 +2491,7 @@ return view.extend({
       "favicon_ico",
       _("Favicon (ICO / Legacy)"),
     );
-    so.description = _("ICO favicon served to legacy browsers as fallback.");
+    so.description = _("ICO favicon used as a legacy browser fallback.");
     so.default = "favicon.ico";
     so.rmempty = false;
     so.load = makeIconListLoader((icon) => /\.ico$/i.test(icon));
@@ -2432,6 +2504,7 @@ return view.extend({
 
     pwaIconSlots.forEach(function ([key, label, defaultVal]) {
       so = logoSubsection.option(form.ListValue, key, label);
+      so.description = _("Icon used by mobile home-screen shortcuts and PWA metadata.");
       so.default = defaultVal;
       so.rmempty = false;
       so.load = makeIconListLoader(
@@ -2444,7 +2517,7 @@ return view.extend({
       "struct_login_bg",
       _("Login Background"),
     );
-    so.description = _("Full-screen background on the login page.");
+    so.description = _("Full-screen login page background. Use a wide image for best results.");
     so.rmempty = true;
     so.load = makeIconListLoader(
       (icon) => isImageFile(icon) && !icon.endsWith(".svg"),
@@ -2511,17 +2584,18 @@ return view.extend({
       form.NamedSection,
       "theme",
       "aurora",
-      _("Floating Toolbar"),
+      _("Shortcut Toolbar"),
+      _("Configure the shortcut toolbar shown along the right edge of the interface."),
     );
     const toolbarSubsection = toolbarSection.subsection;
 
     so = toolbarSubsection.option(
       form.Flag,
       "toolbar_enabled",
-      _("Enable Floating Toolbar"),
+      _("Show Shortcut Toolbar"),
     );
     so.description = _(
-      "Enable or disable the floating toolbar on the right side of the screen.",
+      "Show or hide the shortcut toolbar on the right side of the screen.",
     );
     so.default = "1";
     so.rmempty = false;
@@ -2531,8 +2605,8 @@ return view.extend({
       "_toolbar_items",
       form.GridSection,
       "toolbar_item",
-      _("Toolbar Buttons"),
-      _("Add, remove, and drag to reorder toolbar buttons."),
+      _("Toolbar Shortcuts"),
+      _("Add shortcuts, choose icons, and drag rows to control their order."),
     );
     so.depends("toolbar_enabled", "1");
     const toolbarGrid = so.subsection;
@@ -2546,17 +2620,17 @@ return view.extend({
     so.rmempty = false;
     so.editable = true;
 
-    so = toolbarGrid.option(form.Value, "title", _("Button Title"));
+    so = toolbarGrid.option(form.Value, "title", _("Shortcut Label"));
     so.rmempty = false;
     so.placeholder = _("e.g., System Settings");
     so.validate = (section_id, value) =>
-      !value?.trim() ? _("Button title cannot be empty") : true;
+      !value?.trim() ? _("Shortcut label cannot be empty") : true;
 
-    so = toolbarGrid.option(form.Value, "url", _("Target URL"));
+    so = toolbarGrid.option(form.Value, "url", _("Shortcut URL"));
     so.rmempty = false;
     so.placeholder = "/cgi-bin/luci/admin/...";
     so.validate = (section_id, value) =>
-      !value?.trim() ? _("URL cannot be empty") : true;
+      !value?.trim() ? _("Shortcut URL cannot be empty") : true;
 
     so = toolbarGrid.option(form.ListValue, "icon", _("Icon"));
     so.rmempty = false;
@@ -2564,7 +2638,7 @@ return view.extend({
       empty: [["", _("(No icons uploaded)")]],
     });
     so.validate = (section_id, value) =>
-      !value?.trim() ? _("Please select an icon") : true;
+      !value?.trim() ? _("Choose an icon for this shortcut") : true;
 
     return m.render().then((mapNode) => {
       colorEditor.attach();
