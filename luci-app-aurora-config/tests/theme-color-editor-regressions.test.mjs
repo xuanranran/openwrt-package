@@ -109,6 +109,8 @@ test("preset selector stays compact without helper prompt text", async () => {
     "const headerBar =",
   );
 
+  assert.match(optionsBlock, /name:\s*"default"/);
+  assert.doesNotMatch(optionsBlock, /name:\s*"classic"/);
   assert.doesNotMatch(optionsBlock, /description:/);
   assert.doesNotMatch(toolbarBlock, /selectedPresetDescription/);
   assert.doesNotMatch(toolbarBlock, /presetHelp/);

@@ -51,7 +51,7 @@ const STATUS = {
 // canvas -> bg, content -> text; the old surface_raised (panel colour) becomes
 // the new single `surface`. on_brand is per-preset.
 const PRESETS = {
-  classic: {
+  default: {
     light: {
       bg: "oklch(0.967 0.003 264)",
       surface: "oklch(1 0 0)",
@@ -154,7 +154,7 @@ const PRESETS = {
 };
 
 // Stable emission order: inputs first, then derived.
-const KEY_ORDER = Object.keys(resolveTokens("light", PRESETS.classic.light));
+const KEY_ORDER = Object.keys(resolveTokens("light", PRESETS.default.light));
 
 const colorLines = (preset) => {
   const lines = [];
@@ -170,7 +170,9 @@ const colorLines = (preset) => {
 const isColorOptionLine = (line) => /^\toption (light|dark)_/.test(line);
 
 for (const preset of Object.keys(PRESETS)) {
-  const path = resolve(PRESET_DIR, `${preset}.template`);
+  const templateFile =
+    preset === "default" ? "default.template" : `${preset}.template`;
+  const path = resolve(PRESET_DIR, templateFile);
   const lines = readFileSync(path, "utf8").split("\n");
   const out = [];
   let injected = false;
@@ -186,5 +188,5 @@ for (const preset of Object.keys(PRESETS)) {
   }
   if (!injected) throw new Error(`${preset}: no colour block found to replace`);
   writeFileSync(path, out.join("\n"), "utf8");
-  console.log(`gen-presets: wrote ${preset}.template`);
+  console.log(`gen-presets: wrote ${templateFile}`);
 }

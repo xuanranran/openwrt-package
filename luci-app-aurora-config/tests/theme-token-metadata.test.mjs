@@ -83,6 +83,8 @@ test("preset templates store runtime-compatible hex colors", async () => {
   );
 
   assert.ok(files.length > 0, "preset templates exist");
+  assert.ok(files.includes("default.template"), "default preset template exists");
+  assert.ok(!files.includes("classic.template"), "classic preset template is renamed");
   for (const file of files) {
     const source = await readFile(resolve(presetDir, file), "utf8");
     const colorLines = source

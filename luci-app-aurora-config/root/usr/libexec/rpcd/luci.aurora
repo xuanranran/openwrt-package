@@ -10,7 +10,7 @@ readonly FONT_JOB_PATH="/tmp/aurora_font_jobs"
 readonly TMP_UPLOAD_PATH="/tmp/aurora_icon.tmp"
 readonly DOWNLOAD_PATH="/tmp/aurora_downloads"
 readonly CONFIG_FILE="/etc/config/aurora"
-readonly CLASSIC_TEMPLATE="/usr/share/aurora/classic.template"
+readonly DEFAULT_TEMPLATE="/usr/share/aurora/default.template"
 readonly SAGE_GREEN_TEMPLATE="/usr/share/aurora/sage-green.template"
 readonly AMBER_SAND_TEMPLATE="/usr/share/aurora/amber-sand.template"
 readonly MONOCHROME_TEMPLATE="/usr/share/aurora/monochrome.template"
@@ -58,9 +58,18 @@ mega_menu_scrim
 
 PRESET_UCI_DIR=""
 
+normalize_preset_name() {
+	local name="${1:-default}"
+
+	case "$name" in
+	classic) echo "default" ;;
+	*) echo "$name" ;;
+	esac
+}
+
 resolve_preset_path() {
-	case "$1" in
-	classic) echo "$CLASSIC_TEMPLATE" ;;
+	case "$(normalize_preset_name "$1")" in
+	default) echo "$DEFAULT_TEMPLATE" ;;
 	sage-green) echo "$SAGE_GREEN_TEMPLATE" ;;
 	amber-sand) echo "$AMBER_SAND_TEMPLATE" ;;
 	monochrome) echo "$MONOCHROME_TEMPLATE" ;;
@@ -702,6 +711,7 @@ json_add_icons() {
 json_add_theme_preset_snapshot() {
 	local name="$1" template mode token value
 
+	name=$(normalize_preset_name "$name")
 	template=$(resolve_preset_path "$name") || {
 		json_add_int "result" 1
 		json_add_string "error" "Unknown preset"
@@ -719,7 +729,7 @@ json_add_theme_preset_snapshot() {
 	json_add_object "colors"
 	for mode in light dark; do
 		for token in $COLOR_TOKEN_KEYS; do
-			value=$(uci -c "$PRESET_UCI_DIR" -q get "aurora.theme.${mode}_${token}")
+			value=$(uci -c "$PRESET_UCI_DIR" -q get "$PRESET_UCI_PACKAGE.theme.${mode}_${token}")
 			json_add_string "${mode}_${token}" "$value"
 		done
 	done
@@ -776,7 +786,7 @@ case "$1" in
 	case "$2" in
 	"get_init_data")
 		active_preset=$(uci -q get aurora.theme.active_preset)
-		[ -n "$active_preset" ] || active_preset="classic"
+		active_preset=$(normalize_preset_name "$active_preset")
 
 		json_init
 		json_add_string "active_preset" "$active_preset"
@@ -792,8 +802,8 @@ case "$1" in
 		;;
 
 	"reset_defaults")
-		if [ -f "$CLASSIC_TEMPLATE" ]; then
-			cp "$CLASSIC_TEMPLATE" "$CONFIG_FILE"
+		if [ -f "$DEFAULT_TEMPLATE" ]; then
+			cp "$DEFAULT_TEMPLATE" "$CONFIG_FILE"
 			chmod 644 "$CONFIG_FILE"
 			cleanup_custom_fonts
 			sync_font_css_from_uci
@@ -864,6 +874,7 @@ case "$1" in
 
 	"apply_theme_preset")
 		read -r input; json_load "$input"; json_get_var name "name"; json_cleanup
+		name=$(normalize_preset_name "$name")
 
 		template=$(resolve_preset_path "$name") || {
 			echo '{ "result": 1, "error": "Unknown preset" }'

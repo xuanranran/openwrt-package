@@ -108,62 +108,62 @@ const callWritePwaManifest = rpc.declare({
 const COLOR_TOKENS = [
   {
     key: "bg",
-    label: _("App Background"),
-    description: _("Canvas color behind pages, menus, and empty space."),
+    label: _("LuCI Shell Canvas"),
+    description: _("Global page canvas behind the OpenWrt LuCI header, navigation, content area, side panels, and login shell."),
     group: "foundation",
   },
   {
     key: "surface",
-    label: _("Content Surface"),
-    description: _("Main background for panels, cards, forms, and page content."),
+    label: _("Primary Panel Surface"),
+    description: _("Base surface for LuCI configuration panels, cards, form sections, tables, the login card, and neutral controls."),
     group: "foundation",
   },
   {
     key: "text",
-    label: _("Primary Text"),
-    description: _("Default text and icon color on content surfaces."),
+    label: _("Primary Content Text"),
+    description: _("Default foreground for headings, body copy, icons, table cells, menu text, and form values across LuCI."),
     group: "identity",
   },
   {
     key: "brand",
-    label: _("Brand Accent"),
-    description: _("Main action color for buttons, active items, and selected states."),
+    label: _("Primary Action Color"),
+    description: _("Core accent for primary buttons, active navigation, selected states, checked inputs, and branded UI markers."),
     group: "identity",
   },
   {
     key: "on_brand",
-    label: _("Text on Brand"),
-    description: _("Text and icons placed on brand-filled buttons and badges."),
+    label: _("On-Action Foreground"),
+    description: _("Text and icon color placed on filled primary/action backgrounds, including buttons, check indicators, and badges."),
     group: "identity",
   },
   {
     key: "link",
-    label: _("Link Color"),
-    description: _("Standalone links and navigation-style text actions."),
+    label: _("Hyperlink Color"),
+    description: _("Standalone anchors and command links inside OpenWrt pages, help text, package output, and status details."),
     group: "identity",
   },
   {
     key: "info",
-    label: _("Info"),
-    description: _("Accent for neutral information messages and tags."),
+    label: _("Information Accent"),
+    description: _("Foreground accent for informational LuCI alerts, labels, tooltips, and non-critical system feedback."),
     group: "status",
   },
   {
     key: "warning",
-    label: _("Warning"),
-    description: _("Accent for warnings and attention-needed states."),
+    label: _("Warning Accent"),
+    description: _("Foreground accent for attention-needed states, notices, validation warnings, and configuration risk messages."),
     group: "status",
   },
   {
     key: "success",
-    label: _("Success"),
-    description: _("Accent for successful, healthy, or enabled states."),
+    label: _("Success Accent"),
+    description: _("Foreground accent for successful operations, healthy service states, enabled options, and positive status labels."),
     group: "status",
   },
   {
     key: "danger",
-    label: _("Danger"),
-    description: _("Accent for errors, failures, and destructive actions."),
+    label: _("Danger Accent"),
+    description: _("Foreground accent for errors, failed operations, destructive controls, delete actions, and critical system states."),
     group: "status",
   },
 ];
@@ -171,141 +171,141 @@ const COLOR_TOKENS = [
 const DERIVED_COLOR_TOKENS = [
   {
     key: "text_muted",
-    label: _("Muted Text"),
-    description: _("Secondary labels and helper text. Generated from Primary Text and App Background."),
+    label: _("Secondary Text"),
+    description: _("Medium-emphasis foreground for breadcrumbs, helper copy, secondary metadata, and device summary lines. Generated from Primary Content Text and LuCI Shell Canvas."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "text_subtle",
-    label: _("Subtle Text"),
-    description: _("Lowest-emphasis text such as disabled hints. Generated from Primary Text and App Background."),
+    label: _("Tertiary Text"),
+    description: _("Low-emphasis foreground for small labels, table headers, navigation previews, placeholders, and disabled hints. Generated from Primary Content Text and LuCI Shell Canvas."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "surface_sunken",
-    label: _("Inset Surface"),
-    description: _("Recessed areas such as code blocks, tables, and empty states. Generated from the surface stack."),
+    label: _("Recessed Surface"),
+    description: _("Inset layer for inputs, selects, code blocks, table headers, progress tracks, badges, and quiet secondary buttons. Generated from the surface stack."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "surface_overlay",
-    label: _("Raised Surface"),
-    description: _("Popovers, elevated panels, and menu layers. Generated from the surface stack."),
+    label: _("Elevated Overlay Surface"),
+    description: _("Raised layer for dropdown menus, modals, tooltips, floating shortcut controls, and elevated mobile cards. Generated from the surface stack."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "hairline",
-    label: _("Divider"),
-    description: _("Thin borders and separators. Generated from Primary Text with low opacity."),
+    label: _("Hairline Border"),
+    description: _("Thin separators, section dividers, table outlines, card borders, input borders, and panel strokes. Generated from Primary Content Text with low opacity."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "hover_faint",
-    label: _("Neutral Hover"),
-    description: _("Soft hover fill for non-brand rows, controls, and menu items."),
+    label: _("Neutral Hover Surface"),
+    description: _("Subtle hover fill for non-primary menu items, table rows, neutral buttons, secondary controls, and navigation links."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "brand_hover",
-    label: _("Brand Hover"),
-    description: _("Hover color for brand-filled buttons and active controls."),
+    label: _("Primary Action Hover"),
+    description: _("Hover state for filled primary LuCI buttons, apply actions, reload actions, and other high-emphasis controls."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "brand_subtle",
-    label: _("Brand Tint"),
-    description: _("Soft brand-tinted background for selected rows, pills, and quiet emphasis."),
+    label: _("Primary Selection Surface"),
+    description: _("Soft action-tinted surface for active navigation pills, selected pages, focused drag targets, login emblem blocks, and quiet emphasis."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "brand_subtle_hover",
-    label: _("Brand Tint Hover"),
-    description: _("Hover fill for controls that use Brand Tint instead of solid Brand Accent."),
+    label: _("Primary Selection Hover"),
+    description: _("Hover fill for subtle primary buttons and selected-state surfaces that use Primary Selection Surface instead of a solid action fill."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "focus_ring",
-    label: _("Focus Ring"),
-    description: _("Keyboard focus outline generated from Brand Accent."),
+    label: _("Keyboard Focus Ring"),
+    description: _("Accessible focus outline for inputs, selects, dropdowns, navigation category triggers, and keyboard-operated controls. Generated from Primary Action Color."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "progress_start",
-    label: _("Progress Start"),
-    description: _("Start color for progress gradients, mixed from Brand Accent and Inset Surface."),
+    label: _("Progress Gradient Start"),
+    description: _("Leading color for LuCI progress meters such as package operations and status progress bars. Mixed from Primary Action Color and Recessed Surface."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "progress_end",
-    label: _("Progress End"),
-    description: _("End color for progress gradients. Follows Brand Accent by default."),
+    label: _("Progress Gradient End"),
+    description: _("Trailing color for LuCI progress meters. Follows Primary Action Color by default."),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "info_surface",
-    label: _("Info Background"),
-    description: _("Background for information alerts and tags. Generated from Info."),
+    label: _("Information Message Surface"),
+    description: _("Background for informational alerts, labels, badges, and tooltips. Generated from Information Accent."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "warning_surface",
-    label: _("Warning Background"),
-    description: _("Background for warning alerts and tags. Generated from Warning."),
+    label: _("Warning Message Surface"),
+    description: _("Background for warning alerts, notices, labels, badges, and tooltips. Generated from Warning Accent."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "success_surface",
-    label: _("Success Background"),
-    description: _("Background for success alerts and tags. Generated from Success."),
+    label: _("Success Message Surface"),
+    description: _("Background for success alerts, healthy-state labels, badges, and tooltips. Generated from Success Accent."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "danger_surface",
-    label: _("Danger Background"),
-    description: _("Background for error and destructive-action messages. Generated from Danger."),
+    label: _("Danger Message Surface"),
+    description: _("Background for error alerts, destructive-action messages, delete controls, critical labels, and validation failures. Generated from Danger Accent."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "danger_surface_hover",
-    label: _("Danger Background Hover"),
-    description: _("Hover fill for quiet destructive actions. Generated from Danger Background."),
+    label: _("Danger Action Hover Surface"),
+    description: _("Hover fill for quiet destructive buttons, remove actions, and delete controls. Generated from Danger Message Surface."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "scrim",
-    label: _("Scrim"),
-    description: _("Backdrop overlay behind dialogs and blocking panels."),
+    label: _("Modal Scrim"),
+    description: _("Dimming backdrop behind LuCI modal dialogs and blocking confirmation panels."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "mega_menu_bg",
-    label: _("Mega Menu Background"),
-    description: _("Background for expanded mega menu panels."),
+    label: _("Mega Menu Panel Surface"),
+    description: _("Opaque surface for the expanded desktop mega menu panel and the header while the menu is open."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "mega_menu_scrim",
-    label: _("Mega Menu Scrim"),
-    description: _("Backdrop overlay shown behind expanded mega menus."),
+    label: _("Mega Menu Backdrop Scrim"),
+    description: _("Dimming curtain behind the expanded desktop mega menu; lighter than the modal scrim so navigation still feels non-blocking."),
     group: "hierarchy",
     derived: true,
   },
@@ -314,44 +314,44 @@ const DERIVED_COLOR_TOKENS = [
 const COLOR_GROUPS = [
   {
     key: "foundation",
-    title: _("Surfaces"),
-    description: _("Set the page canvas and the main content layer."),
+    title: _("System Surfaces"),
+    description: _("Define the global canvas and panel surfaces that frame the full OpenWrt LuCI web interface."),
   },
   {
     key: "identity",
-    title: _("Content & Identity"),
+    title: _("Text, Links & Actions"),
     description: _(
-      "Set readable text, the main action color, text on that action color, and links.",
+      "Define readable foregrounds, hyperlinks, primary actions, and the contrast color used on filled action surfaces.",
     ),
   },
   {
     key: "status",
-    title: _("Status Accents"),
-    description: _("Set the source colors for info, warning, success, and danger feedback."),
+    title: _("Operational Status Accents"),
+    description: _("Define source accents for LuCI notifications, validation states, status labels, and destructive system feedback."),
   },
 ];
 
 const DERIVED_COLOR_GROUPS = [
   {
     key: "brand_interaction",
-    title: _("Brand Interaction"),
-    description: _("Generated from Brand Accent for hover, focus, tint, and progress details."),
+    title: _("Action Interaction Details"),
+    description: _("Generated from Primary Action Color for hover states, selected surfaces, focus rings, and progress meters."),
   },
   {
     key: "hierarchy",
-    title: _("Text & Surface Hierarchy"),
-    description: _("Generated from App Background, Content Surface, and Primary Text."),
+    title: _("Interface Hierarchy"),
+    description: _("Generated from the canvas, panel surface, and primary text to create secondary text, borders, overlays, and menu layers."),
   },
   {
     key: "status_surfaces",
-    title: _("Status Surfaces"),
-    description: _("Generated from the four status accents for alert and tag backgrounds."),
+    title: _("Status Message Surfaces"),
+    description: _("Generated from the four operational status accents for alert, tooltip, label, badge, and destructive-action backgrounds."),
   },
 ];
 
 const ALL_COLOR_TOKENS = COLOR_TOKENS.concat(DERIVED_COLOR_TOKENS);
 const COLOR_FORMAT_HELP = _(
-  "Color fields accept #hex, rgb(), hsl(), lab(), and oklch(). The picker fills hex; advanced values can be typed manually.",
+  "Color fields accept #hex, rgb(), hsl(), lab(), and oklch(). The picker fills hex; advanced color-space values can be typed manually.",
 );
 
 const cssTokenName = (key) => key.replaceAll("_", "-");
@@ -894,22 +894,22 @@ const renderColorField = function (optionIndex, sectionId, inTable) {
     element.dataset.auroraColorKind = token.derived ? "derived" : "base";
     element.dataset.auroraColorGroup = token.group || "";
     input.placeholder = token.derived
-      ? _("Automatic unless overridden")
-      : presetValue || _("Use the active preset value");
+      ? _("Automatic unless manually overridden")
+      : presetValue || _("Use the saved or preset token value");
 
     const picker = E("input", {
       type: "color",
       value: "#000000",
       style:
         "position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;opacity:0;cursor:pointer;",
-      title: _("Choose a literal color"),
+      title: _("Choose a literal color for this token"),
     });
     const swatch = E(
       "span",
       {
         style:
           "position:relative;display:inline-block;width:2rem;height:2rem;margin-left:.5rem;border:1px solid currentColor;border-radius:.5rem;vertical-align:middle;background:transparent;overflow:hidden;cursor:pointer;",
-        title: _("Resolved color — click to pick"),
+        title: _("Resolved preview color - click to pick"),
       },
       [picker],
     );
@@ -981,9 +981,9 @@ const createColorSections = (section, mode, editor) => {
     form.NamedSection,
     "theme",
     "aurora",
-    _("Base Colors"),
+    _("Source Color Tokens"),
     _(
-      "Edit the 10 source colors. Aurora generates hover states, focus rings, status backgrounds, progress colors, and menu overlays from them.",
+      "Edit the 10 source tokens that drive the OpenWrt LuCI web interface. Changes preview immediately in this browser page; router-wide theme values change only after Save or Save & Apply writes them to /etc/config/aurora.",
     ) + ` ${COLOR_FORMAT_HELP}`,
   );
   addColorInputs(baseSection.subsection, mode, COLOR_TOKENS, editor);
@@ -995,9 +995,9 @@ const createColorSections = (section, mode, editor) => {
     form.NamedSection,
     "theme",
     "aurora",
-    _("Generated Colors"),
+    _("Derived Color Tokens"),
     _(
-      "These detail colors are computed from the source colors. Leave fields empty to keep them automatic; enter a value only when a specific UI detail needs a manual override.",
+      "Derived tokens are computed from the source tokens for hover states, focus rings, status surfaces, progress meters, overlays, and menu layers. Leave fields empty to keep automatic generation; enter a value only when a specific UI detail needs a manual override. Live preview affects this browser page only; router-wide persistence happens after Save or Save & Apply.",
     ) + ` ${COLOR_FORMAT_HELP}`,
   );
   addColorInputs(
@@ -1420,8 +1420,11 @@ return view.extend({
     let so;
     const viewCtx = this;
 
+    const normalizePresetName = (presetName) =>
+      presetName === "classic" || !presetName ? "default" : presetName;
+
     const buildPresetOptions = () => [
-      { name: "classic", label: _("Classic") },
+      { name: "default", label: _("Default") },
       { name: "monochrome", label: _("Monochrome") },
       { name: "sage-green", label: _("Sage Green") },
       { name: "amber-sand", label: _("Amber Sand") },
@@ -1461,10 +1464,10 @@ return view.extend({
 
     const buildPresetToolbarNode = () => {
       const presetOptions = buildPresetOptions();
-      const uciPreset = themeConfig.active_preset;
+      const uciPreset = normalizePresetName(themeConfig.active_preset);
       const initialPreset = presetOptions.some((p) => p.name === uciPreset)
         ? uciPreset
-        : "classic";
+        : "default";
 
       const select = E(
         "select",
@@ -1484,7 +1487,7 @@ return view.extend({
       );
 
       const resolvePresetSelection = () => {
-        const presetName = select.value || "classic";
+        const presetName = select.value || "default";
         const presetLabel =
           select?.selectedOptions?.[0]?.textContent || presetName;
         return { presetName, presetLabel };
@@ -1494,16 +1497,16 @@ return view.extend({
         "button",
         {
           class: "cbi-button cbi-button-apply",
-          title: _("Apply Color Preset"),
+          title: _("Apply Preset"),
           click: ui.createHandlerFn(viewCtx, () => {
             const { presetName, presetLabel } = resolvePresetSelection();
 
-            return ui.showModal(_("Apply Color Preset"), [
+            return ui.showModal(_("Apply Preset"), [
               E(
                 "p",
                 {},
                 _(
-                  "Applying '%s' replaces the full light and dark color token set, including generated colors. Layout, fonts, branding, uploaded assets, login background, navigation, and toolbar settings stay unchanged. Continue?",
+                  "Apply the '%s' preset now? The preset is saved to /etc/config/aurora immediately and this page reloads after it is applied. In the current version, presets write the light and dark color sets; layout, typography, branding assets, login background, navigation, and shortcut toolbar settings use the default Aurora configuration.",
                 ).format(presetLabel),
               ),
               E("div", { class: "right" }, [
@@ -1515,7 +1518,7 @@ return view.extend({
                     class: "btn cbi-button-action important",
                     click: () => {
                       ui.showModal(_("Applying..."), [
-                        E("p", { class: "spinning" }, _("Updating theme...")),
+                        E("p", { class: "spinning" }, _("Applying preset...")),
                       ]);
                       return L.resolveDefault(
                         callApplyThemePreset(presetName),
@@ -1558,7 +1561,7 @@ return view.extend({
         "button",
         {
           class: "cbi-button cbi-button-apply",
-          title: _("Export All Settings"),
+          title: _("Export Aurora Settings"),
           click: ui.createHandlerFn(viewCtx, () => {
             return L.resolveDefault(callExportConfig(), null)
               .then((res) => {
@@ -1618,7 +1621,7 @@ return view.extend({
         "button",
         {
           class: "cbi-button cbi-button-add",
-          title: _("Import All Settings"),
+          title: _("Import Aurora Settings"),
           click: ui.createHandlerFn(viewCtx, function (ev) {
             const btn = ev.currentTarget || ev.target;
             const originalLabel = btn?.firstChild?.data;
@@ -1638,12 +1641,12 @@ return view.extend({
                 L.bind(function (content) {
                   const preview = content || "";
 
-                  ui.showModal(_("Apply configuration?"), [
+                  ui.showModal(_("Import Aurora Configuration?"), [
                     E(
                       "p",
                       {},
                       _(
-                        "Review the uploaded Aurora configuration below. Importing replaces /etc/config/aurora and reloads this page; uploaded image files are not removed.",
+                        "Review the uploaded configuration below. Importing replaces /etc/config/aurora, applies all Aurora theme settings, and reloads this page. Uploaded image files in /www/luci-static/aurora/images/ stay on disk.",
                       ),
                     ),
                     E("pre", {}, preview),
@@ -1696,7 +1699,7 @@ return view.extend({
                             });
                           }),
                         },
-                        _("Continue"),
+                        _("Import"),
                       ),
                     ]),
                   ]);
@@ -1723,14 +1726,14 @@ return view.extend({
         "button",
         {
           class: "cbi-button cbi-button-reset",
-          title: _("Reset All Settings"),
+          title: _("Reset All Aurora Settings"),
           click: ui.createHandlerFn(viewCtx, () => {
-            return ui.showModal(_("Reset All Settings"), [
+            return ui.showModal(_("Reset All Aurora Settings"), [
               E(
                 "p",
                 {},
                 _(
-                  "Reset Aurora settings to the packaged Classic preset, including colors, layout, fonts, branding choices, navigation, and toolbar entries. Uploaded image files stay on disk, but any selected custom assets must be chosen again if they are not in the default preset.",
+                  "Reset /etc/config/aurora to the packaged Default preset, including colors, layout, typography, branding selections, navigation, and shortcut toolbar entries. Uploaded image files stay on disk, but custom asset selections are cleared unless they are part of the Default preset.",
                 ),
               ),
               E("div", { class: "right" }, [
@@ -1768,7 +1771,7 @@ return view.extend({
                       );
                     },
                   },
-                  _("Confirm Reset"),
+                  _("Reset"),
                 ),
               ]),
             ]);
@@ -1786,7 +1789,7 @@ return view.extend({
           E(
             "span",
             { style: "font-weight: 600; white-space: nowrap;" },
-            _("Color Preset"),
+            _("Preset"),
           ),
           select,
           applyButton,
@@ -1881,7 +1884,7 @@ return view.extend({
       "aurora",
       _("Layout"),
       _(
-        "Tune the structure of the interface: navigation style, density, corner roundness, and page width.",
+        "Tune the OpenWrt LuCI shell structure: navigation pattern, interface density, corner radius scale, and maximum content width. These structural settings take effect after Save & Apply.",
       ),
     );
     const structureSubsection = structureSection.subsection;
@@ -1892,7 +1895,7 @@ return view.extend({
       _("Navigation Style"),
     );
     so.description = _(
-      "Choose how top navigation expands: a wide mega menu, a compact dropdown, or a sidebar-style panel.",
+      "Selects the navigation mode for the OpenWrt LuCI web system.",
     );
     so.value("mega-menu", _("Mega Menu"));
     so.value("dropdown", _("Dropdown"));
@@ -1903,10 +1906,10 @@ return view.extend({
     so = structureSubsection.option(
       form.Value,
       "struct_spacing",
-      _("Element Spacing"),
+      _("Interface Density"),
     );
     so.description = _(
-      "Controls the base spacing scale. Lower values make the interface denser; higher values add more breathing room.",
+      "Controls the global spacing scale for the OpenWrt LuCI web system.",
     );
     so.default = "0.25rem";
     so.placeholder = "0.25rem";
@@ -1916,10 +1919,10 @@ return view.extend({
     so = structureSubsection.option(
       form.Value,
       "struct_radius_base",
-      _("Corner Radius"),
+      _("Corner Radius Scale"),
     );
     so.description = _(
-      "Controls corner roundness for buttons, panels, inputs, and menus.",
+      "Controls the global corner radius scale for the OpenWrt LuCI web system.",
     );
     so.default = "0.5rem";
     so.placeholder = "0.5rem";
@@ -1929,10 +1932,10 @@ return view.extend({
     so = structureSubsection.option(
       form.Value,
       "struct_container_max_width",
-      _("Page Width Limit"),
+      _("Content Width Limit"),
     );
     so.description = _(
-      "Limits how wide content can grow on large screens while keeping mobile layouts fluid.",
+      "Controls the maximum page container width for the OpenWrt LuCI web system.",
     );
     so.default = "80rem";
     so.placeholder = "80rem";
@@ -1946,9 +1949,9 @@ return view.extend({
       form.NamedSection,
       "theme",
       "aurora",
-      _("Font Settings"),
+      _("Typography"),
       _(
-        "Choose the UI typeface and the code typeface. Remote font presets are prepared when you save, then cached for the theme to use.",
+        "Choose the interface typeface and monospace typeface used across LuCI pages, forms, tables, code blocks, and terminal-style output. Save or Save & Apply prepares remote font presets, caches them locally, and applies the selected typography to the theme.",
       ),
     );
     const fontSubsection = fontSection.subsection;
@@ -1972,7 +1975,7 @@ return view.extend({
       const presetOpt = ss.option(
         form.ListValue,
         stackKey,
-        slot === "sans" ? _("UI Typeface") : _("Code Typeface"),
+        slot === "sans" ? _("Interface Typeface") : _("Monospace Typeface"),
       );
       presetOpt.default = themeConfig[stackKey] || defaultFont?.stack || "";
       presetOpt.rmempty = false;
@@ -2078,10 +2081,10 @@ return view.extend({
       const statusNode = E(
         "p",
         { class: "spinning" },
-        _("Preparing selected fonts..."),
+        _("Preparing selected typefaces..."),
       );
 
-      ui.showModal(_("Preparing Fonts"), [statusNode]);
+      ui.showModal(_("Preparing Typography"), [statusNode]);
 
       return callPrepareFont(selected.sans, selected.mono)
         .then((res) => {
@@ -2102,7 +2105,7 @@ return view.extend({
             null,
             E(
               "p",
-              _("Font preparation failed: ") + (err.message || String(err)),
+              _("Typography preparation failed: ") + (err.message || String(err)),
             ),
             "warning",
           );
@@ -2119,9 +2122,9 @@ return view.extend({
       form.NamedSection,
       "theme",
       "aurora",
-      _("Asset Library"),
+      _("Brand Asset Library"),
       _(
-        "Upload and manage image files used by branding, favicons, app icons, and the login background. Files are stored in <code>/www/luci-static/aurora/images/</code>.",
+        "Upload and manage image files used by browser tab icons, favicon fallbacks, PWA icons, shortcut icons, and the login background. Uploads are stored immediately in <code>/www/luci-static/aurora/images/</code>.",
       ),
     );
     const assetSubsection = assetSection.subsection;
@@ -2217,7 +2220,7 @@ return view.extend({
             E(
               "strong",
               { style: "pointer-events:none;" },
-              _("Drop image here, or click to browse"),
+              _("Drop image asset here, or click to browse"),
             ),
             E(
               "div",
@@ -2336,8 +2339,14 @@ return view.extend({
             {
               class: "cbi-button cbi-button-remove",
               click: ui.createHandlerFn(this, () => {
-                return ui.showModal(_("Delete Asset"), [
-                  E("p", {}, _("Delete '%s'?").format(icon)),
+                return ui.showModal(_("Delete Brand Asset"), [
+                  E(
+                    "p",
+                    {},
+                    _(
+                      "Delete '%s' from the Aurora asset library at /www/luci-static/aurora/images/? Any current theme setting that references this file may need to be changed.",
+                    ).format(icon),
+                  ),
                   E("div", { class: "right" }, [
                     E(
                       "button",
@@ -2397,12 +2406,12 @@ return view.extend({
         const tableOrEmpty =
           icons.length === 0
             ? E("div", { style: "padding:0.5em 0;" }, [
-                E("em", {}, _("No assets uploaded yet.")),
+                E("em", {}, _("No brand assets uploaded yet.")),
               ])
             : E("table", { class: "table" }, [
                 E("tr", { class: "tr table-titles" }, [
                   E("th", { class: "th", style: "width:56px;" }, _("Preview")),
-                  E("th", { class: "th" }, _("Filename")),
+                  E("th", { class: "th" }, _("Asset Filename")),
                   E("th", { class: "th center" }, _("Actions")),
                 ]),
                 ...icons.map(makeRow),
@@ -2426,13 +2435,13 @@ return view.extend({
       "aurora",
       _("Site Branding"),
       _(
-        "Choose which uploaded images the theme uses for the header logo, browser icons, app icons, and login background.",
+        "Choose uploaded assets for browser tab icons, favicon fallbacks, PWA metadata, and the login background. These selections are written when you Save or Save & Apply.",
       ),
     );
     const logoSubsection = logoSection.subsection;
 
-    so = logoSubsection.option(form.ListValue, "logo_svg", _("Header Logo"));
-    so.description = _("Main logo shown in the theme header and navigation.");
+    so = logoSubsection.option(form.ListValue, "logo_svg", _("Browser Tab & Login Icon"));
+    so.description = _("SVG icon used for the browser tab and the login page brand mark.");
     so.default = "logo.svg";
     so.rmempty = false;
     so.load = makeIconListLoader(isImageFile);
@@ -2443,7 +2452,7 @@ return view.extend({
       _("Favicon (PNG)"),
     );
     so.description = _(
-      "Optional PNG favicon for browsers or platforms that prefer PNG icons.",
+      "PNG fallback for the browser tab icon when SVG favicons are not supported.",
     );
     so.rmempty = true;
     so.load = makeIconListLoader((icon) => /\.png$/i.test(icon), {
@@ -2461,14 +2470,31 @@ return view.extend({
     so.load = makeIconListLoader((icon) => /\.ico$/i.test(icon));
 
     const pwaIconSlots = [
-      ["pwa_apple_touch", _("Apple Touch Icon"), "apple-touch-icon.png"],
-      ["pwa_icon_192", _("App Icon 192×192"), "app-icon-192x192.png"],
-      ["pwa_icon_512", _("App Icon 512×512"), "app-icon-512x512.png"],
+      [
+        "pwa_apple_touch",
+        _("Apple Touch Icon"),
+        "apple-touch-icon.png",
+        _(
+          "Icon used for iOS/iPadOS Home Screen web clips and standalone Safari web apps.",
+        ),
+      ],
+      [
+        "pwa_icon_192",
+        _("App Icon 192×192"),
+        "app-icon-192x192.png",
+        _("192×192 icon written into app.webmanifest for installable web app metadata."),
+      ],
+      [
+        "pwa_icon_512",
+        _("App Icon 512×512"),
+        "app-icon-512x512.png",
+        _("512×512 icon written into app.webmanifest for installable web app metadata."),
+      ],
     ];
 
-    pwaIconSlots.forEach(function ([key, label, defaultVal]) {
+    pwaIconSlots.forEach(function ([key, label, defaultVal, description]) {
       so = logoSubsection.option(form.ListValue, key, label);
-      so.description = _("Icon used by mobile home-screen shortcuts and PWA metadata.");
+      so.description = description;
       so.default = defaultVal;
       so.rmempty = false;
       so.load = makeIconListLoader(
@@ -2481,7 +2507,7 @@ return view.extend({
       "struct_login_bg",
       _("Login Background"),
     );
-    so.description = _("Full-screen login page background. Use a wide image for best results.");
+    so.description = _("Full-screen background for the OpenWrt login page. Use a wide image for best results.");
     so.rmempty = true;
     so.load = makeIconListLoader(
       (icon) => isImageFile(icon) && !icon.endsWith(".svg"),
@@ -2549,7 +2575,7 @@ return view.extend({
       "theme",
       "aurora",
       _("Shortcut Toolbar"),
-      _("Configure the shortcut toolbar shown along the right edge of the interface."),
+      _("Configure the floating shortcut launcher shown along the right edge of the LuCI interface."),
     );
     const toolbarSubsection = toolbarSection.subsection;
 
@@ -2559,7 +2585,7 @@ return view.extend({
       _("Show Shortcut Toolbar"),
     );
     so.description = _(
-      "Show or hide the shortcut toolbar on the right side of the screen.",
+      "Show or hide the floating shortcut launcher on LuCI pages.",
     );
     so.default = "1";
     so.rmempty = false;
@@ -2570,7 +2596,7 @@ return view.extend({
       form.GridSection,
       "toolbar_item",
       _("Toolbar Shortcuts"),
-      _("Add shortcuts, choose icons, and drag rows to control their order."),
+      _("Add LuCI shortcuts, choose uploaded icons, and drag rows to control the order shown in the floating toolbar."),
     );
     so.depends("toolbar_enabled", "1");
     const toolbarGrid = so.subsection;
@@ -2586,15 +2612,15 @@ return view.extend({
 
     so = toolbarGrid.option(form.Value, "title", _("Shortcut Label"));
     so.rmempty = false;
-    so.placeholder = _("e.g., System Settings");
+    so.placeholder = _("e.g., Network Interfaces");
     so.validate = (section_id, value) =>
-      !value?.trim() ? _("Shortcut label cannot be empty") : true;
+      !value?.trim() ? _("Enter a shortcut label") : true;
 
     so = toolbarGrid.option(form.Value, "url", _("Shortcut URL"));
     so.rmempty = false;
     so.placeholder = "/cgi-bin/luci/admin/...";
     so.validate = (section_id, value) =>
-      !value?.trim() ? _("Shortcut URL cannot be empty") : true;
+      !value?.trim() ? _("Enter a LuCI shortcut URL") : true;
 
     so = toolbarGrid.option(form.ListValue, "icon", _("Icon"));
     so.rmempty = false;
@@ -2602,7 +2628,7 @@ return view.extend({
       empty: [["", _("(No icons uploaded)")]],
     });
     so.validate = (section_id, value) =>
-      !value?.trim() ? _("Choose an icon for this shortcut") : true;
+      !value?.trim() ? _("Choose an uploaded icon for this shortcut") : true;
 
     return m.render().then((mapNode) => {
       colorEditor.attach();

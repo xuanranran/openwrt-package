@@ -208,7 +208,7 @@ the `case "$1" in "list")` block at the end of the script. Common methods:
 | --- | --- |
 | `get_init_data` | Read first-paint data in one RPC: installed versions, font presets, icons, and the active preset snapshot |
 | `get_theme_preset` | Read a preset snapshot for UI placeholders and comparison |
-| `apply_theme_preset` | Apply a preset (replaces all colors; keeps branding, fonts, layout, toolbar) |
+| `apply_theme_preset` | Apply a preset (writes color sets; other theme areas use the default profile) |
 | `export_config` / `import_config` | Configuration import/export |
 | `list_icons` / `upload_icon` / `remove_icon` | Icon management |
 | `prepare_font` / `get_font_presets` / `get_font_status` | Font handling |
