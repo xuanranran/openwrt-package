@@ -95,3 +95,21 @@ test("saving waits for pending color resolution before writing UCI", async () =>
   assert.match(saveBlock, /this\.colorEditor\?\.flush\?\.\(\)/);
   assert.match(saveBlock, /persistDerivedTokens\(this\.colorEditor\)/);
 });
+
+test("preset selector stays compact without helper prompt text", async () => {
+  const source = await themeSource();
+  const optionsBlock = sourceBlock(
+    source,
+    "const buildPresetOptions =",
+    "const FONT_DEFAULT_STACKS =",
+  );
+  const toolbarBlock = sourceBlock(
+    source,
+    "const buildPresetToolbarNode =",
+    "const headerBar =",
+  );
+
+  assert.doesNotMatch(optionsBlock, /description:/);
+  assert.doesNotMatch(toolbarBlock, /selectedPresetDescription/);
+  assert.doesNotMatch(toolbarBlock, /presetHelp/);
+});

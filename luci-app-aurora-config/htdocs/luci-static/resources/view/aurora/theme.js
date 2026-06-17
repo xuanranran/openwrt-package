@@ -1421,31 +1421,11 @@ return view.extend({
     const viewCtx = this;
 
     const buildPresetOptions = () => [
-      {
-        name: "classic",
-        label: _("Classic"),
-        description: _("Balanced Aurora default with cool brand colors and a crisp dark mode."),
-      },
-      {
-        name: "monochrome",
-        label: _("Monochrome"),
-        description: _("Black, white, and gray for a restrained high-contrast interface."),
-      },
-      {
-        name: "sage-green",
-        label: _("Sage Green"),
-        description: _("Muted green accents with soft neutral surfaces."),
-      },
-      {
-        name: "amber-sand",
-        label: _("Amber Sand"),
-        description: _("Warm sand surfaces with an amber action color."),
-      },
-      {
-        name: "sky-blue",
-        label: _("Sky Blue"),
-        description: _("Bright blue accents with clean, airy surfaces."),
-      },
+      { name: "classic", label: _("Classic") },
+      { name: "monochrome", label: _("Monochrome") },
+      { name: "sage-green", label: _("Sage Green") },
+      { name: "amber-sand", label: _("Amber Sand") },
+      { name: "sky-blue", label: _("Sky Blue") },
     ];
 
     const FONT_DEFAULT_STACKS = {
@@ -1502,21 +1482,6 @@ return view.extend({
           ),
         ),
       );
-
-      const selectedPresetDescription = () =>
-        presetOptions.find((preset) => preset.name === select.value)
-          ?.description || "";
-      const presetHelp = E(
-        "small",
-        {
-          style:
-            "color:var(--text-muted);flex-basis:100%;font-size:.875em;line-height:1.35;",
-        },
-        selectedPresetDescription(),
-      );
-      select.addEventListener("change", () => {
-        presetHelp.textContent = selectedPresetDescription();
-      });
 
       const resolvePresetSelection = () => {
         const presetName = select.value || "classic";
@@ -1825,7 +1790,6 @@ return view.extend({
           ),
           select,
           applyButton,
-          presetHelp,
         ],
       );
 
