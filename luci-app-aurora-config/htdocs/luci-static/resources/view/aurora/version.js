@@ -30,12 +30,12 @@ const handleUpdate = (ev) => {
   const displayName = ev.target.getAttribute("data-display-name");
   const packageFilter = ev.target.getAttribute("data-package-filter");
 
-  ui.showModal(_(`Update Package`), [
+  ui.showModal(_("Update Package"), [
     E(
       "p",
       {},
       _(
-        `Are you sure you want to update <strong>%h</strong> to version <strong>%h</strong>?`,
+        "Are you sure you want to update <strong>%h</strong> to version <strong>%h</strong>?",
       ).format(displayName, version),
     ),
     E("div", { class: "right" }, [
@@ -121,7 +121,7 @@ const executeUpdate = (packageName, repo, version, packageFilter) => {
           "p",
           {},
           _(
-            "Update completed successfully! Please reload the page to see the changes. If the old version still appears, try again in an incognito/private window or after clearing your browser cache.",
+            "Update complete. Reload to apply the changes. If the old version persists, clear your browser cache or use a private window.",
           ),
         ),
       );
@@ -148,7 +148,7 @@ const executeUpdate = (packageName, repo, version, packageFilter) => {
         E(
           "p",
           { class: "alert-message error" },
-          _(`Update failed: %s`).format(err.message || err),
+          _("Update failed: %s").format(err.message || err),
         ),
       );
       dlg.appendChild(
@@ -317,7 +317,7 @@ const checkForUpdates = (forceRefresh) => {
           "p",
           {},
           _(
-            `Failed to check for updates: %s. Please check your internet connection.`,
+            "Failed to check for updates: %s. Check your internet connection.",
           ).format(err.message || err),
         ),
         "error",
@@ -348,28 +348,31 @@ return view.extend({
 
         E("div", { class: "cbi-map-descr" }, [
           _(
-            "Check for and install updates for Aurora theme and configuration packages. Updates are downloaded from the latest releases of the Aurora theme and configuration plugin GitHub repositories.",
+            "Check for and install updates to the Aurora theme and configuration packages, pulled from their latest GitHub releases.",
           ),
           " ",
-          E(
-            "a",
-            {
-              href: "https://github.com/eamonxg/luci-theme-aurora/releases/latest",
-              target: "_blank",
-              rel: "noreferrer",
-            },
-            "Theme Releases",
-          ),
-          " ",
-          E(
-            "a",
-            {
-              href: "https://github.com/eamonxg/luci-app-aurora-config/releases/latest",
-              target: "_blank",
-              rel: "noreferrer",
-            },
-            "Config Releases",
-          ),
+          E("span", { style: "white-space: nowrap;" }, [
+            document.createTextNode(_("Releases:") + " "),
+            E(
+              "a",
+              {
+                href: "https://github.com/eamonxg/luci-theme-aurora/releases/latest",
+                target: "_blank",
+                rel: "noreferrer",
+              },
+              _("Theme"),
+            ),
+            document.createTextNode(" · "),
+            E(
+              "a",
+              {
+                href: "https://github.com/eamonxg/luci-app-aurora-config/releases/latest",
+                target: "_blank",
+                rel: "noreferrer",
+              },
+              _("Config"),
+            ),
+          ]),
         ]),
 
         E("div", { style: "margin: 1em 0" }, [
