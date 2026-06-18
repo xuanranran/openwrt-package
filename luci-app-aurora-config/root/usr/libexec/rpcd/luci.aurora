@@ -874,16 +874,22 @@ case "$1" in
 		# Stage the whole preset in one `uci batch`: drop the existing color
 		# options, write the snapshot, then update the preset bookkeeping --
 		# replacing what used to be ~180 individual uci invocations.
+		#
+		# Values MUST be single-quoted: `uci batch` parses each line as a
+		# shell-like command and treats a bare `#` as a comment, so an
+		# unquoted hex color (e.g. set ...=#fcfcfc) is silently truncated to
+		# an empty value. Snapshot values are already validated injection-safe
+		# (no ;{}<> or control chars) and contain no single quotes.
 		{
 			uci -q show aurora.theme \
 				| sed -n 's/^aurora\.theme\.\(\(light\|dark\)_[^=]*\)=.*/delete aurora.theme.\1/p'
 			while IFS='=' read -r key value; do
-				[ -n "$key" ] && printf 'set aurora.theme.%s=%s\n' "$key" "$value"
+				[ -n "$key" ] && printf "set aurora.theme.%s='%s'\n" "$key" "$value"
 			done <<-EOF
 			$PRESET_SNAPSHOT
 			EOF
-			printf 'set aurora.theme.active_preset=%s\n' "$name"
-			printf 'set aurora.theme.icon_cache_version=%s\n' "$(date +%s)"
+			printf "set aurora.theme.active_preset='%s'\n" "$name"
+			printf "set aurora.theme.icon_cache_version='%s'\n" "$(date +%s)"
 		} | uci batch
 
 		if ! uci -q commit aurora; then
