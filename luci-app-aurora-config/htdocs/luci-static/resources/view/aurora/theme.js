@@ -132,7 +132,7 @@ const COLOR_TOKENS = [
   },
   {
     key: "brand",
-    label: _("Primary Action"),
+    label: _("Brand"),
     description: _(
       "Accent for primary buttons, active navigation, and selected states.",
     ),
@@ -140,8 +140,8 @@ const COLOR_TOKENS = [
   },
   {
     key: "on_brand",
-    label: _("On-Action Text"),
-    description: _("Text and icons shown on filled action backgrounds."),
+    label: _("On-Brand Text"),
+    description: _("Text and icons shown on filled brand backgrounds."),
     group: "identity",
   },
   {
@@ -181,7 +181,7 @@ const COLOR_TOKENS = [
 const DERIVED_COLOR_TOKENS = [
   {
     key: "text_muted",
-    label: _("Secondary Text"),
+    label: _("Muted Text"),
     description: _(
       "Medium-emphasis text for helper copy, metadata, and summaries.",
     ),
@@ -190,7 +190,7 @@ const DERIVED_COLOR_TOKENS = [
   },
   {
     key: "text_subtle",
-    label: _("Tertiary Text"),
+    label: _("Subtle Text"),
     description: _(
       "Low-emphasis text for small labels, placeholders, and disabled hints.",
     ),
@@ -215,14 +215,14 @@ const DERIVED_COLOR_TOKENS = [
   },
   {
     key: "hairline",
-    label: _("Border"),
+    label: _("Hairline"),
     description: _("Separators, dividers, and input or card borders."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "hover_faint",
-    label: _("Neutral Hover"),
+    label: _("Faint Hover"),
     description: _(
       "Hover fill for menu items, table rows, and neutral controls.",
     ),
@@ -231,7 +231,7 @@ const DERIVED_COLOR_TOKENS = [
   },
   {
     key: "brand_hover",
-    label: _("Action Hover"),
+    label: _("Brand Hover"),
     description: _(
       "Hover state for filled primary buttons and high-emphasis controls.",
     ),
@@ -240,16 +240,16 @@ const DERIVED_COLOR_TOKENS = [
   },
   {
     key: "brand_subtle",
-    label: _("Selection Surface"),
+    label: _("Subtle Brand"),
     description: _(
-      "Action-tinted surface for active navigation and selected states.",
+      "Brand-tinted surface for active navigation and selected states.",
     ),
     group: "brand_interaction",
     derived: true,
   },
   {
     key: "brand_subtle_hover",
-    label: _("Selection Hover"),
+    label: _("Subtle Brand Hover"),
     description: _(
       "Hover fill for subtle primary buttons and selected surfaces.",
     ),
@@ -313,21 +313,21 @@ const DERIVED_COLOR_TOKENS = [
   },
   {
     key: "danger_surface_hover",
-    label: _("Danger Hover"),
+    label: _("Danger Surface Hover"),
     description: _("Hover fill for quiet destructive and delete controls."),
     group: "status_surfaces",
     derived: true,
   },
   {
     key: "scrim",
-    label: _("Modal Scrim"),
+    label: _("Scrim"),
     description: _("Dimming backdrop behind modal dialogs."),
     group: "hierarchy",
     derived: true,
   },
   {
     key: "mega_menu_bg",
-    label: _("Mega Menu Surface"),
+    label: _("Mega Menu Background"),
     description: _("Opaque surface for the expanded mega menu and its header."),
     group: "hierarchy",
     derived: true,
@@ -349,9 +349,9 @@ const COLOR_GROUPS = [
   },
   {
     key: "identity",
-    title: _("Text, Links & Actions"),
+    title: _("Text, Links & Brand"),
     description: _(
-      "Foregrounds, hyperlinks, primary actions, and their contrast color.",
+      "Foregrounds, hyperlinks, the brand color, and its contrast text.",
     ),
   },
   {
@@ -366,16 +366,16 @@ const COLOR_GROUPS = [
 const DERIVED_COLOR_GROUPS = [
   {
     key: "brand_interaction",
-    title: _("Action Interaction Details"),
+    title: _("Brand Interaction Details"),
     description: _(
-      "Derived from the action color: hover states, selected surfaces, focus rings, and progress meters.",
+      "Derived from the brand color: hover states, subtle fills, focus rings, and progress meters.",
     ),
   },
   {
     key: "hierarchy",
     title: _("Interface Hierarchy"),
     description: _(
-      "Derived from the canvas, surface, and text colors: secondary text, borders, overlays, and menu layers.",
+      "Derived from the canvas, surface, and text colors: muted and subtle text, borders, overlays, and menu layers.",
     ),
   },
   {
@@ -1620,7 +1620,7 @@ return view.extend({
                 "p",
                 {},
                 _(
-                  "Apply the '%s' preset now? It is saved immediately and the page reloads. Presets set the light and dark colors only — layout, typography, branding, navigation, and toolbar revert to Aurora defaults.",
+                  "Apply the '%s' preset now? It is saved immediately and the page reloads. Presets set the light and dark colors only — layout, typography, branding, navigation, and toolbar are left unchanged.",
                 ).format(presetLabel),
               ),
               E("div", { class: "right" }, [
@@ -1998,7 +1998,7 @@ return view.extend({
       "aurora",
       _("Layout"),
       _(
-        "Navigation, density, corner radius, and content width. Takes effect after Save & Apply.",
+        "Navigation, spacing, corner radius, and content width. Takes effect after Save & Apply.",
       ),
     );
     const structureSubsection = structureSection.subsection;
@@ -2008,7 +2008,7 @@ return view.extend({
       "nav_type",
       _("Navigation Style"),
     );
-    so.description = _("Navigation layout for the interface.");
+    so.description = _("Layout pattern for the primary navigation menu.");
     so.value("mega-menu", _("Mega Menu"));
     so.value("dropdown", _("Dropdown"));
     so.value("sidebar", _("Sidebar"));
@@ -2018,9 +2018,11 @@ return view.extend({
     so = structureSubsection.option(
       form.Value,
       "struct_spacing",
-      _("Interface Density"),
+      _("Spacing Scale"),
     );
-    so.description = _("Global spacing scale.");
+    so.description = _(
+      "Base spacing unit that scales padding and gaps across the interface.",
+    );
     so.default = "0.25rem";
     so.placeholder = "0.25rem";
     so.rmempty = false;
@@ -2031,7 +2033,9 @@ return view.extend({
       "struct_radius_base",
       _("Corner Radius"),
     );
-    so.description = _("Global corner radius scale.");
+    so.description = _(
+      "Base corner radius applied to buttons, inputs, cards, and surfaces.",
+    );
     so.default = "0.5rem";
     so.placeholder = "0.5rem";
     so.rmempty = false;
@@ -2040,9 +2044,9 @@ return view.extend({
     so = structureSubsection.option(
       form.Value,
       "struct_container_max_width",
-      _("Content Width"),
+      _("Content Max Width"),
     );
-    so.description = _("Maximum content width.");
+    so.description = _("Maximum width of the centered content area.");
     so.default = "80rem";
     so.placeholder = "80rem";
     so.rmempty = false;
@@ -2057,7 +2061,7 @@ return view.extend({
       "aurora",
       _("Typography"),
       _(
-        "Interface and monospace typefaces used across the theme. Save or Save & Apply downloads and caches the selected fonts.",
+        "Sans-serif and monospace typefaces used across the theme. Save or Save & Apply downloads and caches the selected fonts.",
       ),
     );
     const fontSubsection = fontSection.subsection;
@@ -2081,7 +2085,7 @@ return view.extend({
       const presetOpt = ss.option(
         form.ListValue,
         stackKey,
-        slot === "sans" ? _("Interface Typeface") : _("Monospace Typeface"),
+        slot === "sans" ? _("Sans-Serif Typeface") : _("Monospace Typeface"),
       );
       presetOpt.description =
         slot === "sans"
@@ -2553,11 +2557,7 @@ return view.extend({
     );
     const logoSubsection = logoSection.subsection;
 
-    so = logoSubsection.option(
-      form.ListValue,
-      "logo_svg",
-      _("Browser Tab & Login Icon"),
-    );
+    so = logoSubsection.option(form.ListValue, "logo_svg", _("Logo (SVG)"));
     so.description = _("SVG mark for the browser tab and login page.");
     so.default = "logo.svg";
     so.rmempty = false;

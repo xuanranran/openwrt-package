@@ -1,79 +1,67 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2741
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2737
 msgid "(No icons uploaded)"
 msgstr "(Tidak ada ikon yang diunggah)"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2574
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2570
 msgid "(None)"
 msgstr "(Tidak ada)"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2598
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2594
 msgid "192×192 icon for the installable web app manifest."
-msgstr "Ikon 192×192 untuk manifes aplikasi web (PWA) yang dapat diinstal."
+msgstr "Ikon 192×192 untuk manifes aplikasi web yang dapat diinstal."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2604
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2600
 msgid "512×512 icon for the installable web app manifest."
-msgstr "Ikon 512×512 untuk manifes aplikasi web (PWA) yang dapat diinstal."
+msgstr "Ikon 512×512 untuk manifes aplikasi web yang dapat diinstal."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:175
 msgid "Accent for errors, destructive controls, and critical states."
-msgstr "Aksen warna untuk galat (error), kontrol destruktif, dan kondisi kritis."
+msgstr "Aksen untuk kesalahan, kontrol destruktif, dan kondisi kritis."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:156
 msgid "Accent for informational alerts, labels, and tooltips."
-msgstr "Aksen warna untuk peringatan informasi, label, dan tooltip."
+msgstr "Aksen untuk peringatan informasi, label, dan tooltip."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:137
 msgid "Accent for primary buttons, active navigation, and selected states."
-msgstr "Aksen warna untuk tombol utama, navigasi aktif, dan kondisi terpilih."
+msgstr "Aksen untuk tombol utama, navigasi aktif, dan kondisi terpilih."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:168
 msgid "Accent for successful operations and healthy status."
-msgstr "Aksen warna untuk operasi yang sukses dan status normal/sehat."
+msgstr "Aksen untuk operasi sukses dan status sehat."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:162
 msgid "Accent for warnings, notices, and validation messages."
-msgstr "Aksen warna untuk peringatan, pemberitahuan, dan pesan validasi."
+msgstr "Aksen untuk peringatan, pemberitahuan, dan pesan validasi."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:361
 msgid "Accents for notifications, validation, and status feedback."
-msgstr "Aksen warna untuk notifikasi, validasi, dan umpan balik status."
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:234
-msgid "Action Hover"
-msgstr "Aksi Sorot (Hover)"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:369
-msgid "Action Interaction Details"
-msgstr "Detail Interaksi Aksi"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:245
-msgid "Action-tinted surface for active navigation and selected states."
-msgstr "Permukaan dengan corak warna aksi untuk navigasi aktif dan kondisi terpilih."
+msgstr "Aksen untuk notifikasi, validasi, dan umpan balik status."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2528
 msgid "Actions"
-msgstr "Aksi"
+msgstr "Tindakan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2712
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2708
 msgid "Add shortcuts, assign icons, and drag rows to reorder them."
-msgstr "Tambahkan pintasan, tetapkan ikon, dan seret baris untuk mengatur ulang urutan."
+msgstr "Tambahkan pintasan, tetapkan ikon, dan seret baris untuk mengatur ulang urutannya."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1537
 msgid "Amber Sand"
-msgstr "Pasir Amber"
+msgstr "Pasir Ambar"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2596
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2592
 msgid "App Icon 192×192"
 msgstr "Ikon Aplikasi 192×192"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2602
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2598
 msgid "App Icon 512×512"
 msgstr "Ikon Aplikasi 512×512"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2590
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2586
 msgid "Apple Touch Icon"
 msgstr "Ikon Apple Touch"
 
@@ -85,7 +73,7 @@ msgstr "Terapkan"
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1614
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1618
 msgid "Apply Preset"
-msgstr "Terapkan Preset"
+msgstr "Terapkan Prasetel"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1655
 msgid "Apply failed: %s"
@@ -95,15 +83,12 @@ msgstr "Gagal menerapkan: %s"
 msgid ""
 "Apply the '%s' preset now? It is saved immediately and the page reloads. "
 "Presets set the light and dark colors only — layout, typography, branding, "
-"navigation, and toolbar revert to Aurora defaults."
-msgstr ""
-"Terapkan preset '%s' sekarang? Ini akan segera disimpan dan halaman akan dimuat ulang. "
-"Preset hanya mengatur warna terang dan gelap — tata letak, tipografi, branding, "
-"navigasi, dan bilah alat (toolbar) akan dikembalikan ke standar bawaan Aurora."
+"navigation, and toolbar are left unchanged."
+msgstr "Terapkan prasetel '%s' sekarang? Perubahan akan segera disimpan dan halaman akan dimuat ulang. Prasetel hanya mengatur warna terang dan gelap — tata letak, tipografi, branding, navigasi, dan bilah alat tetap tidak berubah."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1635
 msgid "Applying preset..."
-msgstr "Menerapkan preset..."
+msgstr "Menerapkan prasetel..."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1634
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1785
@@ -112,21 +97,18 @@ msgstr "Menerapkan..."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:38
 msgid ""
-"Are you sure you want to update <strong>%h</strong> to version <strong>%h</"
-"strong>?"
+"Are you sure you want to update <strong>%h</strong> to version <strong>%h</strong>?"
 msgstr "Apakah Anda yakin ingin memperbarui <strong>%h</strong> ke versi <strong>%h</strong>?"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2527
 msgid "Asset Filename"
-msgstr "Nama Berkas Aset"
+msgstr "Nama File Aset"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2551
 msgid ""
 "Assign uploaded images to icons, favicons, PWA metadata, and the login "
 "background. Saved on Save or Save & Apply."
-msgstr ""
-"Tetapkan gambar yang diunggah untuk ikon, favicon, metadata PWA, dan latar belakang login. "
-"Disimpan saat mengklik Simpan atau Simpan & Terapkan."
+msgstr "Tetapkan gambar yang diunggah ke ikon, favicon, metadata PWA, dan latar belakang login. Disimpan saat mengklik Simpan atau Simpan & Terapkan."
 
 #: applications/luci-app-aurora-config/root/usr/share/luci/menu.d/luci-app-aurora.json:3
 msgid "Aurora Settings"
@@ -146,7 +128,7 @@ msgstr "Latar Belakang"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:309
 msgid "Background for error alerts and destructive-action messages."
-msgstr "Latar belakang untuk peringatan galat (error) dan pesan tindakan destruktif."
+msgstr "Latar belakang untuk peringatan kesalahan dan pesan tindakan destruktif."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:286
 msgid "Background for informational alerts, labels, and tooltips."
@@ -154,31 +136,39 @@ msgstr "Latar belakang untuk peringatan informasi, label, dan tooltip."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:301
 msgid "Background for success alerts and healthy-state labels."
-msgstr "Latar belakang untuk peringatan sukses dan label kondisi normal."
+msgstr "Latar belakang untuk peringatan sukses dan label kondisi sehat."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:294
 msgid "Background for warning alerts, notices, and labels."
-msgstr "Latar belakang untuk peringatan bahaya, pemberitahuan, dan label."
+msgstr "Latar belakang untuk peringatan, pemberitahuan, dan label."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:121
 msgid "Base surface for panels, cards, forms, tables, and neutral controls."
 msgstr "Permukaan dasar untuk panel, kartu, formulir, tabel, dan kontrol netral."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:218
-msgid "Border"
-msgstr "Bingkai / Batas"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:135
+msgid "Brand"
+msgstr "Merek"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2238
 msgid "Brand Asset Library"
 msgstr "Pustaka Aset Merek"
 
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:234
+msgid "Brand Hover"
+msgstr "Sorotan Merek"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:369
+msgid "Brand Interaction Details"
+msgstr "Detail Interaksi Merek"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:245
+msgid "Brand-tinted surface for active navigation and selected states."
+msgstr "Permukaan bernuansa merek untuk navigasi aktif dan kondisi terpilih."
+
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1975
 msgid "Branding & Shortcuts"
 msgstr "Branding & Pintasan"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2559
-msgid "Browser Tab & Login Icon"
-msgstr "Tab Peramban & Ikon Login"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1573
 msgid "Built-in"
@@ -204,13 +194,11 @@ msgstr "Periksa Pembaruan"
 msgid ""
 "Check for and install updates to the Aurora theme and configuration "
 "packages, pulled from their latest GitHub releases."
-msgstr ""
-"Periksa dan instal pembaruan untuk tema Aurora dan paket konfigurasi, "
-"yang diambil langsung dari rilis GitHub terbaru mereka."
+msgstr "Periksa dan instal pembaruan untuk tema dan paket konfigurasi Aurora, yang diambil dari rilis GitHub terbaru."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1750
 msgid "Checking file…"
-msgstr "Memeriksa berkas…"
+msgstr "Memeriksa file…"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:213
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:239
@@ -226,7 +214,7 @@ msgstr "Memeriksa..."
 msgid "Choose a literal color for this token"
 msgstr "Pilih warna literal untuk token ini"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2744
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2740
 msgid "Choose an uploaded icon for this shortcut"
 msgstr "Pilih ikon yang telah diunggah untuk pintasan ini"
 
@@ -255,23 +243,23 @@ msgid "Configuration imported successfully."
 msgstr "Konfigurasi berhasil diimpor."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2043
-msgid "Content Width"
-msgstr "Lebar Konten"
+msgid "Content Max Width"
+msgstr "Lebar Maksimum Konten"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2032
 msgid "Corner Radius"
-msgstr "Radius Sudut (Kelengkungan)"
+msgstr "Radius Sudut"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:173
 msgid "Danger"
 msgstr "Bahaya"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:316
-msgid "Danger Hover"
-msgstr "Bahaya Sorot (Hover)"
-
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:307
 msgid "Danger Surface"
+msgstr "Permukaan Bahaya"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:316
+msgid "Danger Surface Hover"
 msgstr "Permukaan Bahaya"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1987
@@ -284,7 +272,7 @@ msgstr "Bawaan"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:129
 msgid "Default foreground for headings, body text, icons, and form values."
-msgstr "Latar depan (foreground) bawaan untuk judul, teks utama, ikon, dan nilai formulir."
+msgstr "Latar depan bawaan untuk tajuk, teks isi, ikon, dan nilai formulir."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2503
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2509
@@ -295,9 +283,7 @@ msgstr "Hapus"
 msgid ""
 "Delete '%s' from /www/luci-static/aurora/images/? Theme settings that "
 "reference it may need updating."
-msgstr ""
-"Hapus '%s' dari /www/luci-static/aurora/images/? Pengaturan tema yang "
-"merujuk ke aset ini mungkin perlu diperbarui."
+msgstr "Hapus '%s' dari /www/luci-static/aurora/images/? Pengaturan tema yang merujuk padanya mungkin perlu diperbarui."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2455
 msgid "Delete Brand Asset"
@@ -317,59 +303,55 @@ msgstr "Token Warna Turunan"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:371
 msgid ""
-"Derived from the action color: hover states, selected surfaces, focus rings, "
-"and progress meters."
-msgstr ""
-"Diturunkan dari warna aksi: kondisi sorot (hover), permukaan terpilih, cincin fokus, "
-"dan indikator kemajuan (progress)."
+"Derived from the brand color: hover states, subtle fills, focus rings, and "
+"progress meters."
+msgstr "Turunan dari warna merek: kondisi sorotan, isian halus, cincin fokus, dan indikator kemajuan."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:378
 msgid ""
-"Derived from the canvas, surface, and text colors: secondary text, borders, "
-"overlays, and menu layers."
-msgstr ""
-"Diturunkan dari warna kanvas, permukaan, dan teks: teks sekunder, bingkai, "
-"lapisan hamparan (overlay), dan lapisan menu."
+"Derived from the canvas, surface, and text colors: muted and subtle text, "
+"borders, overlays, and menu layers."
+msgstr "Turunan dari warna kanvas, permukaan, dan teks: teks tersamar dan halus, batas, hamparan, dan lapisan menu."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:385
 msgid "Derived from the status accents: alert, label, and badge backgrounds."
-msgstr "Diturunkan dari aksen status: latar belakang peringatan, label, dan lencana (badge)."
+msgstr "Turunan dari aksen status: latar belakang peringatan, label, dan lencana."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:324
 msgid "Dimming backdrop behind modal dialogs."
-msgstr "Lapisan latar belakang yang meredup di belakang dialog modal (scrim)."
+msgstr "Latar belakang redup di belakang dialog modal."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:67
 msgid "Downloading update files..."
-msgstr "Mengunduh berkas pembaruan..."
+msgstr "Mengunduh file pembaruan..."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2336
 msgid "Drop image asset here, or click to browse"
-msgstr "Seret aset gambar ke sini, atau klik untuk menelusuri"
+msgstr "Letakkan aset gambar di sini, atau klik untuk mencari"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2013
 msgid "Dropdown"
-msgstr "Menu Turun (Dropdown)"
+msgstr "Dropdown"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2721
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2717
 msgid "Enabled"
 msgstr "Diaktifkan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2736
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2732
 msgid "Enter a LuCI shortcut URL"
 msgstr "Masukkan URL pintasan LuCI"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2730
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2726
 msgid "Enter a shortcut label"
 msgstr "Masukkan label pintasan"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1879
 msgid "Error: %s"
-msgstr "Galat: %s"
+msgstr "Kesalahan: %s"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1188
 msgid "Expand or collapse this group"
-msgstr "Buka atau ciutkan grup ini"
+msgstr "Luaskan atau ciutkan grup ini"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1731
 msgid "Export"
@@ -395,11 +377,15 @@ msgstr "Gagal memeriksa pembaruan: %s. Periksa koneksi internet Anda."
 msgid "Failed to delete: %s"
 msgstr "Gagal menghapus: %s"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2580
-msgid "Favicon (ICO / Legacy)"
-msgstr "Favicon (ICO / Format Lama)"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:225
+msgid "Faint Hover"
+msgstr "Sorotan Tipis"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2569
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2576
+msgid "Favicon (ICO / Legacy)"
+msgstr "Favicon (ICO / Warisan)"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2565
 msgid "Favicon (PNG)"
 msgstr "Favicon (PNG)"
 
@@ -407,13 +393,11 @@ msgstr "Favicon (PNG)"
 msgid ""
 "Fields accept #hex, rgb(), hsl(), lab(), and oklch(). The picker fills hex; "
 "other formats can be typed."
-msgstr ""
-"Kolom menerima format #hex, rgb(), hsl(), lab(), dan oklch(). Pemilih warna otomatis mengisi hex; "
-"format lainnya dapat diketik secara manual."
+msgstr "Kolom menerima format #hex, rgb(), hsl(), lab(), dan oklch(). Alat pemilih akan mengisi format hex; format lain dapat diketik secara manual."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2692
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2688
 msgid "Floating shortcut launcher shown along the right edge of the interface."
-msgstr "Peluncur pintasan melayang yang ditampilkan di sepanjang tepi kanan antarmuka."
+msgstr "Peluncur pintasan mengambang yang ditampilkan di sepanjang tepi kanan antarmuka."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:261
 msgid "Focus Ring"
@@ -421,65 +405,69 @@ msgstr "Cincin Fokus"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:263
 msgid "Focus outline for inputs, selects, and keyboard-operated controls."
-msgstr "Garis luar fokus untuk input, pilihan (select), dan kontrol yang dioperasikan dengan papan ketik."
+msgstr "Garis luar fokus untuk input, seleksi, dan kontrol yang dioperasikan dengan keyboard."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2146
 msgid "Font CSS file is empty"
-msgstr "Berkas CSS font kosong"
+msgstr "File CSS font kosong"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2142
 msgid "Font CSS file is not available"
-msgstr "Berkas CSS font tidak tersedia"
+msgstr "File CSS font tidak tersedia"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2091
 msgid "Font for code, command output, and the system log viewer."
-msgstr "Font untuk kode, keluaran perintah, dan penampil log sistem."
+msgstr "Font untuk kode, output perintah, dan penampil log sistem."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:354
-msgid "Foregrounds, hyperlinks, primary actions, and their contrast color."
-msgstr "Latar depan (foreground), pranala (hyperlink), aksi utama, dan warna kontrasnya."
+msgid "Foregrounds, hyperlinks, the brand color, and its contrast text."
+msgstr "Latar depan, hipertautan, warna merek, dan teks kontrasnya."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2623
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2619
 msgid "Full-screen login page background; use a wide image."
 msgstr "Latar belakang halaman login layar penuh; gunakan gambar yang lebar."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2034
-msgid "Global corner radius scale."
-msgstr "Skala global untuk radius sudut kelengkungan."
+msgid "Base corner radius applied to buttons, inputs, cards, and surfaces."
+msgstr "Radius sudut dasar yang diterapkan pada tombol, input, kartu, dan permukaan."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2023
-msgid "Global spacing scale."
-msgstr "Skala global untuk jarak (spacing)."
+msgid "Base spacing unit that scales padding and gaps across the interface."
+msgstr "Unit spasi dasar yang menskalakan padding dan celah di seluruh antarmuka."
 
 #: applications/luci-app-aurora-config/root/usr/share/rpcd/acl.d/luci-app-aurora.json:3
 msgid "Grant access to Aurora theme configuration"
 msgstr "Berikan akses ke konfigurasi tema Aurora"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2592
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:218
+msgid "Hairline"
+msgstr "Garis Sangat Tipis"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2588
 msgid "Home Screen icon for iOS and iPadOS."
 msgstr "Ikon Layar Utama untuk iOS dan iPadOS."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:227
 msgid "Hover fill for menu items, table rows, and neutral controls."
-msgstr "Isian warna sorot (hover) untuk item menu, baris tabel, dan kontrol netral."
+msgstr "Isian sorotan untuk item menu, baris tabel, dan kontrol netral."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:317
 msgid "Hover fill for quiet destructive and delete controls."
-msgstr "Isian warna sorot (hover) untuk tombol destruktif samar dan kontrol hapus."
+msgstr "Isian sorotan untuk kontrol destruktif dan hapus yang senyap."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:254
 msgid "Hover fill for subtle primary buttons and selected surfaces."
-msgstr "Isian warna sorot (hover) untuk tombol utama sekunder/halus dan permukaan terpilih."
+msgstr "Isian sorotan untuk tombol utama yang halus dan permukaan terpilih."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:236
 msgid "Hover state for filled primary buttons and high-emphasis controls."
-msgstr "Kondisi sorot (hover) untuk tombol utama solid dan kontrol berpenekanan tinggi."
+msgstr "Kondisi sorotan untuk tombol utama yang terisi dan kontrol berpenekanan tinggi."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:150
 msgid "Hyperlinks in page content, help text, and status output."
-msgstr "Pranala (hyperlink) pada konten halaman, teks bantuan, dan keluaran status."
+msgstr "Hipertautan dalam konten halaman, teks bantuan, dan output status."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2738
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2734
 msgid "Icon"
 msgstr "Ikon"
 
@@ -505,9 +493,7 @@ msgstr "Impor gagal: %s"
 msgid ""
 "Importing replaces /etc/config/aurora, applies all settings, and reloads the "
 "page. Uploaded images stay on disk."
-msgstr ""
-"Mengimpor akan menggantikan /etc/config/aurora, menerapkan semua pengaturan, dan memuat ulang halaman. "
-"Gambar yang diunggah tetap aman di dalam penyimpanan."
+msgstr "Mengimpor akan menggantikan /etc/config/aurora, menerapkan semua pengaturan, dan memuat ulang halaman. Gambar yang diunggah tetap berada di penyimpanan."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1784
 msgid "Importing..."
@@ -523,7 +509,7 @@ msgstr "Permukaan Informasi"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:204
 msgid "Inset layer for inputs, code blocks, table headers, and badges."
-msgstr "Lapisan cekung (inset) untuk input, blok kode, kepala tabel, dan lencana (badge)."
+msgstr "Lapisan dalam untuk input, blok kode, tajuk tabel, dan lencana."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:111
 msgid "Installation Details"
@@ -537,25 +523,15 @@ msgstr "Versi Terinstal"
 msgid "Installing update packages..."
 msgstr "Menginstal paket pembaruan..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2021
-msgid "Interface Density"
-msgstr "Kepadatan Antarmuka"
-
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:376
 msgid "Interface Hierarchy"
 msgstr "Hierarki Antarmuka"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2084
-msgid "Interface Typeface"
-msgstr "Rupa Huruf (Font) Antarmuka"
-
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2060
 msgid ""
-"Interface and monospace typefaces used across the theme. Save or Save & "
+"Sans-serif and monospace typefaces used across the theme. Save or Save & "
 "Apply downloads and caches the selected fonts."
-msgstr ""
-"Rupa huruf antarmuka dan monospace yang digunakan di seluruh tema. Klik Simpan atau Simpan & "
-"Terapkan untuk mengunduh dan menyimpan font terpilih ke dalam cache."
+msgstr "Rupa huruf sans-serif dan monospace yang digunakan di seluruh tema. Menekan Simpan atau Simpan & Terapkan akan mengunduh dan menyimpan font yang dipilih ke dalam cache."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:888
 msgid "Invalid color expression."
@@ -563,7 +539,7 @@ msgstr "Ekspresi warna tidak valid."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:531
 msgid "Invalid, missing, or cyclic color expression."
-msgstr "Ekspresi warna tidak valid, hilang, atau terjadi perputaran siklik."
+msgstr "Ekspresi warna tidak valid, hilang, atau melingkar."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2344
 msgid "JPG · PNG · WebP · AVIF · SVG · GIF"
@@ -583,11 +559,11 @@ msgstr "Tata Letak & Tipografi"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:271
 msgid "Leading color for progress meters."
-msgstr "Warna utama pada ujung indikator kemajuan."
+msgstr "Warna utama untuk indikator kemajuan."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2582
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2578
 msgid "Legacy ICO favicon fallback."
-msgstr "Cadangan (fallback) favicon ICO lama untuk kompatibilitas."
+msgstr "Cadangan favicon ICO lawas."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1986
 msgid "Light Mode"
@@ -595,43 +571,43 @@ msgstr "Mode Terang"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:338
 msgid "Light backdrop behind the expanded mega menu."
-msgstr "Lapisan latar belakang terang di belakang mega menu yang terbuka (scrim)."
+msgstr "Latar belakang redup terang di belakang mega menu yang diperluas."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:149
 msgid "Link"
-msgstr "Pranala (Link)"
+msgstr "Tautan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2621
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2617
 msgid "Login Background"
 msgstr "Latar Belakang Login"
 
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2556
+msgid "Logo (SVG)"
+msgstr "Logo (SVG)"
+
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:195
 msgid "Low-emphasis text for small labels, placeholders, and disabled hints."
-msgstr "Teks berpenekanan rendah untuk label kecil, teks penahan (placeholder), dan petunjuk nonaktif."
+msgstr "Teks berpenekanan rendah untuk label kecil, teks tempat penampung, dan petunjuk yang dinonaktifkan."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2045
-msgid "Maximum content width."
-msgstr "Lebar konten maksimum."
+msgid "Maximum width of the centered content area."
+msgstr "Lebar maksimum dari area konten yang ditengah."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:186
 msgid "Medium-emphasis text for helper copy, metadata, and summaries."
-msgstr "Teks berpenekanan sedang untuk salinan bantuan, metadata, dan ringkasan."
+msgstr "Teks berpenekanan sedang untuk teks bantuan, metadata, dan ringkasan."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2012
 msgid "Mega Menu"
 msgstr "Mega Menu"
 
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:330
+msgid "Mega Menu Background"
+msgstr "Latar Belakang Mega Menu"
+
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:337
 msgid "Mega Menu Scrim"
-msgstr "Scrim Mega Menu"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:330
-msgid "Mega Menu Surface"
-msgstr "Permukaan Mega Menu"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:323
-msgid "Modal Scrim"
-msgstr "Scrim Dialog Modal"
+msgstr "Lapisan Redup Mega Menu"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1535
 msgid "Monochrome"
@@ -641,24 +617,23 @@ msgstr "Monokrom"
 msgid "Monospace Typeface"
 msgstr "Rupa Huruf Monospace"
 
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:184
+msgid "Muted Text"
+msgstr "Teks Tersamar"
+
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2009
 msgid "Navigation Style"
 msgstr "Gaya Navigasi"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2011
-msgid "Navigation layout for the interface."
-msgstr "Tata letak navigasi untuk antarmuka."
+msgid "Layout pattern for the primary navigation menu."
+msgstr "Pola tata letak untuk menu navigasi utama."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2001
 msgid ""
-"Navigation, density, corner radius, and content width. Takes effect after "
+"Navigation, spacing, corner radius, and content width. Takes effect after "
 "Save & Apply."
-msgstr ""
-"Navigasi, kepadatan, radius kelengkungan sudut, dan lebar konten. Efektif setelah klik Simpan & Terapkan."
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:225
-msgid "Neutral Hover"
-msgstr "Netral Sorot (Hover)"
+msgstr "Navigasi, spasi, radius sudut, dan lebar konten. Berlaku setelah Simpan & Terapkan."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2522
 msgid "No brand assets uploaded yet."
@@ -666,27 +641,27 @@ msgstr "Belum ada aset merek yang diunggah."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1748
 msgid "No file selected or upload failed"
-msgstr "Tidak ada berkas terpilih atau unggahan gagal"
+msgstr "Tidak ada file yang dipilih atau unggahan gagal"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:273
 msgid "No packages found. Please check your installation."
-msgstr "Paket tidak ditemukan. Silakan periksa kembali instalasi Anda."
+msgstr "Tidak ada paket yang ditemukan. Silakan periksa instalasi Anda."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2628
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2624
 msgid "None"
 msgstr "Tidak ada"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:212
 msgid "Not installed"
-msgstr "Tidak terinstal"
+msgstr "Belum terinstal"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:143
-msgid "On-Action Text"
-msgstr "Teks di Atas Warna Aksi"
+msgid "On-Brand Text"
+msgstr "Teks Atas Merek"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:331
 msgid "Opaque surface for the expanded mega menu and its header."
-msgstr "Permukaan pekat (buram) untuk mega menu yang diperluas beserta bagian kepalanya."
+msgstr "Permukaan buram untuk mega menu yang diperluas dan tajuknya."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:359
 msgid "Operational Status Accents"
@@ -694,11 +669,11 @@ msgstr "Aksen Status Operasional"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:211
 msgid "Overlay Surface"
-msgstr "Permukaan Lapisan Hamparan (Overlay)"
+msgstr "Permukaan Hamparan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2571
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2567
 msgid "PNG fallback when SVG favicons are unsupported."
-msgstr "Cadangan (fallback) format PNG jika favicon SVG tidak didukung."
+msgstr "Cadangan PNG ketika favicon SVG tidak didukung."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:394
 msgid "Package Name"
@@ -706,11 +681,11 @@ msgstr "Nama Paket"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:113
 msgid "Page canvas behind the header, navigation, content, and login screen."
-msgstr "Kanvas halaman di belakang header, navigasi, konten, dan layar login."
+msgstr "Kanvas halaman di belakang tajuk, navigasi, konten, dan layar login."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2476
 msgid "Please wait…"
-msgstr "Mohon tunggu…"
+msgstr "Silakan tunggu…"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2199
 msgid "Preparing Typography"
@@ -718,46 +693,41 @@ msgstr "Menyiapkan Tipografi"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2196
 msgid "Preparing selected typefaces..."
-msgstr "Menyiapkan rupa huruf (font) terpilih..."
+msgstr "Menyiapkan rupa huruf yang dipilih..."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1906
 msgid "Preset"
-msgstr "Preset"
+msgstr "Prasetel"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1645
 msgid "Preset applied successfully."
-msgstr "Preset berhasil diterapkan."
+msgstr "Prasetel berhasil diterapkan."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2526
 msgid "Preview"
 msgstr "Pratinjau"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:135
-msgid "Primary Action"
-msgstr "Aksi Utama"
-
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2089
 msgid ""
 "Primary font for all interface text — headings, body, menus, forms, and "
 "tables."
-msgstr ""
-"Font utama untuk semua teks antarmuka — judul, teks isi, menu, formulir, dan tabel."
+msgstr "Font utama untuk semua teks antarmuka — tajuk, isi teks, menu, formulir, dan tabel."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:277
 msgid "Progress End"
-msgstr "Batas Akhir Kemajuan"
+msgstr "Ujung Indikator Kemajuan"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:270
 msgid "Progress Start"
-msgstr "Titik Awal Kemajuan"
+msgstr "Awal Indikator Kemajuan"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:212
 msgid "Raised layer for dropdowns, modals, and tooltips."
-msgstr "Lapisan menonjol (terangkat) untuk dropdown, dialog modal, dan tooltip."
+msgstr "Lapisan yang ditinggikan untuk dropdown, modal, dan tooltip."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:355
 msgid "Releases:"
-msgstr "Rilis (Releases):"
+msgstr "Rilis:"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:140
 msgid "Reload"
@@ -773,10 +743,7 @@ msgid ""
 "Reset /etc/config/aurora to the packaged Default preset — colors, layout, "
 "typography, branding, navigation, and toolbar. Uploaded images stay on disk; "
 "custom selections not in the Default preset are cleared."
-msgstr ""
-"Atur ulang /etc/config/aurora ke preset Bawaan — mencakup warna, tata letak, "
-"tipografi, branding, navigasi, dan toolbar. Gambar yang diunggah tetap berada di penyimpanan; "
-"pilihan kustom di luar preset bawaan akan dihapus."
+msgstr "Atur ulang /etc/config/aurora ke prasetel Bawaan paket — warna, tata letak, tipografi, branding, navigasi, dan bilah alat. Gambar yang diunggah tetap berada di penyimpanan; pilihan khusus yang tidak ada dalam prasetel Bawaan akan dihapus."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1843
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1845
@@ -789,79 +756,75 @@ msgstr "Mengatur ulang..."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:744
 msgid "Resolved color"
-msgstr "Warna hasil konversi"
+msgstr "Warna yang dihasilkan"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:754
 msgid "Resolved color cannot be shown by the picker."
-msgstr "Warna hasil konversi tidak dapat ditampilkan oleh pemilih warna."
+msgstr "Warna yang dihasilkan tidak dapat ditampilkan oleh alat pemilih."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:972
 msgid "Resolved preview color - click to pick"
-msgstr "Pratinjau warna terkonversi - klik untuk memilih"
+msgstr "Warna pratinjau yang dihasilkan - klik untuk memilih"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1862
 msgid "Restoring..."
 msgstr "Memulihkan..."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2561
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2557
 msgid "SVG mark for the browser tab and login page."
-msgstr "Logo/Tanda SVG untuk tab peramban dan halaman login."
+msgstr "Tanda SVG untuk tab browser dan halaman login."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1536
 msgid "Sage Green"
 msgstr "Hijau Sage"
 
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2084
+msgid "Sans-Serif Typeface"
+msgstr "Rupa Huruf Sans-Serif"
+
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:958
 msgid "Saved or preset value"
-msgstr "Nilai yang disimpan atau preset"
+msgstr "Nilai yang disimpan atau prasetel"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:184
-msgid "Secondary Text"
-msgstr "Teks Sekunder"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:252
-msgid "Selection Hover"
-msgstr "Pilihan Sorot (Hover)"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:243
-msgid "Selection Surface"
-msgstr "Permukaan Terpilih"
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:323
+msgid "Scrim"
+msgstr "Lapisan Redup"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:219
 msgid "Separators, dividers, and input or card borders."
-msgstr "Pemisah, garis bagi, dan bingkai kolom input atau kartu."
+msgstr "Pemisah, pembagi, dan batas input atau kartu."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1871
 msgid "Settings reset successfully."
 msgstr "Pengaturan berhasil diatur ulang."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2726
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2722
 msgid "Shortcut Label"
 msgstr "Label Pintasan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2690
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2686
 msgid "Shortcut Toolbar"
-msgstr "Bilah Alat Pintasan (Shortcut Toolbar)"
+msgstr "Bilah Alat Pintasan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2732
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2728
 msgid "Shortcut URL"
 msgstr "URL Pintasan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2700
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2696
 msgid "Show Shortcut Toolbar"
 msgstr "Tampilkan Bilah Alat Pintasan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2702
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2698
 msgid "Show the floating launcher on all pages."
-msgstr "Tampilkan peluncur melayang di semua halaman."
+msgstr "Tampilkan peluncur mengambang di semua halaman."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2014
 msgid "Sidebar"
-msgstr "Bilah Samping (Sidebar)"
+msgstr "Bilah Samping"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2549
 msgid "Site Branding"
-msgstr "Identitas Merek Situs"
+msgstr "Branding Situs"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1538
 msgid "Sky Blue"
@@ -871,6 +834,10 @@ msgstr "Biru Langit"
 msgid "Source Color Tokens"
 msgstr "Token Warna Sumber"
 
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2021
+msgid "Spacing Scale"
+msgstr "Skala Spasi"
+
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:400
 msgid "Status"
 msgstr "Status"
@@ -878,6 +845,18 @@ msgstr "Status"
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:383
 msgid "Status Message Surfaces"
 msgstr "Permukaan Pesan Status"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:243
+msgid "Subtle Brand"
+msgstr "Merek Halus"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:252
+msgid "Subtle Brand Hover"
+msgstr "Sorotan Merek Halus"
+
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:193
+msgid "Subtle Text"
+msgstr "Teks Halus"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:167
 msgid "Success"
@@ -897,35 +876,29 @@ msgstr "Permukaan"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1572
 msgid "System Mono"
-msgstr "System Mono"
+msgstr "Sistem Mono"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:347
 msgid "System Surfaces"
 msgstr "Permukaan Sistem"
-
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:193
-msgid "Tertiary Text"
-msgstr "Teks Tersier"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:127
 msgid "Text"
 msgstr "Teks"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:144
-msgid "Text and icons shown on filled action backgrounds."
-msgstr "Teks dan ikon yang ditampilkan di atas latar belakang aksi solid."
+msgid "Text and icons shown on filled brand backgrounds."
+msgstr "Teks dan ikon ditampilkan pada latar belakang merek yang terisi."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:352
-msgid "Text, Links & Actions"
-msgstr "Teks, Pranala & Aksi"
+msgid "Text, Links & Brand"
+msgstr "Teks, Tautan & Merek"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1038
 msgid ""
 "The 10 source tokens that drive the theme. Changes preview here instantly; "
 "Save or Save & Apply persists them."
-msgstr ""
-"10 token warna sumber yang menggerakkan tema. Perubahan dipratinjau di sini secara instan; "
-"Klik Simpan atau Simpan & Terapkan untuk menyimpannya secara permanen."
+msgstr "10 token sumber yang menggerakkan tema. Perubahan dipratinjau di sini secara instan; Tekan Simpan atau Simpan & Terapkan untuk menetapkannya."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:363
 msgid "Theme"
@@ -937,23 +910,26 @@ msgstr "Pengaturan Tema"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:453
 msgid "Theme stylesheet resolver timed out."
-msgstr "Penyelesaian lembar gaya (stylesheet) tema habis waktu (timeout)."
+msgstr "Penyelesai stylesheet tema habis waktu."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1941
 msgid "Theme:"
 msgstr "Tema:"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:1052
-msgid "Tokens computed from the source colors. Leave a field empty to keep its automatic value; enter a color only to override it. Changes preview here instantly; Save or Save & Apply persists them."
-msgstr "Token dihitung berdasarkan warna sumber. Kosongkan kolom untuk mempertahankan nilai otomatisnya; masukkan warna tertentu jika ingin menimpanya. Perubahan dipratinjau secara instan; Klik Simpan atau Simpan & Terapkan untuk menyimpan secara permanen."
+msgid ""
+"Tokens computed from the source colors. Leave a field empty to keep its "
+"automatic value; enter a color only to override it. Changes preview here "
+"instantly; Save or Save & Apply persists them."
+msgstr "Token dihitung dari warna sumber. Biarkan kolom kosong untuk mempertahankan nilai otomatisnya; masukkan warna hanya untuk menggantikannya. Perubahan dipratinjau di sini secara instan; Tekan Simpan atau Simpan & Terapkan untuk menetapkannya."
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2711
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2707
 msgid "Toolbar Shortcuts"
-msgstr "Pintasan Bilah Alat (Toolbar)"
+msgstr "Pintasan Bilah Alat"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:278
 msgid "Trailing color for progress meters."
-msgstr "Warna sekunder pada pangkal indikator kemajuan."
+msgstr "Warna akhir untuk indikator kemajuan."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2058
 msgid "Typography"
@@ -969,7 +945,7 @@ msgstr "Tidak dapat mengonversi warna yang dipilih."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:473
 msgid "Unable to create the theme color resolver."
-msgstr "Tidak dapat membuat sistem penyelesaian warna tema."
+msgstr "Tidak dapat membuat penyelesai warna tema."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:809
 msgid "Unable to generate the automatic derived value."
@@ -981,11 +957,11 @@ msgstr "Tidak dapat memuat %s."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:482
 msgid "Unable to load the Aurora stylesheet."
-msgstr "Tidak dapat memuat lembar gaya (stylesheet) Aurora."
+msgstr "Tidak dapat memuat stylesheet Aurora."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:824
 msgid "Unable to resolve color expressions."
-msgstr "Tidak dapat menguraikan ekspresi warna."
+msgstr "Tidak dapat menyelesaikan ekspresi warna."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:177
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:192
@@ -1001,7 +977,7 @@ msgstr "Tidak Diketahui"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:195
 msgid "Up to date"
-msgstr "Sudah yang terbaru"
+msgstr "Terbaru"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:59
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:191
@@ -1013,8 +989,10 @@ msgid "Update Package"
 msgstr "Perbarui Paket"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:124
-msgid "Update complete. Reload to apply the changes. If the old version persists, clear your browser cache or use a private window."
-msgstr "Pembaruan selesai. Muat ulang halaman untuk melihat perubahan. Jika versi lama masih muncul, bersihkan cache peramban atau gunakan jendela penyamaran (incognito)."
+msgid ""
+"Update complete. Reload to apply the changes. If the old version persists, "
+"clear your browser cache or use a private window."
+msgstr "Pembaruan selesai. Muat ulang untuk menerapkan perubahan. Jika versi lama tetap muncul, bersihkan cache browser Anda atau gunakan jendela pribadi."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/version.js:151
 msgid "Update failed: %s"
@@ -1025,8 +1003,10 @@ msgid "Updating Package"
 msgstr "Memperbarui Paket"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2240
-msgid "Upload and manage images for icons, favicons, PWA assets, and the login background. Files are stored in <code>/www/luci-static/aurora/images/</code>."
-msgstr "Unggah dan kelola gambar untuk ikon, favicon, aset PWA, dan latar belakang login. Berkas disimpan di dalam direktori <code>/www/luci-static/aurora/images/</code>."
+msgid ""
+"Upload and manage images for icons, favicons, PWA assets, and the login "
+"background. Files are stored in <code>/www/luci-static/aurora/images/</code>."
+msgstr "Unggah dan kelola gambar untuk ikon, favicon, aset PWA, dan latar belakang login. File disimpan di <code>/www/luci-static/aurora/images/</code>."
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2399
 msgid "Upload failed"
@@ -1053,10 +1033,10 @@ msgstr "Peringatan"
 msgid "Warning Surface"
 msgstr "Permukaan Peringatan"
 
-#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2728
+#: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2724
 msgid "e.g., Network Interfaces"
 msgstr "misalnya, Antarmuka Jaringan"
 
 #: applications/luci-app-aurora-config/htdocs/luci-static/resources/view/aurora/theme.js:2204
 msgid "unknown error"
-msgstr "galat tidak diketahui"
+msgstr "kesalahan tidak diketahui"
