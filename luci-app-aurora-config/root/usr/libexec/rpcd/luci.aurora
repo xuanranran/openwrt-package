@@ -1,6 +1,5 @@
 #!/bin/sh
 
-. /lib/functions.sh
 . /usr/share/libubox/jshn.sh
 
 readonly ICON_PATH="/www/luci-static/aurora/images"
@@ -18,7 +17,6 @@ readonly SKY_BLUE_TEMPLATE="/usr/share/aurora/sky-blue.template"
 readonly FONT_PRESETS_FILE="/usr/share/aurora/font-presets.conf"
 readonly IMPORT_CONFIG_TMP="/tmp/aurora_config_import.tmp"
 readonly EXPORT_CONFIG_TMP="/tmp/aurora_config_export.conf"
-readonly PRESET_UCI_PACKAGE="aurora_preset"
 # 10 editable inputs + 20 engine-derived tokens (see utils/tokens.global.js and
 # the theme's tokens/spec.js). Must match the keys emitted into the preset
 # templates by scripts/gen-presets.mjs. expected_count below derives from this
@@ -56,7 +54,14 @@ mega_menu_bg
 mega_menu_scrim
 "
 
-PRESET_UCI_DIR=""
+# Number of color options a valid preset template must contain (every token in
+# both light_ and dark_ variants). Derived once from COLOR_TOKEN_KEYS.
+PRESET_EXPECTED_COUNT=$(( $(printf '%s\n' $COLOR_TOKEN_KEYS | grep -c .) * 2 ))
+
+# Populated by load_preset_snapshot() with newline-separated "key=value" pairs
+# for the requested preset; reused for both validation and emission so the
+# template is parsed a single time.
+PRESET_SNAPSHOT=""
 
 normalize_preset_name() {
 	local name="${1:-default}"
@@ -78,21 +83,11 @@ resolve_preset_path() {
 	esac
 }
 
-cleanup_preset_snapshot() {
-	if [ -n "$PRESET_UCI_DIR" ] && [ -d "$PRESET_UCI_DIR" ]; then
-		rm -rf "$PRESET_UCI_DIR"
-	fi
-	PRESET_UCI_DIR=""
-}
-
-trap cleanup_preset_snapshot EXIT
-trap 'cleanup_preset_snapshot; exit 1' HUP INT TERM
-
 is_safe_color_value() {
-	local value="$1"
-
-	printf '%s' "$value" | grep -q '[;{}<>]' && return 1
-	printf '%s' "$value" | LC_ALL=C grep -q '[[:cntrl:]]' && return 1
+	case "$1" in
+	*[\;{}\<\>]*) return 1 ;;
+	esac
+	printf '%s' "$1" | LC_ALL=C grep -q '[[:cntrl:]]' && return 1
 	return 0
 }
 
@@ -105,64 +100,41 @@ is_color_token_key() {
 	return 1
 }
 
+# Parse a preset template into PRESET_SNAPSHOT ("key=value" lines) with a single
+# awk pass. awk validates every option in one shot: the token must be known, the
+# value must be injection-safe, and the count must match PRESET_EXPECTED_COUNT.
+# This replaces the previous approach of spawning one `uci get` per token (plus a
+# grep per value), which was ~120 subprocesses on the page-load path.
 load_preset_snapshot() {
-	local template="$1" count expected_count mode token value
+	local template="$1"
 
-	cleanup_preset_snapshot
+	PRESET_SNAPSHOT=""
 	[ -f "$template" ] || return 1
 	grep -Eq "^config[[:space:]]+aurora" "$template" 2>/dev/null || return 1
 
-	count=$(grep -Ec "^[[:space:]]*option[[:space:]]+(light|dark)_" "$template" || true)
-	expected_count=$(( $(printf '%s\n' $COLOR_TOKEN_KEYS | grep -c .) * 2 ))
-	[ "$count" -eq "$expected_count" ] || return 1
-
-	PRESET_UCI_DIR=$(mktemp -d /tmp/aurora-preset.XXXXXX) || return 1
-	cp "$template" "$PRESET_UCI_DIR/$PRESET_UCI_PACKAGE" || {
-		cleanup_preset_snapshot
-		return 1
-	}
-
-	for mode in light dark; do
-		for token in $COLOR_TOKEN_KEYS; do
-			value=$(uci -c "$PRESET_UCI_DIR" -q get "$PRESET_UCI_PACKAGE.theme.${mode}_${token}") || {
-				cleanup_preset_snapshot
-				return 1
-			}
-			is_safe_color_value "$value" || {
-				cleanup_preset_snapshot
-				return 1
-			}
-		done
-	done
+	PRESET_SNAPSHOT=$(awk -v tokens="$COLOR_TOKEN_KEYS" -v expected="$PRESET_EXPECTED_COUNT" '
+		BEGIN {
+			n = split(tokens, a, /[ \t\n]+/)
+			for (i = 1; i <= n; i++) if (a[i] != "") valid[a[i]] = 1
+		}
+		/^[ \t]*option[ \t]+(light|dark)_/ {
+			key = $2
+			val = substr($0, index($0, key) + length(key))
+			sub(/^[ \t]+/, "", val)
+			sub(/[ \t]+$/, "", val)
+			if (val ~ /^'\''.*'\''$/ || val ~ /^".*"$/)
+				val = substr(val, 2, length(val) - 2)
+			tok = key
+			sub(/^(light|dark)_/, "", tok)
+			if (!(tok in valid)) next
+			if (val ~ /[;{}<>]/ || val ~ /[[:cntrl:]]/) { bad = 1; exit 1 }
+			print key "=" val
+			count++
+		}
+		END { if (bad || count != expected + 0) exit 1 }
+	' "$template") || { PRESET_SNAPSHOT=""; return 1; }
 
 	return 0
-}
-
-clear_current_color_options() {
-	uci -q show aurora.theme \
-		| sed -n 's/^aurora\.theme\.\(\(light\|dark\)_[^=]*\)=.*/\1/p' \
-		| while IFS= read -r option_name; do
-			[ -n "$option_name" ] && uci -q delete "aurora.theme.$option_name"
-		done
-}
-
-PRESET_WRITE_ERROR=""
-
-write_preset_snapshot() {
-	local mode token value uci_err
-
-	for mode in light dark; do
-		for token in $COLOR_TOKEN_KEYS; do
-			value=$(uci -c "$PRESET_UCI_DIR" -q get "$PRESET_UCI_PACKAGE.theme.${mode}_${token}") || {
-				PRESET_WRITE_ERROR="read ${mode}_${token} from snapshot"
-				return 1
-			}
-			uci_err=$(uci -q set "aurora.theme.${mode}_${token}=$value" 2>&1) || {
-				PRESET_WRITE_ERROR="set ${mode}_${token}=[${value}]: ${uci_err}"
-				return 1
-			}
-		done
-	done
 }
 
 validate_import_color_options() {
@@ -645,12 +617,23 @@ parse_installed_packages() {
 	opkg)
 		status_file="/usr/lib/opkg/status"
 		if [ -r "$status_file" ]; then
-			theme_inst=$(awk '/^Package: luci-theme-aurora$/{f=1} f && /^Version:/{print $2; f=0}' "$status_file")
-			config_inst=$(awk '/^Package: luci-app-aurora-config$/{f=1} f && /^Version:/{print $2; f=0}' "$status_file")
-			config_i18n=$(awk '
-				/^Package: luci-i18n-aurora-config-/{pkg=$2; f=1}
-				f && /^Version:/{print pkg ":" $2; f=0}
-			' "$status_file" | tr '\n' ',' | sed 's/,$//')
+			# Single pass over the status file: classify each package block, then
+			# capture its first Version line. Emits theme/config/i18n on 3 lines.
+			installed=$(awk '
+				/^Package: luci-theme-aurora$/ { cap = "t"; next }
+				/^Package: luci-app-aurora-config$/ { cap = "c"; next }
+				/^Package: luci-i18n-aurora-config-/ { cap = "i"; pkg = $2; next }
+				/^Version:/ {
+					if (cap == "t") theme = $2
+					else if (cap == "c") config = $2
+					else if (cap == "i") i18n = i18n (i18n ? "," : "") pkg ":" $2
+					cap = ""
+				}
+				END { print theme; print config; print i18n }
+			' "$status_file")
+			{ read -r theme_inst; read -r config_inst; read -r config_i18n; } <<-EOF
+			$installed
+			EOF
 		elif command -v opkg >/dev/null 2>&1; then
 			installed=$(opkg list-installed 2>/dev/null)
 			theme_inst=$(printf '%s\n' "$installed" | grep "^luci-theme-aurora " | awk '{print $3}')
@@ -681,7 +664,9 @@ json_add_installed_versions() {
 }
 
 json_add_font_presets() {
-	local slot_name
+	local slot_name presets
+
+	presets=$(cat "$FONT_PRESETS_FILE" 2>/dev/null)
 
 	json_add_object "fonts"
 	for slot_name in sans mono; do
@@ -690,7 +675,9 @@ json_add_font_presets() {
 			case "$_slot" in ""|"#"*) continue ;; esac
 			[ "$_slot" = "$slot_name" ] || continue
 			json_add_font "$_name" "$_label" "$_source" "$_family" "$_stack" "$_css_url"
-		done < "$FONT_PRESETS_FILE"
+		done <<-EOF
+		$presets
+		EOF
 		json_close_array
 	done
 	json_close_object
@@ -709,7 +696,7 @@ json_add_icons() {
 }
 
 json_add_theme_preset_snapshot() {
-	local name="$1" template mode token value
+	local name="$1" template key value
 
 	name=$(normalize_preset_name "$name")
 	template=$(resolve_preset_path "$name") || {
@@ -727,14 +714,12 @@ json_add_theme_preset_snapshot() {
 	json_add_int "result" 0
 	json_add_string "name" "$name"
 	json_add_object "colors"
-	for mode in light dark; do
-		for token in $COLOR_TOKEN_KEYS; do
-			value=$(uci -c "$PRESET_UCI_DIR" -q get "$PRESET_UCI_PACKAGE.theme.${mode}_${token}")
-			json_add_string "${mode}_${token}" "$value"
-		done
-	done
+	while IFS='=' read -r key value; do
+		[ -n "$key" ] && json_add_string "$key" "$value"
+	done <<-EOF
+	$PRESET_SNAPSHOT
+	EOF
 	json_close_object
-	cleanup_preset_snapshot
 }
 
 case "$1" in
@@ -886,28 +871,27 @@ case "$1" in
 			exit 0
 		fi
 
-		clear_current_color_options
-		if ! write_preset_snapshot; then
-			uci -q revert aurora
-			cleanup_preset_snapshot
-			json_init
-			json_add_int "result" 1
-			json_add_string "error" "Failed to write preset colors: ${PRESET_WRITE_ERROR}"
-			json_dump
-			json_cleanup
-			exit 0
-		fi
+		# Stage the whole preset in one `uci batch`: drop the existing color
+		# options, write the snapshot, then update the preset bookkeeping --
+		# replacing what used to be ~180 individual uci invocations.
+		{
+			uci -q show aurora.theme \
+				| sed -n 's/^aurora\.theme\.\(\(light\|dark\)_[^=]*\)=.*/delete aurora.theme.\1/p'
+			while IFS='=' read -r key value; do
+				[ -n "$key" ] && printf 'set aurora.theme.%s=%s\n' "$key" "$value"
+			done <<-EOF
+			$PRESET_SNAPSHOT
+			EOF
+			printf 'set aurora.theme.active_preset=%s\n' "$name"
+			printf 'set aurora.theme.icon_cache_version=%s\n' "$(date +%s)"
+		} | uci batch
 
-		uci -q set aurora.theme.active_preset="$name"
-		uci -q set aurora.theme.icon_cache_version="$(date +%s)"
 		if ! uci -q commit aurora; then
 			uci -q revert aurora
-			cleanup_preset_snapshot
 			echo '{ "result": 1, "error": "Failed to commit preset colors" }'
 			exit 0
 		fi
 
-		cleanup_preset_snapshot
 		chmod 644 "$CONFIG_FILE" 2>/dev/null
 		echo '{ "result": 0 }'
 		;;

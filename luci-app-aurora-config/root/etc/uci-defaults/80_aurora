@@ -24,58 +24,34 @@ readonly LOG_TAG="aurora"
 #     key absent from the new template, clearing stale overrides that header.ut
 #     would otherwise inject against now-nonexistent CSS variables. Custom colours
 #     reset to the active template defaults (no value mapping).
-readonly SCHEMA_VERSION="4"
+# v5: broad config rework. Stored values are no longer migrated key-by-key --
+#     any schema mismatch triggers a full reset: the live config is overwritten
+#     wholesale with the active template. ALL prior customisation (colours,
+#     fonts, toolbar items, nav mode, icon, logo/favicon) is discarded so every
+#     upgraded device lands on the new defaults.
+readonly SCHEMA_VERSION="5"
 
 log() {
     logger -t "$LOG_TAG" "$1"
 }
 
-# Re-seed every light_/dark_ colour token from the template. Key lists are
-# captured into variables first so no uci command runs inside a pipe-fed
-# `while read` (a nested command substitution there can swallow stdin and
-# silently skip keys). Sets first, then prunes legacy keys, so no key is ever
-# left deleted-but-unset. Fonts (struct_*), toolbar items, nav mode, icon and
-# logo/favicon options are left untouched.
-reseed_colors_from_template() {
-    local template="$1" dir key value tmpl_keys live_keys
-
-    dir=$(mktemp -d /tmp/aurora-migrate.XXXXXX) || return 1
-    cp "$template" "$dir/aurora" || { rm -rf "$dir"; return 1; }
-
-    tmpl_keys=$(uci -c "$dir" -q show aurora.theme \
-        | sed -n 's/^aurora\.theme\.\(\(light\|dark\)_[^=]*\)=.*/\1/p')
-    live_keys=$(uci -q show aurora.theme \
-        | sed -n 's/^aurora\.theme\.\(\(light\|dark\)_[^=]*\)=.*/\1/p')
-
-    [ -n "$tmpl_keys" ] || { rm -rf "$dir"; return 1; }
-
-    for key in $tmpl_keys; do
-        value=$(uci -c "$dir" -q get "aurora.theme.$key") || { rm -rf "$dir"; return 1; }
-        uci -q set "aurora.theme.$key=$value" || { rm -rf "$dir"; return 1; }
-    done
-
-    for key in $live_keys; do
-        uci -c "$dir" -q get "aurora.theme.$key" >/dev/null 2>&1 \
-            || uci -q delete "aurora.theme.$key"
-    done
-
-    rm -rf "$dir"
-    return 0
-}
-
+# Reset the whole config to the active template. Used when the stored schema
+# version does not match: rather than migrating individual keys, the entire
+# config is overwritten so no stale options survive.
 migrate_color_schema() {
     local template="$1" stored
 
     stored=$(uci -q get aurora.theme.config_version)
     [ "$stored" = "$SCHEMA_VERSION" ] && return 0
 
-    log "Migrating colour tokens to schema v$SCHEMA_VERSION (was '${stored:-unset}')"
-    if reseed_colors_from_template "$template"; then
+    log "Schema changed (was '${stored:-unset}'); resetting config to template defaults"
+    if cp "$template" "$CONF_FILE"; then
+        chmod 644 "$CONF_FILE"
         uci -q set aurora.theme.config_version="$SCHEMA_VERSION"
         uci -q commit aurora
-        log "Colour token migration complete"
+        log "Config reset to schema v$SCHEMA_VERSION complete"
     else
-        log "Colour token migration failed; leaving existing config untouched"
+        log "Config reset failed; leaving existing config untouched"
     fi
 }
 
