@@ -16,10 +16,11 @@
 
 ## Features
 
-- **Professional Color System**: Built-in theme presets (Classic, Monochrome, Sage Green, Amber Sand, Sky Blue) and an easy color editor to tune the look and feel.
-- **Layout & Density Control**: Adjust the navigation style and global element spacing to fit your screen perfectly.
-- **Brand Identity**: Customize the theme logo (favicon) and configure floating toolbar shortcuts for frequently used pages.
-- **Seamless Updates**: Update the theme and config app directly from the interface—no CLI or SSH required.
+- **Professional Color System**: Five built-in presets (Default, Monochrome, Sage Green, Amber Sand, Sky Blue) plus a live color editor with independent Light and Dark palettes; derived colors are generated automatically.
+- **Layout & Typography**: Switch the navigation between Mega Menu, Dropdown, and Sidebar; fine-tune spacing scale, corner radius, and content max width with sliders; and pick downloadable sans-serif and monospace typefaces that are fetched and cached on the router.
+- **Branding & PWA**: Drag-and-drop brand assets into the library, then assign the logo, favicons, Apple Touch / 192×192 / 512×512 app icons, and a full-screen login background. A generated web app manifest makes the panel installable as a PWA.
+- **Shortcut Toolbar**: Add, label, icon, and drag-reorder entries in the floating launcher for quick access to frequently used pages.
+- **Backup & Updates**: Export, import, or reset the entire configuration in one click, and update the theme and config app directly from the interface—no CLI or SSH required.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/eamonxg/assets/master/aurora/preview/config/multi-theme-showcase.png" alt="Multi Theme Showcase" width="1200">
@@ -29,7 +30,7 @@
 
 | Component             | Requirement | Note                                             |
 | :-------------------- | :---------- | :----------------------------------------------- |
-| **LuCI Theme Aurora** | `≥ v0.12.0` | Older versions will ignore these configurations. |
+| **LuCI Theme Aurora** | `≥ v1.0.0`  | Older versions will ignore these configurations. |
 | **OpenWrt**           | `≥ 23.05`   | Lua-based LuCI are not supported.                |
 
 ## Installation
@@ -37,11 +38,11 @@
 ### Using opkg:
 
 ```sh
-cd /tmp && uclient-fetch -O luci-app-aurora-config.ipk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config_0.4.0-r20260531_all.ipk && opkg install luci-app-aurora-config.ipk
+cd /tmp && uclient-fetch -O luci-app-aurora-config.ipk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config_1.0.0-r20260619_all.ipk && opkg install luci-app-aurora-config.ipk
 ```
 
 ### Using apk:
 
 ```sh
-cd /tmp && uclient-fetch -O luci-app-aurora-config.apk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config-0.4.0-r20260531.apk && apk add --allow-untrusted luci-app-aurora-config.apk
+cd /tmp && uclient-fetch -O luci-app-aurora-config.apk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config-1.0.0-r20260619.apk && apk add --allow-untrusted luci-app-aurora-config.apk
 ```
