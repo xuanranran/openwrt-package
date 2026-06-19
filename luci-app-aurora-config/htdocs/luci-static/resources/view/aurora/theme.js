@@ -1441,8 +1441,9 @@ const runSavePipeline = function (ev, after) {
     return colorLibraryReady
       .catch(() => {})
       .then(() => this.colorEditor?.flush?.())
+      .then(() => this.super("handleSave", [ev]))
       .then(() => persistDerivedTokens(this.colorEditor))
-      .then(() => this.super("handleSave", [ev]));
+      .then(() => uci.save());
   }, this);
   const writePwa = () => L.resolveDefault(callWritePwaManifest(), {});
   const cleanup = () => this.colorEditor?.cleanupPreview();
