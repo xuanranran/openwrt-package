@@ -643,7 +643,7 @@
     position: absolute;
     opacity: 0;
     pointer-events: none;
-    height: var(--control-height)-4px;
+    height: calc(var(--control-height) - 4px);
 }
 
 .oc .cbi-button-option {
@@ -3266,10 +3266,6 @@
 }
 :root[data-darkmode="true"] .CodeMirror-merge-gap {
     background: #d0cfcf !important;
-}
-@font-face {
-    font-family: 'Twemoji Mozilla';
-    src: url('/luci-static/resources/openclash/fonts/TwemojiMozilla-flags-B12sb_Bp.woff2') format('woff2');
 }
 
 /* ==========================================================================
