@@ -206,8 +206,8 @@ fi
 ## Log File Size Manage:
    LOGSIZE=`ls -l /tmp/openclash.log |awk '{print int($5/1024)}'`
    if [ "$LOGSIZE" -gt "$log_size" ]; then
-   : > /tmp/openclash.log
-   LOG_WATCHDOG "Log Size Limit, Clean Up All Log Records..."
+      : > /tmp/openclash.log
+      LOG_WATCHDOG "Log Size Limit, Clean Up All Log Records..."
    fi
 
 ## 防火墙检查
@@ -371,6 +371,9 @@ fi
          /etc/init.d/dnsmasq restart >/dev/null 2>&1
       fi
    fi
+
+##Dler Cloud Checkin
+   /usr/share/openclash/openclash_oix_checkin.lua >/dev/null 2>&1
 
 ## 配置文件循环更新
    if [ "$cfg_update" -eq 1 ] && [ "$cfg_update_mode" -eq 1 ]; then

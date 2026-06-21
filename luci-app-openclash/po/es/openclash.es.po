@@ -2292,6 +2292,15 @@ msgstr "Limpiar"
 msgid "Flush DNS Cache"
 msgstr "Vaciar caché DNS"
 
+msgid "Dnsmasq Fix"
+msgstr "Reparar Dnsmasq"
+
+msgid "If DNS is abnormal after stopping the OpenClash, please try to fix"
+msgstr "Si el DNS es anormal después de detener OpenClash, intente repararlo"
+
+msgid "Fix"
+msgstr "Reparar"
+
 msgid "No Specify Upload File"
 msgstr "No se ha seleccionado ningún archivo"
 
@@ -3821,3 +3830,120 @@ msgstr "Fallo en intento de descifrado con una clave encontrada:"
 
 msgid "Encrypt attempt failed:"
 msgstr "Fallo en intento de cifrado:"
+
+msgid "Login..."
+msgstr "Iniciando sesión..."
+
+msgid "oixCloud Login Successful"
+msgstr "Inicio de sesión en oixCloud exitoso"
+
+msgid "oixCloud Login Faild"
+msgstr "Fallo al iniciar sesión en oixCloud"
+
+msgid "Login Account"
+msgstr "Iniciar sesión en la cuenta"
+
+msgid "oixCloud Logout Successful"
+msgstr "Cierre de sesión en oixCloud exitoso"
+
+msgid "oixCloud Logout Faild"
+msgstr "Fallo al cerrar sesión en oixCloud"
+
+msgid "Logout Account"
+msgstr "Cerrar sesión en la cuenta"
+
+msgid "Account Login"
+msgstr "Inicio de sesión de cuenta"
+
+msgid "Account logged in"
+msgstr "Cuenta iniciada"
+
+msgid "Account not logged in"
+msgstr "Cuenta no iniciada"
+
+msgid "Logout..."
+msgstr "Cerrando sesión..."
+
+msgid "Error Login Info"
+msgstr "Información de inicio de sesión incorrecta"
+
+msgid "Simple & trustworthy"
+msgstr "Simple y confiable"
+
+msgid "Cross-platform Support"
+msgstr "Amplia compatibilidad con aplicaciones de terceros"
+
+msgid "Global Acceleration Network"
+msgstr "Infraestructura de red global"
+
+msgid "Easy to Use"
+msgstr "Fácil de usar"
+
+msgid "Intelligent Shunting"
+msgstr "Derivación inteligente"
+
+msgid "Perfect Technical Support"
+msgstr "Soporte técnico completo"
+
+msgid "Plan Expiration Time"
+msgstr "Fecha de vencimiento del plan"
+
+msgid "Account Balances"
+msgstr "Saldo de la cuenta"
+
+msgid "Aff Balances"
+msgstr "Saldo de afiliado"
+
+msgid "Account Integral"
+msgstr "Puntos de la cuenta"
+
+msgid "Today Used"
+msgstr "Usado hoy"
+
+msgid "Plan Used"
+msgstr "Usado este mes"
+
+msgid "Plan Unused"
+msgstr "Tráfico restante"
+
+msgid "Plan Traffic"
+msgstr "Tráfico del plan"
+
+msgid "Checkin"
+msgstr "Probar suerte"
+
+msgid "oixCloud Account Login Failed! Please Check And Try Again..."
+msgstr "¡Fallo al iniciar sesión en oixCloud! Verifique los datos e intente de nuevo..."
+
+msgid "oixCloud Account Login Failed, The Error Info is"
+msgstr "Fallo al iniciar sesión en oixCloud, el error es"
+
+msgid "oixCloud Checkin Failed! Please Check And Try Again..."
+msgstr "¡Fallo al registrar asistencia en oixCloud! Intente de nuevo más tarde..."
+
+msgid "Account Email Address"
+msgstr "Correo electrónico de la cuenta"
+
+msgid "Account Password"
+msgstr "Contraseña de la cuenta"
+
+msgid "Checkin Interval (hour)"
+msgstr "Intervalo de registro (horas)"
+
+msgid "Checkin Multiple"
+msgstr "Multiplicador de registro"
+
+msgid "Multiple Must Be a Positive Integer and No More Than 100"
+msgstr "El multiplicador debe ser un número entero positivo no mayor a 100"
+
+msgid "oixCloud Checkin Successful, Result:"
+msgstr "Registro en oixCloud exitoso, resultado:"
+
+msgid "oixCloud Checkin Failed, Result:"
+msgstr "Fallo al registrar en oixCloud, resultado:"
+
+msgid "Note: oixCloud need re-install a specific core, please restart OpenClash for core download"
+msgstr "Nota: oixCloud requiere reinstalar un núcleo específico; reinicia OpenClash para descargarlo"
+
+msgid "After the core start, an oixCloud nodes provider will be added, which you can customize as needed"
+msgstr "Tras iniciar el núcleo se añadirá un proveedor de nodos oixCloud que puedes personalizar"

@@ -8,66 +8,6 @@ local diag_host = "www.instagram.com"
 local dns_host = "www.instagram.com"
 %>
 
-<style>
-:root[data-darkmode="true"] .diag-style {
-	color: #ffffff;
-	background-color: #404040;
-}
-
-:root[data-darkmode="true"] .diag-style select, .diag-style input {
-	color: #ffffff;
-	background-color: #404040;
-}
-
-:root[data-darkmode="true"] #diag-rc-output > pre {
-	background-color: #404040;
-	color: #ffffff;
-}
-
-:root[data-darkmode="true"] #dns-rc-output > pre {
-	background-color: #404040;
-	color: #ffffff;
-}
-
-.diag-style {
-	color: #000;
-	background-color: #f5f5f5;
-}
-
-.diag-style select, .diag-style input {
-	color: #000;
-	background-color: #f5f5f5;
-}
-
-#diag-rc-output > pre {
-    background-color: #ffffff;
-    display: block;
-    padding: 8.5px;
-    margin: 0 0 18px;
-    line-height: 1.5rem;
-    -moz-border-radius: 3px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-size: 1.4rem;
-    color: #404040;
-}
-
-#dns-rc-output > pre {
-    background-color: #ffffff;
-    display: block;
-    padding: 8.5px;
-    margin: 0 0 18px;
-    line-height: 1.5rem;
-    -moz-border-radius: 3px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-size: 1.4rem;
-    color: #404040;
-}
-
-</style>
-
-
 <script type="text/javascript">//<![CDATA[
 	function show_diag_info(addr)
 	{

@@ -2316,6 +2316,15 @@ msgstr "清理"
 msgid "Flush DNS"
 msgstr "清理 DNS 缓存"
 
+msgid "Dnsmasq Fix"
+msgstr "Dnsmasq 修复"
+
+msgid "If DNS is abnormal after stopping the OpenClash, please try to fix"
+msgstr "如果关闭 OpenClash 后 DNS 异常，请尝试修复"
+
+msgid "Fix"
+msgstr "修复"
+
 msgid "No Specify Upload File"
 msgstr "未选择上传文件"
 
@@ -3851,3 +3860,121 @@ msgstr "使用找到的私钥解密尝试失败:"
 
 msgid "Encrypt attempt failed:"
 msgstr "加密尝试失败:"
+
+msgid "Login..."
+msgstr "登录中..."
+
+msgid "oixCloud Login Successful"
+msgstr "oixCloud 登录成功"
+
+msgid "oixCloud Login Faild"
+msgstr "oixCloud 登录失败"
+
+msgid "Login Account"
+msgstr "登录账号"
+
+msgid "oixCloud Logout Successful"
+msgstr "oixCloud 已成功退出"
+
+msgid "oixCloud Logout Faild"
+msgstr "oixCloud 退出失败"
+
+msgid "Logout Account"
+msgstr "退出账号"
+
+msgid "Account Login"
+msgstr "账号登录"
+
+msgid "Account logged in"
+msgstr "账号已登录"
+
+msgid "Account not logged in"
+msgstr "账号未登录"
+
+msgid "Logout..."
+msgstr "退出中..."
+
+msgid "Error Login Info"
+msgstr "登录信息错误"
+
+
+msgid "Simple & trustworthy"
+msgstr "简单 & 值得信赖"
+
+msgid "Cross-platform Support"
+msgstr "丰富的第三方应用兼容性"
+
+msgid "Global Acceleration Network"
+msgstr "全球网络基础设施"
+
+msgid "Easy to Use"
+msgstr "操作简易"
+
+msgid "Intelligent Shunting"
+msgstr "智能分流"
+
+msgid "Perfect Technical Support"
+msgstr "完善技术支持"
+
+msgid "Plan Expiration Time"
+msgstr "到期时间"
+
+msgid "Account Balances"
+msgstr "账户余额"
+
+msgid "Aff Balances"
+msgstr "返利余额"
+
+msgid "Account Integral"
+msgstr "账户积分"
+
+msgid "Today Used"
+msgstr "今日已用"
+
+msgid "Plan Used"
+msgstr "本月已用"
+
+msgid "Plan Unused"
+msgstr "剩余流量"
+
+msgid "Plan Traffic"
+msgstr "套餐流量"
+
+msgid "Checkin"
+msgstr "试试手气"
+
+msgid "oixCloud Account Login Failed! Please Check And Try Again..."
+msgstr "oixCloud 账户登录失败！请检查账户信息并重试..."
+
+msgid "oixCloud Account Login Failed, The Error Info is"
+msgstr "oixCloud 账户登录失败，错误信息"
+
+msgid "oixCloud Checkin Failed! Please Check And Try Again..."
+msgstr "oixCloud 签到失败，请稍后再试！"
+
+msgid "Account Email Address"
+msgstr "账号地址"
+
+msgid "Account Password"
+msgstr "账号密码"
+
+msgid "Checkin Interval (hour)"
+msgstr "签到间隔（小时）"
+
+msgid "Checkin Multiple"
+msgstr "签到倍数"
+
+msgid "Multiple Must Be a Positive Integer and No More Than 100"
+msgstr "倍数必须是正整数且不大于 100"
+
+msgid "oixCloud Checkin Successful, Result:"
+msgstr "oixCloud 签到成功，结果："
+
+msgid "oixCloud Checkin Failed, Result:"
+msgstr "oixCloud 签到失败，结果："
+
+msgid "Note: oixCloud need re-install a specific core, please restart OpenClash for core download"
+msgstr "注意：oixCloud 需要重新安装专用内核，请重启 OpenClash 以下载内核"
+
+msgid "After the core start, an oixCloud nodes provider will be added, which you can customize as needed"
+msgstr "专用内核启动后，会添加一个 oixCloud 节点组，您可以自定义使用"
