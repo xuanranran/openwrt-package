@@ -4205,7 +4205,9 @@ function oix_login()
 		end
 		if info and info.ret == 200 then
 			-- because of uci cache, need reload after delete if get new
-			oix_logout(token)
+			if token and token ~= "" then
+				oix_logout(token)
+			end
 			token = info.data.token
 			uci:set("openclash", "config", "oix_token", token)
 			uci:commit("openclash")

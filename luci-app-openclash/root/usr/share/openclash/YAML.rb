@@ -124,7 +124,7 @@ module YAML
 	end
 
 	def self.popen_stream(cmd, input, chunk_size: 64 * 1024)
-		output = StringIO.new
+		output = String.new
 		IO.popen(cmd, 'r+', err: [:child, :out]) do |io|
 			io.binmode
 			writer = Thread.new do
@@ -144,7 +144,7 @@ module YAML
 			end
 			writer.join
 		end
-		[output.string, $?]
+		[output, $?]
 	end
 
 	def self.decode64(input)

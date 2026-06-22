@@ -3831,6 +3831,9 @@ msgstr "Fallo en intento de descifrado con una clave encontrada:"
 msgid "Encrypt attempt failed:"
 msgstr "Fallo en intento de cifrado:"
 
+msgid "Official Website"
+msgstr "Sitio web oficial"
+
 msgid "Login..."
 msgstr "Iniciando sesión..."
 
@@ -3942,8 +3945,8 @@ msgstr "Registro en oixCloud exitoso, resultado:"
 msgid "oixCloud Checkin Failed, Result:"
 msgstr "Fallo al registrar en oixCloud, resultado:"
 
-msgid "Note: oixCloud need re-install a specific core, please restart OpenClash for core download"
-msgstr "Nota: oixCloud requiere reinstalar un núcleo específico; reinicia OpenClash para descargarlo"
+msgid "Note: oixCloud need a specific core installed, OpenClash will auto download"
+msgstr "Nota: oixCloud requiere la instalación de un núcleo específico; OpenClash lo descargará automáticamente"
 
 msgid "After the core start, an oixCloud nodes provider will be added, which you can customize as needed"
 msgstr "Tras iniciar el núcleo se añadirá un proveedor de nodos oixCloud que puedes personalizar"
