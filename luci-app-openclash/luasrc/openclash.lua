@@ -498,3 +498,17 @@ function ps_cmd()
 		return "ps -w"
 	end
 end
+
+--- Returns the installed version of luci-app-openclash.
+-- Supports both opkg and apk package managers.
+-- @return String containing the version number, or "0" if not found
+function oc_version()
+	local v = SYS.exec("opkg status luci-app-openclash 2>/dev/null |grep '^Version:' |awk '{print $2}' |tr -d '\n'")
+	if v == "" then
+		v = SYS.exec("apk info luci-app-openclash 2>/dev/null |grep '^luci-app-openclash-[0-9]' |sed 's/luci-app-openclash-//' |tr -d '\n'")
+	end
+	if v == "" then
+		v = "0"
+	end
+	return v
+end

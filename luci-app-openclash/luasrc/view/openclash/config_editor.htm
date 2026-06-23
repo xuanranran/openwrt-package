@@ -1,4 +1,8 @@
-<link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css">
+<%
+    local fs = require "luci.openclash"
+    local plugin_version = fs.oc_version()
+%>
+<link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=plugin_version%>">
 <script type="text/javascript">//<![CDATA[
 var _cmReady = false;
 var _cmQueue = [];

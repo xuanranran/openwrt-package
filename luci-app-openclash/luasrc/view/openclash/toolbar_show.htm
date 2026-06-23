@@ -1,5 +1,9 @@
+<%
+    local fs = require "luci.openclash"
+    local plugin_version = fs.oc_version()
+%>
 <head>
-<link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css">
+<link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=plugin_version%>">
 </head>
 
 <li id="tool_label" class="tool_label">

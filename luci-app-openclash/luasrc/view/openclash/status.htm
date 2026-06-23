@@ -1,15 +1,13 @@
 <%
-    local random = tostring(os.time()):reverse():sub(1, 9)
+    local fs = require "luci.openclash"
+    local plugin_version = fs.oc_version()
+    local uci = require("luci.model.uci").cursor()
+    local RELEASE_BRANCH = fs.uci_get_config("config", "release_branch")
 %>
 <html>
 <head>
-<link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=random%>">
+<link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=plugin_version%>">
 </head>
-<%
-    local uci = require("luci.model.uci").cursor()
-    local fs = require "luci.openclash"
-    local RELEASE_BRANCH = fs.uci_get_config("config", "release_branch")
-%>
 <fieldset class="cbi-section">
     <table width="100%">
     <tr>
@@ -94,7 +92,7 @@
                                     <button type="button" class="icon-btn action-btn" id="go_telegram" title="<%:Telegram%>" onclick="return telegrampage()"><svg width="14" height="14" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="20"><path d="M80,134.87,170.26,214a8,8,0,0,0,13.09-4.21L224,33.22a1,1,0,0,0-1.34-1.15L20,111.38A6.23,6.23,0,0,0,21,123.3Z" stroke-linecap="round" stroke-linejoin="round"/><line x1="80" y1="134.87" x2="223.41" y2="32.09" stroke-linecap="round" stroke-linejoin="round"/><path d="M124.37,173.78,93.76,205.54A8,8,0,0,1,80,200V134.87" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                                     <button type="button" class="icon-btn action-btn" id="go_sponsor" title="<%:Sponsor%>" onclick="return sponsorpage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
                                     <button type="button" class="icon-btn action-btn" id="logo_btn" title="Mihomo" onclick="return go_mihomo();">
-                                        <img id="_logo" src="/luci-static/resources/openclash/img/logo.png?<%=random%>" loading="lazy" width="14px" height="14px" alt="Mihomo"/>
+                                        <img id="_logo" src="/luci-static/resources/openclash/img/logo.png?v=<%=plugin_version%>" loading="lazy" width="14px" height="14px" alt="Mihomo"/>
                                         <span class="logo-text">Powered by <span class="mihomo-link">Mihomo</span></span>
                                     </button>
                                 </div>
