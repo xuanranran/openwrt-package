@@ -4007,7 +4007,7 @@ msgid "oixCloud Checkin Failed, Result:"
 msgstr "oixCloud 签到失败，结果："
 
 msgid "Note: oixCloud need a specific core installed, OpenClash will auto download"
-msgstr "注意：oixCloud 需要安装专用内核才能使用，插件会自动识别并进行下载内核"
+msgstr "注意：oixCloud 需要安装专用内核才能使用，插件会自动识别并进行内核下载"
 
 msgid "After the core start, an oixCloud nodes provider will be added, which you can customize as needed"
 msgstr "专用内核启动后，会添加一个 oixCloud 节点组到配置文件，供您自定义使用"

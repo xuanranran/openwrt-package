@@ -1,6 +1,6 @@
 /* ==========================================================================
  * OpenClash Combined Stylesheet
- * ==========================================================================
+ * ========================================================================== */
 
 /* ==========================================================================
  * SECTION 1: status.htm
@@ -1236,15 +1236,21 @@
     border-left-color: var(--primary-color);
 }
 
+.oc .config-file-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
 .oc .config-file-name {
     font-size: 20px;
     font-weight: 600;
     color: var(--text-primary);
-    flex: 1 1 0%;
     white-space: nowrap;
     text-overflow: ellipsis;
     min-width: 0;
-    max-width: 100%;
     overflow: hidden;
 }
 
@@ -1261,9 +1267,10 @@
     animation: gentlePulse 4s cubic-bezier(.17,.67,.83,.67) infinite;
 }
 
-.oc .config-file-name .age-file-icon {
-    display: inline-block;
-    vertical-align: middle;
+.oc .age-file-icon {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
     color: var(--error-color);
 }
 
@@ -5656,8 +5663,13 @@ ul {
 
 .btn-group {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    row-gap: 10px;
     width: 80%;
+    max-width: 600px;
     margin: 10px auto;
 }
 

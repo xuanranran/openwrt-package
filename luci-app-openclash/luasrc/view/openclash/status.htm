@@ -187,7 +187,10 @@
                                         <div class="subscription-nav-arrow right" id="subscription-next-arrow" onclick="switchToNextConfig()" title="<%:Next%>"></div>
                                         <div class="subscription-info-main">
                                             <div class="subscription-info-header">
-                                                <div class="config-file-name" id="current-config-name"><%:No Config Selected%></div>
+                                                <div class="config-file-name-wrapper">
+                                                    <div class="config-file-name" id="current-config-name"><%:No Config Selected%></div>
+                                                    <span id="age-file-icon" class="age-file-icon" style="display:none;"></span>
+                                                </div>
                                                 <div class="file-info" id="file-info-section">
                                                     <span id="file-modify-time" class="file-info-item"><%:Modified: %> --</span>
                                                 </div>
@@ -1026,6 +1029,8 @@
             var configNameElement = document.getElementById('current-config-name');
             var fileModifyTimeElement = document.getElementById('file-modify-time');
             var detailsSection = document.getElementById('subscription-info-details');
+            var configFileContent = document.querySelector('.config-file-content');
+            var ageFileIconElement = document.getElementById('age-file-icon');
 
             if (!container) return;
 
@@ -1039,7 +1044,6 @@
                 return;
             }
 
-            var configFileContent = document.querySelector('.config-file-content');
             if (configFileContent && configFileContent.classList.contains('empty-state')) {
                 container.style.display = 'none';
                 return;
@@ -1077,8 +1081,15 @@
                     detailsSection.style.display = 'flex';
                 }
 
-                if (fileInfo.age && configNameElement) {
-                    configNameElement.innerHTML += ' <span class="age-file-icon" title="<%:Age Encryption File%>"><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9.25564L24.0086 4L42 9.25564V20.0337C42 31.3622 34.7502 41.4194 24.0026 45.0005C13.2521 41.4195 6 31.36 6 20.0287V9.25564Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M15 23L22 30L34 18" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+                if (ageFileIconElement) {
+                    if (fileInfo.age) {
+                        ageFileIconElement.innerHTML = '<svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9.25564L24.0086 4L42 9.25564V20.0337C42 31.3622 34.7502 41.4194 24.0026 45.0005C13.2521 41.4195 6 31.36 6 20.0287V9.25564Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M15 23L22 30L34 18" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                        ageFileIconElement.title = '<%:Age Encryption File%>';
+                        ageFileIconElement.style.display = 'inline-flex';
+                    } else {
+                        ageFileIconElement.innerHTML = '';
+                        ageFileIconElement.style.display = 'none';
+                    }
                 }
             } else {
                 if (fileModifyTimeElement) {
@@ -1087,6 +1098,11 @@
 
                 if (detailsSection) {
                     detailsSection.style.display = 'none';
+                }
+
+                if (ageFileIconElement) {
+                    ageFileIconElement.innerHTML = '';
+                    ageFileIconElement.style.display = 'none';
                 }
             }
         },

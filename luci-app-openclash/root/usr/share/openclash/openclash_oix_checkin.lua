@@ -34,12 +34,12 @@ local function oix_checkin()
 			info = json.parse(info)
 		end
 		if info and info.ret == 200 then
-			luci.sys.exec(string.format('echo "%s [info] oixCloud Checkin Successful, Result:【%s】" >> /tmp/openclash.log', os.date("%Y-%m-%d %H:%M:%S"), info.data.checkin))
+			luci.sys.exec(string.format('echo "%s [Info] oixCloud Checkin Successful, Result:【%s】" >> /tmp/openclash.log', os.date("%Y-%m-%d %H:%M:%S"), info.data.checkin))
 		else
 			if info and info.msg then
-				luci.sys.exec(string.format('echo "%s [info] oixCloud Checkin Failed, Result:【%s】" >> /tmp/openclash.log', os.date("%Y-%m-%d %H:%M:%S"), info.msg))
+				luci.sys.exec(string.format('echo "%s [Info] oixCloud Checkin Failed, Result:【%s】" >> /tmp/openclash.log', os.date("%Y-%m-%d %H:%M:%S"), info.msg))
 			else
-				luci.sys.exec(string.format('echo "%s [info] oixCloud Checkin Failed! Please Check And Try Again..." >> /tmp/openclash.log', os.date("%Y-%m-%d %H:%M:%S")))
+				luci.sys.exec(string.format('echo "%s [Info] oixCloud Checkin Failed! Please Check And Try Again..." >> /tmp/openclash.log', os.date("%Y-%m-%d %H:%M:%S")))
 			end
 		end
 	end
