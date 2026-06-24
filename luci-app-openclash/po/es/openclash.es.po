@@ -1491,6 +1491,18 @@ msgstr "Iniciando descarga"
 msgid "Download successful, start pre update test..."
 msgstr "Descarga completa, iniciando pruebas previas a la actualización..."
 
+msgid "opkg update failed or timed out, retrying..."
+msgstr "opkg update falló o expiró, reintentando..."
+
+msgid "opkg update failed, trying pre update test..."
+msgstr "opkg update falló, se sigue intentando la prueba previa..."
+
+msgid "apk update failed or timed out, retrying..."
+msgstr "apk update falló o expiró, reintentando..."
+
+msgid "apk update failed, trying pre update test..."
+msgstr "apk update falló, se sigue intentando la prueba previa..."
+
 msgid "Pre update test failed..."
 msgstr "Las pruebas previas han fallado..."
 
@@ -3366,9 +3378,6 @@ msgstr "Error al guardar el archivo de configuración:"
 msgid "Unknown error"
 msgstr "Error desconocido"
 
-msgid "Save config failed:"
-msgstr "Error al guardar configuración:"
-
 msgid "Editor not ready"
 msgstr "El editor no está listo"
 
@@ -3938,6 +3947,27 @@ msgstr "Multiplicador de registro"
 
 msgid "Multiple Must Be a Positive Integer and No More Than 100"
 msgstr "El multiplicador debe ser un número entero positivo no mayor a 100"
+
+msgid "Usage Help"
+msgstr "Ayuda de uso"
+
+msgid "Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:"
+msgstr "Copia el siguiente texto a cualquier IA (ChatGPT, DeepSeek, etc.) para obtener ayuda de uso de OpenClash:"
+
+msgid "Please refer to the OpenClash Complete Feature Reference Guide below to answer my question:"
+msgstr "Consulta la Guía Completa de Referencia de OpenClash a continuación para responder a mi pregunta:"
+
+msgid "[Source: OpenClash SKILL.md]"
+msgstr "[Fuente: OpenClash SKILL.md]"
+
+msgid "My question is:"
+msgstr "Mi pregunta es:"
+
+msgid "Copied to clipboard!"
+msgstr "¡Copiado al portapapeles!"
+
+msgid "Copy And Close"
+msgstr "Copiar y cerrar"
 
 msgid "oixCloud Checkin Successful, Result:"
 msgstr "Registro en oixCloud exitoso, resultado:"

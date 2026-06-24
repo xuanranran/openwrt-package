@@ -1515,6 +1515,18 @@ msgstr "开始下载"
 msgid "Download successful, start pre update test..."
 msgstr "下载成功，开始进行更新前测试..."
 
+msgid "opkg update failed or timed out, retrying..."
+msgstr "opkg update 失败或超时，正在重试..."
+
+msgid "opkg update failed, trying pre update test..."
+msgstr "opkg update 失败，尝试进行预安装..."
+
+msgid "apk update failed or timed out, retrying..."
+msgstr "apk update 失败或超时，正在重试..."
+
+msgid "apk update failed, trying pre update test..."
+msgstr "apk update 失败，尝试进行预安装..."
+
 msgid "Pre update test failed..."
 msgstr "更新前测试失败..."
 
@@ -3405,9 +3417,6 @@ msgstr "配置文件保存失败："
 msgid "Unknown error"
 msgstr "未知错误"
 
-msgid "Save config failed:"
-msgstr "配置保存失败："
-
 msgid "Editor not ready"
 msgstr "编辑器未准备就绪"
 
@@ -3969,6 +3978,27 @@ msgstr "签到倍数"
 
 msgid "Multiple Must Be a Positive Integer and No More Than 100"
 msgstr "倍数必须是正整数且不大于 100"
+
+msgid "Usage Help"
+msgstr "使用帮助"
+
+msgid "Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:"
+msgstr "将以下文本复制到任意 AI 工具（ChatGPT、DeepSeek 等），即可获取 OpenClash 的使用帮助："
+
+msgid "Please refer to the OpenClash Complete Feature Reference Guide below to answer my question:"
+msgstr "请参考以下 OpenClash 完整功能参考指南回答我的问题："
+
+msgid "[Source: OpenClash SKILL.md]"
+msgstr "[来源：OpenClash SKILL.md]"
+
+msgid "My question is:"
+msgstr "我的问题是："
+
+msgid "Copied to clipboard!"
+msgstr "已复制到剪贴板！"
+
+msgid "Copy And Close"
+msgstr "复制并关闭"
 
 msgid "oixCloud Checkin Successful, Result:"
 msgstr "oixCloud 签到成功，结果："

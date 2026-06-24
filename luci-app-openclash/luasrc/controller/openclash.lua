@@ -3167,9 +3167,13 @@ end
 
 function action_config_file_read()
 	local config_file = luci.http.formvalue("config_file")
+	luci.http.prepare_content("application/json")
 
 	if not config_file then
-		luci.http.status(500, "Missing config_file parameter")
+		luci.http.write_json({
+			status = "error",
+			message = "Missing config_file parameter"
+		})
 		return
 	end
 
@@ -3185,7 +3189,6 @@ function action_config_file_read()
 	end
 
 	if not allow then
-		luci.http.prepare_content("application/json")
 		luci.http.write_json({
 			status = "error",
 			message = "Invalid config file path"
@@ -3194,7 +3197,6 @@ function action_config_file_read()
 	end
 
 	if not fs.access(config_file) then
-		luci.http.prepare_content("application/json")
 		luci.http.write_json({
 			status = "success",
 			content = "",
@@ -3211,7 +3213,6 @@ function action_config_file_read()
 
 	local stat = fs.stat(config_file)
 	if not stat or stat.type ~= "regular" then
-		luci.http.prepare_content("application/json")
 		luci.http.write_json({
 			status = "error",
 			message = "Config file is not a regular file"
@@ -3220,7 +3221,6 @@ function action_config_file_read()
 	end
 
 	if stat.size > 10 * 1024 * 1024 then
-		luci.http.prepare_content("application/json")
 		luci.http.write_json({
 			status = "error",
 			message = "Config file too large (max 10MB)"
@@ -3230,7 +3230,6 @@ function action_config_file_read()
 
 	local content = fs.readfile(config_file)
 	if content == nil then
-		luci.http.prepare_content("application/json")
 		luci.http.write_json({
 			status = "error",
 			message = "Failed to read config file"
@@ -3238,7 +3237,6 @@ function action_config_file_read()
 		return
 	end
 
-	luci.http.prepare_content("application/json")
 	luci.http.write_json({
 		status = "success",
 		content = content,
@@ -3255,17 +3253,24 @@ end
 function action_config_file_save()
 	local config_file = luci.http.formvalue("config_file")
 	local content = luci.http.formvalue("content")
+	luci.http.prepare_content("application/json")
 	if content then
 		content = content:gsub("\r\n", "\n"):gsub("\r", "\n")
 	end
 
 	if not config_file then
-		luci.http.status(500, "Missing config_file parameter")
+		luci.http.write_json({
+			status = "error",
+			message = "Missing config_file parameter"
+		})
 		return
 	end
 
 	if not content then
-		luci.http.status(500, "Missing content parameter")
+		luci.http.write_json({
+			status = "error",
+			message = "Missing content parameter"
+		})
 		return
 	end
 
@@ -3281,7 +3286,6 @@ function action_config_file_save()
 		end
 	else
 		if not (config_file == "/etc/openclash/custom/openclash_custom_overwrite.sh" or (config_file:match("^/etc/openclash/overwrite/[^/]+$") and not string.find(config_file, "%.%."))) then
-			luci.http.prepare_content("application/json")
 			luci.http.write_json({
 				status = "error",
 				message = "Invalid overwrite file path"
@@ -3291,7 +3295,6 @@ function action_config_file_save()
 	end
 
 	if string.len(content) > 10 * 1024 * 1024 then
-		luci.http.prepare_content("application/json")
 		luci.http.write_json({
 			status = "error",
 			message = "Content too large (max 10MB)"
@@ -3304,7 +3307,6 @@ function action_config_file_save()
 		backup_file = config_file .. ".backup." .. os.time()
 		local backup_success = luci.sys.call(string.format("cp '%s' '%s'", config_file, backup_file))
 		if backup_success ~= 0 then
-			luci.http.prepare_content("application/json")
 			luci.http.write_json({
 				status = "error",
 				message = "Failed to create backup file"
@@ -3319,7 +3321,6 @@ function action_config_file_save()
 			luci.sys.call(string.format("mv '%s' '%s'", backup_file, config_file))
 		end
 
-		luci.http.prepare_content("application/json")
 		luci.http.write_json({
 			status = "error",
 			message = "Failed to write config file"
@@ -3333,7 +3334,6 @@ function action_config_file_save()
 			luci.sys.call(string.format("mv '%s' '%s'", backup_file, config_file))
 		end
 
-		luci.http.prepare_content("application/json")
 		luci.http.write_json({
 			status = "error",
 			message = "File write verification failed"
@@ -3369,7 +3369,6 @@ function action_config_file_save()
 		}
 	end
 
-	luci.http.prepare_content("application/json")
 	luci.http.write_json({
 		status = "success",
 		message = "Config file saved successfully",

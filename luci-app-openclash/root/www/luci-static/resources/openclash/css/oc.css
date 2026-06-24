@@ -2138,6 +2138,54 @@
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
+/* ==========================================================================
+ * SECTION: Usage Help Floating Button & Model (status.htm)
+ * ========================================================================== */
+.oc-usage-help-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--primary-color, #3b82f6);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    outline: none;
+}
+
+.oc-usage-help-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.oc-usage-help-float:active {
+    transform: scale(0.95);
+}
+
+#usage-help-model .form-textarea {
+    background: var(--bg-gray, #f8f9fa);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 220px;
+    resize: vertical;
+}
+
+#usage-help-model .form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color, #3b82f6);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
 .oc .form-textarea::placeholder {
     color: var(--text-secondary);
 }

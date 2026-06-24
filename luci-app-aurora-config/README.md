@@ -33,7 +33,7 @@
 | **LuCI Theme Aurora** | `≥ v1.0.0`  | Older versions will ignore these configurations. |
 | **OpenWrt**           | `≥ 23.05`   | Lua-based LuCI are not supported.                |
 
-## Installation
+## Install a pre-built release
 
 ### Using opkg:
 
@@ -45,4 +45,44 @@ cd /tmp && uclient-fetch -O luci-app-aurora-config.ipk https://github.com/eamonx
 
 ```sh
 cd /tmp && uclient-fetch -O luci-app-aurora-config.apk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config-1.0.0-r20260619.apk && apk add --allow-untrusted luci-app-aurora-config.apk
+```
+
+## Build from source
+
+Build the package yourself with the OpenWrt build system. Host prerequisites: [Build system setup](https://openwrt.org/docs/guide-developer/toolchain/install-buildsystem). The build writes the package to `bin/packages/<arch>/base/` (e.g. `bin/packages/x86_64/base/luci-app-aurora-config_*_all.ipk`); copy it to your router and install it as above.
+
+### Via the OpenWrt buildroot
+
+```sh
+# Clone OpenWrt — the openwrt-24.10 branch builds an .ipk, the main branch builds an .apk
+git clone https://github.com/openwrt/openwrt.git
+cd openwrt
+git checkout openwrt-24.10       # omit to stay on main (snapshots → .apk)
+
+# Add this package and install feeds (provides luci-base)
+git clone https://github.com/eamonxg/luci-app-aurora-config.git package/luci-app-aurora-config
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+# Select the app in menuconfig: LuCI → Applications → luci-app-aurora-config
+make menuconfig
+
+# Build host tools + toolchain, then compile the package
+make tools/install -j$(nproc)
+make toolchain/install -j$(nproc)
+make package/luci-app-aurora-config/compile -j$(nproc) V=s
+```
+
+### Via the prebuilt SDK (faster)
+
+The [OpenWrt SDK](https://openwrt.org/docs/guide-developer/toolchain/using_the_sdk) bundles a prebuilt toolchain, so the `tools/install` / `toolchain/install` steps are skipped. Download the SDK for your target from [downloads.openwrt.org](https://downloads.openwrt.org) (a release SDK builds `.ipk`, a snapshot SDK builds `.apk`), extract it, then from the SDK directory:
+
+```sh
+git clone https://github.com/eamonxg/luci-app-aurora-config.git package/luci-app-aurora-config
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+# Select the app in menuconfig: LuCI → Applications → luci-app-aurora-config
+make menuconfig
+make package/luci-app-aurora-config/compile -j$(nproc) V=s
 ```

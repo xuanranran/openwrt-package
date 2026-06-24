@@ -33,7 +33,7 @@
 | **LuCI Theme Aurora** | `≥ v1.0.0`  | 旧版本将忽略这些配置。   |
 | **OpenWrt**           | `≥ 23.05`   | 不支持基于 Lua 的 LuCI。 |
 
-## 安装
+## 安装预编译包
 
 ### 使用 opkg:
 
@@ -45,4 +45,44 @@ cd /tmp && uclient-fetch -O luci-app-aurora-config.ipk https://github.com/eamonx
 
 ```sh
 cd /tmp && uclient-fetch -O luci-app-aurora-config.apk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config-1.0.0-r20260619.apk && apk add --allow-untrusted luci-app-aurora-config.apk
+```
+
+## 从源码构建
+
+使用 OpenWrt 构建系统自行编译。主机前置条件见 [Build system setup](https://openwrt.org/docs/guide-developer/toolchain/install-buildsystem)。产物位于 `bin/packages/<arch>/base/`（例如 `bin/packages/x86_64/base/luci-app-aurora-config_*_all.ipk`），拷贝到路由器后按上文方式安装即可。
+
+### 通过 OpenWrt buildroot
+
+```sh
+# 克隆 OpenWrt——openwrt-24.10 分支构建 .ipk，main 分支构建 .apk
+git clone https://github.com/openwrt/openwrt.git
+cd openwrt
+git checkout openwrt-24.10       # 省略则停留在 main（snapshot → .apk）
+
+# 加入本软件包并安装 feeds（提供 luci-base）
+git clone https://github.com/eamonxg/luci-app-aurora-config.git package/luci-app-aurora-config
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+# 在 menuconfig 中勾选应用：LuCI → Applications → luci-app-aurora-config
+make menuconfig
+
+# 先编译主机工具与工具链，再编译本软件包
+make tools/install -j$(nproc)
+make toolchain/install -j$(nproc)
+make package/luci-app-aurora-config/compile -j$(nproc) V=s
+```
+
+### 通过预编译 SDK（更快）
+
+[OpenWrt SDK](https://openwrt.org/docs/guide-developer/toolchain/using_the_sdk) 自带预编译工具链，可省去 `tools/install` / `toolchain/install` 步骤。从 [downloads.openwrt.org](https://downloads.openwrt.org) 下载与目标匹配的 SDK（release SDK 构建 `.ipk`，snapshot SDK 构建 `.apk`）并解压，然后在 SDK 目录中执行：
+
+```sh
+git clone https://github.com/eamonxg/luci-app-aurora-config.git package/luci-app-aurora-config
+./scripts/feeds update -a
+./scripts/feeds install -a
+
+# 在 menuconfig 中勾选应用：LuCI → Applications → luci-app-aurora-config
+make menuconfig
+make package/luci-app-aurora-config/compile -j$(nproc) V=s
 ```

@@ -320,11 +320,47 @@
                         </div>
                     </div>
                 </div>
+
+            <!-- Usage Help Model -->
+            <div class="config-upload-model-overlay" id="usage-help-overlay" style="display: none;">
+                <div class="config-upload-model" id="usage-help-model">
+                    <div class="config-upload-header">
+                        <div class="config-upload-title"><%:Usage Help%></div>
+                        <button type="button" class="icon-btn" onclick="UsageHelpManager.hide()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                    <div class="config-upload-content">
+                        <div class="form-group">
+                            <label><%:Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:%></label>
+                            <textarea id="usage-help-textarea" class="form-textarea" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="config-upload-footer">
+                        <div class="config-upload-status" id="usage-help-status"></div>
+                        <div class="config-upload-buttons">
+                            <button type="button" class="btn cancel-btn" onclick="UsageHelpManager.hide()"><%:Cancel%></button>
+                            <button type="button" class="btn upload-btn" onclick="UsageHelpManager.copyAndHide()"><%:Copy And Close%></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
         </td>
     </tr>
 </table>
 </fieldset>
+
+<!-- Usage Help Button -->
+<div class="oc-usage-help-float" id="usage-help-float" title="<%:Usage Help%>" onclick="UsageHelpManager.show()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="7" width="18" height="13" rx="2"/>
+        <circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>
+        <line x1="9" y1="17" x2="15" y2="17"/>
+        <path d="M12 3v4"/>
+        <circle cx="12" cy="3" r="1"/>
+    </svg>
+</div>
 
 <script src="/luci-static/resources/openclash/js/common.js"></script>
 <script type="text/javascript">//<![CDATA[
@@ -4240,5 +4276,96 @@
         localStorage.setItem('oc-theme', newTheme);
         DarkModeDetector.init();
     }
+
+    var UsageHelpManager = {
+        overlay: null,
+        textarea: null,
+        statusEl: null,
+        initialized: false,
+
+        init: function() {
+            if (this.initialized) return;
+            this.overlay = document.getElementById('usage-help-overlay');
+            this.textarea = document.getElementById('usage-help-textarea');
+            this.statusEl = document.getElementById('usage-help-status');
+
+            var floatBtn = document.getElementById('usage-help-float');
+            if (floatBtn) {
+                floatBtn.addEventListener('click', function() { UsageHelpManager.show(); });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && UsageHelpManager.overlay && UsageHelpManager.overlay.style.display === 'flex') {
+                    UsageHelpManager.hide();
+                }
+            });
+
+            this.initialized = true;
+        },
+
+        buildPrompt: function() {
+            var skillUrl = 'https://raw.githubusercontent.com/vernesong/OpenClash/dev/.github/skills/openclash-user-guide/SKILL.md';
+            var prompt = '<%:Please refer to the OpenClash Complete Feature Reference Guide below to answer my question:%>\n\n';
+            prompt += '<%:[Source: OpenClash SKILL.md]%> ' + skillUrl + '\n\n';
+            prompt += '<%:My question is:%>\n';
+            return prompt;
+        },
+
+        show: function() {
+            this.init();
+            if (!this.overlay || !this.textarea) return;
+            this.textarea.value = this.buildPrompt();
+            this.overlay.style.display = 'flex';
+            if (this.statusEl) {
+                this.statusEl.textContent = '';
+            }
+            setTimeout(function() {
+                if (UsageHelpManager.textarea) {
+                    UsageHelpManager.textarea.focus();
+                }
+            }, 100);
+        },
+
+        hide: function() {
+            if (this.overlay) {
+                this.overlay.style.display = 'none';
+            }
+        },
+
+        copyText: function() {
+            if (!this.textarea) return;
+            this.textarea.select();
+            this.textarea.setSelectionRange(0, 99999);
+            try {
+                navigator.clipboard.writeText(this.textarea.value).then(function() {
+                    if (UsageHelpManager.statusEl) {
+                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
+                        setTimeout(function() {
+                            if (UsageHelpManager.statusEl) {
+                                UsageHelpManager.statusEl.textContent = '';
+                            }
+                        }, 2000);
+                    }
+                }).catch(function() {
+                    document.execCommand('copy');
+                    if (UsageHelpManager.statusEl) {
+                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
+                        setTimeout(function() {
+                            if (UsageHelpManager.statusEl) {
+                                UsageHelpManager.statusEl.textContent = '';
+                            }
+                        }, 2000);
+                    }
+                });
+            } catch(e) {
+                document.execCommand('copy');
+            }
+        },
+
+        copyAndHide: function() {
+            this.copyText();
+            this.hide();
+        }
+    };
 //]]></script>
 </html>

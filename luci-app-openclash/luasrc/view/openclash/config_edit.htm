@@ -621,14 +621,12 @@ var ConfigEditor = {
         }
 
         fetch(url)
-            .then(function(response) {
-                if (!response.ok) {
-                    throw new Error('HTTP error! status: ' + response.status);
-                }
-                return response.json();
+            .then(function(r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.json();
             })
             .then(function(data) {
-                if (data.content !== undefined) {
+                if (data.status === 'success' && data.content !== undefined) {
                     if (self.currentViewMode === 'runtime' && !self.isOverwrite) {
                         self.runtimeContent = data.content;
                         renderEditor(self.runtimeContent, "text/yaml", true, false);
@@ -640,10 +638,11 @@ var ConfigEditor = {
                     }
                     self.updateModeTabs();
                 } else {
-                    throw new Error('Invalid response data');
+                    loadingDiv.querySelector('span').textContent = '<%:Failed to load config file%>';
+                    statusText.textContent = '<%:Load failed%>';
                 }
             })
-            .catch(function(error) {
+            .catch(function(err) {
                 loadingDiv.querySelector('span').textContent = '<%:Failed to load config file%>';
                 statusText.textContent = '<%:Load failed%>';
             });
@@ -816,11 +815,9 @@ var ConfigEditor = {
             method: 'POST',
             body: formData
         })
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error('HTTP error! status: ' + response.status);
-            }
-            return response.json();
+        .then(function(r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
         })
         .then(function(data) {
             saveBtn.disabled = false;
@@ -847,16 +844,10 @@ var ConfigEditor = {
                 }, 3000);
             }
         })
-        .catch(function(error) {
+        .catch(function(err) {
             saveBtn.disabled = false;
             statusText.textContent = '<%:Save failed%>';
-            alert('<%:Save config failed:%> ' + error.message);
-
-            setTimeout(function() {
-                if (statusText && statusText.textContent === '<%:Save failed%>') {
-                    statusText.textContent = '<%:Ready%>';
-                }
-            }, 3000);
+            alert('<%:Failed to save config file:%> ' + err.message);
         });
     },
 
