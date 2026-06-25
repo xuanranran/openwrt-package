@@ -4321,7 +4321,7 @@
 
         buildPrompt: function() {
             var skillUrl = 'https://raw.githubusercontent.com/vernesong/OpenClash/dev/.github/skills/openclash-user-guide/SKILL.md';
-            var prompt = '<%:Please refer to the OpenClash Complete Feature Reference Guide below to answer my question:%>\n\n';
+            var prompt = '<%:Please refer to the OpenClash Feature Usage Guide below to answer my question:%>\n\n';
             prompt += '<%:[Source: OpenClash SKILL.md]%> ' + skillUrl + '\n\n';
             prompt += '<%:My question is:%>\n';
             return prompt;
@@ -4330,6 +4330,13 @@
         show: function() {
             this.init();
             if (!this.overlay || !this.textarea) return;
+            if (!this._portal) {
+                this._portal = document.createElement('div');
+                this._portal.className = 'oc';
+                this._portal.style.overflow = 'visible';
+                document.body.appendChild(this._portal);
+                this._portal.appendChild(this.overlay);
+            }
             this.textarea.value = this.buildPrompt();
             this.overlay.style.display = 'flex';
             if (this.statusEl) {

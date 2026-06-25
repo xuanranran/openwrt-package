@@ -3985,8 +3985,8 @@ msgstr "使用帮助"
 msgid "Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:"
 msgstr "将以下文本复制到任意 AI 工具（ChatGPT、DeepSeek 等），即可获取 OpenClash 的使用帮助："
 
-msgid "Please refer to the OpenClash Complete Feature Reference Guide below to answer my question:"
-msgstr "请参考以下 OpenClash 完整功能参考指南回答我的问题："
+msgid "Please refer to the OpenClash Feature Usage Guide below to answer my question:"
+msgstr "请根据以下 OpenClash 的功能使用指南回答我的问题："
 
 msgid "[Source: OpenClash SKILL.md]"
 msgstr "[来源：OpenClash SKILL.md]"

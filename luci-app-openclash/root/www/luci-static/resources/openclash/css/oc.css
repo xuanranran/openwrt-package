@@ -1449,439 +1449,6 @@
     display: none !important;
 }
 
-@media screen and (max-width: 1200px) {
-    .oc .main-cards-container {
-        grid-template-columns: 1fr;
-        gap: 11px;
-        max-width: 95%;
-        width: 95%;
-    }
-
-    .oc .announcement-banner {
-        grid-column: 1;
-        width: 80%;
-        max-width: 95%;
-    }
-
-    .oc .announcement-card {
-        grid-column: 1;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .oc .main-card {
-        grid-column: 1;
-        grid-template-rows: auto auto auto auto;
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .oc .main-card:first-of-type {
-        grid-column: 1;
-        grid-row: 2;
-    }
-
-    .oc .main-card:last-of-type {
-        grid-column: 1;
-        grid-row: 3;
-    }
-
-    .oc .card-row.dual-cards {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .oc .card-row.stats-grid {
-        grid-template-columns: repeat(4, 2fr);
-    }
-
-    .oc .config-selector {
-        min-width: 200px;
-        flex: 1;
-    }
-
-    .oc .config-select {
-        min-width: 200px;
-        font-size: 14px;
-    }
-
-    .oc .config-select option {
-        font-size: 14px;
-        max-width: 100%;
-    }
-
-    .oc .card-row:nth-child(1),
-    .oc .card-row:nth-child(2),
-    .oc .card-row:nth-child(3),
-    .oc .card-row:nth-child(4) {
-        min-height: auto;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .oc .main-cards-container {
-        max-width: 98%;
-        width: 98%;
-        gap: 10px;
-    }
-
-    .oc .main-card {
-        grid-template-rows: auto auto auto auto;
-    }
-
-    .oc .sub-card {
-        padding: 12px;
-        min-height: auto;
-    }
-
-    .oc .card-row {
-        gap: 12px;
-    }
-
-    .oc .card-row.stats-grid {
-        grid-template-columns: repeat(2, 2fr);
-    }
-
-    .oc .announcement-banner {
-        width: 85%;
-        max-width: 98%;
-    }
-
-    .oc .dashboard-btn {
-        font-size: 10px !important;
-        height: 40px !important;
-    }
-
-    .oc .card-value {
-        font-size: 13px;
-    }
-
-    .oc .value-indicator {
-        font-size: 11px;
-        padding: 5px 5px;
-    }
-
-    .oc .cbi-button-option {
-        padding: 6px 6px;
-        font-size: 11px;
-    }
-
-    .oc .card-row:nth-child(1),
-    .oc .card-row:nth-child(2),
-    .oc .card-row:nth-child(3),
-    .oc .card-row:nth-child(4) {
-        min-height: auto;
-    }
-
-    .oc .config-file-content {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .oc .config-selector {
-        min-width: 150px;
-        flex: 1;
-    }
-
-    .oc .config-select {
-        min-width: 150px;
-        font-size: 13px;
-        padding: 4px 10px;
-    }
-
-    .oc .config-select option {
-        font-size: 13px;
-        padding: 6px 10px;
-    }
-
-    .oc .config-selector::after {
-        right: 10px;
-        border-left: 3px solid transparent;
-        border-right: 3px solid transparent;
-        border-top: 3px solid var(--text-secondary);
-    }
-
-    .oc .config-subscription-info {
-        margin-left: 12px;
-    }
-
-    .oc .subscription-info-container {
-        padding: 8px;
-    }
-
-    .oc .subscription-info-header {
-        gap: 8px;
-    }
-
-    .oc .config-file-name {
-        max-width: 100%;
-        font-size: 18px;
-    }
-
-    .oc .config-file-bottom {
-        flex-direction: row;
-        align-items: stretch;
-        gap: 8px;
-    }
-
-    .oc .config-file-bottom .card-actions {
-        justify-content: center;
-        gap: 5px;
-    }
-
-    .oc .subscription-info-text {
-        font-size: 10px;
-    }
-
-    .oc .subscription-info-title {
-        font-size: 13px;
-    }
-
-    .oc .subscription-progress-bar {
-        height: 10px;
-    }
-
-    .oc .file-info {
-        font-size: 10px;
-    }
-
-    .oc .file-info-item {
-        font-size: 10px;
-    }
-
-    .oc .config-upload-btn-large {
-        min-width: 180px !important;
-        height: 50px !important;
-        font-size: 14px !important;
-        padding: 0 24px !important;
-    }
-
-    .oc .config-file-empty-message {
-        font-size: 14px;
-    }
-}
-
-@media screen and (max-width: 575px) {
-    .oc .main-cards-container {
-        gap: 8px;
-        max-width: 100%;
-        width: 100%;
-    }
-
-    .oc .main-card {
-        padding: 8px;
-    }
-
-    .oc .card-row {
-        gap: 10px;
-    }
-
-    .oc .card-row.dual-cards {
-        grid-template-columns: 1fr;
-    }
-
-    .oc .card-row.stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .oc .announcement-banner {
-        width: 90%;
-        max-width: 100%;
-    }
-
-    .oc .icon-btn {
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
-    }
-
-    .oc .subscription-overwrite-tag {
-        height: 24px;
-        width: fit-content;
-        font-size: 10px;
-        padding: 0 6px;
-    }
-
-    .oc .icon-btn svg {
-        width: 12px !important;
-        height: 12px !important;
-    }
-
-    .oc .version-display {
-        max-width: 100px;
-        font-size: 9px;
-        padding: 1px 4px;
-    }
-
-    .oc .dashboard-btn {
-        font-size: 9px !important;
-        height: 25px !important;
-    }
-
-    .oc .cbi-button-group {
-        padding: 2px;
-        gap: 1px;
-        height: 28px;
-    }
-
-    .oc input[type="radio"]:checked + .cbi-button-option {
-        height: 22px;
-    }
-
-    .oc .cbi-button-option {
-        padding: 4px 4px;
-        font-size: 10px;
-        min-width: 35px;
-    }
-
-    .oc .config-file-top {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-    }
-
-    .oc .config-subscription-info {
-        margin-left: 0;
-        justify-content: center;
-    }
-
-    .oc .subscription-info-header {
-        gap: 6px;
-    }
-
-    .oc .file-info {
-        gap: 4px;
-        font-size: 8px;
-    }
-
-    .oc .mode-row .sub-card:first-child .card-content {
-        flex-direction: row;
-        gap: 8px;
-    }
-
-    .oc .card-row:nth-child(1),
-    .oc .card-row:nth-child(2),
-    .oc .card-row:nth-child(3),
-    .oc .card-row:nth-child(4) {
-        min-height: auto;
-    }
-
-    .oc .config-selector {
-        min-width: 110px;
-        flex: 1;
-    }
-
-    .oc .config-select {
-        min-width: 110px;
-        font-size: 12px;
-        padding: 4px 8px;
-    }
-
-    .oc .config-select option {
-        font-size: 12px;
-        padding: 5px 8px;
-    }
-
-    .oc .config-selector::after {
-        right: 8px;
-    }
-
-    .oc .card-value {
-        font-size: 11px;
-        min-height: 28px;
-    }
-
-    .oc .value-indicator {
-        padding: 4px 4px;
-        min-width: 50px;
-        height: 28px;
-    }
-
-    .oc .value-indicator b {
-        font-size: 10px;
-    }
-
-    .oc .stat-label {
-        font-size: 9px;
-    }
-
-    .oc .stat-value {
-        min-height: 30px;
-    }
-
-    .oc .subscription-info-text {
-        font-size: 10px;
-    }
-
-    .oc .subscription-info-title {
-        font-size: 13px;
-    }
-
-    .oc .config-file-name {
-        font-size: 15px;
-    }
-
-    .oc .sub-card {
-        padding: 8px;
-        gap: 4px;
-    }
-
-    .oc .sub-card.stat-item {
-        padding: 8px 4px;
-    }
-
-    .oc .card-content {
-        gap: 8px;
-    }
-
-    .oc .card-controls {
-        gap: 8px;
-    }
-
-    .oc .core-main-controls {
-        gap: 8px;
-        min-height: 28px;
-    }
-
-    .oc .core-control-buttons {
-        max-width: 120px;
-        gap: 6px;
-    }
-
-    .oc .card-actions {
-        gap: 6px;
-        min-height: 24px;
-    }
-
-    .oc #logo_btn .logo-text,
-    .oc #edit_overwrite .btn-text {
-        font-size: 8px;
-    }
-
-    .oc #logo_btn .mihomo-link {
-        font-size: 8px;
-    }
-
-    .oc .file-info-item {
-        font-size: 10px;
-    }
-
-    .oc .config-upload-btn-large {
-        min-width: 160px !important;
-        height: 45px !important;
-        font-size: 13px !important;
-        padding: 0 20px !important;
-    }
-
-    .oc .config-file-empty-state {
-        padding: 30px 15px;
-        gap: 15px;
-    }
-
-    .oc .config-file-empty-message {
-        font-size: 13px;
-    }
-}
-
 /* ==========================================================================
  * SECTION 2: config_upload.htm
  * ========================================================================== */
@@ -2550,71 +2117,6 @@
     opacity: 0.6;
 }
 
-@media screen and (max-width: 768px) {
-    .oc .form-help {
-        font-size: 11px;
-        margin-bottom: 10px;
-        gap: 5px;
-    }
-
-    .oc .form-help::before {
-        width: 11px;
-        height: 11px;
-        margin-top: 1px;
-    }
-
-    .oc .sub-convert-options {
-        margin: 12px auto;
-        padding: 12px;
-        max-width: 98%;
-    }
-}
-
-@media screen and (max-width: 575px) {
-    .oc .form-help {
-        font-size: 10px;
-        margin-bottom: 8px;
-        gap: 4px;
-    }
-
-    .oc .form-help::before {
-        width: 10px;
-        height: 10px;
-        margin-top: 1px;
-    }
-
-    .oc .sub-convert-options {
-        margin: 10px auto;
-        padding: 10px;
-        max-width: 100%;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .oc .config-upload-model {
-        width: 95vw;
-        min-width: 320px;
-    }
-
-    .oc .config-upload-content {
-        padding: 20px;
-    }
-
-    .oc .upload-zone {
-        padding: 30px 15px;
-    }
-
-    .oc .mode-tab {
-        padding: 10px 12px;
-        font-size: 13px;
-    }
-
-    .oc .mode-tab svg {
-        width: 14px;
-        height: 14px;
-    }
-}
-
 /* ==========================================================================
  * SECTION 3: config_edit.htm
  * ========================================================================== */
@@ -3259,28 +2761,6 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     transition: none !important;
 }
-@media screen and (max-width: 768px) {
-    .oc .config-editor-model {
-        width: 95vw;
-        height: 80vh;
-        min-width: 320px;
-    }
-    .oc .config-editor-actions {
-        gap: 5px;
-    }
-    .oc .overwrite-card-row {
-        gap: 6px;
-    }
-    .oc .sub-card.overwrite-item {
-        width: 185px;
-        max-width: 200px;
-        gap: 10px;
-    }
-    .oc .overwrite-drag-line {
-        margin: -2px;
-        width: 2px;
-    }
-}
 
 /* ==========================================================================
  * SECTION 4: config_editor.htm
@@ -3713,109 +3193,6 @@
 .oc .myip-icon-btn:hover {
     transform: scale(1.1);
     color: var(--primary-color, #3b82f6);
-}
-
-
-@media screen and (max-width: 768px) {
-    .oc {
-        --card-item-padding: 8px 6px;
-        --card-item-min-height: 80px;
-    }
-
-    .oc .myip-content-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .oc .myip-section-title {
-        font-size: 22px;
-        margin-bottom: 12px;
-    }
-
-    .oc .myip-ip-list,
-    .oc .myip-check-list {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .oc .ip-title,
-    .oc .ip-state_title {
-        font-size: 13px;
-    }
-
-    .oc .ip-title::after,
-    .oc .ip-state_title::after {
-        width: 25px;
-    }
-
-    .oc .ip-result {
-        font-size: 12px;
-    }
-
-    .oc .ip-geo {
-        font-size: 12px;
-    }
-
-    .oc .sk-text-success, 
-    .oc .sk-text-error {
-        font-size: 12px;
-    }
-
-    .oc .sk-load-success {
-        font-size: 12px;
-    }
-
-    .oc .myip-footer p {
-        font-size: 13px !important;
-        line-height: 18px !important;
-    }
-}
-
-@media screen and (max-width: 575px) {
-    .oc {
-        --card-item-padding: 6px 4px;
-        --card-item-min-height: 70px;
-    }
-
-    .oc .myip-content-grid {
-        padding: 2px;
-    }
-
-    .oc .myip-section-title {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .oc .ip-title,
-    .oc .ip-state_title {
-        font-size: 12px;
-        margin-bottom: 6px;
-    }
-
-    .oc .ip-title::after,
-    .oc .ip-state_title::after {
-        width: 20px;
-    }
-
-    .oc .ip-result {
-        font-size: 11px;
-    }
-
-    .oc .ip-geo {
-        font-size: 11px;
-    }
-
-    .oc .sk-text-success, 
-    .oc .sk-text-error {
-        font-size: 11px;
-    }
-
-    .oc .sk-load-success {
-        font-size: 11px;
-    }
-
-    .oc .myip-footer p {
-        font-size: 11px !important;
-        line-height: 16px !important;
-    }
 }
 
 /* ==========================================================================
@@ -4625,193 +4002,6 @@
     filter: brightness(0) invert(1);
     transform: scaleX(-1);
     z-index: auto;
-}
-
-@media screen and (max-width: 1200px) {
-    .oc .oix-main-container {
-      width: calc(100% - 32px);
-    }
-
-    .oc .card .additional.collapsed {
-      width: 140px;
-    }
-
-    .oc .card .additional .user-card {
-      width: 140px;
-    }
-
-    .oc .card .additional .more-info h1 {
-      font-size: 1.8rem;
-    }
-
-    .oc .card .additional .coords {
-      font-size: 0.95rem;
-    }
-
-    .oc .card .general {
-      margin-left: 120px;
-      padding-right: 8px;
-    }
-
-    .oc .card .general .more {
-      bottom: 6px;
-      padding-right: 12px;
-    }
-
-    .oc .oix-announcement {
-      width: 80%;
-      max-width: 95%;
-    }
-
-}
-
-@media screen and (max-width: 768px) {
-    .oc .oix-main-container {
-      width: 100%;
-    }
-
-    .oc .card .additional.collapsed {
-      width: 125px;
-    }
-
-    .oc .card .additional .user-card {
-      width: 125px;
-    }
-
-    .oc .card .additional .more-info h1 {
-      font-size: 1.5rem;
-    }
-
-    .oc .card .additional .coords {
-      font-size: 0.8rem;
-    }
-
-    .oc .card .general {
-      margin-left: 110px;
-      padding-right: 6px;
-    }
-
-    .oc .card .general h1 {
-      font-size: 24px;
-      line-height: 30px;
-      margin: 0;
-    }
-
-    .oc .card .general .oix-info {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto auto auto;
-      gap: 12px;
-      padding-right: 8px;
-      height: 50%;
-    }
-
-    .oc .card .general .oix-info-right {
-      justify-content: flex-start;
-      padding-top: 8px;
-      gap: 12px;
-    }
-
-    .oc .card .general .btn {
-      width: 80px !important;
-      height: 80px !important;
-      font-size: 14px;
-      padding: 0 !important;
-    }
-
-    .oc .card .general .oix-title {
-      font-size: 14px;
-      width: 50%;
-    }
-
-    .oc .card .general .oix-result,
-    .oc .card .general .oix-result2 {
-      font-size: 14px;
-      width: 50%;
-    }
-
-    .oc .card .general .more {
-      bottom: 4px;
-      padding-right: 10px;
-    }
-
-    .oc .card .general .more p {
-      font-size: 13px;
-    }
-
-    .oc .oix-announcement {
-      width: 85%;
-      max-width: 98%;
-    }
-
-}
-
-@media screen and (max-width: 575px) {
-    .oc .center {
-      padding: 8px;
-    }
-
-    .oc .card .additional.collapsed {
-      width: 115px;
-    }
-
-    .oc .card .additional .user-card {
-      width: 115px;
-    }
-
-    .oc .card .additional .more-info h1 {
-      font-size: 1.3rem;
-    }
-
-    .oc .card .additional .coords {
-      font-size: 0.7rem;
-    }
-
-    .oc .card .general {
-      margin-left: 120px;
-      padding-right: 4px;
-    }
-
-    .oc .card .general .oix-info {
-      height: 50%;
-    }
-
-    .oc .card .general h1 {
-      font-size: 18px;
-      line-height: 26px;
-      margin: 0;
-    }
-
-    .oc .card .general .oix-title {
-      font-size: 12px;
-      width: 50%;
-    }
-
-    .oc .card .general .oix-result,
-    .oc .card .general .oix-result2 {
-      font-size: 12px;
-      width: 50%;
-    }
-
-    .oc .card .general .more {
-      bottom: 2px;
-      padding-right: 8px;
-    }
-
-    .oc .card .general .btn {
-      width: 60px !important;
-      height: 60px !important;
-      font-size: 10px;
-      padding: 0 !important;
-    }
-
-    .oc .card .general .more p {
-      font-size: 11px;
-    }
-
-    .oc .oix-announcement {
-      width: 90%;
-      max-width: 100%;
-    }
 }
 
 /* ==========================================================================
@@ -6123,7 +5313,115 @@ ul {
     color: var(--error-color);
 }
 
+/* ==========================================================================
+ * SECTION 14: @media queries for smaller screens
+ * ========================================================================== */
+
 @media screen and (max-width: 1200px) {
+    /* status.htm - main cards */
+    .oc .main-cards-container {
+        grid-template-columns: 1fr;
+        gap: 11px;
+        max-width: 95%;
+        width: 95%;
+    }
+
+    .oc .announcement-banner {
+        grid-column: 1;
+        width: 80%;
+        max-width: 95%;
+    }
+
+    .oc .announcement-card {
+        grid-column: 1;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .oc .main-card {
+        grid-column: 1;
+        grid-template-rows: auto auto auto auto;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .oc .main-card:first-of-type {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .oc .main-card:last-of-type {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .oc .card-row.dual-cards {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .oc .card-row.stats-grid {
+        grid-template-columns: repeat(4, 2fr);
+    }
+
+    .oc .config-selector {
+        min-width: 200px;
+        flex: 1;
+    }
+
+    .oc .config-select {
+        min-width: 200px;
+        font-size: 14px;
+    }
+
+    .oc .config-select option {
+        font-size: 14px;
+        max-width: 100%;
+    }
+
+    .oc .card-row:nth-child(1),
+    .oc .card-row:nth-child(2),
+    .oc .card-row:nth-child(3),
+    .oc .card-row:nth-child(4) {
+        min-height: auto;
+    }
+
+    /* oixcloud.htm */
+    .oc .oix-main-container {
+      width: calc(100% - 32px);
+    }
+
+    .oc .card .additional.collapsed {
+      width: 140px;
+    }
+
+    .oc .card .additional .user-card {
+      width: 140px;
+    }
+
+    .oc .card .additional .more-info h1 {
+      font-size: 1.8rem;
+    }
+
+    .oc .card .additional .coords {
+      font-size: 0.95rem;
+    }
+
+    .oc .card .general {
+      margin-left: 120px;
+      padding-right: 8px;
+    }
+
+    .oc .card .general .more {
+      bottom: 6px;
+      padding-right: 12px;
+    }
+
+    .oc .oix-announcement {
+      width: 80%;
+      max-width: 95%;
+    }
+
+    /* select_git_cdn.htm */
     .oc .config-grid {
         grid-template-columns: 1fr;
         gap: 12px;
@@ -6139,6 +5437,320 @@ ul {
 }
 
 @media screen and (max-width: 768px) {
+    /* status.htm - main cards */
+    .oc .main-cards-container {
+        max-width: 98%;
+        width: 98%;
+        gap: 10px;
+    }
+
+    .oc .main-card {
+        grid-template-rows: auto auto auto auto;
+    }
+
+    .oc .sub-card {
+        padding: 12px;
+        min-height: auto;
+    }
+
+    .oc .card-row {
+        gap: 12px;
+    }
+
+    .oc .card-row.stats-grid {
+        grid-template-columns: repeat(2, 2fr);
+    }
+
+    .oc .announcement-banner {
+        width: 85%;
+        max-width: 98%;
+    }
+
+    .oc .dashboard-btn {
+        font-size: 10px !important;
+        height: 40px !important;
+    }
+
+    .oc .card-value {
+        font-size: 13px;
+    }
+
+    .oc .value-indicator {
+        font-size: 11px;
+        padding: 5px 5px;
+    }
+
+    .oc .cbi-button-option {
+        padding: 6px 6px;
+        font-size: 11px;
+    }
+
+    .oc .card-row:nth-child(1),
+    .oc .card-row:nth-child(2),
+    .oc .card-row:nth-child(3),
+    .oc .card-row:nth-child(4) {
+        min-height: auto;
+    }
+
+    .oc .config-file-content {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .oc .config-selector {
+        min-width: 150px;
+        flex: 1;
+    }
+
+    .oc .config-select {
+        min-width: 150px;
+        font-size: 13px;
+        padding: 4px 10px;
+    }
+
+    .oc .config-select option {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+
+    .oc .config-selector::after {
+        right: 10px;
+        border-left: 3px solid transparent;
+        border-right: 3px solid transparent;
+        border-top: 3px solid var(--text-secondary);
+    }
+
+    .oc .config-subscription-info {
+        margin-left: 12px;
+    }
+
+    .oc .subscription-info-container {
+        padding: 8px;
+    }
+
+    .oc .subscription-info-header {
+        gap: 8px;
+    }
+
+    .oc .config-file-name {
+        max-width: 100%;
+        font-size: 18px;
+    }
+
+    .oc .config-file-bottom {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .oc .config-file-bottom .card-actions {
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .oc .subscription-info-text {
+        font-size: 10px;
+    }
+
+    .oc .subscription-info-title {
+        font-size: 13px;
+    }
+
+    .oc .subscription-progress-bar {
+        height: 10px;
+    }
+
+    .oc .file-info {
+        font-size: 10px;
+    }
+
+    .oc .file-info-item {
+        font-size: 10px;
+    }
+
+    .oc .config-upload-btn-large {
+        min-width: 180px !important;
+        height: 50px !important;
+        font-size: 14px !important;
+        padding: 0 24px !important;
+    }
+
+    .oc .config-file-empty-message {
+        font-size: 14px;
+    }
+
+    /* config_upload.htm */
+    .oc .form-help {
+        font-size: 11px;
+        margin-bottom: 10px;
+        gap: 5px;
+    }
+
+    .oc .form-help::before {
+        width: 11px;
+        height: 11px;
+        margin-top: 1px;
+    }
+
+    .oc .sub-convert-options {
+        margin: 12px auto;
+        padding: 12px;
+        max-width: 98%;
+    }
+
+    /* config_edit.htm */
+    .oc .config-editor-model {
+        width: 95vw;
+        height: 80vh;
+        min-width: 320px;
+    }
+    .oc .config-editor-actions {
+        gap: 5px;
+    }
+    .oc .overwrite-card-row {
+        gap: 6px;
+    }
+    .oc .sub-card.overwrite-item {
+        width: 185px;
+        max-width: 200px;
+        gap: 10px;
+    }
+    .oc .overwrite-drag-line {
+        margin: -2px;
+        width: 2px;
+    }
+
+    /* myip.htm */
+    .oc {
+        --card-item-padding: 8px 6px;
+        --card-item-min-height: 80px;
+    }
+
+    .oc .myip-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .oc .myip-section-title {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+
+    .oc .myip-ip-list,
+    .oc .myip-check-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .oc .ip-title,
+    .oc .ip-state_title {
+        font-size: 13px;
+    }
+
+    .oc .ip-title::after,
+    .oc .ip-state_title::after {
+        width: 25px;
+    }
+
+    .oc .ip-result {
+        font-size: 12px;
+    }
+
+    .oc .ip-geo {
+        font-size: 12px;
+    }
+
+    .oc .sk-text-success, 
+    .oc .sk-text-error {
+        font-size: 12px;
+    }
+
+    .oc .sk-load-success {
+        font-size: 12px;
+    }
+
+    .oc .myip-footer p {
+        font-size: 13px !important;
+        line-height: 18px !important;
+    }
+
+    /* oixcloud.htm */
+    .oc .oix-main-container {
+      width: 100%;
+    }
+
+    .oc .card .additional.collapsed {
+      width: 125px;
+    }
+
+    .oc .card .additional .user-card {
+      width: 125px;
+    }
+
+    .oc .card .additional .more-info h1 {
+      font-size: 1.5rem;
+    }
+
+    .oc .card .additional .coords {
+      font-size: 0.8rem;
+    }
+
+    .oc .card .general {
+      margin-left: 110px;
+      padding-right: 6px;
+    }
+
+    .oc .card .general h1 {
+      font-size: 24px;
+      line-height: 30px;
+      margin: 0;
+    }
+
+    .oc .card .general .oix-info {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 12px;
+      padding-right: 8px;
+      height: 50%;
+    }
+
+    .oc .card .general .oix-info-right {
+      justify-content: flex-start;
+      padding-top: 8px;
+      gap: 12px;
+    }
+
+    .oc .card .general .btn {
+      width: 80px !important;
+      height: 80px !important;
+      font-size: 14px;
+      padding: 0 !important;
+    }
+
+    .oc .card .general .oix-title {
+      font-size: 14px;
+      width: 50%;
+    }
+
+    .oc .card .general .oix-result,
+    .oc .card .general .oix-result2 {
+      font-size: 14px;
+      width: 50%;
+    }
+
+    .oc .card .general .more {
+      bottom: 4px;
+      padding-right: 10px;
+    }
+
+    .oc .card .general .more p {
+      font-size: 13px;
+    }
+
+    .oc .oix-announcement {
+      width: 85%;
+      max-width: 98%;
+    }
+
+    /* select_git_cdn.htm */
     .oc .select-popup {
         min-width: 80%;
         width: 80%;
@@ -6178,6 +5790,363 @@ ul {
 }
 
 @media screen and (max-width: 575px) {
+    /* status.htm - main cards */
+    .oc .main-cards-container {
+        gap: 8px;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .oc .main-card {
+        padding: 8px;
+    }
+
+    .oc .card-row {
+        gap: 10px;
+    }
+
+    .oc .card-row.dual-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .oc .card-row.stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .oc .announcement-banner {
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .oc .icon-btn {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+    }
+
+    .oc .subscription-overwrite-tag {
+        height: 24px;
+        width: fit-content;
+        font-size: 10px;
+        padding: 0 6px;
+    }
+
+    .oc .icon-btn svg {
+        width: 12px !important;
+        height: 12px !important;
+    }
+
+    .oc .version-display {
+        max-width: 100px;
+        font-size: 9px;
+        padding: 1px 4px;
+    }
+
+    .oc .dashboard-btn {
+        font-size: 9px !important;
+        height: 25px !important;
+    }
+
+    .oc .cbi-button-group {
+        padding: 2px;
+        gap: 1px;
+        height: 28px;
+    }
+
+    .oc input[type="radio"]:checked + .cbi-button-option {
+        height: 22px;
+    }
+
+    .oc .cbi-button-option {
+        padding: 4px 4px;
+        font-size: 10px;
+        min-width: 35px;
+    }
+
+    .oc .config-file-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .oc .config-subscription-info {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .oc .subscription-info-header {
+        gap: 6px;
+    }
+
+    .oc .file-info {
+        gap: 4px;
+        font-size: 8px;
+    }
+
+    .oc .mode-row .sub-card:first-child .card-content {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .oc .card-row:nth-child(1),
+    .oc .card-row:nth-child(2),
+    .oc .card-row:nth-child(3),
+    .oc .card-row:nth-child(4) {
+        min-height: auto;
+    }
+
+    .oc .config-selector {
+        min-width: 110px;
+        flex: 1;
+    }
+
+    .oc .config-select {
+        min-width: 110px;
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .oc .config-select option {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+
+    .oc .config-selector::after {
+        right: 8px;
+    }
+
+    .oc .card-value {
+        font-size: 11px;
+        min-height: 28px;
+    }
+
+    .oc .value-indicator {
+        padding: 4px 4px;
+        min-width: 50px;
+        height: 28px;
+    }
+
+    .oc .value-indicator b {
+        font-size: 10px;
+    }
+
+    .oc .stat-label {
+        font-size: 9px;
+    }
+
+    .oc .stat-value {
+        min-height: 30px;
+    }
+
+    .oc .subscription-info-text {
+        font-size: 10px;
+    }
+
+    .oc .subscription-info-title {
+        font-size: 13px;
+    }
+
+    .oc .config-file-name {
+        font-size: 15px;
+    }
+
+    .oc .sub-card {
+        padding: 8px;
+        gap: 4px;
+    }
+
+    .oc .sub-card.stat-item {
+        padding: 8px 4px;
+    }
+
+    .oc .card-content {
+        gap: 8px;
+    }
+
+    .oc .card-controls {
+        gap: 8px;
+    }
+
+    .oc .core-main-controls {
+        gap: 8px;
+        min-height: 28px;
+    }
+
+    .oc .core-control-buttons {
+        max-width: 120px;
+        gap: 6px;
+    }
+
+    .oc .card-actions {
+        gap: 6px;
+        min-height: 24px;
+    }
+
+    .oc #logo_btn .logo-text,
+    .oc #edit_overwrite .btn-text {
+        font-size: 8px;
+    }
+
+    .oc #logo_btn .mihomo-link {
+        font-size: 8px;
+    }
+
+    .oc .file-info-item {
+        font-size: 10px;
+    }
+
+    .oc .config-upload-btn-large {
+        min-width: 160px !important;
+        height: 45px !important;
+        font-size: 13px !important;
+        padding: 0 20px !important;
+    }
+
+    .oc .config-file-empty-state {
+        padding: 30px 15px;
+        gap: 15px;
+    }
+
+    .oc .config-file-empty-message {
+        font-size: 13px;
+    }
+
+    /* config_upload.htm */
+    .oc .form-help {
+        font-size: 10px;
+        margin-bottom: 8px;
+        gap: 4px;
+    }
+
+    .oc .form-help::before {
+        width: 10px;
+        height: 10px;
+        margin-top: 1px;
+    }
+
+    .oc .sub-convert-options {
+        margin: 10px auto;
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    /* myip.htm */
+    .oc {
+        --card-item-padding: 6px 4px;
+        --card-item-min-height: 70px;
+    }
+
+    .oc .myip-content-grid {
+        padding: 2px;
+    }
+
+    .oc .myip-section-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .oc .ip-title,
+    .oc .ip-state_title {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .oc .ip-title::after,
+    .oc .ip-state_title::after {
+        width: 20px;
+    }
+
+    .oc .ip-result {
+        font-size: 11px;
+    }
+
+    .oc .ip-geo {
+        font-size: 11px;
+    }
+
+    .oc .sk-text-success, 
+    .oc .sk-text-error {
+        font-size: 11px;
+    }
+
+    .oc .sk-load-success {
+        font-size: 11px;
+    }
+
+    .oc .myip-footer p {
+        font-size: 11px !important;
+        line-height: 16px !important;
+    }
+
+    /* oixcloud.htm */
+    .oc .center {
+      padding: 8px;
+    }
+
+    .oc .card .additional.collapsed {
+      width: 115px;
+    }
+
+    .oc .card .additional .user-card {
+      width: 115px;
+    }
+
+    .oc .card .additional .more-info h1 {
+      font-size: 1.3rem;
+    }
+
+    .oc .card .additional .coords {
+      font-size: 0.7rem;
+    }
+
+    .oc .card .general {
+      margin-left: 120px;
+      padding-right: 4px;
+    }
+
+    .oc .card .general .oix-info {
+      height: 50%;
+    }
+
+    .oc .card .general h1 {
+      font-size: 18px;
+      line-height: 26px;
+      margin: 0;
+    }
+
+    .oc .card .general .oix-title {
+      font-size: 12px;
+      width: 50%;
+    }
+
+    .oc .card .general .oix-result,
+    .oc .card .general .oix-result2 {
+      font-size: 12px;
+      width: 50%;
+    }
+
+    .oc .card .general .more {
+      bottom: 2px;
+      padding-right: 8px;
+    }
+
+    .oc .card .general .btn {
+      width: 60px !important;
+      height: 60px !important;
+      font-size: 10px;
+      padding: 0 !important;
+    }
+
+    .oc .card .general .more p {
+      font-size: 11px;
+    }
+
+    .oc .oix-announcement {
+      width: 90%;
+      max-width: 100%;
+    }
+
+    /* select_git_cdn.htm */
     .oc .select-popup {
         min-width: 80%;
         width: 80%;
@@ -6206,5 +6175,31 @@ ul {
     .oc .select-option {
         padding: 8px 10px;
         font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    /* config_upload.htm */
+    .oc .config-upload-model {
+        width: 95vw;
+        min-width: 320px;
+    }
+
+    .oc .config-upload-content {
+        padding: 20px;
+    }
+
+    .oc .upload-zone {
+        padding: 30px 15px;
+    }
+
+    .oc .mode-tab {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .oc .mode-tab svg {
+        width: 14px;
+        height: 14px;
     }
 }

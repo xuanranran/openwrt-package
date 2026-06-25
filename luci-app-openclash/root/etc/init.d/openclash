@@ -2345,6 +2345,14 @@ if [ -z "$FW4" ]; then
             iptables -t mangle -A OUTPUT -p udp -j openclash_output
          fi
 
+      fi
+
+      # Accept TPROXY traffic in input chain (needed when zone input policy is REJECT)
+      if [ -z "$(iptables -nL INPUT 2>/dev/null | grep 'OpenClash TPROXY Accept')" ]; then
+         iptables -I INPUT -m mark --mark "$PROXY_FWMARK" -j ACCEPT -m comment --comment "OpenClash TPROXY Accept"
+      fi
+
+      if [ -z "$en_mode_tun" ]; then
          #quic
          if [ "$disable_udp_quic" -eq 1 ]; then
             if [ "$china_ip_route" = "2" ]; then
@@ -2353,11 +2361,6 @@ if [ -z "$FW4" ]; then
                iptables -I INPUT -p udp --dport 443 -m comment --comment "OpenClash QUIC REJECT" -m set ! --match-set china_ip_route dst -j REJECT
             fi
          fi
-      fi
-
-      # Accept TPROXY traffic in input chain (needed when zone input policy is REJECT)
-      if [ -z "$(iptables -nL INPUT 2>/dev/null | grep 'OpenClash TPROXY Accept')" ]; then
-         iptables -I INPUT -m mark --mark "$PROXY_FWMARK" -j ACCEPT -m comment --comment "OpenClash TPROXY Accept"
       fi
 
       #router self proxy tcp
