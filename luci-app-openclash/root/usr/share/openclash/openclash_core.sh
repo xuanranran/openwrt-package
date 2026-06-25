@@ -81,7 +81,7 @@ else
    CORE_LV=$(sed -n 1p /tmp/clash_last_version 2>/dev/null)
 fi
 
-[ "$C_CORE_TYPE" = "$CORE_TYPE" ] || [ -z "$C_CORE_TYPE" ] && restart=1
+[ "$C_CORE_TYPE" != "$CORE_TYPE" ] || [ -z "$C_CORE_TYPE" ] && restart=1
 
 if [ "$CORE_CV" != "$CORE_LV" ] || [ -z "$CORE_CV" ]; then
    if [ "$CPU_MODEL" != 0 ]; then

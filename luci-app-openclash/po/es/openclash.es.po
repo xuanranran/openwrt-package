@@ -101,6 +101,9 @@ msgstr "Registros de depuración"
 msgid "Generate Logs"
 msgstr "Generar registros"
 
+msgid "Generated Logs"
+msgstr "Registros generados"
+
 msgid "Click to Generate"
 msgstr "Haz clic para generar"
 
@@ -2040,6 +2043,9 @@ msgstr "Hacer prueba"
 msgid "Connection Test"
 msgstr "Prueba de conexión"
 
+msgid "Connection Test Result"
+msgstr "Resultado de la prueba de conexión"
+
 msgid "Backup File"
 msgstr "Archivo de copia de seguridad"
 
@@ -2720,6 +2726,9 @@ msgstr "Restaurar"
 
 msgid "DNS Test"
 msgstr "Prueba DNS"
+
+msgid "DNS Test Result"
+msgstr "Resultado de la prueba DNS"
 
 msgid "No Response Found!"
 msgstr "No se ha obtenido respuesta."

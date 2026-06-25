@@ -4027,6 +4027,10 @@
     color: #ffffff;
 }
 
+:root[data-darkmode="true"] .diag-legend {
+    border-bottom-color: #555;
+}
+
 .diag-style {
     color: #000;
     background-color: #f5f5f5;
@@ -4061,6 +4065,18 @@
     word-wrap: break-word;
     font-size: 1.4rem;
     color: #404040;
+}
+
+.diag-legend {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 0 0 10px 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 1.8rem;
+    color: inherit;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 /* ==========================================================================
@@ -5317,7 +5333,7 @@ ul {
  * SECTION 14: @media queries for smaller screens
  * ========================================================================== */
 
-@media screen and (max-width: 1200px) {
+@media (max-width: 1200px) {
     /* status.htm - main cards */
     .oc .main-cards-container {
         grid-template-columns: 1fr;
@@ -5436,7 +5452,7 @@ ul {
     }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
     /* status.htm - main cards */
     .oc .main-cards-container {
         max-width: 98%;
@@ -5789,7 +5805,7 @@ ul {
     }
 }
 
-@media screen and (max-width: 575px) {
+@media (max-width: 575px) {
     /* status.htm - main cards */
     .oc .main-cards-container {
         gap: 8px;
@@ -6178,7 +6194,7 @@ ul {
     }
 }
 
-@media screen and (max-width: 500px) {
+@media (max-width: 500px) {
     /* config_upload.htm */
     .oc .config-upload-model {
         width: 95vw;

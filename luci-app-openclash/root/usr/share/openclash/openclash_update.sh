@@ -150,12 +150,12 @@ if [ -n "$OP_CV" ] && [ -n "$OP_LV" ] && version_compare "$OP_CV" "$OP_LV" && [ 
          pre_test_success=false
 
          if [ -x "/bin/opkg" ]; then
-            local update_retry=0
-            local max_update_retry=2
+            update_retry=0
+            max_update_retry=2
             while [ $update_retry -lt $max_update_retry ]; do
                update_retry=$((update_retry + 1))
                run_with_timeout 30 opkg update >/dev/null 2>&1
-               local opkg_ret=$?
+               opkg_ret=$?
                rm -f /var/lock/opkg.lock
                if [ $opkg_ret -eq 0 ]; then
                   break
@@ -173,12 +173,12 @@ if [ -n "$OP_CV" ] && [ -n "$OP_LV" ] && version_compare "$OP_CV" "$OP_LV" && [ 
                fi
             fi
          elif [ -x "/usr/bin/apk" ]; then
-            local update_retry=0
-            local max_update_retry=2
+            update_retry=0
+            max_update_retry=2
             while [ $update_retry -lt $max_update_retry ]; do
                update_retry=$((update_retry + 1))
                run_with_timeout 30 apk update >/dev/null 2>&1
-               local apk_ret=$?
+               apk_ret=$?
                rm -f /var/lock/apk.lock /tmp/apk.lock
                if [ $apk_ret -eq 0 ]; then
                   break
