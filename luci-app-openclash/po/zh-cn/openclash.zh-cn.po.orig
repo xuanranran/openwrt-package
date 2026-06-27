@@ -2856,6 +2856,12 @@ msgstr "绕过代理服务器地址 Age 解密失败，"
 msgid "Failed to parse config file with Lua helper"
 msgstr "绕过代理服务器地址解析失败"
 
+msgid "File is AGE encrypted but no secret key provided"
+msgstr "文件已 Age 加密但未提供密钥"
+
+msgid "File is AGE encrypted, cannot parse with Lua"
+msgstr "文件已 Age 加密，无法使用 Lua 解析"
+
 msgid "Flush Failed"
 msgstr "清理失败"
 
@@ -3991,14 +3997,14 @@ msgstr "解释底层原理（防火墙规则链、YAML 转换逻辑）—— 而
 msgid "Check dependency integrity first when troubleshooting — guide me to check dependencies from the System → Software page, or generate a debug log from Plugin Settings → Debug Log page."
 msgstr "排查问题时首先检查依赖完整性 —— 指导我从 系统 → 软件包 页面检查依赖，或从 插件设置 → 调试日志 页面生成调试日志。"
 
-msgid "Never guess or fabricate information. If the reference guide does not cover something, consult Mihomo Wiki (https://wiki.metacubex.one/config/) or OpenClash source code (https://github.com/vernesong/OpenClash)."
-msgstr "绝不猜测或编造信息。如参考指南未覆盖某项内容，请查阅 Mihomo Wiki (https://wiki.metacubex.one/config/) 或 OpenClash 源码 (https://github.com/vernesong/OpenClash)。"
+msgid "Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki (https://wiki.metacubex.one/config/), Meta-Docs (https://github.com/MetaCubeX/Meta-Docs), OpenClash source (https://github.com/vernesong/OpenClash/tree/dev), Mihomo core source (https://github.com/MetaCubeX/mihomo/tree/Alpha), Smart core source (https://github.com/vernesong/mihomo/tree/Alpha), or GitHub Issues (https://github.com/vernesong/OpenClash/issues). Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source."
+msgstr "绝不猜测或编造信息。如参考指南未覆盖某项内容，请使用网页抓取/代码搜索工具主动查询以下外部资源（按优先级）：Mihomo Wiki (https://wiki.metacubex.one/config/)、Meta-Docs (https://github.com/MetaCubeX/Meta-Docs)、OpenClash 源码 (https://github.com/vernesong/OpenClash/tree/dev)、Mihomo 核心源码 (https://github.com/MetaCubeX/mihomo/tree/Alpha)、Smart 核心源码 (https://github.com/vernesong/mihomo/tree/Alpha)、GitHub Issues (https://github.com/vernesong/OpenClash/issues)。抓取 Wiki 页面阅读文档；搜索仓库查找实现代码。禁止凭记忆回答 —— 必须对照实际来源验证。"
 
 msgid "Cite specific sources — mention which section of the reference guide or external resource your answer is based on."
 msgstr "注明具体来源 —— 说明你的回答基于参考指南的哪个章节或哪个外部资源。"
 
-msgid "If my problem description is incomplete or lacks error messages, ask me to generate a debug log first — do NOT speculate about the cause."
-msgstr "如果我的问题描述不完整或缺少错误信息，请先要求我生成调试日志 —— 不要猜测原因。"
+msgid "If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (Plugin Settings → Debug Log → Generate) — do NOT speculate about the cause."
+msgstr "如果我的问题描述不完整或缺少错误信息，请先要求我生成调试日志（插件设置 → 调试日志 → 生成）—— 不要猜测原因。"
 
 msgid "My question is:"
 msgstr "我的问题是："

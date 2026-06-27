@@ -45,6 +45,7 @@ begin
          if provider.key?('path') and not provider['path'].empty?
             path = provider['path'].start_with?('./') ? '/etc/openclash/' + provider['path'][2..-1] : provider['path']
             if File.exist?(path)
+               file_is_age_encrypted = File.read(path, 512).include?('BEGIN AGE ENCRYPTED FILE') rescue false
                begin
                   if provider.key?('age-secret-key') and not provider['age-secret-key'].to_s.empty?
                      begin
@@ -54,6 +55,10 @@ begin
                         continue
                      end
                   else
+                     if file_is_age_encrypted
+                        YAML.LOG_WARN('Set Proxies Address Skip Failed,【' + path + ': File is AGE encrypted but no secret key provided】')
+                        next
+                     end
                      provider_config = YAML.load_file(path)
                   end
 
@@ -64,6 +69,10 @@ begin
                   end
                rescue Psych::SyntaxError, ArgumentError
                   if not provider.key?('age-secret-key') or provider['age-secret-key'].to_s.empty?
+                     if file_is_age_encrypted
+                        YAML.LOG_WARN('Failed to parse config file with Lua helper【' + path + ': File is AGE encrypted, cannot parse with Lua】')
+                        next
+                     end
                      begin
                         syscall = \"lua /usr/share/openclash/openclash_sub_parser.lua \\\"#{path}\\\"\"
                         sub_servers = IO.popen(syscall).read.split(/\n+/)

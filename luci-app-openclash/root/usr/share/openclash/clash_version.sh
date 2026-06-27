@@ -24,7 +24,7 @@ if [ -n "$1" ]; then
    github_address_mod="$1"
 fi
 
-if [ "$CORE_TYPE" = "Oix"] || [ -n "$OIX_TOKEN" ]; then
+if [ "$CORE_TYPE" = "Oix" ] || [ -n "$OIX_TOKEN" ]; then
    DOWNLOAD_URL="https://dl.dler.io/mihomo-oix/version.txt?tag=Pre-Alpha"
 else
    if [ "$github_address_mod" != "0" ]; then
