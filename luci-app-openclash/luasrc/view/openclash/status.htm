@@ -3022,23 +3022,18 @@
         function calculateAnimationDuration() {
             var bannerWidth = bannerElement.offsetWidth;
             var contentWidth = contentElement.offsetWidth;
-            var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
             var refreshRate = window.screen && window.screen.refreshRate ? window.screen.refreshRate : 60;
             if (refreshRate <= 0) refreshRate = 60;
             if (refreshRate > 480) refreshRate = 480;
 
             var scrollDistance = contentWidth + bannerWidth;
 
-            var minWidth = 320;
-            var maxWidth = 3840;
-            var minSpeed = 80;
-            var maxSpeed = 350;
-            var clampedWidth = Math.min(maxWidth, Math.max(minWidth, screenWidth));
-            var targetVelocity = minSpeed + (maxSpeed - minSpeed) * (clampedWidth - minWidth) / (maxWidth - minWidth);
-
-            if (screenWidth <= 575) {
-                targetVelocity = targetVelocity * 0.9;
-            }
+            var minDistance = 400;
+            var maxDistance = 20000;
+            var minSpeed = 60;
+            var maxSpeed = 360;
+            var clampedDistance = Math.min(maxDistance, Math.max(minDistance, scrollDistance));
+            var targetVelocity = minSpeed + (maxSpeed - minSpeed) * (clampedDistance - minDistance) / (maxDistance - minDistance);
 
             var duration = (scrollDistance / targetVelocity) * 1000;
 
@@ -3048,7 +3043,7 @@
             }
             duration = duration * refreshRateMultiplier;
 
-            return Math.max(4000, Math.min(duration, 30000));
+            return Math.max(4000, Math.min(duration, 50000));
         }
 
         function updateScrollAnimation(duration) {
@@ -3211,7 +3206,7 @@
         var isChineseUser = (userLang.indexOf('zh') === 0);
         var bannerElement = document.getElementById('announcement-banner');
         var contentElement = document.getElementById('announcement-content');
-        var megaphoneSvg = document.getElementById('megaphone');  // 注意原代码中 id 为 megaphone
+        var megaphoneSvg = document.getElementById('megaphone');
 
         if (!bannerElement || !contentElement) return;
 

@@ -4868,15 +4868,15 @@ ul {
 }
 
 .btn-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    flex-wrap: wrap;
-    row-gap: 10px;
-    width: 80%;
-    max-width: 600px;
+    width: 100%;
     margin: 10px auto;
+}
+
+.btn-group .btn {
+    justify-self: center;
 }
 
 :root[data-darkmode=true] #tab-header {
