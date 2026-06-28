@@ -335,7 +335,7 @@
                     </div>
                     <div class="config-upload-content">
                         <div class="form-group">
-                            <label><%:Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:%></label>
+                            <label class="highlight-label"><%:Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:%></label>
                             <textarea id="usage-help-textarea" class="form-textarea" rows="10"></textarea>
                         </div>
                     </div>
@@ -2796,6 +2796,114 @@
         };
     })();
 
+    var UsageHelpManager = {
+        overlay: null,
+        textarea: null,
+        statusEl: null,
+        initialized: false,
+
+        init: function() {
+            if (this.initialized) return;
+            this.overlay = document.getElementById('usage-help-overlay');
+            this.textarea = document.getElementById('usage-help-textarea');
+            this.statusEl = document.getElementById('usage-help-status');
+
+            var floatBtn = document.getElementById('usage-help-float');
+            if (floatBtn) {
+                floatBtn.addEventListener('click', function() { UsageHelpManager.show(); });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && UsageHelpManager.overlay && UsageHelpManager.overlay.style.display === 'flex') {
+                    UsageHelpManager.hide();
+                }
+            });
+
+            this.initialized = true;
+        },
+
+        buildPrompt: function() {
+            var skillUrl = 'https://raw.githubusercontent.com/vernesong/OpenClash/dev/.github/skills/openclash-user-guide/SKILL.md';
+            var prompt = '<%:You are an OpenClash expert assistant. OpenClash is a LuCI plugin for OpenWrt that manages the Mihomo core.%>\n\n';
+            prompt += '<%:IMPORTANT — Before answering, you MUST fetch and read this authoritative reference guide. This is your primary knowledge source for all OpenClash questions:%>\n';
+            prompt += skillUrl + '\n\n';
+            prompt += '<%:This guide contains: complete dependency checklist, error message lookup tables with exact fixes, nftables/iptables firewall chain rules, all LuCI configuration options with UCI paths, DNS setup and leak prevention, subscription/GEO update procedures, and more.%>\n\n';
+            prompt += '<%:When answering my question about OpenClash, follow these rules:%>\n';
+            prompt += '1. <%:Always provide LuCI web UI navigation paths (e.g. Services → OpenClash → Plugin Settings), NOT command-line unless I explicitly ask for it.%>\n';
+            prompt += '2. <%:Explain underlying principles (firewall chains, YAML transformation logic) — not just click-here-click-there steps.%>\n';
+            prompt += '3. <%:Check dependency integrity first when troubleshooting — guide me to check dependencies from the System → Software page, or generate a debug log from Plugin Settings → Debug Log page.%>\n';
+            prompt += '4. <%:Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki%> (https://wiki.metacubex.one/config/) , <%:Meta-Docs%> (https://github.com/MetaCubeX/Meta-Docs) , <%:OpenClash source%> (https://github.com/vernesong/OpenClash/tree/dev) , <%:Mihomo core source%> (https://github.com/MetaCubeX/mihomo/tree/Alpha) , <%:Smart core source%> (https://github.com/vernesong/mihomo/tree/Alpha) . <%:Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source.%>\n';
+            prompt += '5. <%:For bug reports or failure scenarios not covered by the guide, search GitHub Issues first — OpenClash Issues%> (https://github.com/vernesong/OpenClash/issues) <%:for plugin-side problems (config/subscribe/firewall/UI), Mihomo Issues%> (https://github.com/MetaCubeX/mihomo/issues) <%:for core-side problems (proxy protocols/TUN/DNS/rule engine). Prioritize maintainer replies and highly upvoted community answers.%>\n';
+            prompt += '6. <%:Cite specific sources — mention which section of the reference guide, external resource, or Issue number your answer is based on.%>\n';
+            prompt += '7. <%:If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (Plugin Settings → Debug Log → Generate) — do NOT speculate about the cause.%>\n\n';
+            prompt += '<%:My question is:%>\n';
+            return prompt;
+        },
+
+        show: function() {
+            this.init();
+            if (!this.overlay || !this.textarea) return;
+            if (!this._portal) {
+                this._portal = document.createElement('div');
+                this._portal.className = 'oc';
+                this._portal.style.overflow = 'visible';
+                document.body.appendChild(this._portal);
+                this._portal.appendChild(this.overlay);
+            }
+            this.textarea.value = this.buildPrompt();
+            this.overlay.style.display = 'flex';
+            if (this.statusEl) {
+                this.statusEl.textContent = '';
+            }
+            setTimeout(function() {
+                if (UsageHelpManager.textarea) {
+                    UsageHelpManager.textarea.focus();
+                }
+            }, 100);
+        },
+
+        hide: function() {
+            if (this.overlay) {
+                this.overlay.style.display = 'none';
+            }
+        },
+
+        copyText: function() {
+            if (!this.textarea) return;
+            this.textarea.select();
+            this.textarea.setSelectionRange(0, 99999);
+            try {
+                navigator.clipboard.writeText(this.textarea.value).then(function() {
+                    if (UsageHelpManager.statusEl) {
+                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
+                        setTimeout(function() {
+                            if (UsageHelpManager.statusEl) {
+                                UsageHelpManager.statusEl.textContent = '';
+                            }
+                        }, 2000);
+                    }
+                }).catch(function() {
+                    document.execCommand('copy');
+                    if (UsageHelpManager.statusEl) {
+                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
+                        setTimeout(function() {
+                            if (UsageHelpManager.statusEl) {
+                                UsageHelpManager.statusEl.textContent = '';
+                            }
+                        }, 2000);
+                    }
+                });
+            } catch(e) {
+                document.execCommand('copy');
+            }
+        },
+
+        copyAndHide: function() {
+            this.copyText();
+            this.hide();
+        }
+    };
+
     var script_radio, script_radio_label;
     var s, gr;
     var pluginToggleUserAction = false;
@@ -4287,113 +4395,5 @@
         localStorage.setItem('oc-theme', newTheme);
         DarkModeDetector.init();
     }
-
-    var UsageHelpManager = {
-        overlay: null,
-        textarea: null,
-        statusEl: null,
-        initialized: false,
-
-        init: function() {
-            if (this.initialized) return;
-            this.overlay = document.getElementById('usage-help-overlay');
-            this.textarea = document.getElementById('usage-help-textarea');
-            this.statusEl = document.getElementById('usage-help-status');
-
-            var floatBtn = document.getElementById('usage-help-float');
-            if (floatBtn) {
-                floatBtn.addEventListener('click', function() { UsageHelpManager.show(); });
-            }
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && UsageHelpManager.overlay && UsageHelpManager.overlay.style.display === 'flex') {
-                    UsageHelpManager.hide();
-                }
-            });
-
-            this.initialized = true;
-        },
-
-        buildPrompt: function() {
-            var skillUrl = 'https://raw.githubusercontent.com/vernesong/OpenClash/dev/.github/skills/openclash-user-guide/SKILL.md';
-            var prompt = '<%:You are an OpenClash expert assistant. OpenClash is a LuCI plugin for OpenWrt that manages the Mihomo core.%>\n\n';
-            prompt += '<%:IMPORTANT — Before answering, you MUST fetch and read this authoritative reference guide. This is your primary knowledge source for all OpenClash questions:%>\n';
-            prompt += skillUrl + '\n\n';
-            prompt += '<%:This guide contains: complete dependency checklist, error message lookup tables with exact fixes, nftables/iptables firewall chain rules, all LuCI configuration options with UCI paths, DNS setup and leak prevention, subscription/GEO update procedures, and more.%>\n\n';
-            prompt += '<%:When answering my question about OpenClash, follow these rules:%>\n';
-            prompt += '1. <%:Always provide LuCI web UI navigation paths (e.g. Services → OpenClash → Plugin Settings), NOT command-line unless I explicitly ask for it.%>\n';
-            prompt += '2. <%:Explain underlying principles (firewall chains, YAML transformation logic) — not just click-here-click-there steps.%>\n';
-            prompt += '3. <%:Check dependency integrity first when troubleshooting — guide me to check dependencies from the System → Software page, or generate a debug log from Plugin Settings → Debug Log page.%>\n';
-            prompt += '4. <%:Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki (https://wiki.metacubex.one/config/), Meta-Docs (https://github.com/MetaCubeX/Meta-Docs), OpenClash source (https://github.com/vernesong/OpenClash/tree/dev), Mihomo core source (https://github.com/MetaCubeX/mihomo/tree/Alpha), Smart core source (https://github.com/vernesong/mihomo/tree/Alpha). Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source.%>\n';
-            prompt += '5. <%:For bug reports or failure scenarios not covered by the guide, search GitHub Issues first — OpenClash Issues (https://github.com/vernesong/OpenClash/issues) for plugin-side problems (config/subscribe/firewall/UI), Mihomo Issues (https://github.com/MetaCubeX/mihomo/issues) for core-side problems (proxy protocols/TUN/DNS/rule engine). Prioritize maintainer replies and highly upvoted (👍) community answers.%>\n';
-            prompt += '6. <%:Cite specific sources — mention which section of the reference guide, external resource, or Issue number your answer is based on.%>\n';
-            prompt += '7. <%:If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (Plugin Settings → Debug Log → Generate) — do NOT speculate about the cause.%>\n\n';
-            prompt += '<%:My question is:%>\n';
-            return prompt;
-        },
-
-        show: function() {
-            this.init();
-            if (!this.overlay || !this.textarea) return;
-            if (!this._portal) {
-                this._portal = document.createElement('div');
-                this._portal.className = 'oc';
-                this._portal.style.overflow = 'visible';
-                document.body.appendChild(this._portal);
-                this._portal.appendChild(this.overlay);
-            }
-            this.textarea.value = this.buildPrompt();
-            this.overlay.style.display = 'flex';
-            if (this.statusEl) {
-                this.statusEl.textContent = '';
-            }
-            setTimeout(function() {
-                if (UsageHelpManager.textarea) {
-                    UsageHelpManager.textarea.focus();
-                }
-            }, 100);
-        },
-
-        hide: function() {
-            if (this.overlay) {
-                this.overlay.style.display = 'none';
-            }
-        },
-
-        copyText: function() {
-            if (!this.textarea) return;
-            this.textarea.select();
-            this.textarea.setSelectionRange(0, 99999);
-            try {
-                navigator.clipboard.writeText(this.textarea.value).then(function() {
-                    if (UsageHelpManager.statusEl) {
-                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
-                        setTimeout(function() {
-                            if (UsageHelpManager.statusEl) {
-                                UsageHelpManager.statusEl.textContent = '';
-                            }
-                        }, 2000);
-                    }
-                }).catch(function() {
-                    document.execCommand('copy');
-                    if (UsageHelpManager.statusEl) {
-                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
-                        setTimeout(function() {
-                            if (UsageHelpManager.statusEl) {
-                                UsageHelpManager.statusEl.textContent = '';
-                            }
-                        }, 2000);
-                    }
-                });
-            } catch(e) {
-                document.execCommand('copy');
-            }
-        },
-
-        copyAndHide: function() {
-            this.copyText();
-            this.hide();
-        }
-    };
 //]]></script>
 </html>

@@ -499,13 +499,25 @@ function ps_cmd()
 	end
 end
 
+--- Returns the package manager type (opkg or apk).
+-- @return String "opkg" or "apk"
+function pkg_type()
+	if fs.access("/usr/bin/apk") then
+		return "apk"
+	else
+		return "opkg"
+	end
+end
+
 --- Returns the installed version of luci-app-openclash.
 -- Supports both opkg and apk package managers.
 -- @return String containing the version number, or "0" if not found
 function oc_version()
-	local v = SYS.exec("opkg status luci-app-openclash 2>/dev/null |grep '^Version:' |awk '{print $2}' |tr -d '\n'")
-	if v == "" then
-		v = SYS.exec("apk info luci-app-openclash 2>/dev/null |grep '^luci-app-openclash-[0-9]' |sed 's/luci-app-openclash-//' |tr -d '\n'")
+	local v
+	if pkg_type() == "opkg" then
+		v = SYS.exec("rm -f /var/lock/opkg.lock && opkg status luci-app-openclash 2>/dev/null |grep '^Version:' |awk '{print $2}' |tr -d '\n'")
+	else
+		v = SYS.exec("rm -f /lib/apk/db/lock && apk info luci-app-openclash 2>/dev/null |grep '^luci-app-openclash-[0-9]' |sed 's/luci-app-openclash-//' |tr -d '\n'")
 	end
 	if v == "" then
 		v = "0"

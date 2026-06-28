@@ -288,48 +288,69 @@ function set_subinfo_url_<%=idname%>(btn, filename) {
     }
 
     var dialogDiv = document.createElement('div');
-    dialogDiv.className = 'sub-info-url-overlay';
+    dialogDiv.className = 'config-upload-model-overlay show';
 
     var contentDiv = document.createElement('div');
-    contentDiv.className = 'sub-info-url-model';
+    contentDiv.className = 'config-upload-model';
 
     var headerDiv = document.createElement('div');
-    headerDiv.className = 'sub-info-url-header';
+    headerDiv.className = 'config-upload-header';
 
     var titleDiv = document.createElement('div');
-    titleDiv.className = 'sub-info-url-title';
-    titleDiv.innerHTML = '<%:Paste the new url of subscribe infos sources here:%>';
+    titleDiv.className = 'config-upload-title';
+    titleDiv.innerHTML = '<%:Set Subscription Info URL%>';
     headerDiv.appendChild(titleDiv);
 
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'icon-btn';
+    closeBtn.type = 'button';
+    closeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+    closeBtn.onclick = function() {
+        document.body.removeChild(portal);
+    };
+    headerDiv.appendChild(closeBtn);
+
     var bodyDiv = document.createElement('div');
-    bodyDiv.className = 'sub-info-url-content';
+    bodyDiv.className = 'config-upload-content';
 
     var formGroup = document.createElement('div');
-    formGroup.className = 'sub-info-url-form-group';
+    formGroup.className = 'form-group';
+
+    var label = document.createElement('label');
+    label.className = 'highlight-label';
+    label.innerHTML = '<%:Paste the new url of subscribe infos sources here:%>';
+    formGroup.appendChild(label);
 
     var textarea = document.createElement('textarea');
-    textarea.className = 'sub-info-url-form-textarea';
+    textarea.className = 'form-textarea';
     textarea.placeholder = '<%:Enter URLs, one per line, use #name=example end for specifing display name%> (https://example.com#name=example)';
     formGroup.appendChild(textarea);
 
     bodyDiv.appendChild(formGroup);
 
     var footerDiv = document.createElement('div');
-    footerDiv.className = 'sub-info-url-footer';
+    footerDiv.className = 'config-upload-footer';
+
+    var statusDiv = document.createElement('div');
+    statusDiv.className = 'config-upload-status';
+    footerDiv.appendChild(statusDiv);
+
+    var buttonsDiv = document.createElement('div');
+    buttonsDiv.className = 'config-upload-buttons';
 
     var cancelBtn = document.createElement('button');
-    cancelBtn.className = 'sub-info-url-btn sub-info-url-cancel-btn';
+    cancelBtn.className = 'btn cancel-btn';
     cancelBtn.type = 'button';
     cancelBtn.innerHTML = '<%:Cancel%>';
 
     var confirmBtn = document.createElement('button');
-    confirmBtn.className = 'sub-info-url-btn sub-info-url-submit-btn';
+    confirmBtn.className = 'btn upload-btn';
     confirmBtn.type = 'button';
     confirmBtn.innerHTML = '<%:Submit%>';
 
     confirmBtn.onclick = function() {
         var new_url = textarea.value.trim();
-        document.body.removeChild(dialogDiv);
+        document.body.removeChild(portal);
 
         XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "set_subinfo_url")%>', {filename: filename, url: new_url}, function(x, status) {
             if (x && x.status == 200 && status.info == "Success") {
@@ -345,17 +366,22 @@ function set_subinfo_url_<%=idname%>(btn, filename) {
     };
 
     cancelBtn.onclick = function() {
-        document.body.removeChild(dialogDiv);
+        document.body.removeChild(portal);
     };
 
-    footerDiv.appendChild(cancelBtn);
-    footerDiv.appendChild(confirmBtn);
+    buttonsDiv.appendChild(cancelBtn);
+    buttonsDiv.appendChild(confirmBtn);
+    footerDiv.appendChild(buttonsDiv);
 
     contentDiv.appendChild(headerDiv);
     contentDiv.appendChild(bodyDiv);
     contentDiv.appendChild(footerDiv);
     dialogDiv.appendChild(contentDiv);
-    document.body.appendChild(dialogDiv);
+
+    var portal = document.createElement('div');
+    portal.className = 'oc';
+    portal.appendChild(dialogDiv);
+    document.body.appendChild(portal);
 
     textarea.focus();
 

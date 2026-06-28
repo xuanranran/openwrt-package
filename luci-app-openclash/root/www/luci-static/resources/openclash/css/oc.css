@@ -1643,6 +1643,19 @@
     color: var(--text-primary);
 }
 
+.oc .highlight-label {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 12px;
+    background: var(--bg-gray);
+    border-left: 3px solid var(--primary-color);
+    border-right: 3px solid var(--primary-color);
+    border-radius: var(--radius-sm);
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
 .oc .form-select-wrapper {
     position: relative;
 }
@@ -1694,7 +1707,7 @@
 
 .oc .form-textarea {
     width: 100%;
-    min-height: 80px;
+    min-height: 150px;
     padding: 10px 12px;
     border: 1px solid var(--border-light);
     border-radius: var(--radius-sm);

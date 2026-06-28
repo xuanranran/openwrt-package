@@ -3997,11 +3997,32 @@ msgstr "解释底层原理（防火墙规则链、YAML 转换逻辑）—— 而
 msgid "Check dependency integrity first when troubleshooting — guide me to check dependencies from the System → Software page, or generate a debug log from Plugin Settings → Debug Log page."
 msgstr "排查问题时首先检查依赖完整性 —— 指导我从 系统 → 软件包 页面检查依赖，或从 插件设置 → 调试日志 页面生成调试日志。"
 
-msgid "Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki (https://wiki.metacubex.one/config/), Meta-Docs (https://github.com/MetaCubeX/Meta-Docs), OpenClash source (https://github.com/vernesong/OpenClash/tree/dev), Mihomo core source (https://github.com/MetaCubeX/mihomo/tree/Alpha), Smart core source (https://github.com/vernesong/mihomo/tree/Alpha). Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source."
-msgstr "绝不猜测或编造信息。如参考指南未覆盖某项内容，请使用网页抓取/代码搜索工具主动查询以下外部资源（按优先级）：Mihomo Wiki (https://wiki.metacubex.one/config/)、Meta-Docs (https://github.com/MetaCubeX/Meta-Docs)、OpenClash 源码 (https://github.com/vernesong/OpenClash/tree/dev)、Mihomo 核心源码 (https://github.com/MetaCubeX/mihomo/tree/Alpha)、Smart 核心源码 (https://github.com/vernesong/mihomo/tree/Alpha)。抓取 Wiki 页面阅读文档；搜索仓库查找实现代码。禁止凭记忆回答 —— 必须对照实际来源验证。"
+msgid "Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki"
+msgstr "绝不猜测或编造信息。如参考指南未覆盖某项内容，请使用网页抓取/代码搜索工具主动查询以下外部资源（按优先级）：Mihomo Wiki"
 
-msgid "For bug reports or failure scenarios not covered by the guide, search GitHub Issues first — OpenClash Issues (https://github.com/vernesong/OpenClash/issues) for plugin-side problems (config/subscribe/firewall/UI), Mihomo Issues (https://github.com/MetaCubeX/mihomo/issues) for core-side problems (proxy protocols/TUN/DNS/rule engine). Prioritize maintainer replies and highly upvoted (👍) community answers."
-msgstr "对于指南未覆盖的 bug 报告或故障场景，优先搜索 GitHub Issues —— OpenClash Issues (https://github.com/vernesong/OpenClash/issues) 用于插件侧问题（配置/订阅/防火墙/UI），Mihomo Issues (https://github.com/MetaCubeX/mihomo/issues) 用于内核侧问题（代理协议/TUN/DNS/规则引擎）。优先参考维护者的回复和高赞（👍）社区答案。"
+msgid "Meta-Docs"
+msgstr "Meta-Docs"
+
+msgid "OpenClash source"
+msgstr "OpenClash 源码"
+
+msgid "Mihomo core source"
+msgstr "Mihomo 核心源码"
+
+msgid "Smart core source"
+msgstr "Smart 核心源码"
+
+msgid "Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source."
+msgstr "抓取 Wiki 页面阅读文档；搜索仓库查找实现代码。禁止凭记忆回答 —— 必须对照实际来源验证。"
+
+msgid "For bug reports or failure scenarios not covered by the guide, search GitHub Issues first — OpenClash Issues"
+msgstr "对于指南未覆盖的 bug 报告或故障场景，优先搜索 GitHub Issues —— OpenClash Issues"
+
+msgid "for plugin-side problems (config/subscribe/firewall/UI), Mihomo Issues"
+msgstr "用于插件侧问题（配置/订阅/防火墙/UI），Mihomo Issues"
+
+msgid "for core-side problems (proxy protocols/TUN/DNS/rule engine). Prioritize maintainer replies and highly upvoted community answers."
+msgstr "用于内核侧问题（代理协议/TUN/DNS/规则引擎）。优先参考维护者的回复和高赞社区答案。"
 
 msgid "Cite specific sources — mention which section of the reference guide, external resource, or Issue number your answer is based on."
 msgstr "注明具体来源 —— 说明你的回答基于参考指南的哪个章节、哪个外部资源或哪个 Issue 编号。"

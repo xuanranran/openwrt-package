@@ -75,7 +75,7 @@ LAST_VER=$(sed -n 1p "$LAST_OPVER" 2>/dev/null |sed "s/^v//g" |tr -d "\n")
 if [ -x "/bin/opkg" ]; then
    OP_CV=$(rm -f /var/lock/opkg.lock && opkg status luci-app-openclash 2>/dev/null |grep 'Version' |awk -F 'Version: ' '{print $2}' 2>/dev/null)
 elif [ -x "/usr/bin/apk" ]; then
-   OP_CV=$(apk list luci-app-openclash 2>/dev/null|grep "installed" | grep -oE '[0-9]+(\.[0-9]+)*' | head -1 2>/dev/null)
+   OP_CV=$(rm -f /lib/apk/db/lock && apk list luci-app-openclash 2>/dev/null|grep "installed" | grep -oE '[0-9]+(\.[0-9]+)*' | head -1 2>/dev/null)
 fi
 OP_LV=$(sed -n 1p "$LAST_OPVER" 2>/dev/null |sed "s/^v//g" |tr -d "\n")
 RELEASE_BRANCH=$(uci_get_config "release_branch" || echo "master")
@@ -179,7 +179,7 @@ if [ -n "$OP_CV" ] && [ -n "$OP_LV" ] && version_compare "$OP_CV" "$OP_LV" && [ 
                update_retry=$((update_retry + 1))
                run_with_timeout 30 apk update >/dev/null 2>&1
                apk_ret=$?
-               rm -f /var/lock/apk.lock /tmp/apk.lock
+               rm -f /lib/apk/db/lock /tmp/apk.lock
                if [ $apk_ret -eq 0 ]; then
                   break
                fi

@@ -184,22 +184,14 @@ local function startlog()
 	return info
 end
 
-local function pkg_type()
-	if fs.access("/usr/bin/apk") then
-		return "apk"
-	else
-		return "opkg"
-	end
-end
-
 local function coremodel()
 	if opkg and opkg.info("libc") and opkg.info("libc")["libc"] then
 		return opkg.info("libc")["libc"]["Architecture"]
 	else
-		if pkg_type() == "opkg" then
+		if fs.pkg_type() == "opkg" then
 			return luci.sys.exec("rm -f /var/lock/opkg.lock && opkg status libc 2>/dev/null |grep 'Architecture' |awk -F ': ' '{print $2}' 2>/dev/null")
 		else
-			return luci.sys.exec("apk list libc 2>/dev/null |awk '{print $2}'")
+			return luci.sys.exec("rm -f /lib/apk/db/lock && apk list libc 2>/dev/null |awk '{print $2}'")
 		end
 	end
 end
@@ -252,10 +244,10 @@ local function opcv()
 	if info and info["luci-app-openclash"] and info["luci-app-openclash"]["Version"] and info["luci-app-openclash"]["Installed-Time"] then
 		v = info["luci-app-openclash"]["Version"]
 	else
-		if pkg_type() == "opkg" then
+		if fs.pkg_type() == "opkg" then
 			v = luci.sys.exec("rm -f /var/lock/opkg.lock && opkg status luci-app-openclash 2>/dev/null |grep 'Version' |awk -F 'Version: ' '{print $2}' |tr -d '\n'")
 		else
-			v = luci.sys.exec("apk list luci-app-openclash 2>/dev/null|grep 'installed' | grep -oE '[0-9]+(\\.[0-9]+)*' | head -1 |tr -d '\n'")
+			v = luci.sys.exec("rm -f /lib/apk/db/lock && apk list luci-app-openclash 2>/dev/null|grep 'installed' | grep -oE '[0-9]+(\\.[0-9]+)*' | head -1 |tr -d '\n'")
 		end
 	end
 	if v and v ~= "" then
@@ -1297,7 +1289,7 @@ function action_update_ma()
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
 		oplv = oplv(),
-		pkg_type = pkg_type(),
+		pkg_type = fs.pkg_type(),
 		corelv = corelv(),
 		corever = corever();
 	})
