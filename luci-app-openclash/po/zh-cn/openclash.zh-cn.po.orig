@@ -2847,6 +2847,9 @@ msgstr "如果下载失败，您可以尝试在覆写设置 - 常规设置 - Git
 msgid "Used for Downloading Subscriptions, Defaults to"
 msgstr "用于下载订阅时指定 UA，默认为"
 
+msgid "Bypass Proxies Address Skip For"
+msgstr "跳过设置代理服务器地址绕过"
+
 msgid "Set Proxies Address Skip Failed,"
 msgstr "绕过代理服务器地址设置失败，"
 
