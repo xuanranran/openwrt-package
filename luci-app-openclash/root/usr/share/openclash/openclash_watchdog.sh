@@ -53,15 +53,15 @@ begin
                      begin
                         provider_config = YAML.load_file(path, secret: provider['age-secret-key']) rescue nil
                      rescue Exception => e
-                        YAML.LOG_WARN('Set Proxies Address Skip Failed,【' + path + ': ' + e.message+'】')
+                        YAML.LOG_WARN('Set Proxies Address Skip: Failed【' + path + ': ' + e.message+'】')
                         continue
                      end
                   else
                      if file_is_age_encrypted
-                        if name != 'oixCloud'
-                           YAML.LOG_TIP('Bypass Proxies Address Skip For【oixCloud】')
+                        if name == 'oixCloud'
+                           YAML.LOG_TIP('Set Proxies Address Skip: Bypass【oixCloud】')
                         else
-                           YAML.LOG_WARN('Set Proxies Address Skip Failed,【' + path + ': File is AGE encrypted but no secret key provided】')
+                           YAML.LOG_WARN('Set Proxies Address Skip: Failed【' + path + '】File is AGE encrypted but no secret key provided')
                         end
                         next
                      end
@@ -76,7 +76,7 @@ begin
                rescue Psych::SyntaxError, ArgumentError
                   if not provider.key?('age-secret-key') or provider['age-secret-key'].to_s.empty?
                      if file_is_age_encrypted
-                        YAML.LOG_WARN('Failed to parse config file with Lua helper【' + path + ': File is AGE encrypted, cannot parse with Lua】')
+                        YAML.LOG_WARN('Failed to parse config file with Lua helper【' + path + '】File is AGE encrypted, cannot parse with Lua')
                         next
                      end
                      begin
@@ -165,7 +165,7 @@ begin
       system(set_commands.join('; ')) if not set_commands.empty?
    end
 rescue Exception => e
-   YAML.LOG_ERROR('Set Proxies Address Skip Failed,【' + e.message + '】');
+   YAML.LOG_ERROR('Set Proxies Address Skip: Failed【' + e.message + '】');
 end" 2>/dev/null >> $LOG_FILE
 }
 
