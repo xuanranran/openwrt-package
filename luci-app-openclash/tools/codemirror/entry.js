@@ -1,6 +1,6 @@
 // ============================================================
 // CodeMirror 6 Bundle — OpenClash
-// Build: npx esbuild tools/codemirror/entry.js --bundle --format=iife --global-name=CM6 --minify --target=es2019 --outfile=root/www/luci-static/resources/openclash/js/cm6.min.js --legal-comments=none
+// Build: npx esbuild tools/codemirror/entry.js --bundle --format=iife --global-name=CM6 --minify --target=es2019 --outfile=root/www/luci-static/resources/openclash/js/cm6.min.js --legal-comments=none --loader:.css=text
 // ============================================================
 
 // ---- Core ----
@@ -75,6 +75,19 @@ import { MergeView } from "@codemirror/merge"
 
 // ---- Markdown rendering ----
 import { marked } from "marked"
+import hljs from "highlight.js/lib/core"
+import yamlLang from "highlight.js/lib/languages/yaml"
+import bashLang from "highlight.js/lib/languages/bash"
+import jsonLang from "highlight.js/lib/languages/json"
+import githubLightCSS from "highlight.js/styles/github.css"
+import githubDarkCSS from "highlight.js/styles/github-dark-dimmed.css"
+
+hljs.registerLanguage("yaml", yamlLang)
+hljs.registerLanguage("yml", yamlLang)
+hljs.registerLanguage("bash", bashLang)
+hljs.registerLanguage("sh", bashLang)
+hljs.registerLanguage("shell", bashLang)
+hljs.registerLanguage("json", jsonLang)
 
 // ============================================================
 // Mihomo / Clash YAML keyword completion
@@ -867,6 +880,7 @@ function startThemeObserver() {
         if (theme === 'dark') isDark = true;
         else if (theme === 'light') isDark = false;
         else isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        switchHljsTheme(isDark);
         var editors = document.querySelectorAll('.cm-editor');
         for (var i = 0; i < editors.length; i++) {
             var view = editors[i].cmView && editors[i].cmView.view;
@@ -881,7 +895,48 @@ function startThemeObserver() {
 // ============================================================
 // Markdown rendering (for debug log preview)
 // ============================================================
-marked.use({ breaks: true, gfm: true })
+
+var _hljsCSSInjected = false
+function injectHljsCSS() {
+    if (_hljsCSSInjected) return
+    _hljsCSSInjected = true
+    var theme = localStorage.getItem('oc-theme') || 'auto'
+    var isDark
+    if (theme === 'dark') isDark = true
+    else if (theme === 'light') isDark = false
+    else isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    var style = document.createElement("style")
+    style.id = "hljs-theme"
+    style.textContent = isDark ? githubDarkCSS : githubLightCSS
+    document.head.appendChild(style)
+}
+
+function switchHljsTheme(isDark) {
+    if (!_hljsCSSInjected) { injectHljsCSS(); if (!_hljsCSSInjected) return }
+    var style = document.getElementById("hljs-theme")
+    if (style) style.textContent = isDark ? githubDarkCSS : githubLightCSS
+}
+
+function escapeHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+}
+
+marked.use({
+    breaks: true,
+    gfm: true,
+    silent: true,
+    renderer: {
+        code: function(token) {
+            var lang = token.lang || ""
+            if (lang && hljs.getLanguage(lang)) {
+                injectHljsCSS()
+                var result = hljs.highlight(token.text, { language: lang, ignoreIllegals: true })
+                return '<pre><code class="hljs language-' + lang + '">' + result.value + '</code></pre>'
+            }
+            return '<pre><code>' + escapeHtml(token.text) + '</code></pre>'
+        }
+    }
+})
 
 function renderMarkdown(text) {
     if (!text) return ''

@@ -2971,7 +2971,7 @@
 .cmt-log-level-tip,
 .cmt-log-level-fatal,
 .cmt-log-level-watchdog {
-    font-weight: 600;
+    font-weight: 500;
     margin: 2px 0;
     border-radius: 5px;
     display: inline-flex;
@@ -2980,9 +2980,9 @@
 }
 
 /* Light mode */
-.cmt-log-timestamp { color: var(--log-timestamp) !important; font-weight: 600; background-color: var(--log-timestamp-bg); padding: 0 5px; margin: 2px 0; border-radius: 5px; display: inline-block; }
+.cmt-log-timestamp { color: var(--log-timestamp) !important; font-weight: 500; background-color: var(--log-timestamp-bg); padding: 0 5px; margin: 2px 0; border-radius: 5px; display: inline-block; }
 .cmt-log-bracket { color: var(--log-bracket) !important; font-weight: 600; }
-.cmt-log-string { color: var(--log-string) !important; font-weight: 400; }
+.cmt-log-string { color: var(--log-string) !important; font-weight: 500; }
 .cmt-log-category { color: var(--log-category) !important; font-weight: 500; background-color: var(--log-category-bg); padding: 0 5px; margin: 2px 0; border-radius: 5px; display: inline-block; text-align: center; }
 .cmt-log-link { color: var(--log-link) !important; }
 .cmt-log-level-info { color: var(--log-info) !important; background-color: var(--log-info-bg); }
@@ -4975,7 +4975,6 @@ ul {
     margin: 1em 0;
 }
 #debug-rendered p { margin: 0.5em 0; color: inherit !important; }
-#debug-rendered span { color: inherit !important; }
 #debug-rendered a {
     color: var(--primary-color, #3b82f6) !important;
     text-decoration: none;
@@ -4987,7 +4986,6 @@ ul {
     font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
     padding: 0 2px;
     font-size: 0.9em;
-    color: #e11d48;
 }
 #debug-rendered .pre-copy-wrap {
     position: relative;
@@ -4998,21 +4996,19 @@ ul {
     background: var(--bg-gray, #f1f5f9);
     border: 1px solid var(--border-light, #e2e8f0);
     border-radius: 6px;
-    padding: 12px;
+    padding: 6px;
     overflow-x: auto;
     margin: 0;
     line-height: 1.5;
 }
 #debug-rendered pre code {
-    background: none;
-    padding: 0;
-    color: inherit;
+    padding: 5px;
     font-size: 0.88em;
 }
 #debug-rendered .pre-copy-btn {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 10px;
+    right: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -5080,7 +5076,7 @@ ul {
     border-color: var(--border-dark, #334155);
 }
 .oc[data-darkmode="true"] #debug-rendered p,
-.oc[data-darkmode="true"] #debug-rendered span,
+.oc[data-darkmode="true"] #debug-rendered span:not([class*="hljs"]),
 .oc[data-darkmode="true"] #debug-rendered li {
     color: #e2e8f0;
 }
@@ -5101,9 +5097,6 @@ ul {
 .oc[data-darkmode="true"] #debug-rendered a {
     color: #60a5fa;
 }
-.oc[data-darkmode="true"] #debug-rendered code {
-    color: #fbbf24;
-}
 .oc[data-darkmode="true"] #debug-rendered .pre-copy-btn {
     background: rgba(255,255,255,0.08);
     color: #94a3b8;
@@ -5115,9 +5108,6 @@ ul {
 .oc[data-darkmode="true"] #debug-rendered pre {
     background: rgba(0,0,0,0.3);
     border-color: var(--border-dark, #334155);
-}
-.oc[data-darkmode="true"] #debug-rendered pre code {
-    color: #e2e8f0;
 }
 .oc[data-darkmode="true"] #debug-rendered blockquote {
     color: #f1f5f9;

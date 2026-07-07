@@ -199,20 +199,18 @@ function del_log() {
     if (activeTabId === 2) {
         XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "del_log")%>', {type: "debug"}, function(x, data){
             dl.value = "";
-            if (typeof editor_debug !== 'undefined' && editor_debug) {
-                editor_debug.setValue("");
-            }
             var wrapper = document.getElementById('debug-render-wrapper');
             var rendered = document.getElementById('debug-rendered');
             if (wrapper) { wrapper.style.display = 'none'; }
             if (rendered) { rendered.innerHTML = ''; }
-            dl.style.display = '';
-            if (typeof editor_debug !== 'undefined' && editor_debug && editor_debug.dom) {
-                editor_debug.dom.style.setProperty('display', '', 'important');
-            }
-            var cms = dl.parentNode.querySelectorAll('.cm-editor');
-            for (var i = 0; i < cms.length; i++) {
-                cms[i].style.setProperty('display', '', 'important');
+            if (typeof editor_debug !== 'undefined' && editor_debug) {
+                editor_debug.setValue("");
+                if (editor_debug.dom) {
+                    editor_debug.dom.style.setProperty('display', '', 'important');
+                }
+                editor_debug.refresh();
+            } else if (typeof markdown_editor === 'function' && dl) {
+                markdown_editor(dl, 'debug', true, '100%', '540px');
             }
         });
     } else {
