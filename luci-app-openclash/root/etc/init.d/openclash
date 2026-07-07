@@ -3427,12 +3427,16 @@ EOF
 if [ -f "/tmp/yaml_openclash_ruby_parts/$OPENCLASH_OVERWRITE_SID" ]; then
    ruby_code=$(cat "/tmp/yaml_openclash_ruby_parts/$OPENCLASH_OVERWRITE_SID")
    ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
-      Value = YAML.load_file('$CONFIG_FILE')
-      threads = []
-      $ruby_code
-      threads.each(&:join)
-      File.open('$CONFIG_FILE', 'w') do |f|
-         YAML.dump(Value, f)
+      begin
+         Value = YAML.load_file('$CONFIG_FILE')
+         threads = []
+         $ruby_code
+         threads.each(&:join)
+         File.open('$CONFIG_FILE', 'w') do |f|
+            YAML.dump(Value, f)
+         end
+      rescue Exception => e
+         YAML.LOG_ERROR('Set Custom Overwrite Script Failed,【%s】' % [e.message])
       end
    " >> $LOG_FILE 2>&1
 fi
@@ -3632,12 +3636,16 @@ start_service()
                   if [ -f "$yaml_file" ]; then
                      (
                         ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
-                        Value = YAML.load_file('$yaml_file');
-                        threads = []
-                        $ruby_code
-                        threads.each(&:join)
-                        File.open('$yaml_file', 'w') do |f|
-                           YAML.dump(Value, f)
+                        begin
+                           Value = YAML.load_file('$yaml_file');
+                           threads = []
+                           $ruby_code
+                           threads.each(&:join)
+                           File.open('$yaml_file', 'w') do |f|
+                              YAML.dump(Value, f)
+                           end
+                        rescue Exception => e
+                           YAML.LOG_ERROR('Set Custom Overwrite Script Failed,【%s】' % [e.message])
                         end
                         " >> $LOG_FILE 2>&1
                      )

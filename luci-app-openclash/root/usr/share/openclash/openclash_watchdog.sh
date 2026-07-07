@@ -73,7 +73,7 @@ begin
                         servers_to_process.push(p['server']) if p.key?('server')
                      end
                   end
-               rescue Psych::SyntaxError, ArgumentError
+               rescue StandardError
                   if not provider.key?('age-secret-key') or provider['age-secret-key'].to_s.empty?
                      if file_is_age_encrypted
                         YAML.LOG_WARN('Failed to parse config file with Lua helper【' + path + '】File is AGE encrypted, cannot parse with Lua')

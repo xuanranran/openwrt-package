@@ -2898,7 +2898,7 @@ local function is_safe_filename(filename)
 end
 
 local function kill_process()
-	local cmd = string.format("%s |grep -E 'openclash|clash' |grep -v grep |awk '{print $1}' |xargs -r kill -9 >/dev/null 2>&1", fs.ps_cmd())
+	local cmd = string.format("%s |grep -E 'openclash|clash|mihomo' |grep -v grep |awk '{print $1}' |xargs -r kill -9 >/dev/null 2>&1", fs.ps_cmd())
 	luci.sys.call(cmd)
 end
 
