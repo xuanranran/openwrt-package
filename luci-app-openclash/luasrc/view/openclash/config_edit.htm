@@ -97,6 +97,7 @@
     </div>
 </div>
 
+<script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
 <script src="/luci-static/resources/openclash/js/cm6.min.js?v=<%=plugin_version%>"></script>
 <script type="text/javascript">
 var levelTranslations = {
@@ -107,6 +108,11 @@ var levelTranslations = {
     'tip': '<%:Tip%>',
     'watchdog': '<%:Watchdog%>',
 	'fatal': '<%:Fatal%>'
+};
+
+var _ocIcons = {
+	SVG_COMPARE: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="13" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
+	SVG_RESTORE: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>'
 };
 
 var ConfigEditor = {
@@ -124,17 +130,7 @@ var ConfigEditor = {
     mergeViewActive: false,
     isFullscreen: false,
     mergeShowDifferences: true,
-    SVG_COMPARE: `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-            <rect x="13" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
-    `,
-    SVG_RESTORE: `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
-    `,
+
     overwriteFiles: [],
     overwriteSubInfo: {},
     overwriteCardBar: null,
@@ -240,11 +236,11 @@ var ConfigEditor = {
                     self.showMergeView();
                     self.currentViewMode = 'original';
                     layoutBtn.title = "<%:Restore%>";
-                    layoutBtn.innerHTML = self.SVG_RESTORE;
+                    layoutBtn.innerHTML = _ocIcons.SVG_RESTORE;
                 } else {
                     self.hideMergeView();
                     layoutBtn.title = "<%:Compare%>";
-                    layoutBtn.innerHTML = self.SVG_COMPARE;
+                    layoutBtn.innerHTML = _ocIcons.SVG_COMPARE;
                 }
             });
         };
@@ -466,7 +462,7 @@ var ConfigEditor = {
         if (layoutBtn) {
             layoutBtn.classList.remove('active');
             layoutBtn.title = "<%:Compare%>";
-            layoutBtn.innerHTML = this.SVG_COMPARE;
+            layoutBtn.innerHTML = _ocIcons.SVG_COMPARE;
         }
         if (editor_help) editor_help.textContent = '<%:Press F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom%>';
     },
@@ -776,7 +772,7 @@ var ConfigEditor = {
         if (layoutBtn) {
             layoutBtn.classList.remove('active');
             layoutBtn.title = "<%:Compare%>";
-            layoutBtn.innerHTML = this.SVG_COMPARE;
+            layoutBtn.innerHTML = _ocIcons.SVG_COMPARE;
         }
 
         if (editor_help) editor_help.textContent = '<%:Press F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom%>';
@@ -2846,6 +2842,6 @@ var ConfigEditor = {
 
 document.addEventListener('DOMContentLoaded', function() {
     ConfigEditor.init();
-    if (typeof CM6 !== 'undefined' && CM6.startThemeObserver) CM6.startThemeObserver();
+    ocInitTheme();
 });
 </script>

@@ -421,7 +421,7 @@ o.write = function()
 	HTTP.redirect(DISP.build_url("admin", "services", "openclash"))
 end
 
-m:append(Template("openclash/config_editor"))
+m:append(Template("openclash/config_merge_editor"))
 m:append(Template("openclash/config_upload"))
 
 return ful , form , p , m
