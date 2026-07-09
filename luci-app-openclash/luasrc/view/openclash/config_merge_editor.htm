@@ -48,6 +48,9 @@ var _ocIcons = {
 	SVG_RESTORE: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>'
 };
 
+// Uses EditorView.updateListener instead of view.dispatch override.
+// dispatch() can receive TransactionSpec objects which lack docChanged.
+
 function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid, height) {
 	var descr = document.getElementById("my_editor_div");
 	var sectionTable = target.parentNode.parentNode.parentNode.parentNode.parentNode;
@@ -211,6 +214,13 @@ function _createSingleMergeEditor(content, readOnly) {
 	exts.push(CM6.indentMarkerExtension());
 	if (readOnly) exts.push(CM6.EditorState.readOnly.of(true));
 
+	exts.push(CM6.EditorView.updateListener.of(function(update) {
+		if (update.docChanged) {
+			state.id.value = update.state.doc.toString();
+			state.useContent = update.state.doc.toString();
+		}
+	}));
+
 	var view = new CM6.EditorView({
 		state: CM6.EditorState.create({ doc: content, extensions: exts }),
 		parent: state.target
@@ -219,14 +229,6 @@ function _createSingleMergeEditor(content, readOnly) {
 		view.dom.style.width = state.wid;
 		view.dom.style.height = state.height;
 	}
-	var origDispatch = view.dispatch;
-	view.dispatch = function(tr) {
-		origDispatch.call(view, tr);
-		if (tr.docChanged) {
-			state.id.value = view.state.doc.toString();
-			state.useContent = view.state.doc.toString();
-		}
-	};
 	state.instance = view;
 	state.isMerge = false;
 }
@@ -254,6 +256,13 @@ function _renderMergeView() {
 		extB.push(topSearch);
 	}
 
+	extA.push(CM6.EditorView.updateListener.of(function(update) {
+		if (update.docChanged) {
+			state.id.value = update.state.doc.toString();
+			state.useContent = update.state.doc.toString();
+		}
+	}));
+
 	var mv = new CM6.MergeView({
 		a: { doc: state.useContent || '', extensions: extA },
 		b: { doc: state.defContent || '', extensions: extB },
@@ -264,15 +273,6 @@ function _renderMergeView() {
 		highlightChanges: window._ocMergeShowDifferences,
 		collapseUnchanged: mergeDefaults.collapseUnchanged || false
 	});
-
-	var origDispatchA = mv.a.dispatch;
-	mv.a.dispatch = function(tr) {
-		origDispatchA.call(mv.a, tr);
-		if (tr.docChanged) {
-			state.id.value = mv.a.state.doc.toString();
-			state.useContent = mv.a.state.doc.toString();
-		}
-	};
 
 	if (state.wid && state.height) {
 		mv.a.dom.style.width = state.wid;

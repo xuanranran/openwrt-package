@@ -229,6 +229,7 @@ function custom_domain_dns.write(self, section, value)
 			fs.writefile("/etc/openclash/custom/openclash_custom_domain_dns.list", value)
 		end
 	end
+	return true
 end
 
 ---- Access Control
@@ -538,6 +539,7 @@ function o.write(self, section, value)
 			fs.writefile("/etc/openclash/custom/openclash_custom_localnetwork_ipv4.list", value)
 		end
 	end
+	return true
 end
 
 o = s:taboption("traffic_control", Value, "chnroute_pass", translate("Chnroute Bypassed List"))
@@ -559,6 +561,7 @@ function o.write(self, section, value)
 			fs.writefile("/etc/openclash/custom/openclash_custom_chnroute_pass.list", value)
 		end
 	end
+	return true
 end
 
 --Stream Enhance
@@ -1366,6 +1369,7 @@ function o.write(self, section, value)
 			fs.writefile("/etc/openclash/custom/openclash_custom_localnetwork_ipv6.list", value)
 		end
 	end
+	return true
 end
 
 o = s:taboption("ipv6", Value, "chnroute6_pass", translate("Chnroute6 Bypassed List"))
@@ -1386,6 +1390,7 @@ function o.write(self, section, value)
 			fs.writefile("/etc/openclash/custom/openclash_custom_chnroute6_pass.list", value)
 		end
 	end
+	return true
 end
 
 ---- version update
@@ -1410,6 +1415,7 @@ function o.write(self, section, value)
 			fs.writefile("/etc/openclash/custom/openclash_custom_firewall_rules.sh", value)
 		end
 	end
+	return true
 end
 
 ---- debug

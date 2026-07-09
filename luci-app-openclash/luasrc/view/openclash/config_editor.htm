@@ -24,6 +24,11 @@ var levelTranslations = {
 
 ocRegisterEditorHotkeys();
 
+// All editable editors use EditorView.updateListener (not view.dispatch)
+// to sync content back to the hidden textarea.  The dispatch override is
+// unreliable because CM6 can pass either a Transaction (with docChanged)
+// or a TransactionSpec (without docChanged) to dispatch().
+
 function editor(id, readOnly, wid, height) {
 	var isDark = isDarkBackground(document.body);
 	var exts = [CM6.baseExtensions(), CM6.themeExtension(isDark), CM6.placeholderExtension('<%:Enter YAML configuration...%>')];
@@ -37,6 +42,10 @@ function editor(id, readOnly, wid, height) {
 	exts.push(CM6.indentMarkerExtension());
 	if (readOnly) exts.push(CM6.EditorState.readOnly.of(true));
 
+	exts.push(CM6.EditorView.updateListener.of(function(update) {
+		if (update.docChanged) id.value = update.state.doc.toString();
+	}));
+
 	var view = new CM6.EditorView({
 		state: CM6.EditorState.create({ doc: id.value, extensions: exts })
 	});
@@ -48,11 +57,6 @@ function editor(id, readOnly, wid, height) {
 		view.dom.style.width = wid;
 		view.dom.style.height = height;
 	}
-	var origDispatch = view.dispatch;
-	view.dispatch = function(tr) {
-		origDispatch.call(view, tr);
-		if (tr.docChanged) id.value = view.state.doc.toString();
-	};
 	return view;
 }
 
@@ -64,6 +68,10 @@ function shell_editor(id, readOnly, wid, height) {
 	exts.push(CM6.StreamLanguage.define(CM6.shell));
 	if (readOnly) exts.push(CM6.EditorState.readOnly.of(true));
 
+	exts.push(CM6.EditorView.updateListener.of(function(update) {
+		if (update.docChanged) id.value = update.state.doc.toString();
+	}));
+
 	var view = new CM6.EditorView({
 		state: CM6.EditorState.create({ doc: id.value, extensions: exts })
 	});
@@ -75,11 +83,6 @@ function shell_editor(id, readOnly, wid, height) {
 		view.dom.style.width = wid;
 		view.dom.style.height = height;
 	}
-	var origDispatch = view.dispatch;
-	view.dispatch = function(tr) {
-		origDispatch.call(view, tr);
-		if (tr.docChanged) id.value = view.state.doc.toString();
-	};
 	return view;
 }
 
@@ -91,6 +94,10 @@ function other_editor(id, readOnly, wid, height) {
 	exts.push(CM6.StreamLanguage.define(CM6.properties));
 	if (readOnly) exts.push(CM6.EditorState.readOnly.of(true));
 
+	exts.push(CM6.EditorView.updateListener.of(function(update) {
+		if (update.docChanged) id.value = update.state.doc.toString();
+	}));
+
 	var view = new CM6.EditorView({
 		state: CM6.EditorState.create({ doc: id.value, extensions: exts })
 	});
@@ -102,11 +109,6 @@ function other_editor(id, readOnly, wid, height) {
 		view.dom.style.width = wid;
 		view.dom.style.height = height;
 	}
-	var origDispatch = view.dispatch;
-	view.dispatch = function(tr) {
-		origDispatch.call(view, tr);
-		if (tr.docChanged) id.value = view.state.doc.toString();
-	};
 	return view;
 }
 
