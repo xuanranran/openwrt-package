@@ -1299,14 +1299,20 @@ msgstr "还原默认配置成功！"
 msgid "Restore failed!"
 msgstr "还原默认配置失败！"
 
-msgid "Support syntax check, press"
-msgstr "支持语法检查，按钮"
+msgid "Press"
+msgstr "按"
 
-msgid "to control diff option, press"
-msgstr "控制 Diff 显示，按钮"
+msgid "for fullscreen,"
+msgstr "全屏，"
 
-msgid "to enter full screen editing mode"
-msgstr "进入全屏编辑模式"
+msgid "to exit fullscreen,"
+msgstr "退出全屏，"
+
+msgid "to zoom"
+msgstr "缩放"
+
+msgid "to toggle differences,"
+msgstr "切换差异显示，"
 
 msgid "Switch page to Fake-IP mode"
 msgstr "切换页面到 Fake-IP 模式"
@@ -3380,12 +3386,6 @@ msgstr "正在加载配置文件..."
 
 msgid "Ready"
 msgstr "就绪"
-
-msgid "Press F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom"
-msgstr "按 F11 全屏，Esc 退出全屏，Ctrl+ 鼠标滚轮缩放"
-
-msgid "Press F10 to toggle differences, F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom"
-msgstr "按 F10 显示 Diff，F11 全屏，Esc 退出全屏，Ctrl+ 鼠标滚轮缩放"
 
 msgid "Compare mode: left(Original Config), right(Runtime Config)"
 msgstr "对比模式：左侧（原始配置），右侧（运行配置）"

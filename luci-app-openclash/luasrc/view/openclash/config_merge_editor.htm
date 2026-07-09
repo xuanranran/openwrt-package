@@ -1,26 +1,31 @@
 <%
     local fs = require "luci.openclash"
     local plugin_version = fs.oc_version()
-    local conf = fs.uci_get_config("config", "config_path")
-    if not conf then conf = "/etc/openclash/config/config.yaml" end
-    local conf_name = fs.basename(conf)
-    if not conf_name then conf_name = "config.yaml" end
-    local sconf = "/etc/openclash/" .. conf_name
-    local sconf_exists = fs.isfile(sconf)
-    local def_desc
-    if sconf_exists then
-        def_desc = translate("Config File Edited By OpenClash For Running")
-    else
-        def_desc = translate("Default Config File With Correct Template")
-    end
 %>
 <link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=plugin_version%>">
 <script src="/luci-static/resources/openclash/js/cm6.min.js?v=<%=plugin_version%>"></script>
 <script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
 
-<div id="my_editor_div" class="oc-merge-editor-bar">
-	<div class="oc-merge-editor-cell-desc" id="my_editor_desc_use"><%:Modify Your Config file:%> <b class="oc-merge-config-name"><%=conf_name%></b> <%:Here, Except The Settings That Were Taken Over%></div>
-	<div class="oc-merge-editor-cell-desc" id="my_editor_desc_def"><%=def_desc%></div>
+<div id="my_editor_div" style="display:flex;margin:8px 8px;">
+	<div id="config-mode-tabs" style="display:flex;width:100%;">
+		<div class="mode-tabs">
+			<button type="button" class="mode-tab active" id="tab-original-config">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:4px;">
+					<rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+					<line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="2"/>
+					<line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2"/>
+					<line x1="8" y1="16" x2="12" y2="16" stroke="currentColor" stroke-width="2"/>
+				</svg>
+				<%:Original Config%>
+			</button>
+			<button type="button" class="mode-tab" id="tab-runtime-config">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:4px;">
+					<polygon points="13 2 3 14 12 14 11 22 21 10 13 10 13 2" stroke="currentColor" stroke-width="2" fill="none"/>
+				</svg>
+				<%:Runtime Config%>
+			</button>
+		</div>
+	</div>
 </div>
 
 <button type="button" class="oc-usage-help-float" id="oc-merge-toggle-btn" title="<%:Compare%>">
@@ -29,6 +34,11 @@
 		<rect x="13" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
 	</svg>
 </button>
+
+<div id="oc-merge-help" style="display:none;">
+	<span id="oc-merge-help-normal"><%:Press%> <b style="color:var(--success-color)">F11</b> <%:for fullscreen,%> <b style="color:var(--success-color)">Esc</b> <%:to exit fullscreen,%> <b style="color:var(--success-color)">Ctrl+Mouse Wheel</b> <%:to zoom%></span>
+	<span id="oc-merge-help-merge" style="display:none;"><%:Press%> <b style="color:var(--success-color)">F10</b> <%:to toggle differences,%> <b style="color:var(--success-color)">F11</b> <%:for fullscreen,%> <b style="color:var(--success-color)">Esc</b> <%:to exit fullscreen,%> <b style="color:var(--success-color)">Ctrl+Mouse Wheel</b> <%:to zoom%></span>
+</div>
 
 <script type="text/javascript">//<![CDATA[
 ocRegisterEditorHotkeys();
@@ -65,6 +75,31 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 		};
 	}
 
+	var helpEl = document.getElementById('oc-merge-help');
+	if (helpEl) {
+		helpEl.style.display = 'inline';
+		var helpDiv = document.createElement('div');
+		helpDiv.className = 'config-editor-help';
+		helpDiv.style.cssText = 'max-width:100%;box-sizing:border-box;text-align:right;font-size:12px;padding:8px 16px;margin:8px 16px;background:var(--bg-gray);border-radius:var(--radius-sm);';
+		helpDiv.appendChild(helpEl);
+		sectionTable.parentNode.appendChild(helpDiv);
+		_updateMergeHelpText(false);
+	}
+
+	var sectionDescr = sectionTable.parentNode.querySelector('.cbi-section-descr');
+	if (sectionDescr) {
+		sectionDescr.classList.add('config-editor-header', 'config-editor-title');
+		sectionDescr.style.cssText = sectionDescr.style.cssText + ';display:flex !important;align-items:center;gap:6px;padding:10px 16px;min-height:40px;cursor:default;user-select:text;';
+		var text = sectionDescr.textContent.trim();
+		var idx = text.indexOf(':');
+		if (idx > 0) {
+			var label = text.substring(0, idx + 1);
+			var fname = text.substring(idx + 1).trim();
+			sectionDescr.innerHTML = '<span id="editTitle">' + label + '</span> ' +
+				'<span id="config-file-name" class="config-file-name">' + fname + '</span>';
+		}
+	}
+
 	target2.parentNode.style.display = "none";
 	target.parentNode.colSpan = 2;
 	target.style.height = "700px";
@@ -93,7 +128,62 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 	_createSingleMergeEditor(showUse ? useContent : defContent, !showUse);
 
 	_updateMergeToggleBtn();
-	_updateMergeDescCells(false);
+	_updateMergeTabs(false);
+
+	var tabOriginal = document.getElementById('tab-original-config');
+	var tabRuntime = document.getElementById('tab-runtime-config');
+
+	if (tabOriginal) {
+		tabOriginal.onclick = function(e) {
+			e.preventDefault();
+			var state = window._mergeEditorState;
+			if (!state) return;
+			if (state.instance) {
+				if (state.isMerge && state.instance.a && state.instance.a.state) {
+					state.useContent = state.instance.a.state.doc.toString();
+				} else if (!state.isMerge && state.instance.state) {
+					var cur = state.instance.state.doc.toString();
+					if (state.showUse) state.useContent = cur;
+				}
+			}
+			if (state.isMerge) {
+				state.showUse = true;
+				_createSingleMergeEditor(state.useContent, false);
+				document.getElementById('my_editor_div').style.display = 'flex';
+			} else if (!state.showUse) {
+				state.showUse = true;
+				_createSingleMergeEditor(state.useContent, false);
+			}
+			_updateMergeToggleBtn();
+			_updateMergeTabs(false);
+		};
+	}
+
+	if (tabRuntime) {
+		tabRuntime.onclick = function(e) {
+			e.preventDefault();
+			var state = window._mergeEditorState;
+			if (!state) return;
+			if (state.instance) {
+				if (state.isMerge && state.instance.a && state.instance.a.state) {
+					state.useContent = state.instance.a.state.doc.toString();
+				} else if (!state.isMerge && state.instance.state) {
+					var cur = state.instance.state.doc.toString();
+					if (state.showUse) state.useContent = cur;
+				}
+			}
+			if (state.isMerge) {
+				state.showUse = false;
+				_createSingleMergeEditor(state.defContent, true);
+				document.getElementById('my_editor_div').style.display = 'flex';
+			} else if (state.showUse) {
+				state.showUse = false;
+				_createSingleMergeEditor(state.defContent, true);
+			}
+			_updateMergeToggleBtn();
+			_updateMergeTabs(false);
+		};
+	}
 }
 
 function _createSingleMergeEditor(content, readOnly) {
@@ -213,6 +303,13 @@ function _destroyMergeInstance() {
 	window._mergeViewInstance = null;
 }
 
+function _updateMergeHelpText(isMerge) {
+	var helpNormal = document.getElementById('oc-merge-help-normal');
+	var helpMerge = document.getElementById('oc-merge-help-merge');
+	if (helpNormal) helpNormal.style.display = isMerge ? 'none' : 'inline';
+	if (helpMerge) helpMerge.style.display = isMerge ? 'inline' : 'none';
+}
+
 function _toggleMergeView() {
 	var state = window._mergeEditorState;
 	if (!state) return;
@@ -227,15 +324,16 @@ function _toggleMergeView() {
 	}
 
 	if (state.isMerge) {
-		if (state.useContent && state.useContent.trim() !== '') {
-			state.showUse = true;
-		}
-		_createSingleMergeEditor(state.showUse ? state.useContent : state.defContent, !state.showUse);
+		state.showUse = true;
+		_createSingleMergeEditor(state.useContent, false);
+		document.getElementById('my_editor_div').style.display = 'flex';
 	} else {
 		_renderMergeView();
+		document.getElementById('my_editor_div').style.display = 'none';
 	}
 	_updateMergeToggleBtn();
-	_updateMergeDescCells(state.isMerge);
+	_updateMergeTabs(state.isMerge);
+	_updateMergeHelpText(state.isMerge);
 }
 
 function _updateMergeToggleBtn() {
@@ -251,20 +349,21 @@ function _updateMergeToggleBtn() {
 	}
 }
 
-function _updateMergeDescCells(isMerge) {
-	var cellUse = document.getElementById('my_editor_desc_use');
-	var cellDef = document.getElementById('my_editor_desc_def');
+function _updateMergeTabs(isMerge) {
+	var tabOriginal = document.getElementById('tab-original-config');
+	var tabRuntime = document.getElementById('tab-runtime-config');
+	if (!tabOriginal || !tabRuntime) return;
 	if (isMerge) {
-		if (cellUse) { cellUse.style.display = ''; cellUse.style.flex = '1'; }
-		if (cellDef) { cellDef.style.display = ''; cellDef.style.flex = '1'; }
+		tabOriginal.classList.remove('active');
+		tabRuntime.classList.remove('active');
 	} else {
 		var state = window._mergeEditorState;
 		if (state && state.showUse) {
-			if (cellUse) { cellUse.style.display = ''; cellUse.style.flex = '1'; }
-			if (cellDef) { cellDef.style.display = 'none'; cellDef.style.flex = ''; }
+			tabOriginal.classList.add('active');
+			tabRuntime.classList.remove('active');
 		} else {
-			if (cellUse) { cellUse.style.display = 'none'; cellUse.style.flex = ''; }
-			if (cellDef) { cellDef.style.display = ''; cellDef.style.flex = '1'; }
+			tabOriginal.classList.remove('active');
+			tabRuntime.classList.add('active');
 		}
 	}
 }

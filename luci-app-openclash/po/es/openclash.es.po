@@ -1299,14 +1299,20 @@ msgstr "Restauración completada."
 msgid "Restore failed!"
 msgstr "Error al restaurar la configuración."
 
-msgid "Support syntax check, press"
-msgstr "Admite comprobación de sintaxis; pulsa"
+msgid "Press"
+msgstr "Pulsa"
 
-msgid "to control diff option, press"
-msgstr "para cambiar la vista de diferencia; pulsa"
+msgid "for fullscreen,"
+msgstr "para pantalla completa,"
 
-msgid "to enter full screen editing mode"
-msgstr "para entrar en modo de edición a pantalla completa"
+msgid "to exit fullscreen,"
+msgstr "para salir,"
+
+msgid "to zoom"
+msgstr "zoom"
+
+msgid "to toggle differences,"
+msgstr "para mostrar diferencias,"
 
 msgid "Switch page to Fake-IP mode"
 msgstr "Cambiar página a modo Fake-IP"
@@ -3365,12 +3371,6 @@ msgstr "Cargando archivo de configuración..."
 
 msgid "Ready"
 msgstr "Listo"
-
-msgid "Press F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom"
-msgstr "Pulsa F11 para pantalla completa, Esc para salir, Ctrl + rueda del ratón para zoom"
-
-msgid "Press F10 to toggle differences, F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom"
-msgstr "Pulsa F10 para mostrar diferencias, F11 para pantalla completa, Esc para salir, Ctrl + rueda del ratón para zoom"
 
 msgid "Compare mode: left(Original Config), right(Runtime Config)"
 msgstr "Modo comparación: izquierda (configuración original), derecha (configuración en ejecución)"

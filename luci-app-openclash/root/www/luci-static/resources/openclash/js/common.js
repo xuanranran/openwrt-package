@@ -1,14 +1,5 @@
-/**
- * OpenClash Common JavaScript Utilities
- * Shared functions used across multiple view templates.
- */
+// OpenClash shared utilities
 
-/**
- * Detects if an element has a dark background by analyzing its computed CSS.
- * Used by CodeMirror log editor to set dark mode attribute.
- * @param {HTMLElement} element - The element to check
- * @returns {boolean} True if the background is dark
- */
 function isDarkBackground(element) {
 	var cachedTheme = localStorage.getItem('oc-theme');
 	if (cachedTheme === 'dark') {
@@ -46,11 +37,6 @@ function isDarkBackground(element) {
 	return luminance < 128;
 }
 
-/**
- * Opens a URL in a new window. Used for external links (Wiki, GitHub, etc.).
- * @param {string} url - The URL to open
- * @returns {boolean} false to prevent default link behavior
- */
 function winOpen(url) {
 	var win = window.open(url);
 	if (win == null) {
@@ -59,32 +45,165 @@ function winOpen(url) {
 	return false;
 }
 
-/* ================================================================
- * OpenClash Editor Shared Utilities
- * Used by config_editor.htm, config_merge_editor.htm, config_edit.htm
- * ================================================================ */
+// ── Editor state ────────────────────────────────────────────────
 
-// Shared fullscreen and merge-diff toggle state
 window._ocFullscreenActive = false;
 window._ocMergeShowDifferences = true;
 window._ocEditorHotkeysBound = false;
+window._ocFullscreenPatch = null;
 
-// CM6-ready callback queue (CM6 is loaded synchronously before templates, so this is a no-op passthrough)
+window._ocZoomLevels = [75, 90, 100, 110, 125, 150, 200];
+window._ocCurrentZoom = 100;
+
+// ── Fullscreen helpers ──────────────────────────────────────────
+// Walk ancestors and patch stacking contexts so position:fixed can
+// break out. backdrop-filter traps fixed children (creates a
+// containing block); positioned+z-index creates a stacking context.
+// We fix the closest backdrop-filter and the outermost z-index.
+
+// Handles both EditorView (.dom) and MergeView (.a.dom, .b.dom)
+function ocGetEditorDom(instance) {
+	if (!instance) return null;
+	if (instance.dom) return instance.dom;
+	if (instance.a && instance.a.dom) return instance.a.dom;
+	return null;
+}
+
+function _ocEnterFullscreen(dom) {
+	_ocExitFullscreen();
+	var patch = window._ocFullscreenPatch = {};
+	var el = dom.parentNode;
+	while (el && el !== document.body && el !== document.documentElement) {
+		var cs = window.getComputedStyle(el);
+		if (!patch.bfEl) {
+			var bf = cs.backdropFilter || cs.webkitBackdropFilter;
+			if (bf && bf !== 'none') {
+				patch.bfEl = el;
+				patch.bfOld = el.style.backdropFilter;
+				el.style.backdropFilter = 'none';
+			}
+		}
+		var pos = cs.position;
+		var zi = cs.zIndex;
+		if ((pos === 'relative' || pos === 'absolute' || pos === 'fixed' || pos === 'sticky') && zi !== 'auto') {
+			patch.zEl = el;
+			patch.zOld = el.style.zIndex;
+		}
+		el = el.parentNode;
+	}
+	if (patch.zEl) {
+		patch.zEl.style.setProperty('z-index', '999999', 'important');
+	}
+}
+
+function _ocExitFullscreen() {
+	var p = window._ocFullscreenPatch;
+	if (!p) return;
+	if (p.zEl) {
+		if (p.zOld !== undefined && p.zOld !== '') {
+			p.zEl.style.zIndex = p.zOld;
+		} else {
+			p.zEl.style.removeProperty('z-index');
+		}
+	}
+	if (p.bfEl) {
+		if (p.bfOld !== undefined && p.bfOld !== '') {
+			p.bfEl.style.backdropFilter = p.bfOld;
+		} else {
+			p.bfEl.style.removeProperty('backdrop-filter');
+		}
+	}
+	window._ocFullscreenPatch = null;
+}
+
+// ── Active editor lookup ────────────────────────────────────────
+// Priority: merge editor state > ConfigEditor modal > CM6.getActiveEditor()
+
+function ocGetActiveEditorInstance() {
+	if (window._mergeEditorState && window._mergeEditorState.instance) {
+		return window._mergeEditorState.instance;
+	}
+	if (window.ConfigEditor && window.ConfigEditor.editorInstance) {
+		return window.ConfigEditor.editorInstance;
+	}
+	if (typeof CM6 !== 'undefined' && CM6.getActiveEditor) {
+		return CM6.getActiveEditor();
+	}
+	return null;
+}
+
+// ── Zoom ────────────────────────────────────────────────────────
+// Applies zoom-{level} CSS class to .cm-editor elements.
+// For MergeView, applies to BOTH side panels so the .oc .cm-editor.zoom-XX rules match.
+
+function ocApplyZoom(instance, zoomLevel) {
+	var doms = [];
+	if (instance) {
+		if (instance.a && instance.a.dom && instance.b && instance.b.dom) {
+			doms = [instance.a.dom, instance.b.dom];
+		} else if (instance.dom) {
+			doms = [instance.dom];
+		} else if (instance.classList && instance.classList.contains('cm-editor')) {
+			doms = [instance];
+		}
+	}
+
+	if (!doms.length) {
+		var activeEl = document.activeElement;
+		if (activeEl) {
+			var ed = activeEl.closest('.cm-editor');
+			if (ed) doms = [ed];
+		}
+	}
+	if (!doms.length) return;
+
+	doms.forEach(function(dom) {
+		window._ocZoomLevels.forEach(function(level) {
+			dom.classList.remove('zoom-' + level);
+		});
+		if (zoomLevel !== 100) {
+			dom.classList.add('zoom-' + zoomLevel);
+		}
+	});
+	window._ocCurrentZoom = zoomLevel;
+}
+
+// Returns new zoom level without applying it
+function ocZoomIn(currentZoom) {
+	var cur = typeof currentZoom === 'number' ? currentZoom : window._ocCurrentZoom;
+	var idx = window._ocZoomLevels.indexOf(cur);
+	if (idx < window._ocZoomLevels.length - 1) {
+		return window._ocZoomLevels[idx + 1];
+	}
+	return cur;
+}
+
+function ocZoomOut(currentZoom) {
+	var cur = typeof currentZoom === 'number' ? currentZoom : window._ocCurrentZoom;
+	var idx = window._ocZoomLevels.indexOf(cur);
+	if (idx > 0) {
+		return window._ocZoomLevels[idx - 1];
+	}
+	return cur;
+}
+
+function ocResetZoom() {
+	return 100;
+}
+
+// Passthrough for CM5-era _cmWhenReady compatibility
 window._cmWhenReady = function(cb) { cb(); };
 
-/**
- * Initialize CodeMirror theme observer and dark mode detection.
- * First call: full setup (CM6 observer, initial theme, UI cleanup).
- * Subsequent calls (LuCI XHR navigation): re-apply dark mode only.
- */
+// ── Theme ───────────────────────────────────────────────────────
+
+// Idempotent — second call only re-applies dark mode
 function ocInitTheme() {
 	if (window._ocThemeInited) {
 		ocUpdateTheme();
 		return;
 	}
 	window._ocThemeInited = true;
-	// Defer to DOM ready: common.js loads in <head> before .oc elements exist.
-	// On XHR navigation readyState is already complete, so execute immediately.
+
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', function() {
 			ocUpdateTheme();
@@ -98,10 +217,6 @@ function ocInitTheme() {
 	}
 }
 
-/**
- * Apply dark/light mode to all .oc containers and notify CM6 editors.
- * Safe to call multiple times — used for runtime theme switching.
- */
 function ocUpdateTheme() {
 	var isDark = isDarkBackground(document.body);
 	var ocEls = document.querySelectorAll('.oc');
@@ -122,27 +237,17 @@ function ocUpdateTheme() {
 			}
 		}
 	}
-	// Swap highlight.js theme CSS
 	if (typeof CM6 !== 'undefined' && CM6.switchHljsTheme) {
 		CM6.switchHljsTheme(isDark);
 	}
 }
 
-/**
- * Hide empty cbi-section-table-titles, cbi-section-table-descr rows,
- * and cbi-section-descr blocks across all fieldsets on the page.
- */
 function ocHideEmptyCbiElements() {
 	var emptyEls = document.querySelectorAll('.cbi-section-table-titles, .cbi-section-table-descr, .cbi-section-descr');
 	for (var i = 0; i < emptyEls.length; i++) {
 		if (emptyEls[i].textContent.trim() === '') { emptyEls[i].style.display = 'none'; }
 	}
 }
-
-/**
- * Center CBI action buttons (Commit/Apply/Create) and control elements
- * (proxy_mg/rule_mg) across all fieldsets on the page.
- */
 function ocCenterCbiActions() {
 	var ids = ['Commit', 'Apply', 'Create', 'Back', 'Load_Config',
 		'Delete_Unused_Servers', 'Delete_Servers', 'Delete_Proxy_Provider', 'Delete_Groups',
@@ -155,37 +260,69 @@ function ocCenterCbiActions() {
 	}
 }
 
-/**
- * Register global keyboard shortcuts for OpenClash editor pages:
- *   F11     – Toggle fullscreen on the active CM6 editor
- *   F10     – Toggle diff highlighting in merge view (when active)
- *   Escape  – Exit fullscreen
- * Safe to call multiple times — only registers once.
- */
+// ── Hotkeys ─────────────────────────────────────────────────────
+// F11 fullscreen, F10 diff toggle, Esc exit, Ctrl+/-/0 zoom, Ctrl+Wheel zoom.
+// Registered once globally (capture phase so it beats CM6's own key handling).
+
 function ocRegisterEditorHotkeys() {
 	if (window._ocEditorHotkeysBound) return;
 	window._ocEditorHotkeysBound = true;
 
 	document.addEventListener('keydown', function(e) {
-		// F11: toggle fullscreen
+		if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) {
+			var inst = ocGetActiveEditorInstance();
+			if (inst) {
+				e.preventDefault();
+				var newZoom = ocZoomIn();
+				ocApplyZoom(inst, newZoom);
+			}
+			return;
+		}
+
+		if ((e.ctrlKey || e.metaKey) && e.key === '-') {
+			var inst = ocGetActiveEditorInstance();
+			if (inst) {
+				e.preventDefault();
+				var newZoom = ocZoomOut();
+				ocApplyZoom(inst, newZoom);
+			}
+			return;
+		}
+
+		if ((e.ctrlKey || e.metaKey) && e.key === '0') {
+			var inst = ocGetActiveEditorInstance();
+			if (inst) {
+				e.preventDefault();
+				var newZoom = ocResetZoom();
+				ocApplyZoom(inst, newZoom);
+			}
+			return;
+		}
+
 		if (e.key === 'F11') {
 			e.preventDefault();
 			if (window._ocFullscreenActive) {
-				if (typeof CM6 !== 'undefined' && CM6.toggleFullscreen) {
-					CM6.toggleFullscreen(document.getElementById('oc-fullscreen-active'));
+				var fsEl = document.getElementById('oc-fullscreen-active');
+				if (fsEl && typeof CM6 !== 'undefined' && CM6.toggleFullscreen) {
+					CM6.toggleFullscreen(fsEl);
 				}
+				_ocExitFullscreen();
 				window._ocFullscreenActive = false;
+				if (window.ConfigEditor) window.ConfigEditor.isFullscreen = false;
 			} else {
 				if (typeof CM6 !== 'undefined' && CM6.getActiveEditor && CM6.toggleFullscreen) {
 					var target = CM6.getActiveEditor();
-					window._ocFullscreenActive = CM6.toggleFullscreen(target);
+					if (target) {
+						_ocEnterFullscreen(target);
+						window._ocFullscreenActive = !!CM6.toggleFullscreen(target);
+						if (window.ConfigEditor) window.ConfigEditor.isFullscreen = window._ocFullscreenActive;
+					}
 				}
 			}
 			ocUpdateTheme();
 			return;
 		}
 
-		// F10: toggle merge diff highlighting (only when merge view is active)
 		if (e.key === 'F10' && window._mergeViewInstance && window._mergeViewInstance.reconfigure) {
 			e.preventDefault();
 			window._ocMergeShowDifferences = !window._ocMergeShowDifferences;
@@ -199,16 +336,32 @@ function ocRegisterEditorHotkeys() {
 			return;
 		}
 
-		// Escape: exit fullscreen
 		if (e.key === 'Escape' && window._ocFullscreenActive) {
 			e.preventDefault();
-			if (typeof CM6 !== 'undefined' && CM6.toggleFullscreen) {
-				CM6.toggleFullscreen(document.getElementById('oc-fullscreen-active'));
+			e.stopPropagation();
+			var fsEl = document.getElementById('oc-fullscreen-active');
+			if (fsEl && typeof CM6 !== 'undefined' && CM6.toggleFullscreen) {
+				CM6.toggleFullscreen(fsEl);
 			}
+			_ocExitFullscreen();
 			window._ocFullscreenActive = false;
+			if (window.ConfigEditor) window.ConfigEditor.isFullscreen = false;
 			ocUpdateTheme();
 		}
 	}, true);
+
+	// Separate listener — wheel needs {passive:false} for preventDefault
+	document.addEventListener('wheel', function(e) {
+		if (e.ctrlKey || e.metaKey) {
+			if (e.target.closest && e.target.closest('#config-editor-overlay')) return;
+			var inst = ocGetActiveEditorInstance();
+			if (inst) {
+				e.preventDefault();
+				var newZoom = e.deltaY < 0 ? ocZoomIn() : ocZoomOut();
+				ocApplyZoom(inst, newZoom);
+			}
+		}
+	}, { passive: false });
 }
 
 ocInitTheme();
