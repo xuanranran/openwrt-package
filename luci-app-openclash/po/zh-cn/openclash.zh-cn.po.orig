@@ -1311,6 +1311,9 @@ msgstr "退出全屏，"
 msgid "to zoom"
 msgstr "缩放"
 
+msgid "Mouse Wheel"
+msgstr "鼠标滚轮"
+
 msgid "to toggle differences,"
 msgstr "切换差异显示，"
 

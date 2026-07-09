@@ -1311,6 +1311,9 @@ msgstr "para salir,"
 msgid "to zoom"
 msgstr "zoom"
 
+msgid "Mouse Wheel"
+msgstr "Rueda del ratón"
+
 msgid "to toggle differences,"
 msgstr "para mostrar diferencias,"
 

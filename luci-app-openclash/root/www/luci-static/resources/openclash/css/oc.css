@@ -64,10 +64,7 @@
     --success-a5: rgba(5, 150, 105, 0.05);
     --error-a12: rgba(255,80,80,0.12);
     --error-a18: rgba(255,80,80,0.18);
-    --cm-indent-guide: rgba(128,128,128,0.25);
     --cm-placeholder: rgba(128,128,128,0.5);
-    --cm-special-char: rgba(255,0,0,0.3);
-    --cm-active-line-gutter: rgba(0,0,0,0.04);
     --dev-avatar-border: rgba(17, 24, 39, 0.8);
     --dev-label-bg: rgba(255, 255, 255, 0.9);
     --dev-label-border: rgba(0, 0, 0, 0.1);
@@ -136,10 +133,7 @@
     --success-a5: rgba(52, 211, 153, 0.05);
     --error-a12: rgba(255,80,80,0.12);
     --error-a18: rgba(255,80,80,0.18);
-    --cm-indent-guide: rgba(255,255,255,0.12);
     --cm-placeholder: rgba(255,255,255,0.25);
-    --cm-special-char: rgba(255,0,0,0.3);
-    --cm-active-line-gutter: rgba(255,255,255,0.04);
     --dev-avatar-border: rgba(249, 250, 251, 0.8);
     --dev-label-bg: rgba(31, 41, 55, 0.9);
     --dev-label-border: rgba(107, 114, 128, 0.3);
@@ -2460,9 +2454,10 @@
 }
 .oc .config-editor-footer {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    padding: 12px 20px;
+    gap: 4px 12px;
+    padding: 8px 16px;
     background: var(--bg-gray);
     flex-shrink: 0;
     position: relative;
@@ -2470,19 +2465,20 @@
 .oc .config-editor-status {
     font-size: 12px;
     color: var(--text-secondary);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 50%;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 .oc .config-editor-help {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text-secondary);
     opacity: 0.8;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 50%;
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: right;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 .oc .config-editor-resize-handle {
     position: absolute;
@@ -2956,7 +2952,7 @@
     position: fixed !important;
     top: 0 !important; left: 0 !important;
     right: 0 !important; bottom: 0 !important;
-    width: 100vw !important; height: 100vh !important;
+    width: 100% !important; height: 100% !important;
     z-index: 999999 !important;
     background: var(--editor-bg, #f5f5f5) !important;
 }
@@ -2969,7 +2965,7 @@
     position: fixed !important;
     top: 0 !important; left: 0 !important;
     right: 0 !important; bottom: 0 !important;
-    width: 100vw !important; height: 100vh !important;
+    width: 100% !important; height: 100% !important;
     z-index: 999999 !important;
     background: var(--editor-bg, #f5f5f5) !important;
     overflow-y: auto !important;
@@ -3019,30 +3015,12 @@
 }
 
 /* ---- Editor internals ---- */
-.oc .cm-indent-guide {
-    border-right: 1px dashed var(--cm-indent-guide);
-}
-.oc[data-darkmode="true"] .cm-indent-guide {
-    border-right-color: var(--cm-indent-guide);
-}
-
 .oc .cm-placeholder {
     color: var(--cm-placeholder) !important;
     font-style: italic;
 }
 .oc[data-darkmode="true"] .cm-placeholder {
     color: var(--cm-placeholder) !important;
-}
-
-.oc .cm-specialChar {
-    color: var(--cm-special-char);
-}
-
-.oc .cm-activeLineGutter {
-    background-color: var(--cm-active-line-gutter);
-}
-.oc[data-darkmode="true"] .cm-activeLineGutter {
-    background-color: var(--cm-active-line-gutter);
 }
 
 /* ---- Log Viewer Token Styles ---- */
