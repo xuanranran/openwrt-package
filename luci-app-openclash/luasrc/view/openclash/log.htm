@@ -1,6 +1,6 @@
 <%+cbi/valueheader%>
 <body>
-    <div id="tab" class="cbi-section">
+    <div id="tab" class="cbi-section oc">
         <div id="tab-header">
             <ul class="cbi-tabmenu">
                 <li name="tab-header" class="cbi-tab"><a href="#"><%:OpenClash Log%></a></li>
@@ -866,11 +866,7 @@ function renderDebugView() {
     if (dl.parentNode && dl.parentNode.className.indexOf('oc') < 0) {
         dl.parentNode.classList.add('oc');
     }
-    if (typeof isDarkBackground === 'function' && isDarkBackground(document.body)) {
-        dl.parentNode.setAttribute('data-darkmode', 'true');
-    } else {
-        dl.parentNode.removeAttribute('data-darkmode');
-    }
+    ocUpdateTheme();
 }
 
 function copyDebugSource() {

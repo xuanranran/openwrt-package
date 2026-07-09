@@ -53,7 +53,7 @@ function isDarkBackground(element) {
  */
 function winOpen(url) {
 	var win = window.open(url);
-	if (win == null || typeof(win) == 'undefined') {
+	if (win == null) {
 		window.location.href = url;
 	}
 	return false;
@@ -74,19 +74,58 @@ window._cmWhenReady = function(cb) { cb(); };
 
 /**
  * Initialize CodeMirror theme observer and dark mode detection.
- * Safe to call multiple times — only runs once per page.
+ * First call: full setup (CM6 observer, initial theme, UI cleanup).
+ * Subsequent calls (LuCI XHR navigation): re-apply dark mode only.
  */
 function ocInitTheme() {
-	if (window._ocThemeInited) return;
+	if (window._ocThemeInited) {
+		ocUpdateTheme();
+		return;
+	}
 	window._ocThemeInited = true;
-	if (typeof CM6 !== 'undefined' && CM6.startThemeObserver) {
-		CM6.startThemeObserver();
+	// Defer to DOM ready: common.js loads in <head> before .oc elements exist.
+	// On XHR navigation readyState is already complete, so execute immediately.
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', function() {
+			ocUpdateTheme();
+			ocHideEmptyCbiElements();
+			ocCenterCbiActions();
+		});
+	} else {
+		ocUpdateTheme();
+		ocHideEmptyCbiElements();
+		ocCenterCbiActions();
 	}
-	if (typeof isDarkBackground === 'function' && isDarkBackground(document.body)) {
-		document.documentElement.setAttribute('data-darkmode', 'true');
+}
+
+/**
+ * Apply dark/light mode to all .oc containers and notify CM6 editors.
+ * Safe to call multiple times — used for runtime theme switching.
+ */
+function ocUpdateTheme() {
+	var isDark = isDarkBackground(document.body);
+	var ocEls = document.querySelectorAll('.oc');
+	for (var i = 0; i < ocEls.length; i++) {
+		if (isDark) {
+			ocEls[i].setAttribute('data-darkmode', 'true');
+		} else {
+			ocEls[i].removeAttribute('data-darkmode');
+		}
 	}
-	ocHideEmptyCbiElements();
-	ocCenterCbiActions();
+	// Apply CM6 editor themes
+	if (typeof CM6 !== 'undefined' && CM6.dispatchTheme) {
+		var editors = document.querySelectorAll('.cm-editor');
+		for (var j = 0; j < editors.length; j++) {
+			var view = editors[j].cmView && editors[j].cmView.view;
+			if (view) {
+				try { CM6.dispatchTheme(view, isDark); } catch(e) {}
+			}
+		}
+	}
+	// Swap highlight.js theme CSS
+	if (typeof CM6 !== 'undefined' && CM6.switchHljsTheme) {
+		CM6.switchHljsTheme(isDark);
+	}
 }
 
 /**
@@ -142,6 +181,7 @@ function ocRegisterEditorHotkeys() {
 					window._ocFullscreenActive = CM6.toggleFullscreen(target);
 				}
 			}
+			ocUpdateTheme();
 			return;
 		}
 
@@ -166,6 +206,9 @@ function ocRegisterEditorHotkeys() {
 				CM6.toggleFullscreen(document.getElementById('oc-fullscreen-active'));
 			}
 			window._ocFullscreenActive = false;
+			ocUpdateTheme();
 		}
 	}, true);
 }
+
+ocInitTheme();

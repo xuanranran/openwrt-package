@@ -13,8 +13,8 @@
                 <div class="config-editor-actions">
                     <button type="button" class="icon-btn" id="config-editor-layout" title="<%:Compare%>" style="display:none;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-                            <rect x="13" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <rect x="2" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <rect x="14" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>
                     </button>
                     <button type="button" class="icon-btn" id="config-editor-download" title="<%:Download%>">
@@ -111,7 +111,7 @@ var levelTranslations = {
 };
 
 var _ocIcons = {
-	SVG_COMPARE: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="13" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
+	SVG_COMPARE: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="14" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
 	SVG_RESTORE: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>'
 };
 
@@ -251,9 +251,6 @@ var ConfigEditor = {
 
     show: function(configFile) {
         var self = this;
-        if (typeof isDarkBackground === 'function' && isDarkBackground(document.body)) {
-            document.documentElement.setAttribute('data-darkmode', 'true');
-        }
         this.isOverwrite = false;
         this.currentViewMode = 'original';
         this.currentConfigFile = '';
@@ -400,8 +397,12 @@ var ConfigEditor = {
         this.isFullscreen = nextState;
         if (nextState) {
             target.classList.add('cm-fullscreen');
+            target.id = 'oc-fullscreen-active';
             target._fsOriginalParent = target.parentNode;
-            if (target.parentNode !== document.body) document.body.appendChild(target);
+            var oc = target.closest('.oc');
+            if (oc && target.parentNode !== oc) {
+                oc.appendChild(target);
+            }
             target.style.setProperty('position', 'fixed', 'important');
             target.style.setProperty('top', '0', 'important');
             target.style.setProperty('left', '0', 'important');
@@ -410,10 +411,10 @@ var ConfigEditor = {
             target.style.setProperty('width', '100vw', 'important');
             target.style.setProperty('height', '100vh', 'important');
             target.style.setProperty('z-index', '999999', 'important');
-            target.style.setProperty('background', 'var(--bg-light, #f5f5f5)', 'important');
         } else {
             target.classList.remove('cm-fullscreen');
-            if (target._fsOriginalParent && target._fsOriginalParent !== document.body) {
+            target.removeAttribute('id');
+            if (target._fsOriginalParent && target._fsOriginalParent !== target.parentNode) {
                 target._fsOriginalParent.appendChild(target);
             }
             target._fsOriginalParent = null;
@@ -427,6 +428,7 @@ var ConfigEditor = {
             target.style.zIndex = '';
             target.style.background = '';
         }
+        ocUpdateTheme();
     },
 
     toggleMergeDifferences: function() {
@@ -556,8 +558,8 @@ var ConfigEditor = {
             }
 
             var exts = [];
-            var isDark = (typeof isDarkBackground === 'function' && isDarkBackground(document.body));
-            var topSearch = (CM6 && typeof CM6.topSearchExtension === 'function') ? CM6.topSearchExtension() : null;
+            var isDark = isDarkBackground(document.body);
+            var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
             exts.push(CM6.themeExtension(isDark));
             if (topSearch) exts.push(topSearch);
 
@@ -707,9 +709,9 @@ var ConfigEditor = {
             container.innerHTML = '';
             if (self.editorInstance) self._destroyEditor();
 
-            var isDark = (typeof isDarkBackground === 'function' && isDarkBackground(document.body));
+            var isDark = isDarkBackground(document.body);
             var themeExt = CM6.themeExtension(isDark);
-            var topSearch = (CM6 && typeof CM6.topSearchExtension === 'function') ? CM6.topSearchExtension() : null;
+            var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
             var extA = [CM6.baseExtensions(), themeExt, CM6.placeholderExtension('<%:Edit original config...%>'), CM6.yaml(), CM6.yamlLinter(), CM6.lintGutter(), CM6.autocompletion({ override: [CM6.mihomoCompletion] }), CM6.indentUnit.of("  "), CM6.indentMarkerExtension()];
             var extB = [CM6.baseExtensions(), themeExt, CM6.placeholderExtension('<%:Runtime config (read only)%>'), CM6.yaml(), CM6.indentUnit.of("  "), CM6.indentMarkerExtension(), CM6.EditorState.readOnly.of(true)];
             var mergeDefaults = CM6.mergeDefaultConfig || {};
@@ -729,10 +731,10 @@ var ConfigEditor = {
                 },
                 parent: container,
                 diffConfig: mergeDefaults.diffConfig || { scanLimit: 5000 },
-                gutter: typeof mergeDefaults.gutter === 'boolean' ? mergeDefaults.gutter : true,
+                gutter: mergeDefaults.gutter !== false,
                 revertControls: mergeDefaults.revertControls || 'b-to-a',
                 highlightChanges: self.mergeShowDifferences,
-                collapseUnchanged: typeof mergeDefaults.collapseUnchanged !== 'undefined' ? mergeDefaults.collapseUnchanged : false
+                collapseUnchanged: mergeDefaults.collapseUnchanged || false
             });
 
             var leftView = self.editorInstance.a;
@@ -2534,7 +2536,7 @@ var ConfigEditor = {
         this.hideMergeView();
         this.hide();
 
-        if (window.OverwriteSubscribeManager && typeof window.OverwriteSubscribeManager.load === 'function') {
+        if (window.OverwriteSubscribeManager && window.OverwriteSubscribeManager.load) {
             window.OverwriteSubscribeManager.load(true);
         }
         try {
@@ -2842,6 +2844,5 @@ var ConfigEditor = {
 
 document.addEventListener('DOMContentLoaded', function() {
     ConfigEditor.init();
-    ocInitTheme();
 });
 </script>

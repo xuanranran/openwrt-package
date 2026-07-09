@@ -54,7 +54,7 @@
     --announcement-end: #1d4ed8;
     --announcement-icon-bg: rgba(255, 255, 255, 0.1);
     --overlay-bg: rgba(0, 0, 0, 0.5);
-    --editor-fullscreen-bg: #f5f5f5;
+    --editor-bg: #f5f5f5;
     --primary-a5: rgba(59, 130, 246, 0.05);
     --primary-a10: rgba(59, 130, 246, 0.1);
     --primary-a20: rgba(59, 130, 246, 0.2);
@@ -126,7 +126,7 @@
     --announcement-end: #3555bf;
     --announcement-icon-bg: rgba(255, 255, 255, 0.1);
     --overlay-bg: rgba(0, 0, 0, 0.5);
-    --editor-fullscreen-bg: #1f2937;
+    --editor-bg: #1f2937;
     --primary-a5: rgba(96, 165, 250, 0.05);
     --primary-a10: rgba(96, 165, 250, 0.1);
     --primary-a20: rgba(96, 165, 250, 0.2);
@@ -2880,31 +2880,21 @@
 
 /* ---- Merge editor toolbar (my_editor_div) ---- */
 .oc .oc-merge-editor-bar {
-    width: 100%;
-    border-collapse: collapse;
+    display: flex;
+    width: auto;
+    margin: 8px 16px;
     border-radius: var(--radius-sm);
     overflow: hidden;
-    background: var(--bg-white);
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
-.oc .oc-merge-editor-bar tr {
-    background: transparent;
-}
-
-.oc .oc-merge-editor-bar td {
-    padding: 8px 14px;
+.oc .oc-merge-editor-cell-desc {
+    flex: 1;
+    padding: 4px 8px;
     font-size: 12px;
     color: var(--text-secondary);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     text-align: center;
-}
-
-.oc .oc-merge-editor-cell-desc {
-    width: 50%;
-    text-align: center;
+    background: var(--bg-white);
 }
 
 .oc .oc-merge-config-name {
@@ -2924,19 +2914,19 @@
     font-size: 13px;
     color: var(--text-secondary);
     background: var(--bg-gray);
-    padding: 8px 16px;
+    padding: 2px 4px;
+    margin: 8px 16px;
     border-radius: var(--radius-sm);
-    margin-bottom: 6px;
     line-height: 1.5;
 }
 
 .oc[data-darkmode="true"] .oc-merge-editor-bar {
-    background: var(--bg-white);
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-.oc[data-darkmode="true"] .oc-merge-editor-bar td {
+.oc[data-darkmode="true"] .oc-merge-editor-cell-desc {
     color: var(--text-secondary);
+    background: var(--bg-white);
 }
 
 .oc[data-darkmode="true"] .oc-merge-config-name {
@@ -2973,7 +2963,12 @@
     overflow-wrap: break-word !important;
 }
 
-/* Modal editor override: smaller font (port from old .oc .config-editor-model .CodeMirror) */
+/* ---- Dark mode: override CM6 editor background via CSS variable ---- */
+.oc[data-darkmode="true"] .cm-editor {
+    background-color: var(--editor-bg) !important;
+}
+
+/* Modal editor override: smaller font */
 .oc .config-editor-model .cm-editor {
     font-size: 14px;
     line-height: 1.5;
@@ -2986,7 +2981,7 @@
     right: 0 !important; bottom: 0 !important;
     width: 100vw !important; height: 100vh !important;
     z-index: 999999 !important;
-    background: var(--editor-fullscreen-bg) !important;
+    background: var(--editor-bg, #f5f5f5) !important;
 }
 #oc-fullscreen-active.cm-editor > .cm-scroller {
     height: 100% !important;
@@ -2999,7 +2994,7 @@
     right: 0 !important; bottom: 0 !important;
     width: 100vw !important; height: 100vh !important;
     z-index: 999999 !important;
-    background: var(--editor-fullscreen-bg) !important;
+    background: var(--editor-bg, #f5f5f5) !important;
     overflow-y: auto !important;
 }
 
@@ -3134,10 +3129,6 @@
 
 .oc[data-darkmode="true"] #mode-icon path[stroke="#333"] {
     stroke: var(--text-primary, #fff);
-}
-
-.oc[data-darkmode="true"] {
-    background-color: var(--bg-light, #111827);
 }
 
 .oc[data-darkmode="true"] .myip-main-card {
@@ -4210,33 +4201,34 @@
 /* ==========================================================================
  * SECTION 8: debug.htm
  * ========================================================================== */
-:root[data-darkmode="true"] .diag-style {
+.oc[data-darkmode="true"] .diag-style {
     color: #ffffff;
     background-color: #404040;
 }
 
-:root[data-darkmode="true"] .diag-style select, .diag-style input {
+.oc[data-darkmode="true"] .diag-style select, .diag-style input {
     color: #ffffff;
     background-color: #404040;
 }
 
-:root[data-darkmode="true"] #diag-rc-output > pre {
+.oc[data-darkmode="true"] #diag-rc-output > pre {
     background-color: #404040;
     color: #ffffff;
 }
 
-:root[data-darkmode="true"] #dns-rc-output > pre {
+.oc[data-darkmode="true"] #dns-rc-output > pre {
     background-color: #404040;
     color: #ffffff;
 }
 
-:root[data-darkmode="true"] .diag-legend {
+.oc[data-darkmode="true"] .diag-legend {
     border-bottom-color: #555;
 }
 
 .diag-style {
     color: #000;
     background-color: #f5f5f5;
+    margin-top: 10px;
 }
 
 .diag-style select, .diag-style input {
@@ -4523,83 +4515,83 @@
     cursor: not-allowed;
 }
 
-:root[data-darkmode="true"] .sub_setting svg {
+.oc[data-darkmode="true"] .sub_setting svg {
     color: #e0e0e0;
 }
 
-:root[data-darkmode="true"] .text_show {
+.oc[data-darkmode="true"] .text_show {
     color: #e0e0e0;
     line-height: 1.2;
 }
 
-:root[data-darkmode="true"] .progress_bar_bg {
+.oc[data-darkmode="true"] .progress_bar_bg {
     border: 1px solid #666666;
     background-color: #333333;
 }
 
-:root[data-darkmode="true"] .progress_bar_high {
+.oc[data-darkmode="true"] .progress_bar_high {
     background-color: #5da05d;
 }
 
-:root[data-darkmode="true"] .progress_bar_medium {
+.oc[data-darkmode="true"] .progress_bar_medium {
     background-color: #cc8550;
 }
 
-:root[data-darkmode="true"] .progress_bar_low {
+.oc[data-darkmode="true"] .progress_bar_low {
     background-color: #cc6262;
 }
 
-:root[data-darkmode="true"] .sub-info-url-model {
+.oc[data-darkmode="true"] .sub-info-url-model {
     background: var(--bg-white, #1f2937);
     border-color: var(--border-light, #374151);
 }
 
-:root[data-darkmode="true"] .sub-info-url-header,
-:root[data-darkmode="true"] .sub-info-url-footer {
+.oc[data-darkmode="true"] .sub-info-url-header,
+.oc[data-darkmode="true"] .sub-info-url-footer {
     background: var(--bg-gray, #111827);
     border-color: var(--border-light, #374151);
 }
 
-:root[data-darkmode="true"] .sub-info-url-title {
+.oc[data-darkmode="true"] .sub-info-url-title {
     color: var(--text-primary, #f3f4f6);
 }
 
-:root[data-darkmode="true"] .sub-info-url-form-group label {
+.oc[data-darkmode="true"] .sub-info-url-form-group label {
     color: var(--text-primary, #f3f4f6);
 }
 
-:root[data-darkmode="true"] .sub-info-url-form-textarea {
+.oc[data-darkmode="true"] .sub-info-url-form-textarea {
     background: var(--bg-gray, #374151);
     border-color: var(--border-light, #4b5563);
     color: var(--text-primary, #f3f4f6);
 }
 
-:root[data-darkmode="true"] .sub-info-url-form-textarea:focus {
+.oc[data-darkmode="true"] .sub-info-url-form-textarea:focus {
     border-color: var(--primary-color, #60a5fa);
     box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.1);
 }
 
-:root[data-darkmode="true"] .sub-info-url-form-textarea::placeholder {
+.oc[data-darkmode="true"] .sub-info-url-form-textarea::placeholder {
     color: var(--text-secondary, #9ca3af);
 }
 
-:root[data-darkmode="true"] .sub-info-url-cancel-btn {
+.oc[data-darkmode="true"] .sub-info-url-cancel-btn {
     background: var(--bg-white, #374151);
     color: var(--text-secondary, #9ca3af);
     border-color: var(--border-light, #4b5563);
 }
 
-:root[data-darkmode="true"] .sub-info-url-cancel-btn:hover {
+.oc[data-darkmode="true"] .sub-info-url-cancel-btn:hover {
     background: var(--hover-bg, #4b5563);
     color: var(--text-primary, #f3f4f6);
 }
 
-:root[data-darkmode="true"] .sub-info-url-submit-btn {
+.oc[data-darkmode="true"] .sub-info-url-submit-btn {
     background: var(--primary-color, #3b82f6);
     border-color: var(--primary-color, #3b82f6);
 }
 
-:root[data-darkmode="true"] .sub-info-url-submit-btn:disabled {
+.oc[data-darkmode="true"] .sub-info-url-submit-btn:disabled {
     background: var(--bg-gray, #4b5563);
     color: var(--text-secondary, #9ca3af);
     border-color: var(--border-light, #374151);
@@ -4700,16 +4692,16 @@
 }
 
 /* Dark mode support */
-:root[data-darkmode="true"] .sub_provider_item {
+.oc[data-darkmode="true"] .sub_provider_item {
     background-color: #333333;
     border-color: #666666;
 }
 
-:root[data-darkmode="true"] .sub_provider_name {
+.oc[data-darkmode="true"] .sub_provider_name {
     color: #e0e0e0;
 }
 
-:root[data-darkmode="true"] .sub_provider_percent {
+.oc[data-darkmode="true"] .sub_provider_percent {
     color: #e0e0e0;
 }
 
@@ -4985,64 +4977,64 @@ ul {
     min-width: 0;
 }
 
-:root[data-darkmode=true] #tab-header {
+.oc[data-darkmode=true] #tab-header {
     background: #374151;
     border-bottom: 1px solid #374151;
 }
 
-:root[data-darkmode=true] #tab-header ul.cbi-tabmenu {
+.oc[data-darkmode=true] #tab-header ul.cbi-tabmenu {
     background: #374151;
 }
 
-:root[data-darkmode=true] #tab-header ul.cbi-tabmenu li {
+.oc[data-darkmode=true] #tab-header ul.cbi-tabmenu li {
     background: #1f2937;
     color: #a1a1aa;
     border-color: #374151;
 }
 
-:root[data-darkmode=true] #tab-header ul.cbi-tabmenu li.cbi-tab {
+.oc[data-darkmode=true] #tab-header ul.cbi-tabmenu li.cbi-tab {
     background: #2563eb;
     color: #fff;
 }
 
-:root[data-darkmode=true] #tab-header ul.cbi-tabmenu li.cbi-tab a {
+.oc[data-darkmode=true] #tab-header ul.cbi-tabmenu li.cbi-tab a {
     color: #fff !important;
 }
 
-:root[data-darkmode=true] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled {
+.oc[data-darkmode=true] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled {
     color: #1f2937;
     background: #1f2937;
     opacity: .7;
 }
 
-:root[data-darkmode=true] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled a {
+.oc[data-darkmode=true] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled a {
     color: #fff !important;
 }
 
-:root[data-darkmode=true] #tab-header ul.cbi-tabmenu li:not(.cbi-tab):hover,
-:root[data-darkmode=true] #tab-header ul.cbi-tabmenu li:not(.cbi-tab):focus {
+.oc[data-darkmode=true] #tab-header ul.cbi-tabmenu li:not(.cbi-tab):hover,
+.oc[data-darkmode=true] #tab-header ul.cbi-tabmenu li:not(.cbi-tab):focus {
     color: #3b82f6;
     border-color: #3b82f6;
     background: #22304a;
 }
 
-:root[data-darkmode=true] .radio-button {
+.oc[data-darkmode=true] .radio-button {
     background: #1f2937;
 }
 
-:root[data-darkmode=true] .radio-button label {
+.oc[data-darkmode=true] .radio-button label {
     background: #374151;
     color: #d1d5db;
     border-color: #4b5563;
 }
 
-:root[data-darkmode=true] .radio-button label:hover {
+.oc[data-darkmode=true] .radio-button label:hover {
     color: #60a5fa;
     border-color: #60a5fa;
     background: #1e3a5f;
 }
 
-:root[data-darkmode=true] .radio-button input[type=radio]:checked + label {
+.oc[data-darkmode=true] .radio-button input[type=radio]:checked + label {
     background: #2563eb;
     color: #fff;
     border-color: #2563eb;

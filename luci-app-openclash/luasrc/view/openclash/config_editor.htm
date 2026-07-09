@@ -27,7 +27,7 @@ ocRegisterEditorHotkeys();
 function editor(id, readOnly, wid, height) {
 	var isDark = isDarkBackground(document.body);
 	var exts = [CM6.baseExtensions(), CM6.themeExtension(isDark), CM6.placeholderExtension('<%:Enter YAML configuration...%>')];
-	var topSearch = (CM6 && typeof CM6.topSearchExtension === 'function') ? CM6.topSearchExtension() : null;
+	var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
 	if (topSearch) exts.push(topSearch);
 	exts.push(CM6.yaml());
 	exts.push(CM6.yamlLinter());
@@ -43,6 +43,7 @@ function editor(id, readOnly, wid, height) {
 	id.parentNode.insertBefore(view.dom, id.nextSibling);
 	id.style.display = 'none';
 	id.parentNode.classList.add('oc');
+	ocUpdateTheme();
 	if (wid && height) {
 		view.dom.style.width = wid;
 		view.dom.style.height = height;
@@ -58,7 +59,7 @@ function editor(id, readOnly, wid, height) {
 function shell_editor(id, readOnly, wid, height) {
 	var isDark = isDarkBackground(document.body);
 	var exts = [CM6.baseExtensions(), CM6.themeExtension(isDark), CM6.placeholderExtension('<%:Enter shell script...%>')];
-	var topSearch = (CM6 && typeof CM6.topSearchExtension === 'function') ? CM6.topSearchExtension() : null;
+	var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
 	if (topSearch) exts.push(topSearch);
 	exts.push(CM6.StreamLanguage.define(CM6.shell));
 	if (readOnly) exts.push(CM6.EditorState.readOnly.of(true));
@@ -69,6 +70,7 @@ function shell_editor(id, readOnly, wid, height) {
 	id.parentNode.insertBefore(view.dom, id.nextSibling);
 	id.style.display = 'none';
 	id.parentNode.classList.add('oc');
+	ocUpdateTheme();
 	if (wid && height) {
 		view.dom.style.width = wid;
 		view.dom.style.height = height;
@@ -84,7 +86,7 @@ function shell_editor(id, readOnly, wid, height) {
 function other_editor(id, readOnly, wid, height) {
 	var isDark = isDarkBackground(document.body);
 	var exts = [CM6.baseExtensions(), CM6.themeExtension(isDark), CM6.placeholderExtension('<%:Enter configuration...%>')];
-	var topSearch = (CM6 && typeof CM6.topSearchExtension === 'function') ? CM6.topSearchExtension() : null;
+	var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
 	if (topSearch) exts.push(topSearch);
 	exts.push(CM6.StreamLanguage.define(CM6.properties));
 	if (readOnly) exts.push(CM6.EditorState.readOnly.of(true));
@@ -95,6 +97,7 @@ function other_editor(id, readOnly, wid, height) {
 	id.parentNode.insertBefore(view.dom, id.nextSibling);
 	id.style.display = 'none';
 	id.parentNode.classList.add('oc');
+	ocUpdateTheme();
 	if (wid && height) {
 		view.dom.style.width = wid;
 		view.dom.style.height = height;
@@ -108,9 +111,9 @@ function other_editor(id, readOnly, wid, height) {
 }
 
 function log_editor(id, name, readOnly, wid, height) {
-	var isDark = (typeof isDarkBackground === 'function' && isDarkBackground(document.body));
+	var isDark = isDarkBackground(document.body);
 	var exts = [CM6.lineNumbers(), CM6.EditorView.lineWrapping, CM6.EditorState.readOnly.of(true), CM6.themeExtension(isDark)];
-	var topSearch = (CM6 && typeof CM6.topSearchExtension === 'function') ? CM6.topSearchExtension() : null;
+	var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
 	if (topSearch) exts.push(topSearch);
 	exts.push(CM6.highlightActiveLine());
 	exts.push(CM6.drawSelection());
@@ -125,10 +128,7 @@ function log_editor(id, name, readOnly, wid, height) {
 	id.parentNode.insertBefore(view.dom, id.nextSibling);
 	id.style.display = 'none';
 	id.parentNode.classList.add('oc');
-	if (isDarkBackground(document.body)) {
-		id.parentNode.setAttribute('data-darkmode', 'true');
-		view.dom.setAttribute('data-darkmode', 'true');
-	}
+	ocUpdateTheme();
 	window['editor_' + name] = view;
 	if (wid && height) {
 		view.dom.style.width = wid;
@@ -153,14 +153,11 @@ function log_editor(id, name, readOnly, wid, height) {
 	view.somethingSelected = function() { return !view.state.selection.main.empty; };
 	view.setSelection = function(f, t) { var lf = view.state.doc.line(f.line + 1), lt = view.state.doc.line(t.line + 1); view.dispatch({ selection: { anchor: lf.from + f.ch, head: lt.from + t.ch } }); };
 	view.scrollIntoView = function(p, m) { if (p && p.line !== undefined) { var ln = view.state.doc.line(p.line + 1); view.dispatch({ selection: { anchor: ln.from + (p.ch || 0) }, scrollIntoView: true }); } else { view.dispatch({ selection: { anchor: view.state.selection.main.head }, scrollIntoView: true }); } };
-	if (typeof isDarkBackground === 'function' && isDarkBackground(document.body)) {
-		document.documentElement.setAttribute('data-darkmode', 'true');
-	}
 	return view;
 }
 
 function markdown_editor(id, name, readOnly, wid, height) {
-	var isDark = (typeof isDarkBackground === 'function' && isDarkBackground(document.body));
+	var isDark = isDarkBackground(document.body);
 	var exts = [CM6.lineNumbers(), CM6.EditorView.lineWrapping, CM6.themeExtension(isDark), CM6.markdown()];
 	if (readOnly) exts.push(CM6.EditorState.readOnly.of(true));
 
@@ -170,6 +167,7 @@ function markdown_editor(id, name, readOnly, wid, height) {
 	id.parentNode.insertBefore(view.dom, id.nextSibling);
 	id.style.display = 'none';
 	id.parentNode.classList.add('oc');
+	ocUpdateTheme();
 	window['editor_' + name] = view;
 	if (wid && height) {
 		view.dom.style.width = wid;
@@ -185,7 +183,6 @@ function markdown_editor(id, name, readOnly, wid, height) {
 var _cmWhenReady = window._cmWhenReady;
 
 (function() {
-ocInitTheme();
 var core_log = document.getElementById("core_log");
 var oc_log = document.getElementById("cbid.openclash.config.clog");
 if (oc_log) { log_editor(oc_log, 'oc', true, '100%', '540px'); }

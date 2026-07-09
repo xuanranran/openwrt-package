@@ -907,29 +907,14 @@ function toggleFullscreen(dom) {
 }
 
 // ============================================================
-// Theme observer — watch data-darkmode on <html> for all CM6 editors
+// Theme detection — reads localStorage then falls back to system preference
 // ============================================================
-var _themeObserverInstalled = false;
 
-function startThemeObserver() {
-    if (_themeObserverInstalled || typeof MutationObserver === 'undefined') return;
-    _themeObserverInstalled = true;
-    var observer = new MutationObserver(function() {
-        var theme = localStorage.getItem('oc-theme') || 'auto';
-        var isDark;
-        if (theme === 'dark') isDark = true;
-        else if (theme === 'light') isDark = false;
-        else isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        switchHljsTheme(isDark);
-        var editors = document.querySelectorAll('.cm-editor');
-        for (var i = 0; i < editors.length; i++) {
-            var view = editors[i].cmView && editors[i].cmView.view;
-            if (view) {
-                try { dispatchTheme(view, isDark); } catch(e) {}
-            }
-        }
-    });
-    observer.observe(document.body, { attributes: true, attributeFilter: ['data-darkmode'], subtree: true });
+function _isDarkMode() {
+    var theme = localStorage.getItem('oc-theme') || 'auto';
+    if (theme === 'dark') return true;
+    if (theme === 'light') return false;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
 // ============================================================
@@ -940,11 +925,7 @@ var _hljsCSSInjected = false
 function injectHljsCSS() {
     if (_hljsCSSInjected) return
     _hljsCSSInjected = true
-    var theme = localStorage.getItem('oc-theme') || 'auto'
-    var isDark
-    if (theme === 'dark') isDark = true
-    else if (theme === 'light') isDark = false
-    else isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    var isDark = _isDarkMode()
     var style = document.createElement("style")
     style.id = "hljs-theme"
     style.textContent = isDark ? githubDarkCSS : githubLightCSS
@@ -1003,7 +984,7 @@ export {
     baseExtensions, placeholderExtension, indentMarkerExtension,
     topSearchExtension, mergeDefaultConfig,
     themeExtension, dispatchTheme,
-    startThemeObserver,
+    switchHljsTheme,
     renderMarkdown,
     getActiveEditor, toggleFullscreen
 }

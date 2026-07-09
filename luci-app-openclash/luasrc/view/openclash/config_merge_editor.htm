@@ -18,12 +18,10 @@
 <script src="/luci-static/resources/openclash/js/cm6.min.js?v=<%=plugin_version%>"></script>
 <script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
 
-<table id="my_editor_div" class="oc-merge-editor-bar">
-<tr>
-	<td class="oc-merge-editor-cell-desc" id="my_editor_desc_use"><%:Modify Your Config file:%> <b class="oc-merge-config-name"><%=conf_name%></b> <%:Here, Except The Settings That Were Taken Over%></td>
-	<td class="oc-merge-editor-cell-desc" id="my_editor_desc_def"><%=def_desc%></td>
-</tr>
-</table>
+<div id="my_editor_div" class="oc-merge-editor-bar">
+	<div class="oc-merge-editor-cell-desc" id="my_editor_desc_use"><%:Modify Your Config file:%> <b class="oc-merge-config-name"><%=conf_name%></b> <%:Here, Except The Settings That Were Taken Over%></div>
+	<div class="oc-merge-editor-cell-desc" id="my_editor_desc_def"><%=def_desc%></div>
+</div>
 
 <button type="button" class="oc-usage-help-float" id="oc-merge-toggle-btn" title="<%:Compare%>">
 	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -42,22 +40,15 @@ var _ocIcons = {
 
 function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid, height) {
 	var descr = document.getElementById("my_editor_div");
-	if (document.documentElement.hasAttribute('data-darkmode')) {
-		descr.setAttribute('data-darkmode', 'true');
-		if (descr.parentNode) descr.parentNode.setAttribute('data-darkmode', 'true');
-	}
 	var sectionTable = target.parentNode.parentNode.parentNode.parentNode.parentNode;
 	if (sectionTable && sectionTable.parentNode) {
 		var fieldset = sectionTable.parentNode.parentNode;
 		if (fieldset) {
 			fieldset.classList.add('oc');
-			if (document.documentElement.hasAttribute('data-darkmode')) {
-				fieldset.setAttribute('data-darkmode', 'true');
-			}
 		}
 		sectionTable.parentNode.insertBefore(descr, sectionTable);
 	}
-	descr.style.display = "inline-table";
+	descr.style.display = "flex";
 
 	var editorCell = target.parentNode;
 	editorCell.style.position = "relative";
@@ -119,9 +110,8 @@ function _createSingleMergeEditor(content, readOnly) {
 	}
 
 	var isDark = isDarkBackground(document.body);
-	if (isDark) state.target.setAttribute('data-darkmode', 'true');
 	var exts = [CM6.baseExtensions(), CM6.themeExtension(isDark), CM6.placeholderExtension('<%:Enter YAML configuration...%>')];
-	var topSearch = (CM6 && typeof CM6.topSearchExtension === 'function') ? CM6.topSearchExtension() : null;
+	var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
 	if (topSearch) exts.push(topSearch);
 	exts.push(CM6.yaml());
 	exts.push(CM6.yamlLinter());
@@ -165,8 +155,7 @@ function _renderMergeView() {
 	}
 
 	var isDark = isDarkBackground(document.body);
-	if (isDark) state.target.setAttribute('data-darkmode', 'true');
-	var topSearch = (CM6 && typeof CM6.topSearchExtension === 'function') ? CM6.topSearchExtension() : null;
+	var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
 	var extA = [CM6.baseExtensions(), CM6.themeExtension(isDark), CM6.placeholderExtension('<%:Edit original config...%>'), CM6.yaml(), CM6.yamlLinter(), CM6.lintGutter(), CM6.autocompletion({ override: [CM6.mihomoCompletion] }), CM6.indentUnit.of("  "), CM6.indentMarkerExtension()];
 	var extB = [CM6.baseExtensions(), CM6.themeExtension(isDark), CM6.placeholderExtension('<%:Runtime config (read only)%>'), CM6.yaml(), CM6.indentUnit.of("  "), CM6.indentMarkerExtension(), CM6.EditorState.readOnly.of(true)];
 	var mergeDefaults = CM6.mergeDefaultConfig || {};
@@ -180,10 +169,10 @@ function _renderMergeView() {
 		b: { doc: state.defContent || '', extensions: extB },
 		parent: state.target,
 		diffConfig: mergeDefaults.diffConfig || { scanLimit: 5000 },
-		gutter: typeof mergeDefaults.gutter === 'boolean' ? mergeDefaults.gutter : true,
+		gutter: mergeDefaults.gutter !== false,
 		revertControls: mergeDefaults.revertControls || 'b-to-a',
 		highlightChanges: window._ocMergeShowDifferences,
-		collapseUnchanged: typeof mergeDefaults.collapseUnchanged !== 'undefined' ? mergeDefaults.collapseUnchanged : false
+		collapseUnchanged: mergeDefaults.collapseUnchanged || false
 	});
 
 	var origDispatchA = mv.a.dispatch;
@@ -266,16 +255,16 @@ function _updateMergeDescCells(isMerge) {
 	var cellUse = document.getElementById('my_editor_desc_use');
 	var cellDef = document.getElementById('my_editor_desc_def');
 	if (isMerge) {
-		if (cellUse) { cellUse.style.display = ''; cellUse.style.width = '50%'; cellUse.colSpan = 1; }
-		if (cellDef) { cellDef.style.display = ''; cellDef.style.width = '50%'; cellDef.colSpan = 1; }
+		if (cellUse) { cellUse.style.display = ''; cellUse.style.flex = '1'; }
+		if (cellDef) { cellDef.style.display = ''; cellDef.style.flex = '1'; }
 	} else {
 		var state = window._mergeEditorState;
 		if (state && state.showUse) {
-			if (cellUse) { cellUse.style.display = ''; cellUse.style.width = '100%'; cellUse.colSpan = 2; }
-			if (cellDef) { cellDef.style.display = 'none'; cellDef.colSpan = 1; }
+			if (cellUse) { cellUse.style.display = ''; cellUse.style.flex = '1'; }
+			if (cellDef) { cellDef.style.display = 'none'; cellDef.style.flex = ''; }
 		} else {
-			if (cellUse) { cellUse.style.display = 'none'; cellUse.colSpan = 1; }
-			if (cellDef) { cellDef.style.display = ''; cellDef.style.width = '100%'; cellDef.colSpan = 2; }
+			if (cellUse) { cellUse.style.display = 'none'; cellUse.style.flex = ''; }
+			if (cellDef) { cellDef.style.display = ''; cellDef.style.flex = '1'; }
 		}
 	}
 }
@@ -283,7 +272,6 @@ function _updateMergeDescCells(isMerge) {
 var _cmWhenReady = window._cmWhenReady;
 
 (function() {
-ocInitTheme();
 
 var myEditor_use = document.getElementById("cbid.table.1.user");
 var myEditor_def = document.getElementById("cbid.table.1.default");
@@ -302,6 +290,7 @@ if (myEditor_use && myEditor_def) {
 	myEditor_div_use.parentNode.style.width = "100%";
 
 	config_merge_editor(myEditor_use, myEditor_def, myEditor_div_use, myEditor_div_def, true, false, 'auto', '700px');
+	ocUpdateTheme();
 }
 })();
 //]]>
