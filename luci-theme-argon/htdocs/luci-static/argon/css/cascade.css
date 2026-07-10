@@ -4224,32 +4224,28 @@ pre.command-output {
   color: #EEFFFF;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled,
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id^="tab-header-openclash-"] ul li.cbi-tab-disabled {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled,
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] [id^="tab-header-openclash-"] ul li.cbi-tab-disabled {
   color: #1f2937 !important;
   background: #000000 !important;
   opacity: 0.7 !important;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #tab-header {
   background: #242424;
   border-bottom: 1px solid #242424;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #tab-header ul.cbi-tabmenu {
   background: #242424;
 }
 
-[data-page^="admin-services-openclash"] element.style {
-  width: 0px;
-}
-
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .diag-style {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .diag-style {
   background-color: #242424;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #diag-rc-output>pre,
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #dns-rc-output>pre {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #diag-rc-output>pre,
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #dns-rc-output>pre {
   background-color: #000000;
   color: #ffffff;
 }
@@ -4259,7 +4255,7 @@ pre.command-output {
   color: #EEFFFF;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .cm-s-log.CodeMirror {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .cm-s-log.CodeMirror {
   background-color: #000000;
 }
 
@@ -4296,26 +4292,26 @@ pre.command-output {
   font-weight: 500 !important;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .radio-button {
   background: #242424;
   box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.15);
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] .radio-button label {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .radio-button label {
   background: #000000;
   box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.15);
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] #tab-header ul.cbi-tabmenu,
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id*="tab-header-openclash"] {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #tab-header ul.cbi-tabmenu,
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] [id*="tab-header-openclash"] {
   font-family: 'Google Sans' !important;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] :is([id^="tab-header-openclash-"], [id^="tab-header-openclash-"] ul) {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] :is([id^="tab-header-openclash-"], [id^="tab-header-openclash-"] ul) {
   background: #242424 !important;
 }
 
-:root[data-darkmode="true"] [data-page^="admin-services-openclash"] [id^="tab-header-openclash-"] {
+[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] [id^="tab-header-openclash-"] {
   border-bottom: 1px solid #242424 !important;
 }
 
@@ -4331,17 +4327,8 @@ strong,
 [data-page^="admin-services-openclash"] [class^="info-cell"],
 [data-page^="admin-services-openclash"] [class^="info-cell"] *,
 [data-page^="admin-services-openclash"] .settings-cell,
-[data-page^="admin-services-openclash"] .settings-cell * [data-page^="admin-services-openclash"] .sub_div {
+[data-page^="admin-services-openclash"] .sub_div {
   font-family: 'Google Sans', 'Twemoji Mozilla' !important;
-}
-
-[data-page^="admin-services-openclash"] .btn-group {
-  display: flex;
-  width: 100%;
-  margin: 0px auto;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-around;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -4385,6 +4372,18 @@ strong,
 [data-page^="admin-services-openclash"] .status-item .value b {
   font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   font-weight: 700;
+}
+
+/* OpenClash unified font */
+[data-page^="admin-services-openclash"] .oc,
+[data-page^="admin-services-openclash"] .oc * {
+  font-family: 'Twemoji Country Flags', "Twemoji Mozilla", Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Google Sans" !important;
+}
+
+/* CodeMirror 6 keeps its own font declaration, so override it globally too. */
+[data-page^="admin-services-openclash"] .oc .cm-scroller,
+[data-page^="admin-services-openclash"] .oc .cm-content {
+  font-family: 'Twemoji Country Flags', "Twemoji Mozilla", Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Google Sans" !important;
 }
 
 /* IE hacks */
@@ -5370,6 +5369,300 @@ div#add_link_div {
 }
 
 /* luci-app-openclash */
+/* OpenClash visual overrides: dark mode only. */
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-editor {
+  background: #000 !important;
+  color: #9ec4d5 !important;
+  border-radius: 0 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-scroller {
+  background: #000 !important;
+  font-family: 'Twemoji Country Flags', "Twemoji Mozilla", Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Google Sans" !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-content {
+  color: #9ec4d5 !important;
+  caret-color: #fff !important;
+  font-family: 'Twemoji Country Flags', "Twemoji Mozilla", Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Google Sans" !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-gutters {
+  background: #263238 !important;
+  color: #d0d8e0 !important;
+  border: 0 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-lineNumbers .cm-gutterElement {
+  color: #d0d8e0 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-activeLine,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-activeLineGutter {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-activeLine.cm-line {
+  color: #fff !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-activeLineGutter {
+  color: #fff !important;
+  background: #42545d !important;
+  font-weight: 700 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-comment {
+  color: #789aaa !important;
+  font-style: normal !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-keyword,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-typeName {
+  color: #f0a070 !important;
+  font-weight: 700 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-string,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-number,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-atom,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-bool {
+  color: #9ec4d5 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-operator,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-punctuation {
+  color: #d0d8e0 !important;
+}
+
+/* OpenClash log tabs: bordered segmented buttons */
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header {
+  margin: 0 !important;
+  padding: 16px 20px !important;
+  background: #242424 !important;
+  border: 1px solid #4a4a4a !important;
+  border-radius: 12px !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu {
+  display: flex !important;
+  gap: 12px !important;
+  align-items: stretch;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu > li {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #050505 !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu > li.cbi-tab {
+  background: #2864e6 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu > li > a {
+  display: block;
+  padding: 11px 14px !important;
+  color: #c8cdd5 !important;
+  text-align: center;
+  border: 0 !important;
+  border-radius: 8px !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu > li.cbi-tab > a {
+  color: #fff !important;
+}
+
+/* OpenClash log level buttons */
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-content .radio-button {
+  display: flex;
+  width: auto;
+  max-width: none;
+  margin: 16px auto 0;
+  padding: 0;
+  gap: 16px;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-content .radio-button label {
+  min-width: 60px;
+  padding: 6px 18px;
+  color: #d0d8e0 !important;
+  background: #000 !important;
+  border: 1px solid #536273 !important;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-content .radio-button label:hover {
+  color: #fff !important;
+  border-color: #2864e6 !important;
+  background: #111 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-content .radio-button input[type="radio"]:checked + label {
+  color: #fff !important;
+  background: #2864e6 !important;
+  border-color: #2864e6 !important;
+}
+
+/* OpenClash configuration mode buttons */
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .config-editor-title.config-editor-header {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 16px !important;
+  color: #d0d8e0 !important;
+  background: #242424 !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 8px !important;
+  box-sizing: border-box;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .config-editor-title.config-editor-header #editTitle {
+  color: #d0d8e0 !important;
+  font-weight: 600;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .config-editor-title.config-editor-header .config-file-name {
+  margin-left: 8px;
+  padding: 7px 14px;
+  color: #6cb6ff !important;
+  background: #304b75 !important;
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cbi-section .config-editor-title.config-editor-header {
+  justify-content: center;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cbi-section .config-editor-title.config-editor-header #editTitle {
+  display: inline !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cbi-section .config-editor-title.config-editor-header .config-file-name {
+  position: static !important;
+  transform: none !important;
+  margin-left: 8px;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs {
+  padding: 12px !important;
+  background: #242424 !important;
+  border-radius: 8px !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tabs {
+  display: flex;
+  width: 100%;
+  gap: 16px;
+  padding: 0;
+  background: transparent !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tab {
+  flex: 1;
+  padding: 12px 20px;
+  color: #d0d8e0 !important;
+  background: #000 !important;
+  border: 1px solid #536273 !important;
+  border-radius: 6px !important;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tab:hover {
+  color: #fff !important;
+  background: #111 !important;
+  border-color: #2864e6 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tab.active {
+  color: #fff !important;
+  background: #2864e6 !important;
+  border-color: #2864e6 !important;
+  box-shadow: none !important;
+}
+
+/* OpenClash internal section tabs */
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] {
+  padding: 12px !important;
+  background: #242424 !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul {
+  display: flex !important;
+  gap: 12px !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul > li {
+  flex: 1 1 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #000 !important;
+  border: 1px solid #536273 !important;
+  border-radius: 6px !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul > li.cbi-tab {
+  background: #2864e6 !important;
+  border-color: #2864e6 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul > li > a {
+  display: block;
+  padding: 10px 14px !important;
+  color: #d0d8e0 !important;
+  text-align: center;
+  border: 0 !important;
+  border-radius: 6px !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul > li.cbi-tab > a {
+  color: #fff !important;
+}
+
+/* Let OpenClash's native theme control these two built-in editors. */
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-editor,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-editor {
+  background: #000 !important;
+  color: #9aa3af !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-scroller,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-scroller {
+  background: #000 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-gutters,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-gutters {
+  background: #263238 !important;
+  color: #9aa3af !important;
+  border: 0 !important;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-scroller::-webkit-scrollbar-track,
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-scroller::-webkit-scrollbar-track {
+  background: #263238 !important;
+}
+
+
 #tab-header-openclash-groups,
 #tab-header-openclash-proxy-provider,
 #tab-header-openclash-servers,

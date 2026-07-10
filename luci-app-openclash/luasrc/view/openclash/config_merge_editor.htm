@@ -6,7 +6,7 @@
 <script src="/luci-static/resources/openclash/js/cm6.min.js?v=<%=plugin_version%>"></script>
 <script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
 
-<div id="my_editor_div" style="display:flex;margin:8px 8px;">
+<div id="my_editor_div" style="display:flex;">
 	<div id="config-mode-tabs" style="display:flex;width:100%;">
 		<div class="mode-tabs">
 			<button type="button" class="mode-tab active" id="tab-original-config">
@@ -85,7 +85,7 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 		helpEl.style.display = 'inline';
 		var footer = document.createElement('div');
 		footer.className = 'config-editor-footer';
-		footer.style.cssText = 'margin:8px 16px;border-radius:var(--radius-sm);';
+		footer.style.cssText = 'border-radius:var(--radius-sm);margin: 8px;';
 		var statusDiv = document.createElement('div');
 		statusDiv.className = 'config-editor-status';
 		var mergeModeLabel = document.createElement('span');
@@ -98,14 +98,14 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 		helpDiv.appendChild(helpEl);
 		footer.appendChild(statusDiv);
 		footer.appendChild(helpDiv);
-		sectionTable.parentNode.appendChild(footer);
+		sectionTable.parentNode.insertBefore(footer, sectionTable.nextSibling);
 		_updateMergeHelpText(false);
 	}
 
 	var sectionDescr = sectionTable.parentNode.querySelector('.cbi-section-descr');
 	if (sectionDescr) {
 		sectionDescr.classList.add('config-editor-header', 'config-editor-title');
-		sectionDescr.style.cssText = sectionDescr.style.cssText + ';display:flex !important;align-items:center;gap:6px;padding:10px 16px;min-height:40px;cursor:default;user-select:text;';
+		sectionDescr.style.cssText = sectionDescr.style.cssText + ';display:flex !important;align-items:center;gap:6px;padding:10px 10px;min-height:50px;cursor:default;user-select:text;margin-bottom: unset;';
 		var text = sectionDescr.textContent.trim();
 		var idx = text.indexOf(':');
 		if (idx > 0) {
@@ -114,6 +114,7 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 			sectionDescr.innerHTML = '<span id="editTitle">' + label + '</span> ' +
 				'<span id="config-file-name" class="config-file-name">' + fname + '</span>';
 		}
+		descr.parentNode.insertBefore(sectionDescr, descr);
 	}
 
 	target2.parentNode.style.display = "none";

@@ -227,7 +227,6 @@ function ocUpdateTheme() {
 			ocEls[i].removeAttribute('data-darkmode');
 		}
 	}
-	// Apply CM6 editor themes
 	if (typeof CM6 !== 'undefined' && CM6.dispatchTheme) {
 		var editors = document.querySelectorAll('.cm-editor');
 		for (var j = 0; j < editors.length; j++) {
@@ -236,6 +235,9 @@ function ocUpdateTheme() {
 				try { CM6.dispatchTheme(view, isDark); } catch(e) {}
 			}
 		}
+	}
+	if (typeof CM6 !== 'undefined' && CM6.mirrorThemeScrollbar) {
+		try { CM6.mirrorThemeScrollbar(); } catch(e) {}
 	}
 	if (typeof CM6 !== 'undefined' && CM6.switchHljsTheme) {
 		CM6.switchHljsTheme(isDark);
@@ -248,6 +250,7 @@ function ocHideEmptyCbiElements() {
 		if (emptyEls[i].textContent.trim() === '') { emptyEls[i].style.display = 'none'; }
 	}
 }
+
 function ocCenterCbiActions() {
 	var ids = ['Commit', 'Apply', 'Create', 'Back', 'Load_Config',
 		'Delete_Unused_Servers', 'Delete_Servers', 'Delete_Proxy_Provider', 'Delete_Groups',

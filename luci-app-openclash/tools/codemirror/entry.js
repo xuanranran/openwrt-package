@@ -901,44 +901,69 @@ const mergeDefaultConfig = {
 
 // ============================================================
 // Merge scrollbar mirror — clones .cm-scroller scrollbar rules from
-// the active CM6 theme onto .cm-mergeView so the merge view
-// scrollbar matches the single-editor scrollbar exactly.
-// Also injects .cm-merge-revert button colours (theme-independent).
+// the active CM6 theme onto .cm-mergeView and #debug-rendered so
+// that all scrollbars share the same theme-aware appearance.
+// Also injects .cm-merge-revert button colours.
 // ============================================================
 function mirrorThemeScrollbar() {
     var styles = document.querySelectorAll('style');
-    var mirrorCSS = '';
     var themeStyle = null;
+    var themeText = null;
 
     for (var i = 0; i < styles.length; i++) {
         var text = styles[i].textContent || '';
         if (text.indexOf('.cm-scroller::-webkit-scrollbar') === -1) continue;
         themeStyle = styles[i];
-
-        var parts = [], m;
-
-        // Webkit pseudo-element rules:  ancestor .cm-scroller::-webkit-scrollbar...{body}
-        var reWebkit = /([^{}]*)\.cm-scroller(::-webkit-scrollbar[^{]*)\{([^}]*)\}/gi;
-        while ((m = reWebkit.exec(text)) !== null) {
-            parts.push('.cm-mergeView' + m[2] + '{' + m[3] + '}');
-        }
-
-        // Firefox scrollbar-width / scrollbar-color rules:  ancestor .cm-scroller{body}
-        var reFF = /([^{}]*)\.cm-scroller\{([^}]*scrollbar-(?:width|color)[^}]*)\}/gi;
-        while ((m = reFF.exec(text)) !== null) {
-            var body = m[2];
-            var sw = body.match(/scrollbar-width\s*:\s*[^;]+;?/);
-            var sc = body.match(/scrollbar-color\s*:\s*[^;]+;?/);
-            if (sw || sc) {
-                parts.push('.cm-mergeView{' + (sw ? sw[0] : '') + (sc ? sc[0] : '') + '}');
-            }
-        }
-
-        mirrorCSS = parts.join('');
+        themeText = text;
         break;
     }
 
-    if (!themeStyle || !mirrorCSS) return;
+    var editorEl = document.querySelector('.cm-editor');
+    var contentEl = editorEl ? editorEl.querySelector('.cm-content') : null;
+    var cs = contentEl ? getComputedStyle(contentEl) : null;
+    var txt = cs ? cs.color : null;
+    var rgb = txt ? txt.match(/[\d.]+/g) : null;
+    var r, g, b;
+    if (rgb && rgb.length >= 3) { r = rgb[0]; g = rgb[1]; b = rgb[2]; }
+
+    if (r) {
+        var thumbColor = 'rgba(' + r + ',' + g + ',' + b + ',0.60)';
+        var thumbHover = 'rgba(' + r + ',' + g + ',' + b + ',0.70)';
+    } else {
+        var thumbColor = _isDarkMode() ? 'rgba(255,255,255,0.60)' : 'rgba(0,0,0,0.60)';
+        var thumbHover  = _isDarkMode() ? 'rgba(255,255,255,0.70)' : 'rgba(0,0,0,0.70)';
+    }
+
+    if (!themeText) return;
+
+    var parts = [], m;
+    var reWebkit = /([^{}]*)\.cm-scroller(::-webkit-scrollbar[^{]*)\{([^}]*)\}/gi;
+    while ((m = reWebkit.exec(themeText)) !== null) {
+        var body = m[3].replace(/;/g, ' !important;');
+        parts.push('.cm-mergeView' + m[2] + '{' + m[3] + '}');
+        parts.push('#debug-rendered' + m[2] + '{' + body + '}');
+        parts.push('#debug-rendered pre' + m[2] + '{' + body + '}');
+    }
+    // Clone Firefox rules
+    var reFF = /([^{}]*)\.cm-scroller\{([^}]*scrollbar-(?:width|color)[^}]*)\}/gi;
+    while ((m = reFF.exec(themeText)) !== null) {
+        var body = m[2];
+        var sw = body.match(/scrollbar-width\s*:\s*[^;]+;?/);
+        var sc = body.match(/scrollbar-color\s*:\s*[^;]+;?/);
+        if (sw || sc) {
+            var ffRule = (sw ? sw[0] : '') + (sc ? sc[0] : '');
+            parts.push('.cm-mergeView{' + ffRule + '}');
+            parts.push('#debug-rendered{' + ffRule + '}');
+            parts.push('#debug-rendered pre{' + ffRule + '}');
+        }
+    }
+
+    var gutterBg = r ? 'rgba(' + r + ',' + g + ',' + b + ',0.06)' : 'rgba(175,184,193,0.06)';
+    parts.push(
+        '.cm-merge-revert{background:' + gutterBg + '}' +
+        '.cm-merge-revert button{color:' + (r ? 'rgba(' + r + ',' + g + ',' + b + ',0.5)' : '#656d76') + '}' +
+        '.cm-merge-revert button:hover{color:' + (txt || '#1f2328') + ';background:' + (r ? 'rgba(' + r + ',' + g + ',' + b + ',0.12)' : 'rgba(175,184,193,0.2)') + '}'
+    );
 
     var marker = '/*oc-merge-mirror*/';
     var idx = themeStyle.textContent.indexOf(marker);
@@ -946,29 +971,19 @@ function mirrorThemeScrollbar() {
         themeStyle.textContent = themeStyle.textContent.substring(0, idx);
     }
 
-    // 2. Revert button styles
-    var editorEl = document.querySelector('.cm-editor');
-    var contentEl = editorEl ? editorEl.querySelector('.cm-content') : null;
-    var cs = contentEl ? getComputedStyle(contentEl) : null;
-    var txt = cs ? cs.color : null;
-    var rgb = txt ? txt.match(/[\d.]+/g) : null;
-    var editorCS = editorEl ? getComputedStyle(editorEl) : null;
-    var bg = editorCS ? editorCS.backgroundColor : null;
-    var revertCSS;
-    if (rgb && rgb.length >= 3) {
-        var r = rgb[0], g = rgb[1], b = rgb[2];
-        var gutterBg = 'rgba(' + r + ',' + g + ',' + b + ',0.06)';
-        revertCSS =
-            '.cm-merge-revert{background:' + gutterBg + '}' +
-            '.cm-merge-revert button{color:rgba(' + r + ',' + g + ',' + b + ',0.5)}' +
-            '.cm-merge-revert button:hover{color:' + txt + ';background:rgba(' + r + ',' + g + ',' + b + ',0.12)}';
-    } else {
-        revertCSS =
-            '.cm-merge-revert button{color:#656d76}' +
-            '.cm-merge-revert button:hover{color:#1f2328;background:rgba(175,184,193,0.2)}';
-    }
-
-    themeStyle.textContent += marker + mirrorCSS + revertCSS;
+    var thumbVal = thumbColor + ' !important';
+    var hoverVal = thumbHover + ' !important';
+    parts.push(
+        '.cm-editor .cm-scroller::-webkit-scrollbar-thumb,' +
+        '.cm-mergeView::-webkit-scrollbar-thumb,' +
+        '#debug-rendered::-webkit-scrollbar-thumb,' +
+        '#debug-rendered pre::-webkit-scrollbar-thumb{background:' + thumbVal + ';background-color:' + thumbVal + '}',
+        '.cm-editor .cm-scroller::-webkit-scrollbar-thumb:hover,' +
+        '.cm-mergeView::-webkit-scrollbar-thumb:hover,' +
+        '#debug-rendered::-webkit-scrollbar-thumb:hover,' +
+        '#debug-rendered pre::-webkit-scrollbar-thumb:hover{background:' + hoverVal + ';background-color:' + hoverVal + '}'
+    );
+    themeStyle.textContent += marker + parts.join('');
 }
 
 // ============================================================
@@ -1062,9 +1077,9 @@ marked.use({
             if (lang && hljs.getLanguage(lang)) {
                 injectHljsCSS()
                 var result = hljs.highlight(token.text, { language: lang, ignoreIllegals: true })
-                return '<pre><code class="hljs language-' + lang + '">' + result.value + '</code></pre>'
+                return '<pre><code class="hljs language-' + lang + '"><span class="code-content">' + result.value + '</span></code></pre>'
             }
-            return '<pre><code>' + escapeHtml(token.text) + '</code></pre>'
+            return '<pre><code><span class="code-content">' + escapeHtml(token.text) + '</span></code></pre>'
         }
     }
 })

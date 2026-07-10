@@ -582,6 +582,8 @@ var ConfigEditor = {
             textarea.style.display = 'none';
             self.editorInstance.dom.style.height = '100%';
             ocHideLoading(textarea.parentNode);
+
+            if (CM6.mirrorThemeScrollbar) CM6.mirrorThemeScrollbar();
         }
 
         if (!this.isOverwrite) {

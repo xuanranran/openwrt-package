@@ -2839,6 +2839,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 70%;
+    color: var(--text-title);
 }
 .overwrite-info {
     font-size: 12px;
@@ -2897,7 +2898,7 @@
     color: var(--text-secondary);
     background: var(--bg-gray);
     padding: 2px 4px;
-    margin: 8px 16px;
+    margin: 8px;
     border-radius: var(--radius-sm);
     line-height: 1.5;
 }
@@ -2929,7 +2930,7 @@
     font-family: 'Twemoji Mozilla', "Microsoft Yahei", "sans-serif", "Helvetica Neue", "Helvetica", "Hiragino Sans GB" !important;
 }
 .oc .cm-content {
-    font-family: 'Twemoji Mozilla', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Courier New', 'Microsoft Yahei', monospace !important;
+    font-family: 'Twemoji Mozilla', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Courier New', 'PingFang SC', 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', 'Noto Sans SC', sans-serif !important;
 }
 .oc .cm-content, .oc .cm-line {
     word-break: break-all !important;
@@ -5005,9 +5006,9 @@ ul {
     width: 100%;
     max-height: 540px;
     overflow: auto;
-    padding: 12px;
+    padding: 6px;
     border: 1px solid var(--border-light, #e2e8f0);
-    border-radius: 6px;
+    border-radius: 0 0 6px;
     background: var(--bg-white, #fff);
     color: var(--text-primary, #374151);
     font-family: 'Twemoji Mozilla', 'Microsoft Yahei', sans-serif;
@@ -5040,9 +5041,9 @@ ul {
 #debug-rendered strong, #debug-rendered b { font-weight: 600; }
 #debug-rendered em, #debug-rendered i { font-style: italic; }
 #debug-rendered code {
-    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-family: 'Twemoji Mozilla', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Courier New', 'PingFang SC', 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', 'Noto Sans SC', sans-serif;
     padding: 0 2px;
-    font-size: 0.9em;
+    font-size: 1.2em;
 }
 #debug-rendered .pre-copy-wrap {
     position: relative;
@@ -5059,8 +5060,13 @@ ul {
     line-height: 1.5;
 }
 #debug-rendered pre code {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 5px;
-    font-size: 0.88em;
+    font-size: 1em;
+    min-height: 3em;
+    box-sizing: border-box;
 }
 #debug-rendered .pre-copy-btn {
     position: absolute;
@@ -5122,7 +5128,7 @@ ul {
 .oc #debug-copy-source.oc-usage-help-float {
     position: absolute;
     bottom: 12px;
-    right: 12px;
+    right: 20px;
     z-index: 10;
 }
 
