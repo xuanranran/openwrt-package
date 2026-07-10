@@ -24,7 +24,7 @@ import {
 import {
     syntaxHighlighting, HighlightStyle, bracketMatching,
     foldGutter, indentOnInput, StreamLanguage, foldKeymap, indentUnit,
-    getIndentUnit, foldable
+    getIndentUnit, foldable, ensureSyntaxTree
 } from "@codemirror/language"
 
 // ---- Tags ----
@@ -467,7 +467,7 @@ function mihomoCompletion(context) {
     return { from: word.from, options, validFor: /^[\w-]*$/ }
 }
 
-function yamlLinter() {
+function yamlLinter(delay = 750) {
     return linter(view => {
         const diagnostics = []
         try { loadAll(view.state.doc.toString(), { schema: YAML11_SCHEMA }) } catch (e) {
@@ -484,7 +484,7 @@ function yamlLinter() {
             }
         }
         return diagnostics
-    })
+    }, typeof delay === 'number' ? { delay: delay } : undefined)
 }
 
 var _levelTagMap = null
@@ -563,6 +563,28 @@ const logHighlightStyle = HighlightStyle.define([
     { tag: logTag.levelWatchdog, class: "cmt-log-level-watchdog" },
 ])
 
+function syntaxPreload(buffer = 1000) {
+    return ViewPlugin.fromClass(class {
+        constructor(view) { this._preload(view) }
+        update(u) {
+            if (u.viewportChanged || u.docChanged) {
+                if (this._rafId) cancelAnimationFrame(this._rafId)
+                var self = this
+                this._rafId = requestAnimationFrame(function() {
+                    self._rafId = null
+                    self._preload(u.view)
+                })
+            }
+        }
+        _preload(view) {
+            var doc = view.state.doc
+            var ll = doc.lineAt(view.viewport.to).number
+            var target = Math.min(ll + buffer, doc.lines)
+            ensureSyntaxTree(view.state, doc.line(target).to, 50)
+        }
+    })
+}
+
 function baseExtensions(extra = []) {
     return [
         lineNumbers(), highlightActiveLine(), highlightActiveLineGutter(),
@@ -572,6 +594,7 @@ function baseExtensions(extra = []) {
         indentOnInput(), history(),
         highlightSelectionMatches(), EditorView.lineWrapping,
         closeBrackets(),
+        syntaxPreload(),
         cmKeymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap, ...closeBracketsKeymap, ...foldKeymap, { key: 'Tab', run: function(v) { return acceptCompletion(v) || indentMore(v) } }]),
         ...extra
     ]
@@ -639,7 +662,7 @@ function _foldDepth1(state, lineNo, fl, ll, doc) {
     return d
 }
 
-function indentMarkerExtension({ highlightActiveBlock = true, hideFirstIndent = false, thickness = 1, colors } = {}) {
+function indentMarkerExtension({ highlightActiveBlock = true, hideFirstIndent = false, thickness = 1, colors, deferMode = 'raf', buffer = 1000 } = {}) {
     var extra = colors ? EditorView.baseTheme({
         '&light': { '--oc-im-c': colors.light || '#e1e4e8', '--oc-im-ca': colors.activeLight || '#d0d7de' },
         '&dark':  { '--oc-im-c': colors.dark  || '#30363d', '--oc-im-ca': colors.activeDark  || '#484f58' },
@@ -662,6 +685,19 @@ function indentMarkerExtension({ highlightActiveBlock = true, hideFirstIndent = 
                 var needsRebuild = u.docChanged || u.viewportChanged ||
                     (highlightActiveBlock && u.selectionSet)
                 if (needsRebuild) {
+                    if (deferMode === 'raf' && u.viewportChanged && !u.docChanged) {
+                        if (this._rafId) cancelAnimationFrame(this._rafId)
+                        var self = this
+                        this._rafId = requestAnimationFrame(function() {
+                            self._rafId = null
+                            self._stepPx = null
+                            self._measurePending = false
+                            self.decorations = self._build(u.view)
+                            self._scheduleMeasure(u.view)
+                        })
+                        return
+                    }
+                    if (this._rafId) { cancelAnimationFrame(this._rafId); this._rafId = null }
                     this._stepPx = null
                     this._measurePending = false
                     this.decorations = this._build(u.view)
@@ -745,7 +781,7 @@ function indentMarkerExtension({ highlightActiveBlock = true, hideFirstIndent = 
                 var doc = state.doc
                 var fl = doc.lineAt(view.viewport.from).number
                 var ll = doc.lineAt(view.viewport.to).number
-                var bl = Math.max(1, fl - 80), el = Math.min(doc.lines, ll + 80)
+                var bl = Math.max(1, fl - buffer), el = Math.min(doc.lines, ll + buffer)
 
                 var lvls = new Int32Array(el - bl + 1)
                 var bk = new Uint8Array(el - bl + 1)
@@ -1055,7 +1091,7 @@ export {
     githubDark, githubLight,
     MergeView,
     logLanguage, logHighlightStyle,
-    baseExtensions, placeholderExtension, indentMarkerExtension,
+    baseExtensions, syntaxPreload, placeholderExtension, indentMarkerExtension,
     topSearchExtension, mergeDefaultConfig, mirrorThemeScrollbar,
     themeExtension, dispatchTheme,
     switchHljsTheme,

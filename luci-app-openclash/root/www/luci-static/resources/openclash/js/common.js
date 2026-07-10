@@ -364,4 +364,40 @@ function ocRegisterEditorHotkeys() {
 	}, { passive: false });
 }
 
+// ── CM6 Loading overlay ─────────────────────────────────────────
+
+var _ocLoadingMap = typeof WeakMap !== 'undefined' ? new WeakMap() : (function(){
+	var m = {};
+	return {
+		get: function(k) { return m[k._ocLid]; },
+		set: function(k, v) { var id = '_ocl' + Math.random(); k._ocLid = id; m[id] = v; },
+		delete: function(k) { delete m[k._ocLid]; }
+	};
+})();
+
+function ocShowLoading(container, message, minHeight) {
+	if (!container) return;
+	var prevPos = container.style.position;
+	var prevMinH = container.style.minHeight;
+	container.style.position = 'relative';
+	if (minHeight) container.style.minHeight = minHeight;
+	var el = document.createElement('div');
+	el.className = 'config-editor-loading';
+	el.innerHTML = '<div class="loading-spinner"></div><span>' + (message || 'Loading\u2026') + '</span>';
+	container.appendChild(el);
+	_ocLoadingMap.set(container, { el: el, prevPos: prevPos, prevMinH: prevMinH });
+}
+
+function ocHideLoading(container) {
+	if (!container) return;
+	var handle = _ocLoadingMap.get(container);
+	if (!handle) return;
+	if (handle.el && handle.el.parentNode) handle.el.remove();
+	container.style.position = handle.prevPos || '';
+	if (handle.prevMinH !== undefined) {
+		container.style.minHeight = handle.prevMinH;
+	}
+	_ocLoadingMap.delete(container);
+}
+
 ocInitTheme();
