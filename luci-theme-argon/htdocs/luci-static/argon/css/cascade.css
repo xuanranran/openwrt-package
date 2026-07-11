@@ -5515,72 +5515,36 @@ div#add_link_div {
   border-color: #2864e6 !important;
 }
 
-/* OpenClash configuration mode buttons */
+/* OpenClash configuration editor colors; keep native DOM layout. */
 [data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .config-editor-title.config-editor-header {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
-  padding: 10px 16px !important;
-  color: #d0d8e0 !important;
+  width: 100% !important;
+  margin: 0 0 12px !important;
   background: #242424 !important;
   border: 0 !important;
   border-bottom: 0 !important;
+  box-sizing: border-box;
+}
+
+[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 12px !important;
+  background: #242424 !important;
   border-radius: 8px !important;
   box-sizing: border-box;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .config-editor-title.config-editor-header #editTitle {
-  color: #d0d8e0 !important;
-  font-weight: 600;
-}
-
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .config-editor-title.config-editor-header .config-file-name {
-  margin-left: 8px;
-  padding: 7px 14px;
-  color: #6cb6ff !important;
-  background: #304b75 !important;
-  border-radius: 14px;
-  font-weight: 600;
-}
-
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cbi-section .config-editor-title.config-editor-header {
-  justify-content: center;
-}
-
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cbi-section .config-editor-title.config-editor-header #editTitle {
-  display: inline !important;
-}
-
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cbi-section .config-editor-title.config-editor-header .config-file-name {
-  position: static !important;
-  transform: none !important;
-  margin-left: 8px;
-}
-
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs {
-  padding: 12px !important;
-  background: #242424 !important;
-  border-radius: 8px !important;
-}
-
 [data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tabs {
-  display: flex;
-  width: 100%;
-  gap: 16px;
-  padding: 0;
+  gap: 12px !important;
+  padding: 0 !important;
   background: transparent !important;
 }
 
 [data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tab {
-  flex: 1;
-  padding: 12px 20px;
   color: #d0d8e0 !important;
   background: #000 !important;
   border: 1px solid #536273 !important;
   border-radius: 6px !important;
-  font-size: 16px;
-  font-weight: 500;
 }
 
 [data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tab:hover {
