@@ -78,7 +78,7 @@ const callApplyThemePreset = rpc.declare({
 const callPrepareFont = rpc.declare({
   object: "luci.aurora",
   method: "prepare_font",
-  params: ["sans", "mono"],
+  params: ["sans", "mono", "sans_stack"],
   expect: {
     "": { result: -1, error: "RPC call failed (timeout or transport error)" },
   },
@@ -89,6 +89,18 @@ const callGetFontStatus = rpc.declare({
   method: "get_font_status",
   params: ["job_id"],
   expect: { "": { state: "missing", error: "RPC call failed" } },
+});
+
+const callUploadFont = rpc.declare({
+  object: "luci.aurora",
+  method: "upload_font",
+  params: ["slot", "family"],
+});
+
+const callRemoveFont = rpc.declare({
+  object: "luci.aurora",
+  method: "remove_font",
+  params: ["slot", "name"],
 });
 
 const callExportConfig = rpc.declare({
@@ -1554,6 +1566,17 @@ return view.extend({
 
     const computeFontOptions = (slot) => {
       const list = fontPresetsBySlot?.[slot];
+      const custom = (fontPresetsBySlot?.custom || [])
+        .filter((font) => font?.slot === slot && font?.name)
+        .map((font) => ({
+          name: "custom-" + font.name,
+          label: font.family || font.name,
+          source: _("Custom"),
+          family: font.family || "",
+          stack: font.stack || "",
+          custom: true,
+          customName: font.name,
+        }));
       if (Array.isArray(list) && list.length > 0) {
         const options = list
           .filter((font) => font?.name)
@@ -1563,11 +1586,14 @@ return view.extend({
             source: font.source || "",
             family: font.family || "",
             stack: font.stack || "",
-          }));
+          }))
+          .concat(custom);
         if (options.length > 0) return options;
       }
+      // Preset list unavailable (e.g. font-presets.conf unreadable):
+      // uploaded custom fonts still exist on disk, keep them selectable.
       const fallbackStack = FONT_DEFAULT_STACKS[slot] || "";
-      if (!fallbackStack) return [];
+      if (!fallbackStack) return custom;
       return [
         {
           name: "default",
@@ -1575,7 +1601,7 @@ return view.extend({
           source: _("Built-in"),
           stack: fallbackStack,
         },
-      ];
+      ].concat(custom);
     };
 
     const buildPresetToolbarNode = () => {
@@ -2063,7 +2089,7 @@ return view.extend({
       "aurora",
       _("Typography"),
       _(
-        "Sans-serif and monospace typefaces used across the theme. Save or Save & Apply downloads and caches the selected fonts.",
+        "Sans-serif and monospace typefaces used across the theme. Webfonts are downloaded once from pinned, checksum-verified sources and served locally; pages never load fonts from the internet.",
       ),
     );
     const fontSubsection = fontSection.subsection;
@@ -2113,6 +2139,156 @@ return view.extend({
     addFontSlot(fontSubsection, "sans");
     addFontSlot(fontSubsection, "mono");
 
+    const customFontsOpt = fontSubsection.option(
+      form.DummyValue,
+      "_custom_fonts",
+      _("Custom Fonts"),
+    );
+    customFontsOpt.rawhtml = false;
+    customFontsOpt.cfgvalue = () => "";
+    customFontsOpt.render = () => {
+      const FONT_TMP_PATH = "/tmp/aurora_font.tmp";
+      const customs = fontPresetsBySlot?.custom || [];
+
+      const uploadFont = (slot, family, file) =>
+        new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.addEventListener("load", () => {
+            if (xhr.status !== 200)
+              return reject(new Error("HTTP " + xhr.status));
+            L.resolveDefault(callUploadFont(slot, family), {}).then((ret) =>
+              ret?.result === 0
+                ? resolve(ret)
+                : reject(new Error(ret?.error || _("Unknown"))),
+            );
+          });
+          xhr.addEventListener("error", () =>
+            reject(new Error(_("Upload failed"))),
+          );
+          const formData = new FormData();
+          formData.append("sessionid", rpc.getSessionID());
+          formData.append("filename", FONT_TMP_PATH);
+          formData.append("filemode", "0600");
+          formData.append("filedata", file, file.name);
+          xhr.open("POST", "/cgi-bin/cgi-upload");
+          xhr.withCredentials = true;
+          xhr.send(formData);
+        });
+
+      const openUploadModal = () => {
+        const slotSelect = E("select", { class: "cbi-input-select" }, [
+          E("option", { value: "sans" }, _("Sans-Serif")),
+          E("option", { value: "mono" }, _("Monospace")),
+        ]);
+        const familyInput = E("input", {
+          type: "text",
+          class: "cbi-input-text",
+          placeholder: _("Font family name, e.g. MiSans"),
+        });
+        const fileInput = E("input", { type: "file", accept: ".woff2" });
+
+        ui.showModal(_("Upload Custom Font"), [
+          E("p", {}, _("Only .woff2 files up to 4MB are accepted.")),
+          E("div", { class: "cbi-value" }, [
+            E("label", { class: "cbi-value-title" }, _("Slot")),
+            E("div", { class: "cbi-value-field" }, slotSelect),
+          ]),
+          E("div", { class: "cbi-value" }, [
+            E("label", { class: "cbi-value-title" }, _("Family")),
+            E("div", { class: "cbi-value-field" }, familyInput),
+          ]),
+          E("div", { class: "cbi-value" }, [
+            E("label", { class: "cbi-value-title" }, _("File")),
+            E("div", { class: "cbi-value-field" }, fileInput),
+          ]),
+          E("div", { class: "right" }, [
+            E(
+              "button",
+              { class: "cbi-button", click: ui.hideModal },
+              _("Cancel"),
+            ),
+            " ",
+            E(
+              "button",
+              {
+                class: "cbi-button cbi-button-positive",
+                click: ui.createHandlerFn(viewCtx, () => {
+                  const file = fileInput.files?.[0];
+                  const family = familyInput.value.trim();
+                  if (!file || !family) {
+                    ui.addNotification(
+                      null,
+                      E("p", _("Choose a .woff2 file and a family name")),
+                      "warning",
+                    );
+                    return Promise.resolve();
+                  }
+                  return uploadFont(slotSelect.value, family, file)
+                    .then(() => window.location.reload())
+                    .catch((err) =>
+                      ui.addNotification(
+                        null,
+                        E("p", _("Upload failed: %s").format(err.message)),
+                        "error",
+                      ),
+                    );
+                }),
+              },
+              _("Upload"),
+            ),
+          ]),
+        ]);
+      };
+
+      const removeRow = (font) =>
+        L.resolveDefault(callRemoveFont(font.slot, font.name), {}).then(
+          (ret) => {
+            if (ret?.result === 0) window.location.reload();
+            else
+              ui.addNotification(
+                null,
+                E("p", _("Delete failed: %s").format(ret?.error || _("Unknown"))),
+                "error",
+              );
+          },
+        );
+
+      const rows = customs.map((font) =>
+        E("li", {}, [
+          E("code", {}, font.family),
+          " — " + (font.slot === "sans" ? _("Sans-Serif") : _("Monospace")) + " ",
+          E(
+            "button",
+            {
+              class: "cbi-button cbi-button-remove",
+              click: ui.createHandlerFn(viewCtx, () => removeRow(font)),
+            },
+            _("Delete"),
+          ),
+        ]),
+      );
+
+      return E("div", { class: "cbi-value" }, [
+        E("label", { class: "cbi-value-title" }, _("Custom Fonts")),
+        E("div", { class: "cbi-value-field" }, [
+          rows.length
+            ? E("ul", { style: "margin:0 0 0.5em 0;" }, rows)
+            : E("p", { style: "opacity:0.6;" }, _("No custom fonts uploaded.")),
+          E(
+            "button",
+            {
+              class: "cbi-button cbi-button-action",
+              click: ui.createHandlerFn(viewCtx, () => {
+                openUploadModal();
+                return Promise.resolve();
+              }),
+            },
+            _("Upload Custom Font"),
+          ),
+        ]),
+      ]);
+    };
+
     const getFontSelection = (slot) => {
       const value =
         (fontSlotOpts[slot] && fontSlotOpts[slot].formvalue("theme")) ||
@@ -2122,7 +2298,7 @@ return view.extend({
         getDefaultFont(slot) || { name: "default" };
 
       return {
-        preset: font.name || "default",
+        preset: font.custom ? "default" : font.name || "default",
         stack: font.stack || value,
       };
     };
@@ -2185,6 +2361,21 @@ return view.extend({
               current.sans === selected.sans &&
               current.mono === selected.mono
             ) {
+              if (
+                status.sans_status === "fallback" ||
+                status.mono_status === "fallback"
+              ) {
+                ui.addNotification(
+                  null,
+                  E(
+                    "p",
+                    _(
+                      "Typeface download failed after retries — the system font stack is in effect. Save again to retry.",
+                    ),
+                  ),
+                  "warning",
+                );
+              }
               applyFontCss(selected);
             }
           } else if (status && status.state !== "missing") {
@@ -2204,7 +2395,7 @@ return view.extend({
 
       ui.showModal(_("Preparing Typography"), [statusNode]);
 
-      return callPrepareFont(selected.sans, selected.mono)
+      return callPrepareFont(selected.sans, selected.mono, selected.sansStack)
         .then((res) => {
           if (!res || res.result !== 0) {
             throw new Error(res?.error || _("unknown error"));

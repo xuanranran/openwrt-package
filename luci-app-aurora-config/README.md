@@ -30,7 +30,7 @@
 
 | Component             | Requirement | Note                                             |
 | :-------------------- | :---------- | :----------------------------------------------- |
-| **LuCI Theme Aurora** | `≥ v1.0.0`  | Older versions will ignore these configurations. |
+| **LuCI Theme Aurora** | `≥ v1.1.0`  | Older versions will ignore these configurations. |
 | **OpenWrt**           | `≥ 23.05`   | Lua-based LuCI are not supported.                |
 
 ## Install a pre-built release
@@ -38,13 +38,13 @@
 ### Using opkg:
 
 ```sh
-cd /tmp && uclient-fetch -O luci-app-aurora-config.ipk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config_1.0.0-r20260619_all.ipk && opkg install luci-app-aurora-config.ipk
+cd /tmp && uclient-fetch -O luci-app-aurora-config.ipk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config_1.1.0-r20260711_all.ipk && opkg install luci-app-aurora-config.ipk
 ```
 
 ### Using apk:
 
 ```sh
-cd /tmp && uclient-fetch -O luci-app-aurora-config.apk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config-1.0.0-r20260619.apk && apk add --allow-untrusted luci-app-aurora-config.apk
+cd /tmp && uclient-fetch -O luci-app-aurora-config.apk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config-1.1.0-r20260711.apk && apk add --allow-untrusted luci-app-aurora-config.apk
 ```
 
 ## Build from source
