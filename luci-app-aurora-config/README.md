@@ -1,7 +1,6 @@
 <h4 align="right"><strong>English</strong> | <a href="README_zh.md">简体中文</a></h4>
 <h1 align="center">LuCI App Aurora Config</h1>
-<p align="center"><strong>The personalized assistant for the Aurora Theme.</strong></p>
-<h4 align="center">🎨 Visual Customization | 📐 Interface Layout | 🚀 One-Click Updates</h4>
+<p align="center">The configuration hub for LuCI Theme Aurora — colors, layout, typography, branding, and updates.</p>
 <div align="center">
   <a href="https://openwrt.org"><img alt="OpenWrt" src="https://img.shields.io/badge/OpenWrt-%E2%89%A523.05-00B5E2?logo=openwrt&logoColor=white"></a>
   <a href="https://github.com/eamonxg/luci-theme-aurora"><img alt="LuCI Theme Aurora" src="https://img.shields.io/badge/Theme-Aurora-46a3d1?logo=openwrt&logoColor=white"></a>
@@ -16,11 +15,12 @@
 
 ## Features
 
-- **Professional Color System**: Five built-in presets (Default, Monochrome, Sage Green, Amber Sand, Sky Blue) plus a live color editor with independent Light and Dark palettes; derived colors are generated automatically.
-- **Layout & Typography**: Switch the navigation between Mega Menu, Dropdown, and Sidebar; fine-tune spacing scale, corner radius, and content max width with sliders; and pick downloadable sans-serif and monospace typefaces that are fetched and cached on the router.
-- **Branding & PWA**: Drag-and-drop brand assets into the library, then assign the logo, favicons, Apple Touch / 192×192 / 512×512 app icons, and a full-screen login background. A generated web app manifest makes the panel installable as a PWA.
-- **Shortcut Toolbar**: Add, label, icon, and drag-reorder entries in the floating launcher for quick access to frequently used pages.
-- **Backup & Updates**: Export, import, or reset the entire configuration in one click, and update the theme and config app directly from the interface—no CLI or SSH required.
+- **Color system** — five built-in presets plus a live editor with independent light and dark palettes; derived tones are computed automatically.
+- **Layout** — Mega Menu, Dropdown, or Sidebar navigation; sliders for spacing scale, corner radius, and content width.
+- **Typography** — curated webfonts, downloaded once on save from pinned, checksum-verified sources — or upload your own `.woff2` files.
+- **Branding & PWA** — a drag-and-drop asset library (files can be renamed on upload) feeding the logo, favicons, app icons, and login background; a generated manifest makes the panel installable as a PWA.
+- **Shortcut toolbar** — add, label, and drag-reorder entries in the floating launcher.
+- **Backup & updates** — export, import, or reset the whole configuration and update the theme and app from the interface, no SSH required.
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/eamonxg/assets/master/aurora/preview/config/multi-theme-showcase.png" alt="Multi Theme Showcase" width="1200">
@@ -31,7 +31,7 @@
 | Component             | Requirement | Note                                             |
 | :-------------------- | :---------- | :----------------------------------------------- |
 | **LuCI Theme Aurora** | `≥ v1.1.0`  | Older versions will ignore these configurations. |
-| **OpenWrt**           | `≥ 23.05`   | Lua-based LuCI are not supported.                |
+| **OpenWrt**           | `≥ 23.05`   | Lua-based LuCI is not supported.                 |
 
 ## Install a pre-built release
 

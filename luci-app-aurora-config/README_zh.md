@@ -1,7 +1,6 @@
 <h4 align="right"><a href="README.md"><strong>English</strong></a> | 简体中文</h4>
 <h1 align="center">LuCI App Aurora Config</h1>
-<p align="center"><strong>Aurora 主题的个性化助手。</strong></p>
-<h4 align="center">🎨 视觉定制 | 📐 界面布局 | 🚀 一键更新</h4>
+<p align="center">LuCI Theme Aurora 的配置中心——配色、布局、字体、品牌与更新。</p>
 <div align="center">
   <a href="https://openwrt.org"><img alt="OpenWrt" src="https://img.shields.io/badge/OpenWrt-%E2%89%A523.05-00B5E2?logo=openwrt&logoColor=white"></a>
   <a href="https://github.com/eamonxg/luci-theme-aurora"><img alt="LuCI Theme Aurora" src="https://img.shields.io/badge/Theme-Aurora-46a3d1?logo=openwrt&logoColor=white"></a>
@@ -16,11 +15,12 @@
 
 ## 功能特性
 
-- **专业配色系统**：内置 5 种主题预设（Default、Monochrome、Sage Green、Amber Sand、Sky Blue），并提供浅色/深色独立的实时配色编辑器，派生色彩自动生成。
-- **布局与排版**：在 Mega Menu、下拉菜单、侧边栏三种导航样式间切换；通过滑块微调间距比例、圆角半径与内容最大宽度；并可选择无衬线与等宽字体，字体会自动下载并缓存到路由器。
-- **品牌标识与 PWA**：拖拽上传品牌资源到资源库，再分配 Logo、favicon、Apple Touch / 192×192 / 512×512 应用图标，以及全屏登录背景。生成的 Web 应用清单（manifest）让面板可作为 PWA 安装。
-- **悬浮工具栏**：在悬浮启动器中添加、命名、配图标并拖拽排序快捷方式，快速访问常用页面。
-- **备份与更新**：一键导出、导入或重置整套配置，并直接在界面中更新主题和配置应用，无需使用 CLI 命令行或 SSH。
+- **配色系统**——内置 5 种预设，配合浅色/深色独立的实时配色编辑器，派生色自动生成。
+- **布局**——Mega Menu、下拉、侧边栏三种导航；滑块微调间距比例、圆角与内容宽度。
+- **排版与字体**——精选网络字体，保存后才从固定版本、经校验的来源下载一次；也可上传自己的 `.woff2` 字体。
+- **品牌与 PWA**——拖拽上传的资源库（上传时可重命名），统一供给 Logo、favicon、应用图标与登录背景；自动生成 manifest，面板可作为 PWA 安装。
+- **悬浮工具栏**——添加、命名并拖拽排序快捷方式，快速访问常用页面。
+- **备份与更新**——一键导出、导入或重置整套配置，并在界面内直接更新主题与应用，无需 SSH。
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/eamonxg/assets/master/aurora/preview/config/multi-theme-showcase.png" alt="Multi Theme Showcase" width="1200">
