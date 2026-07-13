@@ -50,47 +50,25 @@
                                     </div>
                                     <div class="core-control-buttons">
                                         <button type="button" class="icon-btn action-btn" id="restart_core" title="<%:Restart%>" onclick="return restartCore()">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                            <svg width="14" height="14"><use href="#oc-icon-refresh"/></svg>
                                         </button>
                                         <button type="button" class="icon-btn action-btn" id="edit_overwrite" title="<%:Overwrite Module%>" onclick="return editOverwrite()">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 256 256">
-                                                <path d="M12,111l112,64a8,8,0,0,0,7.94,0l112-64a8,8,0,0,0,0-13.9l-112-64a8,8,0,0,0-7.94,0l-112,64A8,8,0,0,0,12,111ZM128,49.21,223.87,104,128,158.79,32.13,104ZM246.94,140A8,8,0,0,1,244,151L132,215a8,8,0,0,1-7.94,0L12,151A8,8,0,0,1,20,137.05l108,61.74,108-61.74A8,8,0,0,1,246.94,140Z"></path>
-                                            </svg>
+                                            <svg width="32" height="32"><use href="#oc-icon-overwrite"/></svg>
                                             <span class="btn-text"><%:Overwrite Module%></span>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="card-actions">
                                     <button type="button" class="icon-btn theme-toggle-btn" id="theme-toggle" onclick="toggleThemeMode()">
-                                        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <title><%:Light Theme%></title>
-                                            <circle cx="12" cy="12" r="5"></circle>
-                                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                                        </svg>
-                                        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none">
-                                            <title><%:Dark Theme%></title>
-                                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                                        </svg>
-                                        <svg id="auto-icon" width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="4" style="display: none">
-                                            <title><%:Auto Theme%></title>
-                                            <path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"/>
-                                            <path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z"/>
-                                            <path d="M16 21C17.6569 21 19 19.6569 19 18C19 16.3431 17.6569 15 16 15C14.3431 15 13 16.3431 13 18C13 19.6569 14.3431 21 16 21Z"/>
-                                            <path d="M17 34C18.6569 34 20 32.6569 20 31C20 29.3431 18.6569 28 17 28C15.3431 28 14 29.3431 14 31C14 32.6569 15.3431 34 17 34Z"/>
-                                        </svg>
+                                        <svg id="sun-icon" width="14" height="14"><use href="#oc-icon-sun"/></svg>
+                                        <svg id="moon-icon" width="14" height="14" style="display: none"><use href="#oc-icon-moon"/></svg>
+                                        <svg id="auto-icon" width="14" height="14" style="display: none"><use href="#oc-icon-auto-theme"/></svg>
                                     </button>
-                                    <button type="button" class="icon-btn action-btn" id="go_wiki" title="<%:Wiki%>" onclick="return wikipage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></button>
-                                    <button type="button" class="icon-btn action-btn" id="go_tutorials" title="<%:Tutorials%>" onclick="return gitbookpage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></button>
-                                    <button type="button" class="icon-btn action-btn" id="go_star" title="<%:Star%>" onclick="return homepage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></button>
-                                    <button type="button" class="icon-btn action-btn" id="go_telegram" title="<%:Telegram%>" onclick="return telegrampage()"><svg width="14" height="14" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="20"><path d="M80,134.87,170.26,214a8,8,0,0,0,13.09-4.21L224,33.22a1,1,0,0,0-1.34-1.15L20,111.38A6.23,6.23,0,0,0,21,123.3Z" stroke-linecap="round" stroke-linejoin="round"/><line x1="80" y1="134.87" x2="223.41" y2="32.09" stroke-linecap="round" stroke-linejoin="round"/><path d="M124.37,173.78,93.76,205.54A8,8,0,0,1,80,200V134.87" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                                    <button type="button" class="icon-btn action-btn" id="go_sponsor" title="<%:Sponsor%>" onclick="return sponsorpage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                                    <button type="button" class="icon-btn action-btn" id="go_wiki" title="<%:Wiki%>" onclick="return wikipage()"><svg width="14" height="14"><use href="#oc-icon-wiki"/></svg></button>
+                                    <button type="button" class="icon-btn action-btn" id="go_tutorials" title="<%:Tutorials%>" onclick="return gitbookpage()"><svg width="14" height="14"><use href="#oc-icon-book"/></svg></button>
+                                    <button type="button" class="icon-btn action-btn" id="go_star" title="<%:Star%>" onclick="return homepage()"><svg width="14" height="14"><use href="#oc-icon-star"/></svg></button>
+                                    <button type="button" class="icon-btn action-btn" id="go_telegram" title="<%:Telegram%>" onclick="return telegrampage()"><svg width="14" height="14"><use href="#oc-icon-telegram"/></svg></button>
+                                    <button type="button" class="icon-btn action-btn" id="go_sponsor" title="<%:Sponsor%>" onclick="return sponsorpage()"><svg width="14" height="14"><use href="#oc-icon-heart"/></svg></button>
                                     <button type="button" class="icon-btn action-btn" id="logo_btn" title="Mihomo" onclick="return go_mihomo();">
                                         <img id="_logo" src="/luci-static/resources/openclash/img/logo.png?v=<%=plugin_version%>" loading="lazy" width="14px" height="14px" alt="Mihomo"/>
                                         <span class="logo-text">Powered by <span class="mihomo-link">Mihomo</span></span>
@@ -131,7 +109,7 @@
                         <!-- Row 3: Settings -->
                         <div class="card-row stats-grid">
                             <div class="sub-card">
-                                <div class="card-title"><%:Area Bypass%><div class="help-link" title="<%:Bypass Specified Regions Network Flows, Improve Performance, If Inaccessibility on Bypass Gateway, Try to Enable Bypass Gateway Compatible Option%>"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div></div>
+                                <div class="card-title"><%:Area Bypass%><div class="help-link" title="<%:Bypass Specified Regions Network Flows, Improve Performance, If Inaccessibility on Bypass Gateway, Try to Enable Bypass Gateway Compatible Option%>"><svg width="12" height="12"><use href="#oc-icon-help"/></svg></div></div>
                                 <div class="card-content">
                                     <div class="card-controls">
                                         <div id="oc-setting-oversea" class="cbi-button-group" style="display: inline-flex;">
@@ -143,7 +121,7 @@
                                 </div>
                             </div>
                             <div class="sub-card">
-                                <div class="card-title"><%:Sniffer%><a href="javascript:void(0);" onclick="window.open('https://wiki.metacubex.one/config/sniff/?h=sniff#_1', '_blank');" class="help-link" title="<%:Sniff the domain name of the traffics to avoid rule-based proxy failure%>"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></a></div>
+                                <div class="card-title"><%:Sniffer%><a href="javascript:void(0);" onclick="window.open('https://wiki.metacubex.one/config/sniff/?h=sniff#_1', '_blank');" class="help-link" title="<%:Sniff the domain name of the traffics to avoid rule-based proxy failure%>"><svg width="12" height="12"><use href="#oc-icon-help"/></svg></a></div>
                                 <div class="card-content">
                                     <div class="card-controls">
                                         <div id="dns-setting-sniffer" class="cbi-button-group" style="display: inline-flex;">
@@ -154,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="sub-card">
-                                <div class="card-title"><%:DNS Proxy%><a href="javascript:void(0);" onclick="window.open('https://wiki.metacubex.one/config/dns/?h=res#respect-rules', '_blank');" class="help-link" title="<%:DNS querys respect-rules to preventing access failure%>"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></a></div>
+                                <div class="card-title"><%:DNS Proxy%><a href="javascript:void(0);" onclick="window.open('https://wiki.metacubex.one/config/dns/?h=res#respect-rules', '_blank');" class="help-link" title="<%:DNS querys respect-rules to preventing access failure%>"><svg width="12" height="12"><use href="#oc-icon-help"/></svg></a></div>
                                 <div class="card-content">
                                     <div class="card-controls">
                                         <div id="dns-setting-respect" class="cbi-button-group" style="display: inline-flex;">
@@ -165,7 +143,7 @@
                                 </div>
                             </div>
                             <div class="sub-card">
-                                <div class="card-title"><%:Stream Unlock%><div class="help-link" title="<%:Auto Select Proxy For Streaming Unlock, Support Netflix, Disney Plus, HBO And YouTube Premium, etc%>"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div></div>
+                                <div class="card-title"><%:Stream Unlock%><div class="help-link" title="<%:Auto Select Proxy For Streaming Unlock, Support Netflix, Disney Plus, HBO And YouTube Premium, etc%>"><svg width="12" height="12"><use href="#oc-icon-help"/></svg></div></div>
                                 <div class="card-content">
                                     <div class="card-controls">
                                         <div id="stream-unlock-setting" class="cbi-button-group" style="display: inline-flex;">
@@ -228,11 +206,7 @@
                                     <div id="config-file-empty-state" class="config-file-empty-state" style="display: none;">
                                         <div class="config-file-empty-message"><%:No config files found, Please upload a config file to get started%></div>
                                         <button type="button" class="config-upload-btn-large" id="upload_config_large" onclick="return uploadConfig()">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                                <polyline points="17,8 12,3 7,8"></polyline>
-                                                <line x1="12" y1="3" x2="12" y2="15"></line>
-                                            </svg>
+                                            <svg width="20" height="20"><use href="#oc-icon-download"/></svg>
                                             <%:Add Config File%>
                                         </button>
                                     </div>
@@ -242,11 +216,11 @@
                                             <select id="config_file_select" class="config-select"><option value=""><%:Collecting data...%></option></select>
                                         </div>
                                         <div class="card-actions">
-                                            <button type="button" class="icon-btn action-btn" id="switch_config" title="<%:SwiTch%>" onclick="return switchConfig()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg></button>
-                                            <button type="button" class="icon-btn action-btn" id="update_config" title="<%:Update%>" onclick="return updateConfig()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path><path d="M21 21v-5h-5"></path></svg></button>
-                                            <button type="button" class="icon-btn action-btn" id="edit_config" title="<%:Edit%>" onclick="return editConfig()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
-                                            <button type="button" class="icon-btn action-btn" id="edit_subscribe" title="<%:Edit Subscription%>" onclick="return editSubscribe()"><svg width="14" height="14" viewBox="0 0 48 48" fill="none"><path d="M18.2838 43.1713C14.9327 42.1736 11.9498 40.3213 9.58787 37.867C10.469 36.8227 11 35.4734 11 34.0001C11 30.6864 8.31371 28.0001 5 28.0001C4.79955 28.0001 4.60139 28.01 4.40599 28.0292C4.13979 26.7277 4 25.3803 4 24.0001C4 21.9095 4.32077 19.8938 4.91579 17.9995C4.94381 17.9999 4.97188 18.0001 5 18.0001C8.31371 18.0001 11 15.3138 11 12.0001C11 11.0488 10.7786 10.1493 10.3846 9.35011C12.6975 7.1995 15.5205 5.59002 18.6521 4.72314C19.6444 6.66819 21.6667 8.00013 24 8.00013C26.3333 8.00013 28.3556 6.66819 29.3479 4.72314C32.4795 5.59002 35.3025 7.1995 37.6154 9.35011C37.2214 10.1493 37 11.0488 37 12.0001C37 15.3138 39.6863 18.0001 43 18.0001C43.0281 18.0001 43.0562 17.9999 43.0842 17.9995C43.6792 19.8938 44 21.9095 44 24.0001C44 25.3803 43.8602 26.7277 43.594 28.0292C43.3986 28.01 43.2005 28.0001 43 28.0001C39.6863 28.0001 37 30.6864 37 34.0001C37 35.4734 37.531 36.8227 38.4121 37.867C36.0502 40.3213 33.0673 42.1736 29.7162 43.1713C28.9428 40.752 26.676 39.0001 24 39.0001C21.324 39.0001 19.0572 40.752 18.2838 43.1713Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M24 31C27.866 31 31 27.866 31 24C31 20.134 27.866 17 24 17C20.134 17 17 20.134 17 24C17 27.866 20.134 31 24 31Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/></svg></button>
-                                            <button type="button" class="icon-btn action-btn" id="upload_config" title="<%:Add%>" onclick="return uploadConfig()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+                                            <button type="button" class="icon-btn action-btn" id="switch_config" title="<%:SwiTch%>" onclick="return switchConfig()"><svg width="14" height="14"><use href="#oc-icon-switch"/></svg></button>
+                                            <button type="button" class="icon-btn action-btn" id="update_config" title="<%:Update%>" onclick="return updateConfig()"><svg width="14" height="14"><use href="#oc-icon-update"/></svg></button>
+                                            <button type="button" class="icon-btn action-btn" id="edit_config" title="<%:Edit%>" onclick="return editConfig()"><svg width="14" height="14"><use href="#oc-icon-edit"/></svg></button>
+                                            <button type="button" class="icon-btn action-btn" id="edit_subscribe" title="<%:Edit Subscription%>" onclick="return editSubscribe()"><svg width="14" height="14"><use href="#oc-icon-settings"/></svg></button>
+                                            <button type="button" class="icon-btn action-btn" id="upload_config" title="<%:Add%>" onclick="return uploadConfig()"><svg width="14" height="14"><use href="#oc-icon-upload"/></svg></button>
                                         </div>
                                     </div>
                                 </div>
@@ -265,8 +239,8 @@
                                     </div>
                                 </div>
                                 <div class="card-actions">
-                                    <button type="button" class="icon-btn copy-btn" id="copy_address" title="<%:Copy Address%>" onclick="return copyAddress()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-                                    <button type="button" class="icon-btn copy-btn" id="copy_secret" title="<%:Copy Secret%>" onclick="return copySecret()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><circle cx="12" cy="16" r="1"></circle><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></button>
+                                    <button type="button" class="icon-btn copy-btn" id="copy_address" title="<%:Copy Address%>" onclick="return copyAddress()"><svg width="14" height="14"><use href="#oc-icon-copy"/></svg></button>
+                                    <button type="button" class="icon-btn copy-btn" id="copy_secret" title="<%:Copy Secret%>" onclick="return copySecret()"><svg width="14" height="14"><use href="#oc-icon-lock"/></svg></button>
                                 </div>
                             </div>
                             <div class="sub-card">
@@ -277,9 +251,9 @@
                                     </div>
                                 </div>
                                 <div class="card-actions">
-                                    <button type="button" class="icon-btn copy-btn" id="copy_mix_address" title="<%:Copy Address%>" onclick="return copyMixAddress()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
-                                    <button type="button" class="icon-btn action-btn" id="copy_pac_config" title="<%:Get PAC Config%>" onclick="return generatePacConfig()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg></button>
-                                    <button type="button" class="icon-btn copy-btn" id="copy_mix_secret" title="<%:Copy Auth Info%>" onclick="return copyMixAuth()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><circle cx="12" cy="16" r="1"></circle><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></button>
+                                    <button type="button" class="icon-btn copy-btn" id="copy_mix_address" title="<%:Copy Address%>" onclick="return copyMixAddress()"><svg width="14" height="14"><use href="#oc-icon-copy"/></svg></button>
+                                    <button type="button" class="icon-btn action-btn" id="copy_pac_config" title="<%:Get PAC Config%>" onclick="return generatePacConfig()"><svg width="14" height="14"><use href="#oc-icon-globe"/></svg></button>
+                                    <button type="button" class="icon-btn copy-btn" id="copy_mix_secret" title="<%:Copy Auth Info%>" onclick="return copyMixAuth()"><svg width="14" height="14"><use href="#oc-icon-lock"/></svg></button>
                                 </div>
                             </div>
                         </div>
@@ -330,7 +304,7 @@
                     <div class="config-upload-header">
                         <div class="config-upload-title"><%:Usage Help%></div>
                         <button type="button" class="icon-btn" onclick="UsageHelpManager.hide()">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            <svg width="14" height="14"><use href="#oc-icon-close"/></svg>
                         </button>
                     </div>
                     <div class="config-upload-content">
@@ -356,16 +330,12 @@
 
 <!-- Usage Help Button -->
 <div class="oc-usage-help-float" id="usage-help-float" title="<%:Usage Help%>" onclick="UsageHelpManager.show()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="7" width="18" height="13" rx="2"/>
-        <circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>
-        <line x1="9" y1="17" x2="15" y2="17"/>
-        <path d="M12 3v4"/>
-        <circle cx="12" cy="3" r="1"/>
-    </svg>
+    <svg width="24" height="24"><use href="#oc-icon-usage-help"/></svg>
 </div>
 
 <script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
+<script src="/luci-static/resources/openclash/js/oc-icons.js?v=<%=plugin_version%>"></script>
+<%+openclash/common%>
 <script type="text/javascript">//<![CDATA[
     var DOMCache = {
         clash: document.getElementById('_clash'),
@@ -375,12 +345,11 @@
         webm: document.getElementById('_webm'),
         webz: document.getElementById('_webz'),
         daip: document.getElementById('_daip'),
-        dase: document.getElementById('_dase'),
         oclog: document.getElementById('_oclog'),
-        close_all_connection: document.getElementById('_close_all_connection'),
-        reload_firewall: document.getElementById('_reload_firewall'),
-        one_key_update: document.getElementById('_one_key_update'),
-        flush_dns_cache: document.getElementById('_flush_dns_cache'),
+        close_all_connection: document.getElementById('_close_all_connection_btn'),
+        reload_firewall: document.getElementById('_reload_firewall_btn'),
+        one_key_update: document.getElementById('_one_key_update_btn'),
+        flush_dns_cache: document.getElementById('_flush_dns_cache_btn'),
         radio_mode: document.getElementById('radio-mode'),
         radio: document.getElementsByName("radios"),
         radio_ru: document.getElementsByName("radios-ru"),
@@ -409,6 +378,9 @@
         plugin_version_display: document.getElementById('plugin-version-display'),
         plugin_version_text: document.getElementById('plugin-version-text')
     };
+
+    var getDashboardBaseURL = ocGetDashboardBaseURL;
+    var buildDashboardURL = ocBuildDashboardURL;
 
     var DarkModeDetector = {
         init: function() {
@@ -470,6 +442,8 @@
                 setTimeout(function() {
                     callback({ status: 200, fromCache: true, stale: true }, StateManager.request_cache[cacheKey]);
                 }, 0);
+                this._refreshCacheSilent(url, params, cacheKey);
+                return;
             }
 
             this.pending_requests.set(cacheKey, [callback]);
@@ -488,6 +462,7 @@
                     try {
                         cb(x, data);
                     } catch (e) {
+                        console.warn('StateManager: XHR callback error for ' + cacheKey, e);
                     }
                 });
             });
@@ -536,6 +511,16 @@
                     update.element.innerHTML = update.content;
                 }
             }
+        },
+
+        _refreshCacheSilent: function(url, params, cacheKey) {
+            var self = this;
+            XHR.get(url, params, function(x, data) {
+                if (x && x.status == 200 && data) {
+                    self.request_cache[cacheKey] = data;
+                    self.last_request_time[cacheKey] = Date.now();
+                }
+            });
         },
 
         cachedXHRGetWithRetry: function(url, params, callback, force, maxRetries) {
@@ -636,9 +621,15 @@
             if (!this._visibilityHandlerAdded) {
                 document.addEventListener('visibilitychange', function() {
                     if (document.hidden) {
-                        self.stopHeartbeat(type);
+                        for (var t in self.heartbeatTimers) {
+                            self.stopHeartbeat(t);
+                        }
                     } else {
-                        self.startHeartbeat(type);
+                        for (var t in self.connections) {
+                            if (self.connections[t] && self.connections[t].state === self.connectionStates.CONNECTED) {
+                                self.startHeartbeat(t);
+                            }
+                        }
                     }
                 });
                 this._visibilityHandlerAdded = true;
@@ -691,6 +682,7 @@
                     }
                     connection.messageHandler({ data: data, raw: event.data, event: event });
                 } catch (error) {
+                    console.warn('WSManager: message handler error for type=' + type, error);
                 }
             }
         },
@@ -703,10 +695,18 @@
             }
             this.startHeartbeat(type);
 
-            if (Object.keys(this.connections).length === 3) {
-                this._ws_connect = true;
-                if (NetworkStatsManager.isEnabled) {
-                    NetworkStatsManager.stop();
+            if (!this._ws_connect) {
+                var connectedCount = 0;
+                for (var t in this.connections) {
+                    if (this.connections[t].state === this.connectionStates.CONNECTED) {
+                        connectedCount++;
+                    }
+                }
+                if (connectedCount >= 1) {
+                    this._ws_connect = true;
+                    if (NetworkStatsManager.isEnabled) {
+                        NetworkStatsManager.stop();
+                    }
                 }
             }
         },
@@ -721,9 +721,6 @@
         },
 
         handleClose: function(type, event) {
-            // if not connected, start log display because core maybe restart
-            LogManager.startLogDisplay();
-
             var connection = this.connections[type];
             if (connection) {
                 connection.state = this.connectionStates.DISCONNECTED;
@@ -731,6 +728,8 @@
             this.stopHeartbeat(type);
 
             if (this._allowedCloseCodes.indexOf(event.code) === -1) {
+                // Unexpected close — core may have restarted, show log
+                LogManager.startLogDisplay();
                 this.scheduleReconnect(type);
             }
         },
@@ -800,7 +799,7 @@
         init: function() {
             this.selectElement = document.getElementById('config_file_select');
             if (this.selectElement) {
-                this.loadConfigFileList();
+                this.loadConfigFileList(true);
                 this.setupEventListeners();
             }
         },
@@ -811,7 +810,7 @@
             }
         },
 
-        loadConfigFileList: function() {
+        loadConfigFileList: function(force) {
             this.updateSelectOptions([{value: '', text: '<%:Collecting data...%>', disabled: true}]);
 
             StateManager.cachedXHRGet('<%=luci.dispatcher.build_url("admin", "services", "openclash", "config_file_list")%>', function(x, data) {
@@ -820,7 +819,7 @@
                 } else {
                     ConfigFileManager.handleConfigListError();
                 }
-            }, true);
+            }, !!force);
         },
 
         handleConfigListResponse: function(data) {
@@ -831,11 +830,6 @@
 
                 if (data.config_files && Array.isArray(data.config_files)) {
                     configFiles = data.config_files;
-                    configFiles.sort(function(a, b) {
-                        var nameA = typeof a === 'string' ? a : (a.name || a.filename || a.path || a);
-                        var nameB = typeof b === 'string' ? b : (b.name || b.filename || b.path || b);
-                        return nameA.localeCompare(nameB);
-                    });
                 } else {
                     configFiles = [];
                 }
@@ -908,7 +902,7 @@
             if (!this._retryGetConfigList) {
                 var self = this;
                 this._retryGetConfigList = setInterval(function() {
-                    self.loadConfigFileList();
+                    self.loadConfigFileList(true);
                 }, 5000);
             }
         },
@@ -1065,7 +1059,7 @@
 
                 if (ageFileIconElement) {
                     if (fileInfo.age) {
-                        ageFileIconElement.innerHTML = '<svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9.25564L24.0086 4L42 9.25564V20.0337C42 31.3622 34.7502 41.4194 24.0026 45.0005C13.2521 41.4195 6 31.36 6 20.0287V9.25564Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path d="M15 23L22 30L34 18" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                        ageFileIconElement.innerHTML = '<svg width="16" height="16"><use href="#oc-icon-shield-check"/></svg>';
                         ageFileIconElement.title = '<%:Age Encryption File%>';
                         ageFileIconElement.style.display = 'inline-flex';
                     } else {
@@ -1089,38 +1083,9 @@
             }
         },
 
-        formatUnixTime: function(unixTimestamp) {
-            if (!unixTimestamp || unixTimestamp === 0) {
-                return '--';
-            }
+        formatUnixTime: ocFormatUnixTime,
 
-            try {
-                var date = new Date(unixTimestamp * 1000);
-                var year = date.getFullYear();
-                var month = String(date.getMonth() + 1).padStart(2, '0');
-                var day = String(date.getDate()).padStart(2, '0');
-                var hour = String(date.getHours()).padStart(2, '0');
-                var minute = String(date.getMinutes()).padStart(2, '0');
-                var second = String(date.getSeconds()).padStart(2, '0');
-
-                return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-            } catch (e) {
-                return '--';
-            }
-        },
-
-        formatFileSize: function(bytes) {
-            if (!bytes || bytes === 0) return '--';
-
-            var sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
-            var i = Math.floor(Math.log(bytes) / Math.log(1024));
-
-            if (i === 0) {
-                return bytes + ' ' + sizes[i];
-            }
-
-            return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
-        },
+        formatFileSize: ocFormatFileSize,
 
         formatDisplayName: function(fileName) {
             if (!fileName) return '<%:Unknown%>';
@@ -1255,7 +1220,7 @@
         },
 
         refreshConfigList: function() {
-            this.loadConfigFileList();
+            this.loadConfigFileList(false);
         },
 
         getCurrentConfig: function() {
@@ -1456,7 +1421,7 @@
 
                         if (!needsErrorHandling) {
                             SubscriptionManager.retryCount = 0;
-                            localStorage.setItem('sub_info_' + filename, JSON.stringify(status));
+                            setTimeout(function() { localStorage.setItem('sub_info_' + filename, JSON.stringify(status)); }, 0);
                             if (status.providers && status.providers.length === 0) {
                                 SubscriptionManager.showNoInfo();
                             }
@@ -1519,11 +1484,11 @@
             var progressBar = document.createElement('div');
             progressBar.className = 'subscription-progress-bar';
 
-            progressFill = document.createElement('div');
+            var progressFill = document.createElement('div');
             progressFill.className = 'subscription-progress-fill';
             progressBar.appendChild(progressFill);
 
-            infoText = document.createElement('div');
+            var infoText = document.createElement('div');
             infoText.className = 'subscription-info-text';
 
             progressSection.appendChild(progressBar);
@@ -1741,7 +1706,10 @@
             if (this.retryCount >= this.maxRetries) {
                 this.retryCount = 0;
                 if (this.currentConfigFile && status && status.providers) {
-                    localStorage.setItem('sub_info_' + filename, JSON.stringify(status));
+                    var errFilename = this.extractFilename(this.currentConfigFile);
+                    if (errFilename) {
+                        setTimeout(function() { localStorage.setItem('sub_info_' + errFilename, JSON.stringify(status)); }, 0);
+                    }
                 }
                 if (!status.providers || status.providers.length === 0) {
                     this.showNoInfo();
@@ -2771,34 +2739,18 @@
         }
     };
 
-    var script_radio, script_radio_label;
-    var s, gr;
     var pluginToggleUserAction = false;
+    var _domReady = false;
+    var _lastNotRunningPoll = 0;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        DarkModeDetector.init();
-        ConfigFileManager.init();
-
-        window.addEventListener('oc-overwrite-updated', function() {
-            OverwriteSubscribeManager.load(true);
-        });
-
-        setTimeout(function() {
-            OverwriteSubscribeManager.init();
-            SubscriptionManager.init();
-        }, 300);
-
-        setTimeout(function() {
-            check_core();
-        }, 1000);
-
-        setTimeout(function() {
-            loadAnnouncement();
-        }, 2000);
-    });
-
+    // Fire XHR early — runs in parallel with page load (oixcloud/myip etc.)
     XHR.poll(5, '<%=luci.dispatcher.build_url("admin", "services", "openclash", "status")%>', null, function(x, status) {
+        if (!_domReady) return; // Defer until DOM is fully ready
         if (x && x.status == 200) {
+
+            // Adaptive polling: skip if core stopped and we recently checked
+            if (!status.clash && Date.now() - _lastNotRunningPoll < 30000) return;
+            if (!status.clash) _lastNotRunningPoll = Date.now();
             var updates = [];
 
             if (!pluginToggleUserAction) {
@@ -2810,9 +2762,48 @@
                 updatePluginToggleState(status.clash);
             }
 
-			get_run_mode();
-            get_rule_mode();
-            get_oc_settings();
+            if (status.run_mode && !SettingsManager.pendingOperations.has('run_mode_' + status.run_mode)) {
+                if (status.run_mode.indexOf("fake-ip") === 0) {
+                    DOMCache.mode.innerHTML = "<b style=color:var(--success-color)><%:Fake-IP%></b>";
+                    DOMCache.radio_run_normal.innerHTML = "<%:Enhance%>";
+                } else if (status.run_mode.indexOf("redir-host") === 0) {
+                    DOMCache.mode.innerHTML = "<b style=color:var(--success-color)><%:Redir-Host%></b>";
+                    DOMCache.radio_run_normal.innerHTML = "<%:Compat%>";
+                }
+                var expectedValue = status.run_mode.split("-")[2] == undefined ? "" : ("-" + status.run_mode.split("-")[2]);
+                for (var i = 0; i < DOMCache.radio_ru.length; i++) {
+                    if (DOMCache.radio_ru[i].value == expectedValue && !DOMCache.radio_ru[i].checked) {
+                        DOMCache.radio_ru[i].checked = true;
+                    }
+                }
+            }
+
+            if (status.rule_mode && !SettingsManager.pendingOperations.has('rule_mode_' + status.rule_mode)) {
+                for (var i = 0; i < DOMCache.radio.length; i++) {
+                    if (DOMCache.radio[i].value == status.rule_mode && !DOMCache.radio[i].checked) {
+                        DOMCache.radio[i].checked = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!SettingsManager.pendingOperations.has('meta_sniffer_' + status.meta_sniffer)) {
+                DOMCache.meta_sniffer_on.checked = status.meta_sniffer == "1";
+                DOMCache.meta_sniffer_off.checked = status.meta_sniffer != "1";
+            }
+            if (!SettingsManager.pendingOperations.has('respect_rules_' + status.respect_rules)) {
+                DOMCache.respect_rules_on.checked = status.respect_rules == "1";
+                DOMCache.respect_rules_off.checked = status.respect_rules != "1";
+            }
+            if (!SettingsManager.pendingOperations.has('oversea_' + status.oversea)) {
+                if (status.oversea == "0") DOMCache.oc_setting_oversea_0.checked = true;
+                else if (status.oversea == "1") DOMCache.oc_setting_oversea_1.checked = true;
+                else if (status.oversea == "2") DOMCache.oc_setting_oversea_2.checked = true;
+            }
+            if (!SettingsManager.pendingOperations.has('stream_unlock_' + status.stream_unlock)) {
+                DOMCache.stream_unlock_on.checked = status.stream_unlock === '1';
+                DOMCache.stream_unlock_off.checked = status.stream_unlock !== '1';
+            }
 
             var webContent = status.clash ? '<input type="button" class="dashboard-btn" value="<%:Yacd%>" onclick="return ycad_dashboard(this)"/>' : '<input type="button" class="dashboard-btn" value="<%:Yacd%>" onclick="event.preventDefault(); event.stopPropagation(); return false;"/>';
             updates.push({element: DOMCache.web, content: webContent});
@@ -2874,17 +2865,10 @@
 
                 DOMCache.daip.innerHTML = daipContent;   
 
-                StateManager.cachedXHRGet('<%=luci.dispatcher.build_url("admin", "services", "openclash", "proxy_info")%>', function(x, proxy_info) {
-                    if (x && x.status == 200) {
-                        StateManager.cached_proxy_info = proxy_info;
-                        var proxy_ip = status.daip;
-                        var mix_addr = proxy_ip + ':' + (proxy_info.mixed_port || '7893');
-                        DOMCache.mix_proxy.innerHTML = "<b style=color:var(--success-color)>" + mix_addr + "</b>";
-                    } else {
-                        StateManager.cached_proxy_info = null;
-                        DOMCache.mix_proxy.innerHTML = "<b style=color:var(--error-color)><%:Not Available%></b>";
-                    }
-                });
+                StateManager.cached_proxy_info = { mixed_port: status.mixed_port, auth_user: status.auth_user, auth_pass: status.auth_pass };
+                var proxy_ip = status.daip;
+                var mix_addr = proxy_ip + ':' + (status.mixed_port || '7893');
+                DOMCache.mix_proxy.innerHTML = "<b style=color:var(--success-color)>" + mix_addr + "</b>";
             } else {
                 DOMCache.daip.innerHTML = "<b style=color:var(--error-color)><%:Not Available%></b>";
                 StateManager.cached_proxy_info = null;
@@ -2915,6 +2899,24 @@
             }
         }
         clashversion_check();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        _domReady = true;
+        DarkModeDetector.init();
+        ConfigFileManager.init();
+
+        window.addEventListener('oc-overwrite-updated', function() {
+            OverwriteSubscribeManager.load(true);
+        });
+
+        setTimeout(function() {
+            OverwriteSubscribeManager.init();
+            SubscriptionManager.init();
+        }, 300);
+
+        setTimeout(function() { check_core(); }, 1000);
+        (window.requestIdleCallback || function(cb, opts) { setTimeout(cb, (opts && opts.timeout) || 1); })(function() { loadAnnouncement(); }, {timeout: 3000});
     });
 
     window.addEventListener('beforeunload', function() {
@@ -2994,9 +2996,19 @@
         var animationEndHandler = null;
         var destroyed = false;
 
+        // Cache animation duration to avoid repeated offsetWidth reflows
+        var _cachedBannerWidth = 0;
+        var _cachedContentWidth = 0;
+        var _cachedDuration = 0;
+
         function calculateAnimationDuration() {
             var bannerWidth = bannerElement.offsetWidth;
             var contentWidth = contentElement.offsetWidth;
+            if (bannerWidth === _cachedBannerWidth && contentWidth === _cachedContentWidth && _cachedDuration > 0) {
+                return _cachedDuration;
+            }
+            _cachedBannerWidth = bannerWidth;
+            _cachedContentWidth = contentWidth;
             var refreshRate = window.screen && window.screen.refreshRate ? window.screen.refreshRate : 60;
             if (refreshRate <= 0) refreshRate = 60;
             if (refreshRate > 480) refreshRate = 480;
@@ -3018,7 +3030,8 @@
             }
             duration = duration * refreshRateMultiplier;
 
-            return Math.max(4000, Math.min(duration, 50000));
+            _cachedDuration = Math.max(4000, Math.min(duration, 50000));
+            return _cachedDuration;
         }
 
         function updateScrollAnimation(duration) {
@@ -3135,6 +3148,9 @@
         function mouseLeaveHandler() { resume(); }
         function resizeHandler() {
             clearTimeout(resizeTimeout);
+            _cachedBannerWidth = 0;
+            _cachedContentWidth = 0;
+            _cachedDuration = 0;
             resizeTimeout = setTimeout(function() {
                 if (!destroyed && contentElement.classList.contains('scrolling')) {
                     refreshAnimation();
@@ -3285,13 +3301,6 @@
         );
     }
 
-    function winOpen(url) {
-        var winOpen = window.open(url);
-        if (winOpen == null || typeof(winOpen) == 'undefined') {
-            window.location.href = url;
-        }
-    }
-
     function ws_tmessage(event) {
         var dataObj = event && event.data !== undefined ? event.data : event;
         var data;
@@ -3353,37 +3362,17 @@
         }
         var memElement = document.getElementById("mem_t");
         memElement.innerHTML = data.inuse ? "<font style=\"color:var(--success-color)\">"+bytesToSize(data.inuse)+"</font>" : "<font style=\"color:var(--success-color)\">0 KB</font>";
-        if (!SystemStatusManager.isEnabled) {
-            SystemStatusManager.start();
-        }
     }
 
-    function bytesToSize(bytes) {
-        var sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        if (bytes == 0) return '0 B';
-        var i = Math.floor(Math.log(bytes) / Math.log(1024));
-        return i == 0 ? (bytes / Math.pow(1024, i)) + ' ' + sizes[i] : (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
-    }
+    var bytesToSize = ocFormatBytes;
 
-    var buttonDebounce = {};
-    function debounceButton(fn, delay) {
-        return function(btn) {
-            var key = btn.id || btn.value;
-            if (buttonDebounce[key]) {
-                clearTimeout(buttonDebounce[key]);
-            }
-            buttonDebounce[key] = setTimeout(function() {
-                fn(btn);
-                delete buttonDebounce[key];
-            }, delay || 300);
-            return false; 
-        };
-    }
+    var debounceButton = ocDebounce;
 
     var all_one_key_update = debounceButton(function(btn) {
+        btn.value = '<%:Checking...%>';
+        select_git_cdn();
         btn.value = '<%:Check Update%>';
         btn.disabled = false;
-        select_git_cdn();
         return false;
     });
 
@@ -3391,13 +3380,13 @@
         btn.disabled = true;
         btn.value = '<%:Flushing...%> ';
         XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash","flush_dns_cache")%>', null, function(x, status) {
+            btn.disabled = false;
             if (x && x.status == 200) {
                 btn.value = (status.flush_status == "0" || status.flush_status != "") ? '<%:Flush Failed%>' : '<%:Flush Successful%>';
             } else {
                 btn.value = '<%:Flush Timeout%>';
             }
         });
-        btn.disabled = false;
         return false;
     });
 
@@ -3423,127 +3412,59 @@
     });
 
     function net_zashboard(btn) {
-        if (StateManager.current_status) {
-            var status = StateManager.current_status;
-        } else {
-            setTimeout(function() {
-                net_zashboard(btn)
-            }, 1000);
-            return false;
-        }
-
-        btn.disabled = true;
-        btn.value = '<%:Zashboard%>';
-        var url9;
-        if (status.daip && window.location.hostname == status.daip) {
-            url9 = 'http://' + window.location.hostname + ':' + status.cn_port + '/ui/zashboard/#/setup?hostname=' + window.location.hostname + '&port=' + status.cn_port + '&secret=' + status.dase;
-        } else if (status.daip && window.location.hostname != status.daip && status.db_foward_domain && status.db_foward_port) {
-            var ui_proto = status.db_forward_ssl == 0 ? 'http://' : 'https://';
-            url9 = ui_proto + status.db_foward_domain + ':' + status.db_foward_port + '/ui/zashboard/#/setup?hostname=' + status.db_foward_domain + '&port=' + status.db_foward_port + '&secret=' + status.dase;
-        } else {
-            url9 = 'http://' + window.location.hostname + ':' + status.cn_port + '/ui/zashboard/#/';
-        }
-        winOpen(url9);
+        var status = StateManager.current_status;
+        if (!status) { setTimeout(function() { net_zashboard(btn); }, 1000); return false; }
+        btn.disabled = true; btn.value = '<%:Zashboard%>';
+        winOpen(buildDashboardURL(status, 'zashboard', true));
         return false;
     }
 
     function meta_dashboard(btn) {
-        if (StateManager.current_status) {
-            var status = StateManager.current_status;
-        } else {
-            setTimeout(function() {
-                meta_dashboard(btn)
-            }, 1000);
-            return false;
-        }
-
-        btn.disabled = true;
-        btn.value = '<%:Metacubexd%>';
-        var url9;
-        if (status.daip && window.location.hostname == status.daip) {
-            url9 = 'http://' + window.location.hostname + ':' + status.cn_port + '/ui/metacubexd/#/setup?hostname=' + window.location.hostname + '&port=' + status.cn_port + '&secret=' + status.dase;
-        } else if (status.daip && window.location.hostname != status.daip && status.db_foward_domain && status.db_foward_port) {
-            var ui_proto = status.db_forward_ssl == 0 ? 'http://' : 'https://';
-            url9 = ui_proto + status.db_foward_domain + ':' + status.db_foward_port + '/ui/metacubexd/#/setup?hostname=' + status.db_foward_domain + '&port=' + status.db_foward_port + '&secret=' + status.dase;
-        } else {
-            url9 = 'http://' + window.location.hostname + ':' + status.cn_port + '/ui/metacubexd/#/';
-        }
-        winOpen(url9);
+        var status = StateManager.current_status;
+        if (!status) { setTimeout(function() { meta_dashboard(btn); }, 1000); return false; }
+        btn.disabled = true; btn.value = '<%:Metacubexd%>';
+        winOpen(buildDashboardURL(status, 'metacubexd', true));
         return false;
     }
 
     function ycad_dashboard(btn) {
-        if (StateManager.current_status) {
-            var status = StateManager.current_status;
-        } else {
-            setTimeout(function() {
-                ycad_dashboard(btn)
-            }, 1000);
-            return false;
-        }
-
-        btn.disabled = true;
-        btn.value = '<%:Yacd%>';
-        var url1;
-        if (status.daip && window.location.hostname == status.daip) {
-            url1 = 'http://' + window.location.hostname + ':' + status.cn_port + '/ui/yacd/?hostname=' + window.location.hostname + '&port=' + status.cn_port + '&secret=' + status.dase;
-        } else if (status.daip && window.location.hostname != status.daip && status.db_foward_domain && status.db_foward_port) {
-            var ui_proto = status.db_forward_ssl == 0 ? 'http://' : 'https://';
-            url1 = ui_proto + status.db_foward_domain + ':' + status.db_foward_port + '/ui/yacd/?hostname=' + status.db_foward_domain + '&port=' + status.db_foward_port + '&secret=' + status.dase;
-        } else {
-            url1 = 'http://' + window.location.hostname + ':' + status.cn_port + '/ui/yacd/';
-        }
-        winOpen(url1);
+        var status = StateManager.current_status;
+        if (!status) { setTimeout(function() { ycad_dashboard(btn); }, 1000); return false; }
+        btn.disabled = true; btn.value = '<%:Yacd%>';
+        winOpen(buildDashboardURL(status, 'yacd', false));
         return false;
     }
 
     function net_dashboard(btn) {
-        if (StateManager.current_status) {
-            var status = StateManager.current_status;
-        } else {
-            setTimeout(function() {
-                net_dashboard(btn)
-            }, 1000);
-            return false;
-        }
-
-        btn.disabled = true;
-        btn.value = '<%:Dashboard%>';
-        var url2;
-        if (status.daip && window.location.hostname == status.daip) {
-            url2 = 'http://' + window.location.hostname + ':' + status.cn_port + '/ui/dashboard/#/?host=' + window.location.hostname + '&port=' + status.cn_port + '&secret=' + status.dase;
-        } else if (status.daip && window.location.hostname != status.daip && status.db_foward_domain && status.db_foward_port) {
-            var ui_proto = status.db_forward_ssl == 0 ? 'http://' : 'https://';
-            url2 = ui_proto + status.db_foward_domain + ':' + status.db_foward_port + '/ui/dashboard/#/?host=' + status.db_foward_domain + '&port=' + status.db_foward_port + '&secret=' + status.dase;
-        } else {
-            url2 = 'http://' + window.location.hostname + ':' + status.cn_port + '/ui/dashboard/';
-        }
-        winOpen(url2);
+        var status = StateManager.current_status;
+        if (!status) { setTimeout(function() { net_dashboard(btn); }, 1000); return false; }
+        btn.disabled = true; btn.value = '<%:Dashboard%>';
+        winOpen(buildDashboardURL(status, 'dashboard', false));
         return false;
     }
 
     function homepage() {
-        url3 = 'https://github.com/vernesong/OpenClash';
+        var url3 = 'https://github.com/vernesong/OpenClash';
         winOpen(url3);
     }
 
     function gitbookpage() {
-        url8 = 'https://wiki.metacubex.one';
+        var url8 = 'https://wiki.metacubex.one';
         winOpen(url8);
     }
 
     function wikipage() {
-        url5 = 'https://github.com/vernesong/OpenClash/blob/dev/.github/skills/openclash-user-guide/SKILL.md';
+        var url5 = 'https://github.com/vernesong/OpenClash/blob/dev/.github/skills/openclash-user-guide/SKILL.md';
         winOpen(url5);
     }
 
     function telegrampage() {
-        url6 = 'https://t.me/openclash_group';
+        var url6 = 'https://t.me/openclash_group';
         winOpen(url6);
     }
 
     function sponsorpage() {
-        url7 = 'https://ko-fi.com/vernesong';
+        var url7 = 'https://ko-fi.com/vernesong';
         winOpen(url7);
     }
 
@@ -3672,18 +3593,6 @@
         });
     }
 
-    function copyToClipboard(text, successMessage) {
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(function() {
-                prompt(successMessage, text);
-            }).catch(function(err) {
-                fallbackCopyTextToClipboard(text, successMessage);
-            });
-        } else {
-            fallbackCopyTextToClipboard(text, successMessage);
-        }
-    }
-
     function copyAddress() {
         XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "dashboard_type")%>', null, function(x, status) {
             if (x && x.status == 200) {
@@ -3708,14 +3617,14 @@
                         url += '/#/?host=' + (currentStatus.daip && window.location.hostname == currentStatus.daip ? window.location.hostname : (currentStatus.db_foward_domain || window.location.hostname)) + '&port=' + (currentStatus.daip && window.location.hostname == currentStatus.daip ? currentStatus.cn_port : (currentStatus.db_foward_port || currentStatus.cn_port)) + (currentStatus.dase ? '&secret=' + currentStatus.dase : '');
                     }
 
-                    copyToClipboard(url, '<%:Control panel address copied:%> ');
+                    ocCopyToClipboard(url, DOMCache.copy_address, '<%:Control panel address copied:%> ', '<%:Copy failed, please copy manually:%>');
                 } else {
                     var fallbackUrl = 'http://' + (StateManager.current_status.daip || 'unknown') + ':' + (StateManager.current_status.cn_port || '9090') + '/ui/zashboard/#/';
-                    copyToClipboard(fallbackUrl, '<%:Control panel address copied:%> ');
+                    ocCopyToClipboard(fallbackUrl, DOMCache.copy_address, '<%:Control panel address copied:%> ', '<%:Copy failed, please copy manually:%>');
                 }
             } else {
                 var fallbackUrl = 'http://' + (StateManager.current_status.daip || 'unknown') + ':' + (StateManager.current_status.cn_port || '9090') + '/ui/zashboard/#/';
-                copyToClipboard(fallbackUrl, '<%:Control panel address copied:%> ');
+                ocCopyToClipboard(fallbackUrl, DOMCache.copy_address, '<%:Control panel address copied:%> ', '<%:Copy failed, please copy manually:%>');
             }
         });
         return false;
@@ -3727,7 +3636,7 @@
             alert('<%:No control panel secret set%>');
             return false;
         }
-        copyToClipboard(secret, '<%:Control panel secret copied:%> ');
+        ocCopyToClipboard(secret, DOMCache.copy_secret, '<%:Control panel secret copied:%> ', '<%:Copy failed, please copy manually:%>');
         return false;
     }
 
@@ -3735,7 +3644,7 @@
         if (StateManager.cached_proxy_info) {
             if (StateManager.cached_proxy_info.auth_user && StateManager.cached_proxy_info.auth_pass) {
                 var authText = StateManager.cached_proxy_info.auth_user + ':' + StateManager.cached_proxy_info.auth_pass;
-                copyToClipboard(authText, '<%:Proxy auth info copied:%> ');
+                ocCopyToClipboard(authText, DOMCache.copy_mix_secret, '<%:Proxy auth info copied:%> ', '<%:Copy failed, please copy manually:%>');
             } else {
                 alert('<%:No proxy auth info set%>');
             }
@@ -3754,7 +3663,7 @@
                 proxyText = StateManager.cached_proxy_info.auth_user + ':' + StateManager.cached_proxy_info.auth_pass + '@' + proxyText;
             }
             proxyText = 'http://' + proxyText;
-            copyToClipboard(proxyText, '<%:Mix proxy address copied:%> ');
+            ocCopyToClipboard(proxyText, DOMCache.copy_mix_address, '<%:Mix proxy address copied:%> ', '<%:Copy failed, please copy manually:%>');
         } else {
             alert('<%:Proxy info not available, please try again later%>');
         }
@@ -3850,7 +3759,7 @@
                     if (data.error && data.error !== "") {
                         alert(data.error);
                     }
-                    copyToClipboard(data.pac_url, '<%:PAC file URL copied:%> ');
+                    ocCopyToClipboard(data.pac_url, DOMCache.copy_pac_config, '<%:PAC file URL copied:%> ', '<%:Copy failed, please copy manually:%>');
                 } else if (data.error) {
                     errorinfos = {
                         'Proxy service not running': '<%:Proxy service not running%>',
@@ -3867,33 +3776,6 @@
             alert('<%:Proxy service not available, please try again later%>');
         }
         return false;
-    }
-
-    function fallbackCopyTextToClipboard(text, successMessage) {
-        var textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.top = "0";
-        textArea.style.left = "0";
-        textArea.style.position = "fixed";
-        textArea.style.opacity = "0";
-
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        try {
-            var successful = document.execCommand('copy');
-            document.body.removeChild(textArea);
-
-            if (successful) {
-                prompt(successMessage, text);
-            } else {
-                prompt('<%:Copy failed, please copy manually:%>', text);
-            }
-        } catch (err) {
-            document.body.removeChild(textArea);
-            prompt('<%:Copy failed, please copy manually:%>', text);
-        }
     }
 
     function togglePlugin(toggleElement) {
@@ -3922,7 +3804,7 @@
             var selectedConfig = ConfigFileManager.getSelectedConfig();
 
             if (!currentConfig && selectedConfig) {
-                requestParams.config_file = configFileName;
+                requestParams.config_file = selectedConfig;
             }
         }
 
@@ -3964,12 +3846,6 @@
                 DOMCache.clash.innerHTML = isRunning ? 
                     '<b style=color:var(--success-color)>' + StateManager.current_status.core_type +'&nbsp;<%:Running%></b>' : 
                     '<b style=color:var(--error-color)><%:Not Running%></b>';
-            }
-
-            if (!isRunning && StateManager.current_status && !StateManager.current_status.clash) {
-                setTimeout(function() {
-                    updatePluginToggleState(StateManager.current_status.clash || false);
-                }, 2000);
             }
         }
     }
@@ -4084,7 +3960,7 @@
         var selectedConfig = ConfigFileManager.getSelectedConfig();
 
         if (!currentConfigValue && selectedConfig) {
-            requestParams.config_file = configFileName;
+            requestParams.config_file = selectedConfig;
         }
 
         XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "action")%>', requestParams, function(x, status) {

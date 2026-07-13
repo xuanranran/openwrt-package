@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=plugin_version%>">
 <script src="/luci-static/resources/openclash/js/cm6.min.js?v=<%=plugin_version%>"></script>
 <script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
+<script src="/luci-static/resources/openclash/js/oc-icons.js?v=<%=plugin_version%>"></script>
 
 <div id="my_editor_div" style="display:flex;">
 	<div id="config-mode-tabs" style="display:flex;width:100%;">
@@ -29,10 +30,7 @@
 </div>
 
 <button type="button" class="oc-usage-help-float" id="oc-merge-toggle-btn" title="<%:Compare%>">
-	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-		<rect x="3" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-		<rect x="13" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-	</svg>
+	<svg width="24" height="24"><use href="#oc-icon-compare"/></svg>
 </button>
 
 <div id="oc-merge-help" style="display:none;">
@@ -44,8 +42,8 @@
 ocRegisterEditorHotkeys();
 
 var _ocIcons = {
-	SVG_COMPARE: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="14" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
-	SVG_RESTORE: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>'
+	SVG_COMPARE: '<svg width="18" height="18"><use href="#oc-icon-compare"/></svg>',
+	SVG_RESTORE: '<svg width="18" height="18"><use href="#oc-icon-restore"/></svg>'
 };
 
 // Uses EditorView.updateListener instead of view.dispatch override.

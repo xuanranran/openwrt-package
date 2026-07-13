@@ -2868,6 +2868,21 @@ msgstr "启动前调用内核测试配置文件..."
 msgid "Other Parameters"
 msgstr "其他附加配置"
 
+msgid "Empty URL"
+msgstr "URL 为空"
+
+msgid "Only HTTP/HTTPS URLs are supported"
+msgstr "仅支持 HTTP/HTTPS 链接"
+
+msgid "Invalid URL format"
+msgstr "无效的 URL 格式"
+
+msgid "URL missing hostname"
+msgstr "URL 缺少主机名"
+
+msgid "Invalid URL on line"
+msgstr "无效的 URL"
+
 msgid "Edit Your Other Parameters Here"
 msgstr "请在此编辑您的附加配置"
 
@@ -3912,10 +3927,19 @@ msgstr "官方网站"
 msgid "Login..."
 msgstr "登录中..."
 
+msgid "Logout..."
+msgstr "退出中..."
+
+msgid "Checkin..."
+msgstr "签到中..."
+
 msgid "oixCloud Login Successful"
 msgstr "oixCloud 登录成功"
 
-msgid "oixCloud Login Faild"
+msgid "Note: oixCloud need a specific core installed, OpenClash will auto download, After the core start, an oixCloud nodes provider will be added, which you can customize as needed"
+msgstr "注意：oixCloud 需要安装专用内核才能使用，插件会自动识别并进行内核下载，专用内核启动后，会添加一个 oixCloud 节点组到配置文件，供您自定义使用"
+
+msgid "oixCloud Login Failed"
 msgstr "oixCloud 登录失败"
 
 msgid "Login Account"
@@ -3924,7 +3948,7 @@ msgstr "登录账号"
 msgid "oixCloud Logout Successful"
 msgstr "oixCloud 已成功退出"
 
-msgid "oixCloud Logout Faild"
+msgid "oixCloud Logout Failed"
 msgstr "oixCloud 退出失败"
 
 msgid "Logout Account"
@@ -3935,16 +3959,6 @@ msgstr "账号登录"
 
 msgid "Account logged in"
 msgstr "账号已登录"
-
-msgid "Account not logged in"
-msgstr "账号未登录"
-
-msgid "Logout..."
-msgstr "退出中..."
-
-msgid "Error Login Info"
-msgstr "登录信息错误"
-
 
 msgid "Simple & trustworthy"
 msgstr "简单 & 值得信赖"
@@ -3988,9 +4002,6 @@ msgstr "剩余流量"
 msgid "Plan Traffic"
 msgstr "套餐流量"
 
-msgid "Checkin"
-msgstr "试试手气"
-
 msgid "oixCloud Account Login Failed! Please Check And Try Again..."
 msgstr "oixCloud 账户登录失败！请检查账户信息并重试..."
 
@@ -4006,14 +4017,8 @@ msgstr "账号地址"
 msgid "Account Password"
 msgstr "账号密码"
 
-msgid "Checkin Interval (hour)"
-msgstr "签到间隔（小时）"
-
 msgid "Checkin Multiple"
 msgstr "签到倍数"
-
-msgid "Multiple Must Be a Positive Integer and No More Than 100"
-msgstr "倍数必须是正整数且不大于 100"
 
 msgid "Usage Help"
 msgstr "使用帮助"
@@ -4090,12 +4095,6 @@ msgstr "oixCloud 签到成功，结果："
 msgid "oixCloud Checkin Failed, Result:"
 msgstr "oixCloud 签到失败，结果："
 
-msgid "Note: oixCloud need a specific core installed, OpenClash will auto download"
-msgstr "注意：oixCloud 需要安装专用内核才能使用，插件会自动识别并进行内核下载"
-
-msgid "After the core start, an oixCloud nodes provider will be added, which you can customize as needed"
-msgstr "专用内核启动后，会添加一个 oixCloud 节点组到配置文件，供您自定义使用"
-
 msgid "Checking backend version..."
 msgstr "正在检测后端版本..."
 
@@ -4113,3 +4112,67 @@ msgstr "未识别到后端版本信息"
 
 msgid "Unable to detect backend version"
 msgstr "无法检测后端版本"
+
+msgid "Token Login"
+msgstr "Token 登录"
+
+msgid "Enter your oixCloud token"
+msgstr "输入您的 oixCloud Token"
+
+msgid "Token login does not require email and password"
+msgstr "Token 登录无需填写邮箱和密码"
+
+msgid "Please enter email address"
+msgstr "请输入邮箱地址"
+
+msgid "Please enter password"
+msgstr "请输入密码"
+
+msgid "Please enter a valid token"
+msgstr "请输入有效的 Token"
+
+msgid "Checkin"
+msgstr "试试手气"
+
+msgid "Auto Checkin"
+msgstr "自动签到"
+
+msgid "Multiple Must Be a Positive Integer and No More Than 100"
+msgstr "倍数必须是正整数且不大于 100"
+
+msgid "Checkin Interval"
+msgstr "签到间隔"
+
+msgid "Hours"
+msgstr "小时"
+
+msgid "Checkin interval must be between 1 and 720"
+msgstr "签到间隔必须为 1 到 720 小时之间的整数"
+
+msgid "Checkin settings saved"
+msgstr "签到设置已保存"
+
+msgid "Failed to save checkin settings, please try again"
+msgstr "签到设置保存失败，请重试"
+
+msgid "Network request failed, please check your connection and try again"
+msgstr "网络请求失败，请检查网络连接后重试"
+
+msgid "Show on Overview"
+msgstr "主页显示"
+
+msgid "Setting saved"
+msgstr "设置已保存"
+
+msgid "Announcement"
+msgstr "公告"
+
+msgid "oixCloud Login Failed:"
+msgstr "oixCloud 登录失败："
+
+msgid "oixCloud Logout Failed:"
+msgstr "oixCloud 退出失败："
+
+msgid "Checkin Failed:"
+msgstr "签到失败："
+

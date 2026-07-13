@@ -296,7 +296,13 @@ function filesize(e)
 	return string.format("%.1f",e)..a[t] or "0.0 KB"
 end
 
+local _lanip_cache = nil
+local _lanip_cache_time = 0
+
 function lanip()
+	if _lanip_cache ~= nil and os.time() - _lanip_cache_time < 30 then
+		return _lanip_cache
+	end
 	local lan_int_name = uci:get("openclash", "@overwrite[0]", "lan_interface_name") or uci:get("openclash", "config", "lan_interface_name") or "0"
 	local lan_ip
 	if lan_int_name == "0" then
@@ -310,6 +316,8 @@ function lanip()
 	if not lan_ip or lan_ip == "" then
 		lan_ip = SYS.exec("ip addr show 2>/dev/null | grep -w 'inet' | grep 'global' | grep 'brd' | grep -Eo 'inet [0-9\.]+' | awk '{print $2}' | head -n 1 | tr -d '\n'")
 	end
+	_lanip_cache = lan_ip
+	_lanip_cache_time = os.time()
 	return lan_ip
 end
 
@@ -581,29 +589,47 @@ end
 --- Returns the appropriate ps command string for the system's ps implementation.
 -- Detects procps-ng (ps -efw) vs busybox (ps -w).
 -- @return String containing the ps command prefix
+local _ps_cmd_cache = nil
+
 function ps_cmd()
+	if _ps_cmd_cache ~= nil then
+		return _ps_cmd_cache
+	end
 	local ps_version = SYS.exec("ps --version 2>&1 |grep -c procps-ng |tr -d '\n'")
 	if ps_version == "1" then
-		return "ps -efw"
+		_ps_cmd_cache = "ps -efw"
 	else
-		return "ps -w"
+		_ps_cmd_cache = "ps -w"
 	end
+	return _ps_cmd_cache
 end
 
 --- Returns the package manager type (opkg or apk).
 -- @return String "opkg" or "apk"
+local _pkg_type_cache = nil
+
 function pkg_type()
-	if fs.access("/usr/bin/apk") then
-		return "apk"
-	else
-		return "opkg"
+	if _pkg_type_cache ~= nil then
+		return _pkg_type_cache
 	end
+	if fs.access("/usr/bin/apk") then
+		_pkg_type_cache = "apk"
+	else
+		_pkg_type_cache = "opkg"
+	end
+	return _pkg_type_cache
 end
 
 --- Returns the installed version of luci-app-openclash.
 -- Supports both opkg and apk package managers.
 -- @return String containing the version number, or "0" if not found
+local _oc_version_cache = nil
+local _oc_version_cache_time = 0
+
 function oc_version()
+	if _oc_version_cache ~= nil and os.time() - _oc_version_cache_time < 30 then
+		return _oc_version_cache
+	end
 	local v
 	if pkg_type() == "opkg" then
 		v = SYS.exec("rm -f /var/lock/opkg.lock && opkg status luci-app-openclash 2>/dev/null |grep '^Version:' |awk '{print $2}' |tr -d '\n'")
@@ -613,6 +639,8 @@ function oc_version()
 	if v == "" then
 		v = "0"
 	end
+	_oc_version_cache = v
+	_oc_version_cache_time = os.time()
 	return v
 end
 
