@@ -2539,7 +2539,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 8px;
+    padding: 8px 0;
     background: transparent;
     border: none;
     box-shadow: none;
@@ -2921,9 +2921,20 @@
     color: var(--text-secondary);
     background: var(--bg-gray);
     padding: 2px 4px;
-    margin: 8px;
+    margin: 8px 0;
     border-radius: var(--radius-sm);
     line-height: 1.5;
+}
+
+.oc .cbi-section-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    box-shadow: var(--shadow-sm);
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .oc[data-darkmode="true"] .oc-merge-editor-bar {
@@ -4577,7 +4588,6 @@
     border-color: var(--border-light, #374151);
 }
 
-/* Multiple providers container */
 .sub_providers_container {
     display: flex;
     gap: 4px;
@@ -4671,7 +4681,6 @@
     line-height: 1;
 }
 
-/* Dark mode support */
 .oc[data-darkmode="true"] .sub_provider_item {
     background-color: #333333;
     border-color: #666666;

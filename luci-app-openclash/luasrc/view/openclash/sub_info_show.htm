@@ -234,7 +234,7 @@ function sub_info_refresh_<%=idname%>(force) {
 
             if (!needsErrorHandling) {
                 retry_<%=idname%> = 0;
-                localStorage.setItem("sub_info_<%=filename%>", JSON.stringify(status));
+                (window.requestIdleCallback || function(cb) { setTimeout(cb, 1); })(function() { localStorage.setItem("sub_info_<%=filename%>", JSON.stringify(status)); });
                 dispaly_progressbar('<%=idname%>', status);
             }
 		} else {
@@ -248,7 +248,7 @@ function sub_info_refresh_<%=idname%>(force) {
             retry_<%=idname%> = 0;
             dispaly_progressbar('<%=idname%>', status);
             if (status && status.providers) {
-                localStorage.setItem("sub_info_<%=filename%>", JSON.stringify(status));
+                (window.requestIdleCallback || function(cb) { setTimeout(cb, 1); })(function() { localStorage.setItem("sub_info_<%=filename%>", JSON.stringify(status)); });
             }
             s_<%=idname%> = setTimeout("sub_info_refresh_<%=idname%>(false)", 60000*15);
         };

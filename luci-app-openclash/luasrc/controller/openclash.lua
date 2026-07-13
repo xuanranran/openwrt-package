@@ -139,18 +139,12 @@ else
 	meta_core_path="/tmp/etc/openclash/core/clash_meta"
 end
 
-local running_cache_val = false
-local running_cache_ts = 0
+local function is_running()
+	return SYS.call("pidof clash >/dev/null") == 0
+end
 
 local CONFIG_PATH_PREFIX = "/etc/openclash/config/"
 local CONFIG_PATH_PREFIX_LEN = #CONFIG_PATH_PREFIX + 1
-
-local function is_running()
-	if running_cache_ts == os.time() then return running_cache_val end
-	running_cache_val = (SYS.call("pidof clash >/dev/null") == 0)
-	running_cache_ts = os.time()
-	return running_cache_val
-end
 
 local function is_start()
 	return process_status("/etc/init.d/openclash")
@@ -603,27 +597,31 @@ function set_subinfo_url()
 	})
 end
 
-function fetch_sub_info(sub_url, sub_ua, sub_headers)
+function fetch_sub_info(sub_url, sub_ua, sub_headers, raw_info)
 	local info, upload, download, total, day_expire, http_code
 	local used, expire, day_left, percent, surplus
 
-	local header_args = ""
-	if sub_headers and sub_headers ~= "" then
-		for hdr in sub_headers:gmatch("[^\n]+") do
-			hdr = hdr:match("^%s*(.-)%s*$")
-			if hdr and hdr ~= "" then
-				header_args = header_args .. string.format(" -H '%s'", hdr:gsub("'", "'\\''"))
+	if raw_info then
+		info = raw_info
+	else
+		local header_args = ""
+		if sub_headers and sub_headers ~= "" then
+			for hdr in sub_headers:gmatch("[^\n]+") do
+				hdr = hdr:match("^%s*(.-)%s*$")
+				if hdr and hdr ~= "" then
+					header_args = header_args .. string.format(" -H '%s'", hdr:gsub("'", "'\\''"))
+				end
 			end
+		end
+
+		info = SYS.exec(string.format("curl -sLI -X GET -m 5 --retry 2 -w 'http_code=%%{http_code}' -H 'User-Agent: %s'%s '%s'", sub_ua, header_args, sub_url))
+		local http_match = string.match(info, "http_code=(%d+)")
+		if not info or not http_match or tonumber(http_match) ~= 200 then
+			info = SYS.exec(string.format("curl -sLI -X GET -m 5 --retry 2 -w 'http_code=%%{http_code}' -H 'User-Agent: Quantumultx'%s '%s'", header_args, sub_url))
 		end
 	end
 
-	info = SYS.exec(string.format("curl -sLI -X GET -m 5 --retry 2 -w 'http_code=%%{http_code}' -H 'User-Agent: %s'%s '%s'", sub_ua, header_args, sub_url))
 	local http_match = string.match(info, "http_code=(%d+)")
-	if not info or not http_match or tonumber(http_match) ~= 200 then
-		info = SYS.exec(string.format("curl -sLI -X GET -m 5 --retry 2 -w 'http_code=%%{http_code}' -H 'User-Agent: Quantumultx'%s '%s'", header_args, sub_url))
-		http_match = string.match(info, "http_code=(%d+)")
-	end
-
 	if info and http_match then
 		http_code = http_match
 		if tonumber(http_code) == 200 then
@@ -879,12 +877,105 @@ function sub_info_get()
 				if info then
 					providers_data[#providers_data + 1] = info
 				end
-			else
+			elseif #url_result.providers <= 1 then
 				for i, provider in ipairs(url_result.providers) do
 					local info = fetch_sub_info(provider.url, sub_ua, sub_headers)
 					if info then
 						info.provider_name = provider.name
 						providers_data[#providers_data + 1] = info
+					end
+				end
+			else
+				local header_args = ""
+				if sub_headers and sub_headers ~= "" then
+					for hdr in sub_headers:gmatch("[^\n]+") do
+						hdr = hdr:match("^%s*(.-)%s*$")
+						if hdr and hdr ~= "" then
+							header_args = header_args .. string.format(" -H '%s'", hdr:gsub("'", "'\\''"))
+						end
+					end
+				end
+
+				local function _fork_provider_curl(url)
+					local fdi, fdo = nixio.pipe()
+					if not fdi or not fdo then return nil end
+					local child = nixio.fork()
+					if child > 0 then
+						fdo:close()
+						return {pid = child, fdi = fdi, buf = ""}
+					elseif child == 0 then
+						nixio.dup(fdo, nixio.stdout)
+						fdi:close()
+						fdo:close()
+						local cmd = string.format(
+							'OUT=$(curl -sLI -X GET -m 5 --retry 2 -w "http_code=%%{http_code}" -H "User-Agent: %s"%s "%s" 2>/dev/null); '
+							.. 'CODE=$(echo "$OUT" | grep -o "http_code=[0-9]*" | head -1 | cut -d= -f2); '
+							.. 'if [ -n "$OUT" ] && [ "$CODE" = "200" ]; then echo "$OUT"; '
+							.. 'else curl -sLI -X GET -m 5 --retry 2 -w "http_code=%%{http_code}" -H "User-Agent: Quantumultx"%s "%s" 2>/dev/null; fi',
+							sub_ua, header_args, url, header_args, url
+						)
+						nixio.exec("/bin/sh", "-c", cmd)
+					else
+						if fdi then fdi:close() end
+						if fdo then fdo:close() end
+						return nil
+					end
+				end
+
+				local providers = url_result.providers
+				local jobs = {}
+
+				for i, provider in ipairs(providers) do
+					local job = _fork_provider_curl(provider.url)
+					if job then
+						job.idx = i
+						job.name = provider.name
+						jobs[#jobs + 1] = job
+					end
+				end
+
+				if #jobs > 0 then
+					local done_count = 0
+					local max_wait = 120
+					for _ = 1, max_wait do
+						for _, job in ipairs(jobs) do
+							if not job.done then
+								local buf = job.fdi:read(4096)
+								if buf then job.buf = job.buf .. buf end
+								if nixio.waitpid(job.pid, "nohang") then
+									pcall(job.fdi.close, job.fdi)
+									job.done = true
+									done_count = done_count + 1
+								end
+							end
+						end
+						if done_count >= #jobs then break end
+						nixio.nanosleep(0, 10000000)
+					end
+					for _, job in ipairs(jobs) do
+						if not job.done then
+							pcall(job.fdi.close, job.fdi)
+							nixio.kill(job.pid, 9)
+						end
+					end
+					for _, job in ipairs(jobs) do
+						if job.done and job.buf ~= "" then
+							local info = fetch_sub_info(providers[job.idx].url, sub_ua, sub_headers, job.buf)
+							if info then
+								info.provider_name = job.name
+								providers_data[#providers_data + 1] = info
+							end
+						end
+					end
+				end
+				-- Fallback: if all forks failed, try serial
+				if #providers_data == 0 then
+					for i, provider in ipairs(providers) do
+						local info = fetch_sub_info(provider.url, sub_ua, sub_headers)
+						if info then
+							info.provider_name = provider.name
+							providers_data[#providers_data + 1] = info
+						end
 					end
 				end
 			end
@@ -1045,7 +1136,6 @@ function action_toolbar_show_sys()
 	local cpu = "0"
 	local load_avg = "0"
 	local cpu_count = SYS.exec("grep -c ^processor /proc/cpuinfo 2>/dev/null"):gsub("\n", "") or 1
-
 	local pid = SYS.exec("pgrep -f '^[^ ]*clash' | head -1 | tr -d '\n' 2>/dev/null")
 
 	if pid and pid ~= "" then
@@ -1088,8 +1178,72 @@ function action_toolbar_show()
 		local cn_port = cn_port()
 		if not daip or not cn_port then return end
 
-		traffic = json.parse(SYS.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/traffic', dase, daip, cn_port)))
-		connections = json.parse(SYS.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/connections', dase, daip, cn_port)))
+		-- Parallel curl helper
+		local function _fork_curl(endpoint)
+			local fdi, fdo = nixio.pipe()
+			if not fdi or not fdo then return nil end
+			local child = nixio.fork()
+			if child > 0 then
+				fdo:close()
+				return {pid = child, fdi = fdi, buf = ""}
+			elseif child == 0 then
+				nixio.dup(fdo, nixio.stdout)
+				fdi:close()
+				fdo:close()
+				local cmd = string.format(
+					'curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET "http://%s:%s/%s"',
+					dase, daip, cn_port, endpoint
+				)
+				nixio.exec("/bin/sh", "-c", cmd)
+			else
+				if fdi then fdi:close() end
+				if fdo then fdo:close() end
+				return nil
+			end
+		end
+
+		local t_job = _fork_curl("traffic")
+		local c_job = _fork_curl("connections")
+
+		if t_job and c_job then
+			local t_done, c_done = false, false
+			local max_wait = 60
+			for _ = 1, max_wait do
+				if not t_done then
+					local buf = t_job.fdi:read(4096)
+					if buf then t_job.buf = t_job.buf .. buf end
+					if nixio.waitpid(t_job.pid, "nohang") then
+						pcall(t_job.fdi.close, t_job.fdi)
+						t_done = true
+					end
+				end
+				if not c_done then
+					local buf = c_job.fdi:read(4096)
+					if buf then c_job.buf = c_job.buf .. buf end
+					if nixio.waitpid(c_job.pid, "nohang") then
+						pcall(c_job.fdi.close, c_job.fdi)
+						c_done = true
+					end
+				end
+				if t_done and c_done then break end
+				nixio.nanosleep(0, 10000000)
+			end
+			if not t_done then
+				pcall(t_job.fdi.close, t_job.fdi)
+				nixio.kill(t_job.pid, 9)
+			end
+			if not c_done then
+				pcall(c_job.fdi.close, c_job.fdi)
+				nixio.kill(c_job.pid, 9)
+			end
+			traffic = t_done and t_job.buf ~= "" and json.parse(t_job.buf) or nil
+			connections = c_done and c_job.buf ~= "" and json.parse(c_job.buf) or nil
+		else
+			if t_job then pcall(t_job.fdi.close, t_job.fdi) end
+			if c_job then pcall(c_job.fdi.close, c_job.fdi) end
+			traffic = json.parse(SYS.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/traffic', dase, daip, cn_port)))
+			connections = json.parse(SYS.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" -H "Authorization: Bearer %s" -XGET http://"%s":"%s"/connections', dase, daip, cn_port)))
+		end
 
 		if traffic and connections and connections.connections then
 			connection = #(connections.connections)
@@ -3079,8 +3233,8 @@ function action_config_file_list()
 	local config_files = {}
 	local age_files = {}
 	local current_config = ""
-
 	local config_path = fs.uci_get_config("config", "config_path")
+
 	if config_path then
 		current_config = config_path
 	end
@@ -3099,6 +3253,35 @@ function action_config_file_list()
 	end)
 
 	local config_dir = "/etc/openclash/config/"
+	local fingerprint_parts = {}
+	local cache_valid = false
+	local client_fp = HTTP.formvalue("fingerprint")
+
+	if fs.access(config_dir) then
+		local files = fs.dir(config_dir)
+		if files then
+			local yaml_files = {}
+			for _, f in ipairs(files) do
+				if string.match(f, "%.ya?ml$") then
+					local stat = fs.stat(config_dir .. f)
+					if stat and stat.type == "regular" then
+						yaml_files[#yaml_files + 1] = f .. ":" .. (stat.mtime or 0)
+					end
+				end
+			end
+			table.sort(yaml_files)
+			fingerprint_parts[#fingerprint_parts + 1] = table.concat(yaml_files, "|")
+		end
+	end
+	for _, a in ipairs(age_files) do
+		fingerprint_parts[#fingerprint_parts + 1] = "AGE:" .. a.name .. ":" .. (a.secret ~= "" and "1" or "0")
+	end
+	local fingerprint = table.concat(fingerprint_parts, "||")
+
+	if client_fp and client_fp == fingerprint then
+		cache_valid = true
+	end
+
 	if fs.access(config_dir) then
 		local files = fs.dir(config_dir)
 		if files then
@@ -3106,8 +3289,8 @@ function action_config_file_list()
 				local full_path = config_dir .. file
 				local stat = fs.stat(full_path)
 				local name_no_ext = file:match("^(.*)%.ya?ml$")
-				if stat and stat.type == "regular" then
-					if name_no_ext then
+				if stat and stat.type == "regular" and string.match(file, "%.ya?ml$") then
+					if name_no_ext and #age_files > 0 and not cache_valid then
 						local cfile = io.open(full_path,"r")
 						if cfile then
 							local content = cfile:read(1024)
@@ -3118,18 +3301,16 @@ function action_config_file_list()
 									break
 								end
 							end
+							cfile:close()
 						end
-						cfile:close()
 					end
-					if string.match(file, "%.ya?ml$") then
-						table.insert(config_files, {
-							name = file,
-							path = full_path,
-							size = stat.size,
-							mtime = stat.mtime,
-							age = stat.age or false
-						})
-					end
+					table.insert(config_files, {
+						name = file,
+						path = full_path,
+						size = stat.size,
+						mtime = stat.mtime,
+						age = stat.age or false
+					})
 				end
 			end
 		end
@@ -3143,7 +3324,8 @@ function action_config_file_list()
 	HTTP.write_json({
 		config_files = config_files,
 		current_config = current_config,
-		total_count = #config_files
+		total_count = #config_files,
+		fingerprint = fingerprint
 	})
 end
 

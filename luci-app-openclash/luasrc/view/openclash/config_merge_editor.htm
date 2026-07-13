@@ -55,9 +55,10 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 	var descr = document.getElementById("my_editor_div");
 	var sectionTable = target.parentNode.parentNode.parentNode.parentNode.parentNode;
 	if (sectionTable && sectionTable.parentNode) {
-		var fieldset = sectionTable.parentNode.parentNode;
+		var fieldset = sectionTable.parentNode.parentNode.querySelector('fieldset');
 		if (fieldset) {
-			fieldset.classList.add('oc');
+			fieldset.parentNode.classList.add('oc');
+			fieldset.classList.add('cbi-section-card');
 		}
 		sectionTable.parentNode.insertBefore(descr, sectionTable);
 	}
@@ -65,10 +66,11 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 
 	var editorCell = target.parentNode;
 	editorCell.style.position = "relative";
-	editorCell.classList.add('oc');
+	editorCell.style.background = "var(--bg-gray)";
+	editorCell.style.borderRadius = 'var(--radius-md)';
+	editorCell.style.padding = '12px';
 	var toggleBtn = document.getElementById('oc-merge-toggle-btn');
 	if (toggleBtn) {
-		toggleBtn.classList.add('oc');
 		editorCell.appendChild(toggleBtn);
 		toggleBtn.style.display = 'flex';
 		toggleBtn.onclick = function(e) {
@@ -83,7 +85,7 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 		helpEl.style.display = 'inline';
 		var footer = document.createElement('div');
 		footer.className = 'config-editor-footer';
-		footer.style.cssText = 'border-radius:var(--radius-sm);margin: 8px;';
+		footer.style.cssText = 'border-radius:var(--radius-sm);margin: 8px 0;';
 		var statusDiv = document.createElement('div');
 		statusDiv.className = 'config-editor-status';
 		var mergeModeLabel = document.createElement('span');
@@ -118,7 +120,6 @@ function config_merge_editor(id, id2, target, target2, readOnly, readOnly2, wid,
 	target2.parentNode.style.display = "none";
 	target.parentNode.colSpan = 2;
 	target.style.height = "700px";
-	target.classList.add('oc');
 
 	var useContent = id.value || '';
 	var defContent = id2.value || '';
@@ -208,7 +209,6 @@ function _createSingleMergeEditor(content, readOnly) {
 		var orphans = state.target.querySelectorAll('.cm-editor, .cm-mergeView');
 		for (var i = 0; i < orphans.length; i++) { orphans[i].remove(); }
 		state.target.style.height = '700px';
-		state.target.classList.add('oc');
 		if (state.target.parentNode) state.target.parentNode.colSpan = 2;
 	}
 
@@ -261,7 +261,6 @@ function _renderMergeView() {
 		var orphans = state.target.querySelectorAll('.cm-editor');
 		for (var i = 0; i < orphans.length; i++) { orphans[i].remove(); }
 		state.target.style.height = '700px';
-		state.target.classList.add('oc');
 		if (state.target.parentNode) state.target.parentNode.colSpan = 2;
 	}
 
