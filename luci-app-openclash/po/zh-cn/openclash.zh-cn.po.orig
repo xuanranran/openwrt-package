@@ -4125,6 +4125,9 @@ msgstr "Token 登录无需填写邮箱和密码"
 msgid "Please enter email address"
 msgstr "请输入邮箱地址"
 
+msgid "Please enter a valid email address"
+msgstr "请输入有效的邮箱地址"
+
 msgid "Please enter password"
 msgstr "请输入密码"
 

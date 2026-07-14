@@ -4119,6 +4119,9 @@ msgstr "Acceso por token: no requiere email ni contraseña"
 msgid "Please enter email address"
 msgstr "Ingresa el correo electrónico"
 
+msgid "Please enter a valid email address"
+msgstr "Ingresa un correo electrónico válido"
+
 msgid "Please enter password"
 msgstr "Ingresa la contraseña"
 

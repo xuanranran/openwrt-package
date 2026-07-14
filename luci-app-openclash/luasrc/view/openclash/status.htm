@@ -728,8 +728,6 @@
             this.stopHeartbeat(type);
 
             if (this._allowedCloseCodes.indexOf(event.code) === -1) {
-                // Unexpected close — core may have restarted, show log
-                LogManager.startLogDisplay();
                 this.scheduleReconnect(type);
             }
         },
@@ -761,6 +759,7 @@
         enableFallbackMode: function() {
             this._ws_connect = false;
             this.closeAll();
+            LogManager.startLogDisplay();
             if (!NetworkStatsManager.isEnabled) {
                 NetworkStatsManager.start();
             }
@@ -2064,7 +2063,7 @@
 
         startLogDisplay: function(initialMessage) {
             if (this.isPolling) {
-                this.stopLogDisplay();
+                return;
             }
             if (this.pollTimer) {
                 clearTimeout(this.pollTimer);
@@ -2930,6 +2929,7 @@
 
             if (status.clash && status.daip) {
                 if (!WSManager.hasActiveConnections()) {
+                    LogManager.startLogDisplay();
                     initializeWebSocketConnections(status);
                 } else {
                     if (NetworkStatsManager.isEnabled) {
