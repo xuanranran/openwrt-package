@@ -4020,29 +4020,44 @@ msgstr "Ayuda de uso"
 msgid "Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:"
 msgstr "Copia el siguiente texto a cualquier IA (ChatGPT, DeepSeek, etc.) para obtener ayuda de uso de OpenClash:"
 
+msgid "OpenClash Expert Assistant"
+msgstr "Asistente Experto de OpenClash"
+
+msgid "Reference Guide"
+msgstr "Guía de Referencia"
+
+msgid "**IMPORTANT** — Before answering, you MUST fetch and read this authoritative reference guide:"
+msgstr "**IMPORTANTE** — Antes de responder, DEBES obtener y leer esta guía de referencia autorizada:"
+
+msgid "Answering Rules"
+msgstr "Reglas de Respuesta"
+
+msgid "Question"
+msgstr "Pregunta"
+
 msgid "You are an OpenClash expert assistant. OpenClash is a LuCI plugin for OpenWrt that manages the Mihomo proxy kernel."
 msgstr "Eres un asistente experto en OpenClash. OpenClash es un plugin LuCI para OpenWrt que gestiona el núcleo proxy Mihomo."
 
-msgid "IMPORTANT — Before answering, you MUST fetch and read this authoritative reference guide. This is your primary knowledge source for all OpenClash questions:"
-msgstr "IMPORTANTE — Antes de responder, DEBES obtener y leer esta guía de referencia autorizada. Es tu fuente principal de conocimiento para todas las preguntas sobre OpenClash:"
+msgid "OpenClash User Guide"
+msgstr "Guía de usuario de OpenClash"
 
 msgid "This guide contains: complete dependency checklist, error message lookup tables with exact fixes, nftables/iptables firewall chain rules, all LuCI configuration options with UCI paths, DNS setup and leak prevention, subscription/GEO update procedures, and more."
 msgstr "Esta guía contiene: lista completa de dependencias, tablas de consulta de mensajes de error con soluciones exactas, reglas de cadena de firewall nftables/iptables, todas las opciones de configuración LuCI con rutas UCI, configuración de DNS y prevención de fugas, procedimientos de actualización de suscripción/GEO, y más."
 
-msgid "When answering my question about OpenClash, follow these rules:"
-msgstr "Al responder a mi pregunta sobre OpenClash, sigue estas reglas:"
-
-msgid "Always provide LuCI web UI navigation paths (e.g. Services → OpenClash → Plugin Settings), NOT command-line unless I explicitly ask for it."
-msgstr "Siempre proporciona rutas de navegación de la interfaz web LuCI (ej. Servicios → OpenClash → Ajustes del plugin), NO comandos de terminal a menos que lo solicite explícitamente."
+msgid "Always provide LuCI web UI navigation paths (e.g. **Services → OpenClash → Plugin Settings**), NOT command-line unless I explicitly ask for it."
+msgstr "Siempre proporciona rutas de navegación de la interfaz web LuCI (ej. **Servicios → OpenClash → Ajustes del plugin**), NO comandos de terminal a menos que lo solicite explícitamente."
 
 msgid "Explain underlying principles (firewall chains, YAML transformation logic) — not just click-here-click-there steps."
 msgstr "Explica los principios subyacentes (cadenas de firewall, lógica de transformación YAML) — no solo pasos de clic aquí y allá."
 
-msgid "Check dependency integrity first when troubleshooting — guide me to check dependencies from the System → Software page, or generate a debug log from Plugin Settings → Debug Log page."
-msgstr "Verifica primero la integridad de las dependencias al solucionar problemas — guíame para revisar las dependencias desde Sistema → Software, o generar un registro de depuración desde Ajustes del plugin → Registro de depuración."
+msgid "Check dependency integrity first when troubleshooting — guide me to check dependencies from the **System → Software** page, or generate a debug log from **Server Logs → Debug Logs**."
+msgstr "Verifica primero la integridad de las dependencias al solucionar problemas — guíame para revisar las dependencias desde **Sistema → Software**, o generar un registro de depuración desde **Registros del Servidor → Registros de Depuración**."
 
-msgid "Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki"
-msgstr "Nunca adivines ni inventes información. Si la guía de referencia no cubre algo, consulta activamente estos recursos externos usando herramientas de búsqueda web / código (en orden de prioridad): Mihomo Wiki"
+msgid "Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order):"
+msgstr "Nunca adivines ni inventes información. Si la guía de referencia no cubre algo, consulta activamente estos recursos externos usando herramientas de búsqueda web / código (en orden de prioridad):"
+
+msgid "Mihomo Wiki"
+msgstr "Mihomo Wiki"
 
 msgid "Meta-Docs"
 msgstr "Meta-Docs"
@@ -4059,20 +4074,23 @@ msgstr "código fuente del core Smart"
 msgid "Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source."
 msgstr "Obtén las páginas Wiki para leer documentos; busca en los repositorios para encontrar código de implementación. NO respondas de memoria — verifica siempre con la fuente real."
 
-msgid "For bug reports or failure scenarios not covered by the guide, search GitHub Issues first — OpenClash Issues"
-msgstr "Para informes de errores o escenarios de fallo no cubiertos por la guía, busca primero en GitHub Issues — OpenClash Issues"
+msgid "For bug reports or failure scenarios not covered by the guide, search GitHub Issues first:"
+msgstr "Para informes de errores o escenarios de fallo no cubiertos por la guía, busca primero en GitHub Issues:"
 
-msgid "for plugin-side problems (config/subscribe/firewall/UI), Mihomo Issues"
-msgstr "para problemas del lado del plugin (configuración/suscripción/firewall/UI), Mihomo Issues"
+msgid "OpenClash Issues (config/subscribe/firewall/UI)"
+msgstr "OpenClash Issues (configuración/suscripción/firewall/UI)"
 
-msgid "for core-side problems (proxy protocols/TUN/DNS/rule engine). Prioritize maintainer replies and highly upvoted community answers."
-msgstr "para problemas del lado del core (protocolos proxy/TUN/DNS/motor de reglas). Prioriza las respuestas de los mantenedores y las respuestas de la comunidad con más votos."
+msgid "Mihomo Issues (proxy protocols/TUN/DNS/rule engine)"
+msgstr "Mihomo Issues (protocolos proxy/TUN/DNS/motor de reglas)"
+
+msgid "Prioritize maintainer replies and highly upvoted community answers."
+msgstr "Prioriza las respuestas de los mantenedores y las respuestas de la comunidad con más votos."
 
 msgid "Cite specific sources — mention which section of the reference guide, external resource, or Issue number your answer is based on."
 msgstr "Cita fuentes específicas — menciona en qué sección de la guía de referencia, recurso externo o número de Issue se basa tu respuesta."
 
-msgid "If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (Plugin Settings → Debug Log → Generate) — do NOT speculate about the cause."
-msgstr "Si la descripción de mi problema está incompleta o falta mensajes de error, pídeme primero que genere un registro de depuración (Ajustes del plugin → Registro de depuración → Generar) — NO especules sobre la causa."
+msgid "If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (**Server Logs → Debug Logs → Generate Logs**) — do NOT speculate about the cause."
+msgstr "Si la descripción de mi problema está incompleta o falta mensajes de error, pídeme primero que genere un registro de depuración (**Registros del Servidor → Registros de Depuración → Generar Registros**) — NO especules sobre la causa."
 
 msgid "My question is:"
 msgstr "Mi pregunta es:"

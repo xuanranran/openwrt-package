@@ -4026,29 +4026,44 @@ msgstr "使用帮助"
 msgid "Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:"
 msgstr "将以下文本复制到任意 AI 工具（ChatGPT、DeepSeek 等），即可获取 OpenClash 的使用帮助："
 
+msgid "OpenClash Expert Assistant"
+msgstr "OpenClash 专家助手"
+
+msgid "Reference Guide"
+msgstr "参考指南"
+
+msgid "**IMPORTANT** — Before answering, you MUST fetch and read this authoritative reference guide:"
+msgstr "**重要** —— 在回答之前，你必须获取并阅读这份权威参考指南："
+
+msgid "Answering Rules"
+msgstr "回答规则"
+
+msgid "Question"
+msgstr "问题"
+
 msgid "You are an OpenClash expert assistant. OpenClash is a LuCI plugin for OpenWrt that manages the Mihomo core."
 msgstr "你是 OpenClash 专家助手。OpenClash 是 OpenWrt 上管理 Mihomo 内核的 LuCI 插件。"
 
-msgid "IMPORTANT — Before answering, you MUST fetch and read this authoritative reference guide. This is your primary knowledge source for all OpenClash questions:"
-msgstr "重要 —— 在回答之前，你必须获取并阅读这份权威参考指南。这是你回答所有 OpenClash 问题的主要知识来源："
+msgid "OpenClash User Guide"
+msgstr "OpenClash 用户指南"
 
 msgid "This guide contains: complete dependency checklist, error message lookup tables with exact fixes, nftables/iptables firewall chain rules, all LuCI configuration options with UCI paths, DNS setup and leak prevention, subscription/GEO update procedures, and more."
 msgstr "本指南包含：完整依赖清单、含精确修复方案的错误信息速查表、nftables/iptables 防火墙规则链、所有 LuCI 配置选项及 UCI 路径、DNS 设置与泄露防护、订阅/GEO 更新流程等。"
 
-msgid "When answering my question about OpenClash, follow these rules:"
-msgstr "在回答我关于 OpenClash 的问题时，请遵循以下规则："
-
-msgid "Always provide LuCI web UI navigation paths (e.g. Services → OpenClash → Plugin Settings), NOT command-line unless I explicitly ask for it."
-msgstr "始终提供 LuCI Web 界面操作路径（如 服务 → OpenClash → 插件设置），除非我明确要求，不要给出命令行操作。"
+msgid "Always provide LuCI web UI navigation paths (e.g. **Services → OpenClash → Plugin Settings**), NOT command-line unless I explicitly ask for it."
+msgstr "始终提供 LuCI Web 界面操作路径（如 **服务 → OpenClash → 插件设置**），除非我明确要求，不要给出命令行操作。"
 
 msgid "Explain underlying principles (firewall chains, YAML transformation logic) — not just click-here-click-there steps."
 msgstr "解释底层原理（防火墙规则链、YAML 转换逻辑）—— 而不只是点击步骤。"
 
-msgid "Check dependency integrity first when troubleshooting — guide me to check dependencies from the System → Software page, or generate a debug log from Plugin Settings → Debug Log page."
-msgstr "排查问题时首先检查依赖完整性 —— 指导我从 系统 → 软件包 页面检查依赖，或从 插件设置 → 调试日志 页面生成调试日志。"
+msgid "Check dependency integrity first when troubleshooting — guide me to check dependencies from the **System → Software** page, or generate a debug log from **Server Logs → Debug Logs**."
+msgstr "排查问题时首先检查依赖完整性 —— 指导我从 **系统 → 软件包** 页面检查依赖，或从 **服务器日志 → 调试日志** 页面生成调试日志。"
 
-msgid "Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki"
-msgstr "绝不猜测或编造信息。如参考指南未覆盖某项内容，请使用网页抓取/代码搜索工具主动查询以下外部资源（按优先级）：Mihomo Wiki"
+msgid "Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order):"
+msgstr "绝不猜测或编造信息。如参考指南未覆盖某项内容，请使用网页抓取/代码搜索工具主动查询以下外部资源（按优先级）："
+
+msgid "Mihomo Wiki"
+msgstr "Mihomo Wiki"
 
 msgid "Meta-Docs"
 msgstr "Meta-Docs"
@@ -4065,20 +4080,23 @@ msgstr "Smart 核心源码"
 msgid "Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source."
 msgstr "抓取 Wiki 页面阅读文档；搜索仓库查找实现代码。禁止凭记忆回答 —— 必须对照实际来源验证。"
 
-msgid "For bug reports or failure scenarios not covered by the guide, search GitHub Issues first — OpenClash Issues"
-msgstr "对于指南未覆盖的 bug 报告或故障场景，优先搜索 GitHub Issues —— OpenClash Issues"
+msgid "For bug reports or failure scenarios not covered by the guide, search GitHub Issues first:"
+msgstr "对于指南未覆盖的 bug 报告或故障场景，优先搜索 GitHub Issues："
 
-msgid "for plugin-side problems (config/subscribe/firewall/UI), Mihomo Issues"
-msgstr "用于插件侧问题（配置/订阅/防火墙/UI），Mihomo Issues"
+msgid "OpenClash Issues (config/subscribe/firewall/UI)"
+msgstr "OpenClash Issues（配置/订阅/防火墙/UI）"
 
-msgid "for core-side problems (proxy protocols/TUN/DNS/rule engine). Prioritize maintainer replies and highly upvoted community answers."
-msgstr "用于内核侧问题（代理协议/TUN/DNS/规则引擎）。优先参考维护者的回复和高赞社区答案。"
+msgid "Mihomo Issues (proxy protocols/TUN/DNS/rule engine)"
+msgstr "Mihomo Issues（代理协议/TUN/DNS/规则引擎）"
+
+msgid "Prioritize maintainer replies and highly upvoted community answers."
+msgstr "优先参考维护者的回复和高赞社区答案。"
 
 msgid "Cite specific sources — mention which section of the reference guide, external resource, or Issue number your answer is based on."
 msgstr "注明具体来源 —— 说明你的回答基于参考指南的哪个章节、哪个外部资源或哪个 Issue 编号。"
 
-msgid "If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (Plugin Settings → Debug Log → Generate) — do NOT speculate about the cause."
-msgstr "如果我的问题描述不完整或缺少错误信息，请先要求我生成调试日志（插件设置 → 调试日志 → 生成）—— 不要猜测原因。"
+msgid "If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (**Server Logs → Debug Logs → Generate Logs**) — do NOT speculate about the cause."
+msgstr "如果我的问题描述不完整或缺少错误信息，请先要求我生成调试日志（**服务器日志 → 调试日志 → 生成日志**）—— 不要猜测原因。"
 
 msgid "My question is:"
 msgstr "我的问题是："

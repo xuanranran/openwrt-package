@@ -477,19 +477,6 @@ function ocFormatFileSize(bytes) {
 	return ocFormatBytes(bytes);
 }
 
-function ocDebounce(fn, delay) {
-	var timer = null;
-	return function(btn) {
-		var key = btn.id || btn.value;
-		if (timer) clearTimeout(timer);
-		btn.disabled = true;
-		timer = setTimeout(function() {
-			try { fn(btn); } finally { timer = null; }
-		}, delay || 300);
-		return false;
-	};
-}
-
 function ocGetDashboardBaseURL(status) {
 	var host, port, proto;
 	if (status.daip && window.location.hostname === status.daip) {

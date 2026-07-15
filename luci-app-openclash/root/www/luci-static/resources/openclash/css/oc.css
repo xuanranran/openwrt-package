@@ -261,8 +261,8 @@
 }
 
 .oc[data-darkmode="true"] .dashboard-btn:disabled {
-    background: var(--bg-gray) !important;
-    color: var(--text-secondary) !important;
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
 }
 
 .oc[data-darkmode="true"] .config-select {
@@ -878,6 +878,11 @@
 
 .oc .dashboard-btn:hover {
     background: var(--btn-primary-hover) !important;
+}
+
+.oc .dashboard-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
 }
 
 .oc .stat-label {
@@ -1601,6 +1606,11 @@
     transition: all var(--transition-fast);
 }
 
+.oc .config-upload-model.usage-help-model {
+    max-width: 800px;
+    max-height: 90vh;
+}
+
 .oc .config-upload-header {
     display: flex;
     align-items: center;
@@ -2164,7 +2174,8 @@
     box-sizing: border-box;
 }
 
-.oc[data-darkmode="true"] .config-upload-model {
+.oc[data-darkmode="true"] .config-upload-model,
+.oc[data-darkmode="true"] .usage-help-model {
     background: var(--bg-white);
     border-color: var(--border-light);
 }
@@ -2173,6 +2184,35 @@
 .oc[data-darkmode="true"] .config-upload-footer {
     background: var(--bg-gray);
     border-color: var(--border-light);
+}
+
+.oc[data-darkmode="true"] .config-upload-content {
+    background: var(--bg-white);
+    color: var(--text-primary);
+}
+
+.oc[data-darkmode="true"] .config-upload-title {
+    color: var(--text-primary);
+}
+
+.oc[data-darkmode="true"] .config-upload-status {
+    color: var(--text-secondary);
+}
+
+.oc[data-darkmode="true"] .highlight-label {
+    background: var(--bg-gray);
+    color: var(--text-primary);
+}
+
+.oc[data-darkmode="true"] .cancel-btn {
+    background: var(--bg-gray);
+    color: var(--text-secondary);
+    border-color: var(--border-light);
+}
+
+.oc[data-darkmode="true"] .cancel-btn:hover {
+    background: var(--bg-light);
+    color: var(--text-primary);
 }
 
 .oc[data-darkmode="true"] .mode-tab {

@@ -7,6 +7,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=plugin_version%>">
+<script src="/luci-static/resources/openclash/js/cm6.min.js?v=<%=plugin_version%>"></script>
 </head>
 <fieldset class="cbi-section">
     <table width="100%">
@@ -300,7 +301,7 @@
 
             <!-- Usage Help Model -->
             <div class="config-upload-model-overlay" id="usage-help-overlay" style="display: none;">
-                <div class="config-upload-model" id="usage-help-model">
+                <div class="config-upload-model usage-help-model" id="usage-help-model">
                     <div class="config-upload-header">
                         <div class="config-upload-title"><%:Usage Help%></div>
                         <button type="button" class="icon-btn" onclick="UsageHelpManager.hide()">
@@ -310,7 +311,8 @@
                     <div class="config-upload-content">
                         <div class="form-group">
                             <label class="highlight-label"><%:Copy the following text to any AI (ChatGPT, DeepSeek, etc.) to get usage help for OpenClash:%></label>
-                            <textarea id="usage-help-textarea" class="form-textarea" rows="10"></textarea>
+                            <textarea id="usage-help-textarea" class="form-textarea" style="display:none"></textarea>
+                            <div id="usage-help-editor" style="height: 400px;"></div>
                         </div>
                     </div>
                     <div class="config-upload-footer">
@@ -2706,18 +2708,30 @@
 
         buildPrompt: function() {
             var skillUrl = 'https://raw.githubusercontent.com/vernesong/OpenClash/dev/.github/skills/openclash-user-guide/SKILL.md';
-            var prompt = '<%:You are an OpenClash expert assistant. OpenClash is a LuCI plugin for OpenWrt that manages the Mihomo core.%>\n\n';
-            prompt += '<%:IMPORTANT — Before answering, you MUST fetch and read this authoritative reference guide. This is your primary knowledge source for all OpenClash questions:%>\n';
-            prompt += skillUrl + '\n\n';
+            var prompt = '# <%:OpenClash Expert Assistant%>\n\n';
+            prompt += '<%:You are an OpenClash expert assistant. OpenClash is a LuCI plugin for OpenWrt that manages the Mihomo core.%>\n\n';
+            prompt += '## <%:Reference Guide%>\n\n';
+            prompt += '<%:**IMPORTANT** — Before answering, you MUST fetch and read this authoritative reference guide:%>\n';
+            prompt += '- [<%:OpenClash User Guide%>](' + skillUrl + ')\n\n';
             prompt += '<%:This guide contains: complete dependency checklist, error message lookup tables with exact fixes, nftables/iptables firewall chain rules, all LuCI configuration options with UCI paths, DNS setup and leak prevention, subscription/GEO update procedures, and more.%>\n\n';
-            prompt += '<%:When answering my question about OpenClash, follow these rules:%>\n';
-            prompt += '1. <%:Always provide LuCI web UI navigation paths (e.g. Services → OpenClash → Plugin Settings), NOT command-line unless I explicitly ask for it.%>\n';
+            prompt += '## <%:Answering Rules%>\n\n';
+            prompt += '1. <%:Always provide LuCI web UI navigation paths (e.g. **Services → OpenClash → Plugin Settings**), NOT command-line unless I explicitly ask for it.%>\n';
             prompt += '2. <%:Explain underlying principles (firewall chains, YAML transformation logic) — not just click-here-click-there steps.%>\n';
-            prompt += '3. <%:Check dependency integrity first when troubleshooting — guide me to check dependencies from the System → Software page, or generate a debug log from Plugin Settings → Debug Log page.%>\n';
-            prompt += '4. <%:Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order): Mihomo Wiki%> (https://wiki.metacubex.one/config/) , <%:Meta-Docs%> (https://github.com/MetaCubeX/Meta-Docs) , <%:OpenClash source%> (https://github.com/vernesong/OpenClash/tree/dev) , <%:Mihomo core source%> (https://github.com/MetaCubeX/mihomo/tree/Alpha) , <%:Smart core source%> (https://github.com/vernesong/mihomo/tree/Alpha) . <%:Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source.%>\n';
-            prompt += '5. <%:For bug reports or failure scenarios not covered by the guide, search GitHub Issues first — OpenClash Issues%> (https://github.com/vernesong/OpenClash/issues) <%:for plugin-side problems (config/subscribe/firewall/UI), Mihomo Issues%> (https://github.com/MetaCubeX/mihomo/issues) <%:for core-side problems (proxy protocols/TUN/DNS/rule engine). Prioritize maintainer replies and highly upvoted community answers.%>\n';
+            prompt += '3. <%:Check dependency integrity first when troubleshooting — guide me to check dependencies from the **System → Software** page, or generate a debug log from **Server Logs → Debug Logs**.%>\n';
+            prompt += '4. <%:Never guess or fabricate information. If the reference guide does not cover something, actively query these external resources using web fetch / code search tools (in priority order):%>\n';
+            prompt += '   - [<%:Mihomo Wiki%>](https://wiki.metacubex.one/config/)\n';
+            prompt += '   - [<%:Meta-Docs%>](https://github.com/MetaCubeX/Meta-Docs)\n';
+            prompt += '   - [<%:OpenClash source%>](https://github.com/vernesong/OpenClash/tree/dev)\n';
+            prompt += '   - [<%:Mihomo core source%>](https://github.com/MetaCubeX/mihomo/tree/Alpha)\n';
+            prompt += '   - [<%:Smart core source%>](https://github.com/vernesong/mihomo/tree/Alpha)\n';
+            prompt += '   - <%:Fetch Wiki pages to read docs; search repos to find implementation code. Do NOT answer from memory — always verify against the actual source.%>\n';
+            prompt += '5. <%:For bug reports or failure scenarios not covered by the guide, search GitHub Issues first:%>\n';
+            prompt += '   - [<%:OpenClash Issues (config/subscribe/firewall/UI)%>](https://github.com/vernesong/OpenClash/issues)\n';
+            prompt += '   - [<%:Mihomo Issues (proxy protocols/TUN/DNS/rule engine)%>](https://github.com/MetaCubeX/mihomo/issues)\n';
+            prompt += '   - <%:Prioritize maintainer replies and highly upvoted community answers.%>\n';
             prompt += '6. <%:Cite specific sources — mention which section of the reference guide, external resource, or Issue number your answer is based on.%>\n';
-            prompt += '7. <%:If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (Plugin Settings → Debug Log → Generate) — do NOT speculate about the cause.%>\n\n';
+            prompt += '7. <%:If my problem description is incomplete or lacks error messages, ask me to generate a debug log first (**Server Logs → Debug Logs → Generate Logs**) — do NOT speculate about the cause.%>\n\n';
+            prompt += '## <%:Question%>\n\n';
             prompt += '<%:My question is:%>\n';
             return prompt;
         },
@@ -2731,15 +2745,31 @@
                 this._portal.style.overflow = 'visible';
                 document.body.appendChild(this._portal);
                 this._portal.appendChild(this.overlay);
+                ocUpdateTheme();
             }
-            this.textarea.value = this.buildPrompt();
             this.overlay.style.display = 'flex';
             if (this.statusEl) {
                 this.statusEl.textContent = '';
             }
+
+            if (!this._editor) {
+                var prompt = this.buildPrompt();
+                this.textarea.value = prompt;
+                var container = document.getElementById('usage-help-editor');
+                var isDark = isDarkBackground(document.body);
+                var exts = [CM6.lineNumbers(), CM6.EditorView.lineWrapping, CM6.themeExtension(isDark), CM6.markdown()];
+                var view = new CM6.EditorView({
+                    state: CM6.EditorState.create({ doc: prompt, extensions: exts })
+                });
+                container.innerHTML = '';
+                container.appendChild(view.dom);
+                this._editor = view;
+            }
+
+            var self = this;
             setTimeout(function() {
-                if (UsageHelpManager.textarea) {
-                    UsageHelpManager.textarea.focus();
+                if (self._editor && self._editor.contentDOM) {
+                    self._editor.focus();
                 }
             }, 100);
         },
@@ -2751,11 +2781,10 @@
         },
 
         copyText: function() {
-            if (!this.textarea) return;
-            this.textarea.select();
-            this.textarea.setSelectionRange(0, 99999);
+            if (!this._editor) return;
+            var text = this._editor.state.doc.toString();
             try {
-                navigator.clipboard.writeText(this.textarea.value).then(function() {
+                navigator.clipboard.writeText(text).then(function() {
                     if (UsageHelpManager.statusEl) {
                         UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
                         setTimeout(function() {
@@ -2790,12 +2819,10 @@
     var _domReady = false;
     var _lastNotRunningPoll = 0;
 
-    // Fire XHR early — runs in parallel with page load (oixcloud/myip etc.)
     XHR.poll(5, '<%=luci.dispatcher.build_url("admin", "services", "openclash", "status")%>', null, function(x, status) {
-        if (!_domReady) return; // Defer until DOM is fully ready
+        if (!_domReady) return; 
         if (x && x.status == 200) {
 
-            // Adaptive polling: skip if core stopped and we recently checked
             if (!status.clash && Date.now() - _lastNotRunningPoll < 30000) return;
             if (!status.clash) _lastNotRunningPoll = Date.now();
             var updates = [];
@@ -3043,8 +3070,6 @@
         var resizeTimeout = null;
         var animationEndHandler = null;
         var destroyed = false;
-
-        // Cache animation duration to avoid repeated offsetWidth reflows
         var _cachedBannerWidth = 0;
         var _cachedContentWidth = 0;
         var _cachedDuration = 0;
@@ -3414,17 +3439,18 @@
 
     var bytesToSize = ocFormatBytes;
 
-    var debounceButton = ocDebounce;
-
-    var all_one_key_update = debounceButton(function(btn) {
+    function all_one_key_update(btn) {
+        if (btn.disabled) return false;
+        btn.disabled = true;
         btn.value = '<%:Checking...%>';
         select_git_cdn();
         btn.value = '<%:Check Update%>';
         btn.disabled = false;
         return false;
-    });
+    }
 
-    var b_flush_dns_cache = debounceButton(function(btn) {
+    function b_flush_dns_cache(btn) {
+        if (btn.disabled) return false;
         btn.disabled = true;
         btn.value = '<%:Flushing...%> ';
         XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash","flush_dns_cache")%>', null, function(x, status) {
@@ -3436,9 +3462,10 @@
             }
         });
         return false;
-    });
+    }
 
-    var b_reload_firewall = debounceButton(function(btn) {
+    function b_reload_firewall(btn) {
+        if (btn.disabled) return false;
         btn.disabled = true;
         btn.value = '<%:Reloading...%>';
         LogManager.startLogDisplay('<%:Reloading...%>');
@@ -3447,9 +3474,10 @@
             btn.value = (x && x.status == 200) ? '<%:Reload Firewall%>' : '<%:Firewall Rules Reset Failed%>';
         });
         return false;
-    });
+    }
 
-    var b_close_all_connection = debounceButton(function(btn) {
+    function b_close_all_connection(btn) {
+        if (btn.disabled) return false;
         btn.disabled = true;
         btn.value = '<%:Reloading...%>';
         XHR.get('<%=luci.dispatcher.build_url("admin", "services", "openclash", "close_all_connection")%>', null, function(x, status) {
@@ -3457,68 +3485,54 @@
             btn.value = (x && x.status == 200) ? '<%:Close Connect%>' : '<%:Close Connect Failed%>';
         });
         return false;
-    });
+    }
 
     function net_zashboard(btn) {
-        var status = StateManager.current_status;
-        if (!status) { setTimeout(function() { net_zashboard(btn); }, 1000); return false; }
-        btn.disabled = true; btn.value = '<%:Zashboard%>';
-        winOpen(buildDashboardURL(status, 'zashboard', true));
+        btn.value = '<%:Zashboard%>';
+        winOpen(buildDashboardURL(StateManager.current_status, 'zashboard', true));
         return false;
     }
 
     function meta_dashboard(btn) {
-        var status = StateManager.current_status;
-        if (!status) { setTimeout(function() { meta_dashboard(btn); }, 1000); return false; }
-        btn.disabled = true; btn.value = '<%:Metacubexd%>';
-        winOpen(buildDashboardURL(status, 'metacubexd', true));
+        btn.value = '<%:Metacubexd%>';
+        winOpen(buildDashboardURL(StateManager.current_status, 'metacubexd', true));
         return false;
     }
 
     function ycad_dashboard(btn) {
-        var status = StateManager.current_status;
-        if (!status) { setTimeout(function() { ycad_dashboard(btn); }, 1000); return false; }
-        btn.disabled = true; btn.value = '<%:Yacd%>';
-        winOpen(buildDashboardURL(status, 'yacd', false));
+        btn.value = '<%:Yacd%>';
+        winOpen(buildDashboardURL(StateManager.current_status, 'yacd', false));
         return false;
     }
 
     function net_dashboard(btn) {
-        var status = StateManager.current_status;
-        if (!status) { setTimeout(function() { net_dashboard(btn); }, 1000); return false; }
-        btn.disabled = true; btn.value = '<%:Dashboard%>';
-        winOpen(buildDashboardURL(status, 'dashboard', false));
+        btn.value = '<%:Dashboard%>';
+        winOpen(buildDashboardURL(StateManager.current_status, 'dashboard', false));
         return false;
     }
 
     function homepage() {
-        var url3 = 'https://github.com/vernesong/OpenClash';
-        winOpen(url3);
+        winOpen('https://github.com/vernesong/OpenClash');
     }
 
     function gitbookpage() {
-        var url8 = 'https://wiki.metacubex.one';
-        winOpen(url8);
+        winOpen('https://wiki.metacubex.one');
     }
 
     function wikipage() {
-        var url5 = 'https://github.com/vernesong/OpenClash/blob/dev/.github/skills/openclash-user-guide/SKILL.md';
-        winOpen(url5);
+        winOpen('https://github.com/vernesong/OpenClash/blob/dev/.github/skills/openclash-user-guide/SKILL.md');
     }
 
     function telegrampage() {
-        var url6 = 'https://t.me/openclash_group';
-        winOpen(url6);
+        winOpen('https://t.me/openclash_group');
     }
 
     function sponsorpage() {
-        var url7 = 'https://ko-fi.com/vernesong';
-        winOpen(url7);
+        winOpen('https://ko-fi.com/vernesong');
     }
 
     function go_mihomo() {
-        var url4 = 'https://www.github.com/metacubex/mihomo';
-        winOpen(url4);
+        winOpen('https://www.github.com/metacubex/mihomo');
     }
 
     function clashversion_check() {
