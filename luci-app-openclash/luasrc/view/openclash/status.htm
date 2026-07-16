@@ -6,6 +6,7 @@
 %>
 <html>
 <head>
+<script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
 <link rel="stylesheet" href="/luci-static/resources/openclash/css/oc.css?v=<%=plugin_version%>">
 <script src="/luci-static/resources/openclash/js/cm6.min.js?v=<%=plugin_version%>"></script>
 </head>
@@ -319,7 +320,7 @@
                         <div class="config-upload-status" id="usage-help-status"></div>
                         <div class="config-upload-buttons">
                             <button type="button" class="btn cancel-btn" onclick="UsageHelpManager.hide()"><%:Cancel%></button>
-                            <button type="button" class="btn upload-btn" onclick="UsageHelpManager.copyAndHide()"><%:Copy And Close%></button>
+                            <button type="button" class="btn upload-btn" onclick="UsageHelpManager.copyAndHide()"><%:Copy%></button>
                         </div>
                     </div>
                 </div>
@@ -335,7 +336,6 @@
     <svg width="24" height="24"><use href="#oc-icon-usage-help"/></svg>
 </div>
 
-<script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
 <script src="/luci-static/resources/openclash/js/oc-icons.js?v=<%=plugin_version%>"></script>
 <%+openclash/common%>
 <script type="text/javascript">//<![CDATA[
@@ -388,7 +388,6 @@
 
     var DarkModeDetector = {
         init: function() {
-            if (typeof ocInitTheme === 'function') ocInitTheme();
             this.applyDarkMode();
         },
 
@@ -2767,47 +2766,29 @@
             }
         },
 
-        copyText: function() {
-            if (!this._editor) return;
-            var text = this._editor.state.doc.toString();
-            try {
-                navigator.clipboard.writeText(text).then(function() {
-                    if (UsageHelpManager.statusEl) {
-                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
-                        setTimeout(function() {
-                            if (UsageHelpManager.statusEl) {
-                                UsageHelpManager.statusEl.textContent = '';
-                            }
-                        }, 2000);
-                    }
-                }).catch(function() {
-                    document.execCommand('copy');
-                    if (UsageHelpManager.statusEl) {
-                        UsageHelpManager.statusEl.textContent = '<%:Copied to clipboard!%>';
-                        setTimeout(function() {
-                            if (UsageHelpManager.statusEl) {
-                                UsageHelpManager.statusEl.textContent = '';
-                            }
-                        }, 2000);
-                    }
-                });
-            } catch(e) {
-                document.execCommand('copy');
-            }
-        },
-
         copyAndHide: function() {
-            this.copyText();
-            this.hide();
+            if (!this._editor) return;
+            var text = this._editor.state.sliceDoc();
+            if (!text) return;
+            var self = this;
+            ocCopyToClipboard(text, null);
+            var btn = document.querySelector('#usage-help-model .upload-btn');
+            var origHTML = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.innerHTML = '<svg width="14" height="14" style="vertical-align:middle;margin-right:4px"><use href="#oc-icon-success"/></svg><%:Copied!%>';
+                btn.disabled = true;
+            }
+            setTimeout(function() {
+                if (btn) { btn.innerHTML = origHTML; btn.disabled = false; }
+                self.hide();
+            }, 2000);
         }
     };
 
     var pluginToggleUserAction = false;
-    var _domReady = false;
     var _lastNotRunningPoll = 0;
 
     XHR.poll(5, '<%=luci.dispatcher.build_url("admin", "services", "openclash", "status")%>', null, function(x, status) {
-        if (!_domReady) return; 
         if (x && x.status == 200) {
 
             if (!status.clash && Date.now() - _lastNotRunningPoll < 30000) return;
@@ -2974,23 +2955,20 @@
         clashversion_check();
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        _domReady = true;
-        DarkModeDetector.init();
-        ConfigFileManager.init();
+    DarkModeDetector.init();
+    ConfigFileManager.init();
 
-        window.addEventListener('oc-overwrite-updated', function() {
-            OverwriteSubscribeManager.load(true);
-        });
-
-        setTimeout(function() {
-            OverwriteSubscribeManager.init();
-            SubscriptionManager.init();
-        }, 300);
-
-        setTimeout(function() { check_core(); }, 1000);
-        (window.requestIdleCallback || function(cb, opts) { setTimeout(cb, (opts && opts.timeout) || 1); })(function() { loadAnnouncement(); }, {timeout: 3000});
+    window.addEventListener('oc-overwrite-updated', function() {
+        OverwriteSubscribeManager.load(true);
     });
+
+    setTimeout(function() {
+        OverwriteSubscribeManager.init();
+        SubscriptionManager.init();
+        loadAnnouncement();
+    }, 300);
+
+    setTimeout(function() { check_core(); }, 1000);
 
     window.addEventListener('beforeunload', function() {
         WSManager.closeAll();

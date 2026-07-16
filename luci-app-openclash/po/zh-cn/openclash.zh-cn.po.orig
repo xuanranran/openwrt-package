@@ -4101,11 +4101,8 @@ msgstr "如果我的问题描述不完整或缺少错误信息，请先要求我
 msgid "My question is:"
 msgstr "我的问题是："
 
-msgid "Copied to clipboard!"
-msgstr "已复制到剪贴板！"
-
-msgid "Copy And Close"
-msgstr "复制并关闭"
+msgid "Copied!"
+msgstr "已复制！"
 
 msgid "oixCloud Checkin Successful, Result:"
 msgstr "oixCloud 签到成功，结果："
