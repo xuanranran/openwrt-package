@@ -4172,11 +4172,6 @@ pre.command-output {
   width: 15rem !important
 }
 
-[data-page^="admin-services-openclash"] [id="container.openclash.config.debug"] fieldset {
-  border: none !important;
-  padding: 1rem !important
-}
-
 [data-page^="admin-services-openclash"] #diag-rc-output>pre,
 [data-page^="admin-services-openclash"] #dns-rc-output>pre {
   font-size: 1.000rem;
@@ -4189,16 +4184,6 @@ pre.command-output {
   box-shadow: none
 }
 
-[data-page^="admin-services-openclash"] #debug-rc-output>textarea {
-  font-family: 'Twemoji Mozilla', 'Consolas', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Google Sans' !important;
-  font-weight: 550 !important;
-}
-
-[data-page^="admin-services-openclash"] .CodeMirror {
-  font-size: inherit;
-  font-family: 'Google Sans' !important
-}
-
 [data-page^="admin-services-openclash"] .cbi-button-up,
 [data-page^="admin-services-openclash"] .cbi-button-down {
   padding: 7px 14px;
@@ -4209,110 +4194,24 @@ pre.command-output {
   width: auto
 }
 
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc {
   --bg-white: #000000;
   --bg-light: #242424;
   --hover-bg: #242424;
 }
 
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .developer-container {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .developer-container {
   background: var(--bg-light);
 }
 
-[data-page^="admin-services-openclash"] .cm-s-material-log.CodeMirror {
-  background-color: #000000;
-  color: #EEFFFF;
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #tab-header ul.cbi-tabmenu li.cbi-tab-disabled,
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] [id^="tab-header-openclash-"] ul li.cbi-tab-disabled {
-  color: #1f2937 !important;
-  background: #000000 !important;
-  opacity: 0.7 !important;
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #tab-header {
-  background: #242424;
-  border-bottom: 1px solid #242424;
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #tab-header ul.cbi-tabmenu {
-  background: #242424;
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .diag-style {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .diag-style {
   background-color: #242424;
 }
 
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #diag-rc-output>pre,
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #dns-rc-output>pre {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #diag-rc-output>pre,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #dns-rc-output>pre {
   background-color: #000000;
   color: #ffffff;
-}
-
-[data-page^="admin-services-openclash"] .cm-s-material.CodeMirror {
-  background-color: #000000;
-  color: #EEFFFF;
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .cm-s-log.CodeMirror {
-  background-color: #000000;
-}
-
-[data-page^="admin-services-openclash"] .cm-s-material .CodeMirror-gutters {
-  background: #263238;
-  color: rgba(156, 163, 175, 0.7);
-  border: none;
-}
-
-[data-page^="admin-services-openclash"] .cm-s-material .CodeMirror-guttermarker,
-[data-page^="admin-services-openclash"] .cm-s-material .CodeMirror-guttermarker-subtle,
-[data-page^="admin-services-openclash"] .cm-s-material .CodeMirror-linenumber,
-[data-page^="admin-services-openclash"] .cm-s-material-log .CodeMirror-guttermarker,
-[data-page^="admin-services-openclash"] .cm-s-material-log .CodeMirror-guttermarker-subtle,
-[data-page^="admin-services-openclash"] .cm-s-material-log .CodeMirror-linenumber {
-  color: rgba(156, 163, 175, 0.7);
-}
-
-[data-page^="admin-services-openclash"] .cm-s-material-log .CodeMirror-gutters {
-  background: #263238;
-  color: rgba(156, 163, 175, 0.7);
-  border: none;
-}
-
-[data-page^="admin-services-openclash"] .cm-s-log span.cm-log-tip,
-[data-page^="admin-services-openclash"] .cm-s-log span.cm-log-string {
-  font-weight: 500;
-}
-
-[data-page^="admin-services-openclash"] .cm-s-material *,
-[data-page^="admin-services-openclash"] .cm-s-log,
-[data-page^="admin-services-openclash"] .cm-s-log * {
-  font-family: 'Twemoji Mozilla', 'Consolas', 'Menlo', 'Monaco', 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Google Sans' !important;
-  font-weight: 500 !important;
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .radio-button {
-  background: #242424;
-  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.15);
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] .radio-button label {
-  background: #000000;
-  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.15);
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] #tab-header ul.cbi-tabmenu,
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] [id*="tab-header-openclash"] {
-  font-family: 'Google Sans' !important;
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] :is([id^="tab-header-openclash-"], [id^="tab-header-openclash-"] ul) {
-  background: #242424 !important;
-}
-
-[data-page^="admin-services-openclash"] .oc[data-darkmode="true"] [id^="tab-header-openclash-"] {
-  border-bottom: 1px solid #242424 !important;
 }
 
 [data-page^="admin-services-openclash"] .cbi-value-description,
@@ -4321,34 +4220,14 @@ pre.command-output {
 [data-page^="admin-services-openclash"] .cbi-section p,
 [data-page^="admin-services-openclash"] .tool_label_span,
 [data-page^="admin-services-openclash"] b,
-strong,
+[data-page^="admin-services-openclash"] strong,
 [data-page^="admin-services-openclash"] .form-group label,
-.status-item .label,
+[data-page^="admin-services-openclash"] .status-item .label,
 [data-page^="admin-services-openclash"] [class^="info-cell"],
 [data-page^="admin-services-openclash"] [class^="info-cell"] *,
 [data-page^="admin-services-openclash"] .settings-cell,
 [data-page^="admin-services-openclash"] .sub_div {
   font-family: 'Google Sans', 'Twemoji Mozilla' !important;
-}
-
-@media (prefers-color-scheme: dark) {
-  [data-page^="admin-services-openclash"] {
-    font-family: 'Google Sans' !important;
-  }
-
-  [data-page^="admin-services-openclash"] .cbi-input-textarea,
-  [data-page^="admin-services-openclash"] .btn,
-  button,
-  select,
-  input,
-  .cbi-dropdown {
-    font-family: 'Google Sans' !important;
-    font-size: 14px !important;
-  }
-
-  [data-page^="admin-services-openclash"] .cbi-section-descr {
-    font-family: 'Google Sans' !important;
-  }
 }
 
 [data-page^="admin-services-openclash"] .cbi-input-textarea {
@@ -5370,73 +5249,73 @@ div#add_link_div {
 
 /* luci-app-openclash */
 /* OpenClash visual overrides: dark mode only. */
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-editor {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-editor {
   background: #000 !important;
   color: #9ec4d5 !important;
   border-radius: 0 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-scroller {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-scroller {
   background: #000 !important;
   font-family: 'Twemoji Country Flags', "Twemoji Mozilla", Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Google Sans" !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-content {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-content {
   color: #9ec4d5 !important;
   caret-color: #fff !important;
   font-family: 'Twemoji Country Flags', "Twemoji Mozilla", Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Google Sans" !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-gutters {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-gutters {
   background: #263238 !important;
   color: #d0d8e0 !important;
   border: 0 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-lineNumbers .cm-gutterElement {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-lineNumbers .cm-gutterElement {
   color: #d0d8e0 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-activeLine,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-activeLineGutter {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-activeLine,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-activeLineGutter {
   background: rgba(255, 255, 255, 0.05) !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-activeLine.cm-line {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-activeLine.cm-line {
   color: #fff !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .cm-activeLineGutter {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .cm-activeLineGutter {
   color: #fff !important;
   background: #42545d !important;
   font-weight: 700 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-comment {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-comment {
   color: #789aaa !important;
   font-style: normal !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-keyword,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-typeName {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-keyword,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-typeName {
   color: #f0a070 !important;
   font-weight: 700 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-string,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-number,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-atom,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-bool {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-string,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-number,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-atom,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-bool {
   color: #9ec4d5 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-operator,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .tok-punctuation {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-operator,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .tok-punctuation {
   color: #d0d8e0 !important;
 }
 
 /* OpenClash log tabs: bordered segmented buttons */
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header {
   margin: 0 !important;
   padding: 16px 20px !important;
   background: #242424 !important;
@@ -5444,7 +5323,7 @@ div#add_link_div {
   border-radius: 12px !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu {
   display: flex !important;
   gap: 12px !important;
   align-items: stretch;
@@ -5453,7 +5332,7 @@ div#add_link_div {
   background: transparent !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu > li {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li {
   flex: 1 1 0;
   min-width: 0;
   margin: 0 !important;
@@ -5463,11 +5342,11 @@ div#add_link_div {
   border-radius: 8px !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu > li.cbi-tab {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li.cbi-tab {
   background: #2864e6 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu > li > a {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li > a {
   display: block;
   padding: 11px 14px !important;
   color: #c8cdd5 !important;
@@ -5476,12 +5355,12 @@ div#add_link_div {
   border-radius: 8px !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-header .cbi-tabmenu > li.cbi-tab > a {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li.cbi-tab > a {
   color: #fff !important;
 }
 
 /* OpenClash log level buttons */
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-content .radio-button {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-content .radio-button {
   display: flex;
   width: auto;
   max-width: none;
@@ -5492,7 +5371,7 @@ div#add_link_div {
   box-shadow: none !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-content .radio-button label {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-content .radio-button label {
   min-width: 60px;
   padding: 6px 18px;
   color: #d0d8e0 !important;
@@ -5503,20 +5382,20 @@ div#add_link_div {
   font-weight: 500;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-content .radio-button label:hover {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-content .radio-button label:hover {
   color: #fff !important;
   border-color: #2864e6 !important;
   background: #111 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #tab-content .radio-button input[type="radio"]:checked + label {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-content .radio-button input[type="radio"]:checked + label {
   color: #fff !important;
   background: #2864e6 !important;
   border-color: #2864e6 !important;
 }
 
 /* OpenClash configuration editor colors; keep native DOM layout. */
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .config-editor-title.config-editor-header {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .config-editor-title.config-editor-header {
   width: 100% !important;
   margin: 0 0 12px !important;
   background: #242424 !important;
@@ -5525,7 +5404,7 @@ div#add_link_div {
   box-sizing: border-box;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-mode-tabs {
   width: 100% !important;
   margin: 0 !important;
   padding: 12px !important;
@@ -5534,26 +5413,26 @@ div#add_link_div {
   box-sizing: border-box;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tabs {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-mode-tabs .mode-tabs {
   gap: 12px !important;
   padding: 0 !important;
   background: transparent !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tab {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-mode-tabs .mode-tab {
   color: #d0d8e0 !important;
   background: #000 !important;
   border: 1px solid #536273 !important;
   border-radius: 6px !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tab:hover {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-mode-tabs .mode-tab:hover {
   color: #fff !important;
   background: #111 !important;
   border-color: #2864e6 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) #config-mode-tabs .mode-tab.active {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-mode-tabs .mode-tab.active {
   color: #fff !important;
   background: #2864e6 !important;
   border-color: #2864e6 !important;
@@ -5561,21 +5440,21 @@ div#add_link_div {
 }
 
 /* OpenClash internal section tabs */
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] {
   padding: 12px !important;
   background: #242424 !important;
   border: 0 !important;
   border-radius: 8px !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul {
   display: flex !important;
   gap: 12px !important;
   padding: 0 !important;
   background: transparent !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul > li {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li {
   flex: 1 1 0;
   margin: 0 !important;
   padding: 0 !important;
@@ -5584,12 +5463,12 @@ div#add_link_div {
   border-radius: 6px !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul > li.cbi-tab {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li.cbi-tab {
   background: #2864e6 !important;
   border-color: #2864e6 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul > li > a {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li > a {
   display: block;
   padding: 10px 14px !important;
   color: #d0d8e0 !important;
@@ -5598,31 +5477,31 @@ div#add_link_div {
   border-radius: 6px !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) [id^="tab-header-openclash-"] > ul > li.cbi-tab > a {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li.cbi-tab > a {
   color: #fff !important;
 }
 
 /* Let OpenClash's native theme control these two built-in editors. */
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-editor,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-editor {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-editor,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-editor {
   background: #000 !important;
   color: #9aa3af !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-scroller,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-scroller {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-scroller,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-scroller {
   background: #000 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-gutters,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-gutters {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-gutters,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-gutters {
   background: #263238 !important;
   color: #9aa3af !important;
   border: 0 !important;
 }
 
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-scroller::-webkit-scrollbar-track,
-[data-page^="admin-services-openclash"] :is(.oc[data-darkmode="true"], [data-darkmode="true"] .oc) .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-scroller::-webkit-scrollbar-track {
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(> [id="cbid.openclash.config.sniffer_custom"]) .cm-scroller::-webkit-scrollbar-track,
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(> [id="cbid.openclash.config.custom_fake_filter"]) .cm-scroller::-webkit-scrollbar-track {
   background: #263238 !important;
 }
 
