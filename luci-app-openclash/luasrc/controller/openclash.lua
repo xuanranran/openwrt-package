@@ -112,6 +112,8 @@ function index()
 	entry({"admin", "services", "openclash", "oix_logout"}, call("oix_logout"))
 	entry({"admin", "services", "openclash", "oix_login"}, call("oix_login"))
 	entry({"admin", "services", "openclash", "oix_login_info_save"}, call("oix_login_info_save"))
+	entry({"admin", "services", "openclash", "oix_params_sync"}, call("oix_params_sync"))
+	entry({"admin", "services", "openclash", "oix_params_get"}, call("oix_params_get"))
 end
 
 local SYS = require "luci.sys"
@@ -4529,9 +4531,66 @@ function oix_login_info_save()
 	end
 	local show_info_page = HTTP.formvalue("show_info_page")
 	if show_info_page then uci:set("openclash", "config", "oix_show_info_page", show_info_page) end
+	local default_params = HTTP.formvalue("default_params")
+	if default_params then uci:set("openclash", "config", "oix_default_params", default_params) end
 	uci:commit("openclash")
 	HTTP.prepare_content("application/json")
 	HTTP.write_json({status = "success"})
+end
+
+function oix_params_sync()
+	local params = HTTP.formvalue("params") or ""
+	if #params > 8192 then
+		HTTP.status(400, "Params too long")
+		HTTP.write_json({status = "error", msg = "params too long"})
+		return
+	end
+
+	uci:set("openclash", "config", "oix_params", params)
+	uci:commit("openclash")
+
+	if is_running() then
+		local dase_val = dase() or ""
+		local daip_val = daip()
+		local cn_port_val = cn_port()
+		local auth_header = ""
+		if dase_val and dase_val ~= "" then
+			auth_header = string.format('-H "Authorization: Bearer %s"', dase_val)
+		end
+
+		if params == "" then
+			SYS.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" %s -XDELETE http://"%s":"%s"/oix/options', auth_header, daip_val, cn_port_val))
+		else
+			local encoded = params:gsub('"', '\\"'):gsub('\n', '')
+			SYS.exec(string.format('curl -sL -m 3 --retry 2 -H "Content-Type: application/json" %s -XPUT -d \'{"params":"%s"}\' http://"%s":"%s"/oix/options', auth_header, encoded, daip_val, cn_port_val))
+		end
+	end
+
+	HTTP.prepare_content("application/json")
+	HTTP.write_json({status = "success"})
+end
+
+function oix_params_get()
+	local result = {params = "", default_params = ""}
+	local home_dir = "/etc/openclash"
+	local params_file = home_dir .. "/.oix_params"
+	local default_params_file = home_dir .. "/.oix_default_params"
+
+	if fs.access(params_file) then
+		local content = fs.readfile(params_file)
+		if content then
+			result.params = content:gsub("%s+", "")
+		end
+	end
+	if fs.access(default_params_file) then
+		local content = fs.readfile(default_params_file)
+		if content then
+			result.default_params = content:gsub("%s+", "")
+		end
+	end
+
+	HTTP.prepare_content("application/json")
+	HTTP.write_json(result)
 end
 
 local function fetch_oix_sub(token)
@@ -4657,6 +4716,8 @@ function oix_logout(oldtoken)
 				uci:delete("openclash", "config", "oix_checkin")
 				uci:delete("openclash", "config", "oix_checkin_interval")
 				uci:delete("openclash", "config", "oix_checkin_multiple")
+				uci:delete("openclash", "config", "oix_params")
+				uci:delete("openclash", "config", "oix_default_params")
 			end
 			uci:commit("openclash")
 			fs.unlink("/tmp/oix_checkin")
@@ -4725,13 +4786,13 @@ function oix_checkin()
 		if info and info.ret == 200 then
 			fs.unlink("/tmp/oix_info")
 			fs.writefile(path, info)
-			SYS.exec(string.format("echo -e %s oixCloud Checkin Successful, Result:【%s】 >> /tmp/openclash.log", os.date("%Y-%m-%d %H:%M:%S"), info.data.checkin))
+			SYS.exec(string.format("echo -e %s [Info] oixCloud Checkin Successful, Result:【%s】 >> /tmp/openclash.log", os.date("%Y-%m-%d %H:%M:%S"), info.data.checkin))
 			result = info
 		else
 			if info and info.msg then
-				SYS.exec(string.format("echo -e %s oixCloud Checkin Failed, Result:【%s】 >> /tmp/openclash.log", os.date("%Y-%m-%d %H:%M:%S"), info.msg))
+				SYS.exec(string.format("echo -e %s [Info] oixCloud Checkin Failed, Result:【%s】 >> /tmp/openclash.log", os.date("%Y-%m-%d %H:%M:%S"), info.msg))
 			else
-				SYS.exec(string.format("echo -e %s oixCloud Checkin Failed! Please Check And Try Again... >> /tmp/openclash.log",os.date("%Y-%m-%d %H:%M:%S")))
+				SYS.exec(string.format("echo -e %s [Info] oixCloud Checkin Failed! Please Check And Try Again... >> /tmp/openclash.log",os.date("%Y-%m-%d %H:%M:%S")))
 			end
 			result = info
 		end

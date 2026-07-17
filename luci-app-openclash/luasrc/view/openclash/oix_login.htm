@@ -4,6 +4,8 @@ local logged_in = fs.uci_get_config("config", "oix_token") and true or false
 local checkin_enabled = fs.uci_get_config("config", "oix_checkin") == "1"
 local checkin_interval = fs.uci_get_config("config", "oix_checkin_interval") or "1"
 local checkin_multiple = fs.uci_get_config("config", "oix_checkin_multiple") or "1"
+local oix_params = fs.uci_get_config("config", "oix_params") or ""
+local oix_default_params = fs.uci_get_config("config", "oix_default_params") or ""
 local oix_logo_src = "/luci-static/resources/openclash/img/oixcloud.png"
 local function oix_logo_img(cls)
   return '<img class="'..cls..'" src="'..oix_logo_src..'" loading="lazy" alt="oixCloud" title="oixCloud">'
@@ -145,12 +147,12 @@ end
 					<div class="oix-card-value" id="oix-traffic">--</div>
 				</div>
 				<div class="oix-card">
-					<div class="oix-card-label"><%:Plan Used%></div>
-					<div class="oix-card-value" id="oix-used">--</div>
-				</div>
-				<div class="oix-card">
 					<div class="oix-card-label"><%:Plan Unused%></div>
 					<div class="oix-card-value" id="oix-unused">--</div>
+				</div>
+				<div class="oix-card">
+					<div class="oix-card-label"><%:Plan Used%></div>
+					<div class="oix-card-value" id="oix-used">--</div>
 				</div>
 				<div class="oix-card">
 					<div class="oix-card-label"><%:Today Used%></div>
@@ -158,7 +160,7 @@ end
 				</div>
 			</div>
 
-			<div class="oix-settings-grid">
+			<div class="oix-settings-grid oix-settings-grid-4">
 				<div class="oix-setting-card">
 					<div class="oix-toggle-row">
 						<span><%:Show on Overview%></span>
@@ -166,6 +168,10 @@ end
 							<input type="checkbox" id="oix-show-info-page" onchange="OixCloud.toggleInfoPage()" <%= fs.uci_get_config('config', 'oix_show_info_page') ~= '0' and 'checked' or '' %>>
 							<span class="oix-toggle-slider"></span>
 						</label>
+					</div>
+					<div class="oix-card-help">
+						<svg class="oc-icon" width="10" height="10"><use href="#oc-icon-help"/></svg>
+						<span><%:Display account info on the main page%></span>
 					</div>
 				</div>
 				<div class="oix-setting-card">
@@ -176,17 +182,18 @@ end
 							<span class="oix-toggle-slider"></span>
 						</label>
 					</div>
+					<div class="oix-card-help">
+						<svg class="oc-icon" width="10" height="10"><use href="#oc-icon-help"/></svg>
+						<span><%:Auto check-in for traffic rewards and penalties%></span>
+					</div>
 				</div>
-			</div>
-			<div class="oix-settings-grid">
 				<div class="oix-setting-card">
 					<div class="oix-params-item">
-						<span><%:Checkin Interval%>:</span>
+						<span><%:Checkin Interval%> (<%:Hours%>):</span>
 						<input type="text" id="oix-checkin-interval" size="3" value="<%= checkin_interval %>" onblur="OixCloud.saveCheckin()" class="oix-input-num oix-input-ok">
-						<span><%:Hours%></span>
 					</div>
 					<div class="oix-card-help">
-						<svg class="oc-icon" width="12" height="12"><use href="#oc-icon-help"/></svg>
+						<svg class="oc-icon" width="10" height="10"><use href="#oc-icon-help"/></svg>
 						<span><%:Checkin interval must be between 1 and 720%></span>
 					</div>
 				</div>
@@ -196,8 +203,20 @@ end
 						<input type="text" id="oix-checkin-multiple" size="3" value="<%= checkin_multiple %>" onblur="OixCloud.saveCheckin()" oninput="OixCloud.validateMultiple(this)" class="oix-input-num oix-input-ok">
 					</div>
 					<div class="oix-card-help">
-						<svg class="oc-icon" width="12" height="12"><use href="#oc-icon-help"/></svg>
+						<svg class="oc-icon" width="10" height="10"><use href="#oc-icon-help"/></svg>
 						<span><%:Multiple Must Be a Positive Integer and No More Than 100%></span>
+					</div>
+				</div>
+			</div>
+			<div class="oix-settings-grid">
+				<div class="oix-setting-card" style="grid-column: span 2;">
+					<div class="oix-params-item">
+						<span><%:Optional Parameters%>:</span>
+						<input type="text" id="oix-params" style="min-width:140px;" value="<%= oix_params %>" onblur="OixCloud.saveParams()" oninput="OixCloud.validateParams(this)" class="oix-input-num oix-input-ok" placeholder="&type=love&tfo=false&area=hk">
+					</div>
+					<div class="oix-card-help">
+						<svg class="oc-icon" width="12" height="12"><use href="#oc-icon-help"/></svg>
+						<span><%:For more information, please visit the%> <a href="https://docs.dler.io/black-hole/advanced/ding-yue-di-zhi-tuo-guan-di-zhi/untitled" target="_blank"><%:official documentation%></a></span>
 					</div>
 				</div>
 			</div>
@@ -214,16 +233,44 @@ var OIX_URLS = {
 	login: '<%=luci.dispatcher.build_url("admin", "services", "openclash", "oix_login")%>',
 	logout: '<%=luci.dispatcher.build_url("admin", "services", "openclash", "oix_logout")%>',
 	save: '<%=luci.dispatcher.build_url("admin", "services", "openclash", "oix_login_info_save")%>',
-	checkin: '<%=luci.dispatcher.build_url("admin", "services", "openclash", "oix_checkin")%>'
+	checkin: '<%=luci.dispatcher.build_url("admin", "services", "openclash", "oix_checkin")%>',
+	params: '<%=luci.dispatcher.build_url("admin", "services", "openclash", "oix_params_sync")%>',
+	paramsGet: '<%=luci.dispatcher.build_url("admin", "services", "openclash", "oix_params_get")%>'
 };
 
 var OixCloud = {
 	loggedIn: <%= logged_in and 'true' or 'false' %>,
 	_activeTab: 'account',
 	_pollTimer: null,
+	_paramsRetry: 0,
+	_paramsMaxRetry: 30,
+	_paramsRetryTimer: null,
 
 	init: function() {
-		if (this.loggedIn) { this.loadAccountInfo(); this.startPolling(); }
+		if (this.loggedIn) { this.loadAccountInfo(); this.startPolling(); this.fetchParams(); }
+	},
+
+	fetchParams: function() {
+		var input = document.getElementById('oix-params');
+		if (!input || input.value !== '') return;
+		var self = this;
+		XHR.get(OIX_URLS.paramsGet, null, function(x, status) {
+			if (x && x.status == 200 && status && status.params) {
+				input.value = status.params;
+				self._paramsRetry = 0;
+				if (status.default_params) {
+					XHR.get(OIX_URLS.save, {default_params: status.default_params}, function() {});
+				}
+			} else {
+				if (self._paramsRetry < self._paramsMaxRetry) {
+					self._paramsRetry++;
+					self._paramsRetryTimer = setTimeout(function() { self.fetchParams(); }, 5000);
+				} else {
+					var cached = '<%= oix_default_params %>';
+					if (cached) { input.value = cached; input.placeholder = cached; }
+				}
+			}
+		});
 	},
 
 	switchTab: function(tab) {
@@ -259,7 +306,7 @@ var OixCloud = {
 				btns.forEach(function(b){ b.disabled = false; b.innerHTML = b._origHTML; });
 				if (x2 && x2.status == 200 && s2.result == 200) {
 					var info = '<%:oixCloud Login Successful%>' + ', <%:Note: oixCloud need a specific core installed, OpenClash will auto download, After the core start, an oixCloud nodes provider will be added, which you can customize as needed%>';
-					OixMsg.show(info, 'success', 10000);
+					OixMsg.show(info, 'success', 20000);
 					self.loggedIn = true; self.showLoggedIn(); self.loadAccountInfo(); self.startPolling();
 				} else {
 					var msg = (s2 && s2.result) ? s2.result : '<%:oixCloud Login Failed%>';
@@ -293,6 +340,7 @@ var OixCloud = {
 	showLoggedOut: function() {
 		document.getElementById('oix-login-section').style.display = 'block';
 		document.getElementById('oix-logged-section').style.display = 'none';
+		this.stopParamsRetry();
 		this.switchTab('account');
 	},
 
@@ -303,6 +351,7 @@ var OixCloud = {
 		document.getElementById('oix-checkin-enable').checked = false;
 		document.getElementById('oix-checkin-interval').value = '1';
 		document.getElementById('oix-checkin-multiple').value = '1';
+		document.getElementById('oix-params').value = '';
 	},
 
 	loadAccountInfo: function() {
@@ -388,6 +437,7 @@ var OixCloud = {
 
 	startPolling: function() { this.stopPolling(); var s=this; this._pollTimer=setInterval(function(){s.loadAccountInfo();},1800000); },
 	stopPolling: function() { if(this._pollTimer){clearInterval(this._pollTimer);this._pollTimer=null;} },
+	stopParamsRetry: function() { if(this._paramsRetryTimer){clearTimeout(this._paramsRetryTimer);this._paramsRetryTimer=null;} this._paramsRetry = 0; },
 
 	doCheckin: function() {
 		var self = this;
@@ -425,6 +475,48 @@ var OixCloud = {
 			if (x && x.status == 200) { OixMsg.show('<%:Checkin settings saved%>', 'success', 4000); }
 			else { OixMsg.show('<%:Failed to save checkin settings, please try again%>', 'error'); }
 		});
+	},
+
+	saveParams: function() {
+		OixMsg.clearAll();
+		var params = document.getElementById('oix-params').value.trim();
+		if (params !== '' && !params.match(/^&[a-zA-Z][a-zA-Z0-9-]*(=[^&\s]*)?(&[a-zA-Z][a-zA-Z0-9-]*(=[^&\s]*)?)*$/)) {
+			OixMsg.field('oix-params', '<%:Invalid params format, must start with & and use key=value pairs%>');
+			OixMsg.show('<%:Invalid params format%>', 'error');
+			return;
+		}
+		if (params.length > 8192) {
+			OixMsg.field('oix-params', '<%:Params too long, max 8192 characters%>');
+			OixMsg.show('<%:Params too long%>', 'error');
+			return;
+		}
+		XHR.get(OIX_URLS.params, {params: params}, function(x, status) {
+			if (x && x.status == 200) { OixMsg.show('<%:Optional parameters saved%>', 'success', 4000); }
+			else { OixMsg.show('<%:Failed to save optional parameters, please try again%>', 'error'); }
+		});
+	},
+
+	validateParams: function(inp) {
+		if (!inp) return;
+		var v = inp.value.trim();
+		if (v === '') { OixMsg.field('oix-params', ''); return; }
+		if (!v.startsWith('&')) {
+			OixMsg.field('oix-params', '<%:Must start with &%>');
+			return;
+		}
+		if (/\s/.test(v)) {
+			OixMsg.field('oix-params', '<%:Params must not contain spaces%>');
+			return;
+		}
+		if (v.length > 8192) {
+			OixMsg.field('oix-params', '<%:Params too long, max 8192 characters%>');
+			return;
+		}
+		if (!v.match(/^&[a-zA-Z][a-zA-Z0-9-]*(=[^&\s]*)?(&[a-zA-Z][a-zA-Z0-9-]*(=[^&\s]*)?)*$/)) {
+			OixMsg.field('oix-params', '<%:Invalid params format, must start with & and use key=value pairs%>');
+			return;
+		}
+		OixMsg.field('oix-params', '');
 	},
 
 	validateMultiple: function(inp) {
@@ -482,14 +574,16 @@ var OixMsg = {
 		};
 		bar.style.display = 'flex'; bar.innerHTML = (icons[level] || icons.info) + '<span>' + msg + '</span>';
 		bar.className = 'oix-msg-bar oix-msg-' + (level || 'info');
-		if (timeout > 0) { clearTimeout(this._timer); var s=this; this._timer=setTimeout(function(){s.hide();},timeout); }
+		clearTimeout(this._timer);
+		var t = (timeout !== undefined) ? timeout : (level === 'error' ? 6000 : 3000);
+		if (t > 0) { var s=this; this._timer=setTimeout(function(){s.hide();},t); }
 	},
 	hide: function() { document.getElementById('oix-msg-bar').style.display = 'none'; },
 	field: function(id, msg) {
 		var hint = document.getElementById(id + '-hint'), inp = document.getElementById(id);
 		if (hint) { hint.textContent = msg || ''; hint.className = msg ? 'oix-field-hint oix-field-error' : 'oix-field-hint oix-field-help'; }
 		if (inp) {
-			var isNum = id === 'oix-checkin-interval' || id === 'oix-checkin-multiple';
+			var isNum = id === 'oix-checkin-interval' || id === 'oix-checkin-multiple' || id === 'oix-params';
 			var base = isNum ? 'oix-input-num' : 'oix-input';
 			inp.className = msg ? (base + ' oix-input-err') : (base + ' oix-input-ok');
 		}

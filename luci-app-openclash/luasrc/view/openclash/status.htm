@@ -720,6 +720,7 @@
                 connection.state = this.connectionStates.ERROR;
             }
             this.stopHeartbeat(type);
+            this.scheduleReconnect(type);
             this.enableFallbackMode();
         },
 
@@ -740,6 +741,7 @@
             if (connection) {
                 connection.state = this.connectionStates.ERROR;
             }
+            this.scheduleReconnect(type);
             this.enableFallbackMode();
         },
 
@@ -752,10 +754,12 @@
                 return;
             }
 
+            var url = connection.url;
+            var handler = connection.messageHandler;
+            var options = connection.options;
+
             setTimeout(function() {
-                if (self.connections[type] && self.connections[type].state !== self.connectionStates.CONNECTED) {
-                    self.createConnection(type, connection.url, connection.messageHandler, connection.options);
-                }
+                self.createConnection(type, url, handler, options);
             }, this.reconnectDelay);
         },
 
@@ -2065,8 +2069,14 @@
         retryDelay: 1000,
 
         startLogDisplay: function(initialMessage) {
-            if (this.isPolling) {
-                return;
+            if (initialMessage) {
+                if (this.isPolling) {
+                    this.stopLogDisplay();
+                }
+            } else {
+                if (this.isPolling) {
+                    return;
+                }
             }
             if (this.pollTimer) {
                 clearTimeout(this.pollTimer);
