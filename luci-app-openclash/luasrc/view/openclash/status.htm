@@ -767,6 +767,7 @@
             this._ws_connect = false;
             this.closeAll();
             LogManager.startLogDisplay();
+            NetworkStatsManager.resetStats();
             if (!NetworkStatsManager.isEnabled) {
                 NetworkStatsManager.start();
             }
@@ -2258,6 +2259,19 @@
         maxRetries: 3,
         isEnabled: false,
 
+        _ZERO_SYS_STATS: [
+            {id: "cpu_t", html: "<font style=\"color:var(--success-color)\">0 %</font>"},
+            {id: "load_a", html: "<font style=\"color:var(--success-color)\">0 %</font>"}
+        ],
+
+        resetSysStats: function() {
+            for (var i = 0; i < this._ZERO_SYS_STATS.length; i++) {
+                var item = this._ZERO_SYS_STATS[i];
+                var el = document.getElementById(item.id);
+                if (el) el.innerHTML = item.html;
+            }
+        },
+
         start: function() {
             if (this.isEnabled) return;
             this.isEnabled = true;
@@ -2303,8 +2317,7 @@
             this.retryCount++;
 
             if (this.retryCount >= this.maxRetries) {
-                document.getElementById("cpu_t").innerHTML = "<font style=\"color:var(--success-color)\">0 %</font>";
-                document.getElementById("load_a").innerHTML = "<font style=\"color:var(--success-color)\">0 %</font>";
+                this.resetSysStats();
                 this.retryCount = 0;
             }
         },
@@ -2320,6 +2333,23 @@
         retryCount: 0,
         maxRetries: 3,
         isEnabled: false,
+
+        _ZERO_STATS: [
+            {id: "upload_", html: "<font style=\"color:var(--success-color)\">0 B/S</font>"},
+            {id: "download_", html: "<font style=\"color:var(--success-color)\">0 B/S</font>"},
+            {id: "uploadtotal_", html: "<font style=\"color:var(--success-color)\">0 KB</font>"},
+            {id: "downloadtotal_", html: "<font style=\"color:var(--success-color)\">0 KB</font>"},
+            {id: "mem_t", html: "<font style=\"color:var(--success-color)\">0 KB</font>"},
+            {id: "connect_t", html: "<font style=\"color:var(--success-color)\">0</font>"}
+        ],
+
+        resetStats: function() {
+            for (var i = 0; i < this._ZERO_STATS.length; i++) {
+                var item = this._ZERO_STATS[i];
+                var el = document.getElementById(item.id);
+                if (el) el.innerHTML = item.html;
+            }
+        },
 
         start: function() {
             if (this.isEnabled) return;
@@ -2373,16 +2403,7 @@
             this.retryCount++;
 
             if (this.retryCount >= this.maxRetries) {
-                var fallbackUpdates = [
-                    {element: document.getElementById("upload_"), content: "<font style=\"color:var(--success-color)\">0 B/S</font>"},
-                    {element: document.getElementById("download_"), content: "<font style=\"color:var(--success-color)\">0 B/S</font>"},
-                    {element: document.getElementById("uploadtotal_"), content: "<font style=\"color:var(--success-color)\">0 KB</font>"},
-                    {element: document.getElementById("downloadtotal_"), content: "<font style=\"color:var(--success-color)\">0 KB</font>"},
-                    {element: document.getElementById("mem_t"), content: "<font style=\"color:var(--success-color)\">0 KB</font>"},
-                    {element: document.getElementById("connect_t"), content: "<font style=\"color:var(--success-color)\">0</font>"}
-                ];
-
-                StateManager.batchUpdateDOM(fallbackUpdates);
+                this.resetStats();
                 this.retryCount = 0;
             }
         },
@@ -2938,8 +2959,7 @@
                 }
             } else {
                 SystemStatusManager.stop();
-                document.getElementById("cpu_t").innerHTML = "<font style=\"color:var(--success-color)\">0 %</font>";
-                document.getElementById("load_a").innerHTML = "<font style=\"color:var(--success-color)\">0 %</font>";
+                SystemStatusManager.resetSysStats();
             }
 
             if (status.clash && status.daip) {
@@ -2954,12 +2974,7 @@
             } else {
                 WSManager.closeAll();
                 NetworkStatsManager.stop();
-                document.getElementById("upload_").innerHTML = "<font style=\"color:var(--success-color)\">0 B/S</font>";
-                document.getElementById("download_").innerHTML = "<font style=\"color:var(--success-color)\">0 B/S</font>";
-                document.getElementById("uploadtotal_").innerHTML = "<font style=\"color:var(--success-color)\">0 KB</font>";
-                document.getElementById("downloadtotal_").innerHTML = "<font style=\"color:var(--success-color)\">0 KB</font>";
-                document.getElementById("mem_t").innerHTML = "<font style=\"color:var(--success-color)\">0 KB</font>";
-                document.getElementById("connect_t").innerHTML = "<font style=\"color:var(--success-color)\">0</font>";
+                NetworkStatsManager.resetStats();
             }
         }
         clashversion_check();

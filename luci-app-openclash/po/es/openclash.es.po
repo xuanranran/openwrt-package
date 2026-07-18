@@ -3915,7 +3915,7 @@ msgstr "Fallo en intento de descifrado con una clave encontrada:"
 msgid "Encrypt attempt failed:"
 msgstr "Fallo en intento de cifrado:"
 
-msgid "Official Website"
+msgid "oixCloud Website"
 msgstr "Sitio web oficial"
 
 msgid "Login..."
@@ -3950,9 +3950,6 @@ msgstr "Cerrar sesión en la cuenta"
 
 msgid "Account Login"
 msgstr "Inicio de sesión de cuenta"
-
-msgid "Account logged in"
-msgstr "Cuenta iniciada"
 
 msgid "Simple & trustworthy"
 msgstr "Simple y confiable"

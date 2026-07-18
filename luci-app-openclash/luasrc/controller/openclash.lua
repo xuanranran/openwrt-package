@@ -4631,7 +4631,9 @@ local function fetch_oix_sub(token)
 				end
 			end
 		end
+		return true
 	end
+	return false
 end
 
 function oix_login()
@@ -4641,19 +4643,19 @@ function oix_login()
 	local passwd = fs.uci_get_config("config", "oix_passwd")
 	if input_token and input_token ~= "" then
 		-- Token direct login mode
-		local old_token = fs.uci_get_config("config", "oix_token")
-		if old_token and old_token ~= "" and old_token ~= input_token then
-			oix_logout(old_token)
-		end
 		uci:set("openclash", "config", "oix_token", input_token)
 		uci:commit("openclash")
 		token = input_token
-		result = 200
+		if fetch_oix_sub(token) then
+			result = 200
+		else
+			result = "invalid token"
+		end
 	else
 		-- Email/password login mode
 		token = fs.uci_get_config("config", "oix_token")
 		if email and passwd then
-			info = SYS.exec(string.format("curl -sL -H 'Content-Type: application/json' -H 'User-Agent: OpenClash' -d '{\"email\":\"%s\", \"passwd\":\"%s\", \"token_expire\":\"365\" }' -X POST https://oix-api.dler.io/api/v1/login", email, passwd))
+			info = SYS.exec(string.format("curl -sL -H 'Content-Type: application/json' -H 'User-Agent: OpenClash for oixCloud' -d '{\"email\":\"%s\", \"passwd\":\"%s\", \"token_expire\":\"365\" }' -X POST https://oix-api.dler.io/api/v1/login", email, passwd))
 			if info then
 				info = json.parse(info)
 			end
@@ -4665,6 +4667,7 @@ function oix_login()
 				uci:set("openclash", "config", "oix_token", token)
 				uci:commit("openclash")
 				result = info.ret
+				fetch_oix_sub(token)
 			else
 				uci:delete("openclash", "config", "oix_token")
 				uci:commit("openclash")
@@ -4690,44 +4693,57 @@ function oix_login()
 			return
 		end
 	end
-	token = token or fs.uci_get_config("config", "oix_token")
-	if token then fetch_oix_sub(token) end
 	HTTP.prepare_content("application/json")
 	HTTP.write_json({result = result})
 end
 
 function oix_logout(oldtoken)
 	local info, result, token
+	local is_token_login = false
 	if not oldtoken then
 		token = fs.uci_get_config("config", "oix_token")
+		is_token_login = not fs.uci_get_config("config", "oix_email")
 	else
 		token = oldtoken
 	end
 	if token then
-		info = SYS.exec(string.format("curl -sL -H 'Content-Type: application/json' -H 'Authorization: Bearer %s' -X POST https://oix-api.dler.io/api/v1/logout", token))
-		if info then
-			info = json.parse(info)
-		end
-		if info and info.ret == 200 then
+		if is_token_login then
 			uci:delete("openclash", "config", "oix_token")
-			if not oldtoken then
-				uci:delete("openclash", "config", "oix_email")
-				uci:delete("openclash", "config", "oix_passwd")
-				uci:delete("openclash", "config", "oix_checkin")
-				uci:delete("openclash", "config", "oix_checkin_interval")
-				uci:delete("openclash", "config", "oix_checkin_multiple")
-				uci:delete("openclash", "config", "oix_params")
-				uci:delete("openclash", "config", "oix_default_params")
-			end
+			uci:delete("openclash", "config", "oix_checkin")
+			uci:delete("openclash", "config", "oix_checkin_interval")
+			uci:delete("openclash", "config", "oix_checkin_multiple")
+			uci:delete("openclash", "config", "oix_params")
+			uci:delete("openclash", "config", "oix_default_params")
 			uci:commit("openclash")
 			fs.unlink("/tmp/oix_checkin")
 			fs.unlink("/tmp/oix_info")
-			result = info.ret
+			result = 200
 		else
-			if info and info.msg then
-				result = info.msg
+			info = SYS.exec(string.format("curl -sL -H 'Content-Type: application/json' -H 'Authorization: Bearer %s' -X POST https://oix-api.dler.io/api/v1/logout", token))
+			if info then
+				info = json.parse(info)
+			end
+			if info and info.ret == 200 then
+				uci:delete("openclash", "config", "oix_token")
+				if not oldtoken then
+					uci:delete("openclash", "config", "oix_email")
+					uci:delete("openclash", "config", "oix_passwd")
+					uci:delete("openclash", "config", "oix_checkin")
+					uci:delete("openclash", "config", "oix_checkin_interval")
+					uci:delete("openclash", "config", "oix_checkin_multiple")
+					uci:delete("openclash", "config", "oix_params")
+					uci:delete("openclash", "config", "oix_default_params")
+				end
+				uci:commit("openclash")
+				fs.unlink("/tmp/oix_checkin")
+				fs.unlink("/tmp/oix_info")
+				result = info.ret
 			else
-				result = "logout failed"
+				if info and info.msg then
+					result = info.msg
+				else
+					result = "logout failed"
+				end
 			end
 		end
 	else

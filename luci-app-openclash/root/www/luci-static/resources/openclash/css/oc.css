@@ -62,8 +62,8 @@
     --oix-msg-info-bg: #cce5ff;
     --oix-msg-info-text: #004085;
     --oix-msg-info-border: #b8daff;
-    --oix-status-badge-bg: rgba(5,150,105,0.08);
-    --oix-status-badge-border: rgba(5,150,105,0.2);
+    --oix-status-badge-bg: rgba(59, 130, 246, 0.08);
+    --oix-status-badge-border: rgba(59, 130, 246, 0.2);
     --overlay-bg: rgba(0, 0, 0, 0.5);
     --editor-bg: #f5f5f5;
     --primary-a5: rgba(59, 130, 246, 0.05);
@@ -140,8 +140,8 @@ html[data-darkmode="true"] .oc {
     --oix-msg-info-bg: #1a2a3a;
     --oix-msg-info-text: #a0c5f5;
     --oix-msg-info-border: #2d3f5a;
-    --oix-status-badge-bg: rgba(52,211,153,0.1);
-    --oix-status-badge-border: rgba(52,211,153,0.25);
+    --oix-status-badge-bg: rgba(96, 165, 250, 0.1);
+    --oix-status-badge-border: rgba(96, 165, 250, 0.25);
     --announcement-end: #3555bf;
     --announcement-icon-bg: rgba(255, 255, 255, 0.1);
     --overlay-bg: rgba(0, 0, 0, 0.5);
@@ -5423,7 +5423,7 @@ html[data-darkmode=true] .oc .oix-input:-webkit-autofill:focus {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 12px; border-radius: 20px;
     font-weight: 600; font-size: 13px;
-    background: var(--oix-status-badge-bg); color: var(--success-color);
+    background: var(--oix-status-badge-bg); color: var(--primary-color);
     border: 1px solid var(--oix-status-badge-border);
 }
 

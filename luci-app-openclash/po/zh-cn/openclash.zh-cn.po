@@ -3966,7 +3966,7 @@ msgstr "使用找到的私钥解密尝试失败:"
 msgid "Encrypt attempt failed:"
 msgstr "加密尝试失败:"
 
-msgid "Official Website"
+msgid "oixCloud Website"
 msgstr "官方网站"
 
 msgid "Login..."
@@ -4001,9 +4001,6 @@ msgstr "退出账号"
 
 msgid "Account Login"
 msgstr "账号登录"
-
-msgid "Account logged in"
-msgstr "账号已登录"
 
 msgid "Simple & trustworthy"
 msgstr "简单 & 值得信赖"

@@ -56,7 +56,7 @@ end
 					<div style="text-align:center;margin-top:12px;">
 						<button type="button" class="oix-btn oix-btn-ghost oix-btn-block" onclick="OixCloud.openWebsite();return false;">
 							<svg class="oc-icon" width="14" height="14"><use href="#oc-icon-home"/></svg>
-							<%:Official Website%>
+							<%:oixCloud Website%>
 						</button>
 					</div>
 				</div>
@@ -80,7 +80,7 @@ end
 					<div style="text-align:center;margin-top:12px;">
 					<button type="button" class="oix-btn oix-btn-ghost oix-btn-block" onclick="OixCloud.openWebsite();return false;">
 						<svg class="oc-icon" width="12" height="12"><use href="#oc-icon-home"/></svg>
-						<%:Official Website%>
+						<%:oixCloud Website%>
 						</button>
 					</div>
 				</div>
@@ -94,8 +94,8 @@ end
 			<div class="oix-header">
 				<div class="oix-header-left">
 					<span class="oix-status-badge">
-						<svg class="oc-icon" width="14" height="14"><use href="#oc-icon-success"/></svg>
-						<%:Account logged in%>
+						<svg class="oc-icon" width="14" height="14"><use href="#oc-icon-badge"/></svg>
+						<span id="oix-header-plan">--</span>
 					</span>
 				</div>
 				<div class="oix-header-right">
@@ -105,7 +105,7 @@ end
 					</button>
 					<button type="button" class="oix-btn oix-btn-ghost-subtle oix-btn-sm" onclick="OixCloud.openWebsite();return false;">
 						<img src="<%= oix_logo_src %>" width="14" height="14" style="border-radius:50%;vertical-align:middle" alt="oixCloud">
-						<%:Official Website%>
+						<%:oixCloud Website%>
 					</button>
 					<button type="button" class="oix-btn oix-btn-danger oix-btn-sm" onclick="OixCloud.doLogout();return false;">
 						<svg class="oc-icon" width="12" height="12"><use href="#oc-icon-logout"/></svg>
@@ -127,20 +127,20 @@ end
 
 			<div class="oix-cards" id="oix-cards">
 				<div class="oix-card">
-					<div class="oix-card-label"><%:Plan%></div>
-					<div class="oix-card-value" id="oix-plan">--</div>
-				</div>
-				<div class="oix-card">
 					<div class="oix-card-label"><%:Plan Expiration Time%></div>
 					<div class="oix-card-value" id="oix-plantime">--</div>
 				</div>
 				<div class="oix-card">
-					<div class="oix-card-label"><%:Account Balances%></div>
-					<div class="oix-card-value" id="oix-money">--</div>
-				</div>
-				<div class="oix-card">
 					<div class="oix-card-label"><%:Account Integral%></div>
 					<div class="oix-card-value" id="oix-integral">--</div>
+				</div>
+				<div class="oix-card">
+					<div class="oix-card-label"><%:Aff Balances%></div>
+					<div class="oix-card-value" id="oix-affmoney">--</div>
+				</div>
+				<div class="oix-card">
+					<div class="oix-card-label"><%:Account Balances%></div>
+					<div class="oix-card-value" id="oix-money">--</div>
 				</div>
 				<div class="oix-card">
 					<div class="oix-card-label"><%:Plan Traffic%></div>
@@ -302,17 +302,34 @@ var OixCloud = {
 		btns.forEach(function(b){ b._origHTML = b.innerHTML; b.disabled = true; var svg = b.querySelector('svg'); b.innerHTML = (svg ? svg.outerHTML : '') + ' <%:Login...%>'; });
 		XHR.get(OIX_URLS.save, data, function(x, status) {
 			if (!x || x.status != 200) { OixMsg.show('<%:Network request failed, please check your connection and try again%>', 'error'); btns.forEach(function(b){b.disabled=false;b.innerHTML=b._origHTML;}); return; }
-			XHR.get(OIX_URLS.login, isToken ? {token: data.token} : null, function(x2, s2) {
-				btns.forEach(function(b){ b.disabled = false; b.innerHTML = b._origHTML; });
-				if (x2 && x2.status == 200 && s2.result == 200) {
-					var info = '<%:oixCloud Login Successful%>' + ', <%:Note: oixCloud need a specific core installed, OpenClash will auto download, After the core start, an oixCloud nodes provider will be added, which you can customize as needed%>';
-					OixMsg.show(info, 'success', 20000);
-					self.loggedIn = true; self.showLoggedIn(); self.loadAccountInfo(); self.startPolling();
-				} else {
-					var msg = (s2 && s2.result) ? s2.result : '<%:oixCloud Login Failed%>';
-					OixMsg.show('<%:oixCloud Login Failed:%> ' + msg, 'error');
-				}
-			});
+
+			var onLoginSuccess = function() {
+				var info = '<%:oixCloud Login Successful%>' + ', <%:Note: oixCloud need a specific core installed, OpenClash will auto download, After the core start, an oixCloud nodes provider will be added, which you can customize as needed%>';
+				OixMsg.show(info, 'success', 20000);
+				self.loggedIn = true; self.showLoggedIn(); self.loadAccountInfo(); self.startPolling();
+			};
+
+			if (isToken) {
+				XHR.get(OIX_URLS.login, {token: data.token}, function(x2, s2) {
+					btns.forEach(function(b){ b.disabled = false; b.innerHTML = b._origHTML; });
+					if (x2 && x2.status == 200 && s2.result == 200) {
+						onLoginSuccess();
+					} else {
+						var msg = (s2 && s2.result) ? s2.result : '<%:oixCloud Login Failed%>';
+						OixMsg.show('<%:oixCloud Login Failed:%> ' + msg, 'error');
+					}
+				});
+			} else {
+				XHR.get(OIX_URLS.login, null, function(x2, s2) {
+					btns.forEach(function(b){ b.disabled = false; b.innerHTML = b._origHTML; });
+					if (x2 && x2.status == 200 && s2.result == 200) {
+						onLoginSuccess();
+					} else {
+						var msg = (s2 && s2.result) ? s2.result : '<%:oixCloud Login Failed%>';
+						OixMsg.show('<%:oixCloud Login Failed:%> ' + msg, 'error');
+					}
+				});
+			}
 		});
 	},
 
@@ -324,7 +341,7 @@ var OixCloud = {
 			if (btn) { btn.disabled = false; btn.innerHTML = btn._origHTML; }
 			if (x && x.status == 200 && status.result == 200) {
 				OixMsg.show('<%:oixCloud Logout Successful%>', 'success', 2000);
-				self.loggedIn = false; self.stopPolling(); self.showLoggedOut(); self.clearForm();
+				self.loggedIn = false; self.stopPolling(); self.showLoggedOut();
 			} else {
 			var msg = (status && status.result) ? status.result : '<%:oixCloud Logout Failed%>';
 				OixMsg.show('<%:oixCloud Logout Failed:%> ' + msg, 'error');
@@ -359,55 +376,7 @@ var OixCloud = {
 		XHR.get(OIX_URLS.info, null, function(x, status) {
 			if (x && x.status == 200 && status.result && typeof status.result === 'object') {
 				self.renderAccountInfo(status.result);
-				if (status.result.announcement && status.result.announcement.content) {
-					var el = document.getElementById('oix-announce');
-					var body = document.getElementById('oix-announce-body');
-					var arrow = document.getElementById('oix-announce-arrow');
-					if (el && body) {
-						el.style.display = 'block';
-						body.innerHTML = '<strong>' + (status.result.announcement.date || '') + ': </strong>' + status.result.announcement.content;
-						body.classList.remove('oix-collapsed');
-						var ref = document.getElementById('oix-cards');
-						var measureContent = function() {
-							if (!ref || ref.offsetWidth === 0) return;
-							var cs = getComputedStyle(body);
-							var fontSize = parseFloat(cs.fontSize) || 12;
-							var maxH = fontSize * 5.6;
-							var measure = document.createElement('div');
-							measure.style.font = cs.font;
-							measure.style.lineHeight = cs.lineHeight;
-							measure.style.wordBreak = cs.wordBreak;
-							measure.style.width = ref.offsetWidth + 'px';
-							measure.style.position = 'absolute';
-							measure.style.visibility = 'hidden';
-							measure.innerHTML = (status.result.announcement.date || '') + ': ' + status.result.announcement.content;
-							ref.parentElement.appendChild(measure);
-							var fullH = measure.scrollHeight;
-							ref.parentElement.removeChild(measure);
-							if (fullH > maxH + 4) {
-								body.classList.add('oix-collapsed');
-								if (arrow) arrow.style.display = 'flex';
-							} else {
-								if (arrow) arrow.style.display = 'none';
-							}
-						};
-						if (ref && ref.offsetWidth > 0) {
-							measureContent();
-						} else {
-							var tabContainer = document.getElementById('tab.openclash.config.oixcloud');
-							var observer = new MutationObserver(function() {
-								if (ref && ref.offsetWidth > 0) {
-									observer.disconnect();
-									measureContent();
-								}
-							});
-							observer.observe(tabContainer, { attributes: true, attributeFilter: ['style', 'class'] });
-						}
-					}
-				} else {
-					var el2 = document.getElementById('oix-announce');
-					if (el2) el2.style.display = 'none';
-				}
+				self.renderAnnouncement(status.result);
 			} else {
 				var cards = document.getElementById('oix-cards');
 				if (cards) cards.style.display = 'none';
@@ -417,8 +386,61 @@ var OixCloud = {
 		});
 	},
 
+	renderAnnouncement: function(result) {
+		if (result.announcement && result.announcement.content) {
+			var el = document.getElementById('oix-announce');
+			var body = document.getElementById('oix-announce-body');
+			var arrow = document.getElementById('oix-announce-arrow');
+			if (el && body) {
+				el.style.display = 'block';
+				body.innerHTML = '<strong>' + (result.announcement.date || '') + ': </strong>' + result.announcement.content;
+				body.classList.remove('oix-collapsed');
+				var ref = document.getElementById('oix-cards');
+				var measureContent = function() {
+					if (!ref || ref.offsetWidth === 0) return;
+					var cs = getComputedStyle(body);
+					var fontSize = parseFloat(cs.fontSize) || 12;
+					var maxH = fontSize * 5.6;
+					var measure = document.createElement('div');
+					measure.style.font = cs.font;
+					measure.style.lineHeight = cs.lineHeight;
+					measure.style.wordBreak = cs.wordBreak;
+					measure.style.width = ref.offsetWidth + 'px';
+					measure.style.position = 'absolute';
+					measure.style.visibility = 'hidden';
+					measure.innerHTML = (result.announcement.date || '') + ': ' + result.announcement.content;
+					ref.parentElement.appendChild(measure);
+					var fullH = measure.scrollHeight;
+					ref.parentElement.removeChild(measure);
+					if (fullH > maxH + 4) {
+						body.classList.add('oix-collapsed');
+						if (arrow) arrow.style.display = 'flex';
+					} else {
+						if (arrow) arrow.style.display = 'none';
+					}
+				};
+				if (ref && ref.offsetWidth > 0) {
+					measureContent();
+				} else {
+					var tabContainer = document.getElementById('tab.openclash.config.oixcloud');
+					var observer = new MutationObserver(function() {
+						if (ref && ref.offsetWidth > 0) {
+							observer.disconnect();
+							measureContent();
+						}
+					});
+					observer.observe(tabContainer, { attributes: true, attributeFilter: ['style', 'class'] });
+				}
+			}
+		} else {
+			var el2 = document.getElementById('oix-announce');
+			if (el2) el2.style.display = 'none';
+		}
+	},
+
 	renderAccountInfo: function(d) {
-		document.getElementById('oix-plan').textContent = d.plan || '--';
+		document.getElementById('oix-header-plan').textContent = d.plan || '--';
+		document.getElementById('oix-affmoney').textContent = d.aff_money || '--';
 		document.getElementById('oix-plantime').textContent = d.plan_time || '--';
 		document.getElementById('oix-money').textContent = d.money || '--';
 		document.getElementById('oix-integral').textContent = d.integral || '--';
