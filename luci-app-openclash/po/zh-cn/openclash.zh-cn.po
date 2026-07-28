@@ -1281,9 +1281,6 @@ msgstr "查看内核路径"
 msgid "Core Path:"
 msgstr "内核路径："
 
-msgid "Settings have been saved..."
-msgstr "配置已保存..."
-
 msgid "Core Settings"
 msgstr "核心设置"
 
@@ -1292,9 +1289,6 @@ msgstr "启用"
 
 msgid "Disable"
 msgstr "停用"
-
-msgid "Core"
-msgstr "内核"
 
 msgid "Client"
 msgstr "客户端"
