@@ -1269,45 +1269,6 @@ msgstr "更新分支"
 msgid "CPU Arch"
 msgstr "处理器架构"
 
-msgid "View Core Path"
-msgstr "查看内核路径"
-
-msgid "Core Path:"
-msgstr "内核路径："
-
-msgid "Core Settings"
-msgstr "核心设置"
-
-msgid "Enable"
-msgstr "启用"
-
-msgid "Disable"
-msgstr "停用"
-
-msgid "Client"
-msgstr "客户端"
-
-msgid "Execute"
-msgstr "执行"
-
-msgid "Quick Actions"
-msgstr "快捷操作"
-
-msgid "Shortcuts"
-msgstr "快捷方式"
-
-msgid "Download Core"
-msgstr "下载内核"
-
-msgid "Download Client"
-msgstr "下载客户端"
-
-msgid "Backing up..."
-msgstr "正在备份..."
-
-msgid "Not Found"
-msgstr "未找到"
-
 msgid "Last Check Update"
 msgstr "上次检查更新时间"
 
