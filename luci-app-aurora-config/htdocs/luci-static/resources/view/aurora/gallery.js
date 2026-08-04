@@ -691,6 +691,47 @@ const buildPaletteChips = (item) => {
   ]);
 };
 
+// 工具栏开关是布局的一部分,不是"快捷方式"那一节的脚注:一份配置可以一条快捷
+// 方式都不带,却仍然决定了工具栏出不出现 —— 内置预设正是这种情况。
+//
+// 两个值逐一比对,不做查表:layout 来自 hub 是任意 JSON,而 `{1:…,0:…}[值]`
+// 会把 "constructor" 这类键读成 Object 原型上的东西,然后被当成一行文案画出来。
+const toolbarLabel = (value) =>
+  value === "1" ? _("Shown") : value === "0" ? _("Hidden") : "";
+
+// 内置预设和社区配置在这张表里说的是同一件事,所以只有一个构造器。内置抽屉
+// 曾经只画一行"导航(此预设不改动)",而那句话现在不成立了 —— 预设带的是一整
+// 套外观。
+const buildLayoutRows = (layout, typography) =>
+  buildKvList([
+    [_("Navigation"), NAV_TYPE_LABELS[layout.nav_type] || layout.nav_type],
+    [_("Spacing"), layout.struct_spacing],
+    [_("Corner Radius"), radiusJoin(layout.struct_radius_base)],
+    // 侧边栏外壳是全宽的,主题根本不读这个上限(设置页在 sidebar 下也把这个
+    // 控件藏起来)。把它当成这份配置的一个特征写出来就是在描述一个死旋钮。
+    [
+      _("Content Width"),
+      layout.nav_type === "sidebar" ? "" : layout.struct_content_width_centered,
+    ],
+    [_("Sans Font"), firstFontFamily(typography.struct_font_sans)],
+    [_("Mono Font"), firstFontFamily(typography.struct_font_mono)],
+    [_("Toolbar"), toolbarLabel(layout.toolbar_enabled)],
+  ]);
+
+// typography.font_sans/font_mono 是字体名册里的 id。"default" 和 "system" 解析
+// 到路由器上已经有的字形,别的 id 一律是 Fontsource 网络字体:要先下载,下载
+// 到之前浏览器渲染的是字体栈里的后备字族。内置卡片写着"离线可用",所以这件事
+// 必须说出来,否则一台没有外网的路由器会觉得预设只应用了一半。
+const BUNDLED_FONT_IDS = ["default", "system"];
+
+const needsFontDownload = (typography) =>
+  ["font_sans", "font_mono"].some(
+    (key) =>
+      typeof typography[key] === "string" &&
+      typography[key] &&
+      BUNDLED_FONT_IDS.indexOf(typography[key]) === -1,
+  );
+
 const buildDetailBody = (item) => {
   const payload = item.payload || {};
   const layout = payload.layout || {};
@@ -718,14 +759,7 @@ const buildDetailBody = (item) => {
     buildDetailHeading(_("Colors")),
     buildPaletteChips(item),
     buildDetailHeading(_("Layout & Typography")),
-    buildKvList([
-      [_("Navigation"), NAV_TYPE_LABELS[layout.nav_type] || layout.nav_type],
-      [_("Spacing"), layout.struct_spacing],
-      [_("Corner Radius"), radiusJoin(layout.struct_radius_base)],
-      [_("Content Width"), layout.struct_content_width_centered],
-      [_("Sans Font"), firstFontFamily(typography.struct_font_sans)],
-      [_("Mono Font"), firstFontFamily(typography.struct_font_mono)],
-    ]),
+    buildLayoutRows(layout, typography),
   );
 
   const shortcuts = buildShortcutList(payload.toolbar, layout);
@@ -999,9 +1033,11 @@ return view.extend({
   handleReset: null,
 
   load() {
+    // 刻意只留本地来源。presets.json 随包安装,uci.load 走本机 ubus(实测
+    // ~90ms)。到 hub 的两个调用移到 render() 之后 —— LuCI 在 load() resolve
+    // 前不会进 render(),把一次 205ms RTT / 首连 800ms 的往返放在这里,等于
+    // 让首屏白等它。见 docs/specs/2026-08-05-store-first-paint.md。
     return Promise.all([
-      L.resolveDefault(hubApi.callHubList("hot", 1), null),
-      L.resolveDefault(hubApi.callHubMe(), null),
       L.resolveDefault(
         fetch(L.resource("aurora/presets.json")).then((res) =>
           res.ok ? res.json() : null,
@@ -1009,9 +1045,7 @@ return view.extend({
         null,
       ),
       uci.load("aurora"),
-    ]).then(([listRes, meRes, presetsRes]) => ({
-      listRes,
-      meRes,
+    ]).then(([presetsRes]) => ({
       presets: (presetsRes && presetsRes.presets) || null,
       hubApplied: uci.get("aurora", "theme", "hub_applied") || "",
       // Set by rpcd whenever the key leaves the router (export or import).
@@ -1020,6 +1054,11 @@ return view.extend({
       // reflash that is exactly when the reminder should come back.
       keySaved: uci.get("aurora", "theme", "hub_key_saved") === "1",
       activePreset: uci.get("aurora", "theme", "active_preset") || "default",
+      // This router's own navigation shape. It used to stand in for the
+      // built-in presets' too, back when a preset changed only colours; now
+      // every preview draws the configuration's own nav_type and this is read
+      // by the publish panel alone -- the preview and manifest of what YOUR
+      // configuration would look like in the store.
       navType: uci.get("aurora", "theme", "nav_type") || "mega-menu",
     }));
   },
@@ -1032,17 +1071,21 @@ return view.extend({
         : loadData.activePreset;
     const currentNav = loadData.navType;
 
-    // Built-in preset card models: local palette data, offline-safe. When
-    // presets.json is missing (broken install) the group renders nothing.
+    // Built-in preset card models: local data, offline-safe. When presets.json
+    // is missing (broken install) the group renders nothing.
+    //
+    // `preview` is the projection a hub list row carries (colors / layout /
+    // typography / toolbar), written by scripts/gen-presets.mjs from the same
+    // templates rpcd applies. That is the whole point of the shape: paletteOf,
+    // navOf and tileEntriesFor then read a built-in preset with the accessors
+    // they already use for a shared configuration, so the two card kinds
+    // cannot describe a look differently.
     const builtinItems = loadData.presets
       ? BUILTIN_PRESETS.filter((preset) => loadData.presets[preset.id]).map(
           (preset) => ({
             id: preset.id,
             label: preset.label,
-            palette: {
-              light: loadData.presets[preset.id].light || {},
-              dark: loadData.presets[preset.id].dark || {},
-            },
+            preview: loadData.presets[preset.id],
           }),
         )
       : [];
@@ -1219,7 +1262,7 @@ return view.extend({
           "p",
           {},
           _(
-            "Apply the '%s' preset now? It is saved immediately and the page reloads. Presets set the light and dark colors only — layout, typography, branding, navigation, and toolbar are left unchanged.",
+            "Apply the '%s' preset now? It is saved immediately and the page reloads. A preset carries a whole look — colors, navigation, spacing, corner radius, content width and fonts. Your shortcuts, logo, icons and login background are left as they are.",
           ).format(preset.label),
         ),
         buildConfirmActions(() => {
@@ -1278,37 +1321,51 @@ return view.extend({
 
     const openBuiltinDrawer = (preset) => {
       const current = preset.id === activePreset;
+      const typography = preset.preview.typography || {};
       const title = E("h3", { style: "margin:0 0 0.3em;" }, [
         document.createTextNode(preset.label),
         " ",
         E("span", { class: "aurora-store-badge builtin" }, _("Built-in")),
       ]);
       if (current) title.appendChild(buildCurrentTick());
-      renderDrawer([
-        buildPanes(preset.palette, { nav: currentNav }),
-        E("div", { class: "aurora-store-drawer-body" }, [
-          title,
+
+      const body = [
+        title,
+        E(
+          "p",
+          { class: "aurora-store-dt-desc" },
+          _("Ships with the theme and works offline."),
+        ),
+        buildDetailHeading(_("Colors")),
+        buildPaletteChips(preset),
+        buildDetailHeading(_("Layout & Typography")),
+        buildLayoutRows(preset.preview.layout || {}, typography),
+      ];
+
+      if (needsFontDownload(typography))
+        body.push(
           E(
             "p",
-            { class: "aurora-store-dt-desc" },
-            _("Ships with the theme and works offline."),
-          ),
-          buildDetailHeading(_("Colors")),
-          buildPaletteChips({ palette: preset.palette }),
-          buildDetailHeading(_("Layout (unchanged by this preset)")),
-          buildKvList([
-            [_("Navigation"), NAV_TYPE_LABELS[currentNav] || currentNav],
-          ]),
-          buildDetailHeading(_("Bundled content")),
-          buildBuiltinTiles(),
-          E(
-            "p",
-            { class: "aurora-store-dt-foot" },
+            { class: "aurora-store-sc-note" },
             _(
-              "Presets set the light and dark colors only — layout, typography, branding, navigation, and toolbar are left unchanged.",
+              "This preset uses a downloaded typeface. The router fetches it once after applying; until then the text falls back to the built-in font.",
             ),
           ),
-        ]),
+        );
+
+      body.push(
+        E(
+          "p",
+          { class: "aurora-store-dt-foot" },
+          _(
+            "Your shortcuts, logo, icons and login background are left exactly as they are.",
+          ),
+        ),
+      );
+
+      renderDrawer([
+        buildPanes(paletteOf(preset), previewOpts(preset)),
+        E("div", { class: "aurora-store-drawer-body" }, body),
         drawerFoot(_("Apply"), () => confirmBuiltinApply(preset), current),
       ]);
     };
@@ -1406,14 +1463,18 @@ return view.extend({
 
     // 内置卡不带 "Built-in" 徽章:它上方的分区标题已经写着"内置",而每张卡
     // 再重复一遍就是拿掉一行密度换零信息。徽章那个样式类留着,抽屉还在用。
+    //
+    // 缩略图画的是预设自己的导航形态,glyph 行出的是它自己的字体和圆角 ——
+    // 内置预设现在带的是一整套外观,而不是一组色值,卡片必须让人在点进去之前
+    // 就看得出这一点。
     const buildBuiltinCard = (preset) => buildCard({
       name: preset.label,
       author: "Aurora",
       right: _("Works offline"),
-      palette: preset.palette,
-      opts: { nav: currentNav },
+      palette: paletteOf(preset),
+      opts: previewOpts(preset),
       badge: null,
-      glyphs: null,
+      glyphs: buildCardGlyphs(preset),
       current: preset.id === activePreset,
       open: () => openBuiltinDrawer(preset),
       apply: () => confirmBuiltinApply(preset),
@@ -1442,9 +1503,21 @@ return view.extend({
 
     // One request carries both halves of the answer: who this router
     // publishes as, and what it has published.
+    // hub_me 是本页唯一还走 ubus 的网络调用 —— device_token 是 0600 的写凭证
+    // (hub_share/hub_update/hub_delete 都靠它认证),不下发到浏览器。整条链路
+    // 实测约 0.9s,其中 ubus 只占 0.09s,其余全是路由器到 hub 那次不可复用的
+    // TLS 握手加 205ms 跨太平洋 RTT。所以结果要落缓存:下次打开页面由缓存先
+    // 画,这一次往返就不再挡在首屏前面。
+    //
+    // 失败时刻意什么都不做。原先是 applyMe(null),而 applyMe 会把 myShares
+    // 置空 —— 断网的用户会眼看着自己已发布的作品从界面上消失。保留上一帧才
+    // 是诚实的:我们只是没拿到新数据,不是作品没了。
     const refreshMyShares = () =>
       L.resolveDefault(hubApi.callHubMe(), null).then((res) => {
-        applyMe(res && res.result === 0 ? res.data : null);
+        if (res && res.result === 0) {
+          hubApi.meCache.set(res.data);
+          applyMe(res.data);
+        }
       });
 
     const applyMe = (data) => {
@@ -1734,6 +1807,11 @@ return view.extend({
             return;
           }
           ui.hideModal();
+          // 换账号了 —— 缓存里那份档案属于上一个 key。先清掉再刷新,否则
+          // "导入成功、随后 hub_me 失败"会把上一个账号的作品留在界面上,
+          // 而 Task 2 之后失败路径不再自行清空。
+          hubApi.meCache.clear();
+          applyMe(null);
           refreshMyShares().then(() => {
             keySaved = true;
             ui.addNotification(
@@ -2470,11 +2548,10 @@ return view.extend({
       state.online.hot = cached.items;
 
     renderBanner();
-    applyMe(
-      loadData.meRes && loadData.meRes.result === 0 ? loadData.meRes.data : null,
-    );
-    selectTab("all");
-    applyResult(loadData.listRes, "hot");
+    // 缓存或 null。null 走空态,不是错误态 —— 一台刚装好的路由器本来就没有
+    // 已发布的作品,和"拿不到数据"是两回事。
+    applyMe(hubApi.meCache.getStale());
+    selectTab("all"); // 末行已 renderContent(),首帧在此成型
 
     [
       styleEl,
@@ -2483,6 +2560,12 @@ return view.extend({
       drawerMask,
       drawerEl,
     ].forEach((child) => rootEl.appendChild(child));
+
+    // 网络在 DOM 挂载之后才发起。此刻画面已经成型:内置预设来自随包的
+    // presets.json,在线列表与创作者档案来自上面两处缓存。两个请求回来后
+    // 各自 reconcile,失败则保留当前这帧。
+    fetchSort("hot");
+    refreshMyShares();
 
     return rootEl;
   },
