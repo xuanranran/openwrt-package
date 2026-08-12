@@ -20,6 +20,60 @@ FW4=$(command -v fw4)
 skip_proxies_address()
 {
 ruby -ryaml -rYAML -I "/usr/share/openclash" -E UTF-8 -e "
+REG4 = /^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$/
+REG6 = /^(?:(?:(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))|\[(?:(?:(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))\]$/i
+REG_DOMAIN = /([0-9a-zA-Z-]{1,}\.)+([a-zA-Z]{2,})/
+CACHE_FILE = '/tmp/openclash_proxy_ips_cache'
+
+def write_ips_set(ips)
+   return if ips.nil? or ips.empty?
+   firewall_v = '$FW4'.empty? ? 'ipt' : 'nft'
+   set_commands = []
+   ips.each do |ip|
+      next if ip.nil? or ip.empty?
+      if ip.match(REG4) then
+         if firewall_v == 'nft' then
+            set_commands << 'nft add element inet fw4 localnetwork { \"' + ip + '\" } 2>/dev/null'
+         else
+            set_commands << 'ipset add localnetwork \"' + ip + '\" 2>/dev/null'
+         end
+      elsif ip.match(REG6) then
+         if firewall_v == 'nft' then
+            set_commands << 'nft add element inet fw4 localnetwork6 { \"' + ip + '\" } 2>/dev/null'
+         else
+            set_commands << 'ipset add localnetwork6 \"' + ip + '\" 2>/dev/null'
+         end
+      end
+   end
+   system(set_commands.join('; ')) if not set_commands.empty?
+end
+
+def cache_match?(cache_file)
+   return nil unless File.exist?(cache_file)
+   lines = File.read(cache_file).split(/\n/)
+   sep = lines.index('')
+   return nil unless sep
+   main = lines[0].split(' ')
+   return nil unless main[0] == 'MAIN'
+   return nil unless main[1] == File.mtime('$CONFIG_FILE').to_i.to_s and main[2] == File.size('$CONFIG_FILE').to_s
+   lines[1...sep].each do |line|
+      p = line.split(' ')
+      next unless p[0] == 'PROV'
+      return nil unless File.exist?(p[3])
+      return nil unless File.mtime(p[3]).to_i.to_s == p[1] and File.size(p[3]).to_s == p[2]
+   end
+   lines[(sep+1)..-1].compact
+end
+
+begin
+   cached_ips = cache_match?(CACHE_FILE)
+   if cached_ips then
+      write_ips_set(cached_ips)
+      exit
+   end
+rescue Exception
+end
+
 begin
    Value = YAML.load_file('$CONFIG_FILE');
 rescue Exception => e
@@ -33,6 +87,7 @@ begin
    end
 
    servers_to_process = Array.new
+   provider_files = Array.new
 
    # Servers from proxies
    if Value.key?('proxies') and not Value['proxies'].nil?
@@ -47,6 +102,7 @@ begin
          if provider.key?('path') and not provider['path'].empty?
             path = provider['path'].start_with?('./') ? '/etc/openclash/' + provider['path'][2..-1] : provider['path']
             if File.exist?(path)
+               provider_files.push(path)
                file_is_age_encrypted = File.read(path, 512).include?('BEGIN AGE ENCRYPTED FILE') rescue false
                begin
                   if provider.key?('age-secret-key') and not provider['age-secret-key'].to_s.empty?
@@ -103,14 +159,11 @@ begin
 
    domains_to_resolve = Array.new
    ips = Array.new
-   reg_domain = /([0-9a-zA-Z-]{1,}\.)+([a-zA-Z]{2,})/
-   reg4 = /^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$/
-   reg6 = /^(?:(?:(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))|\[(?:(?:(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))\]$/i
 
    servers_to_process.each do |server|
-      if server.to_s.match(reg4) or server.to_s.match(reg6)
+      if server.to_s.match(REG4) or server.to_s.match(REG6)
          ips.push(server)
-      elsif server.to_s.match(reg_domain)
+      elsif server.to_s.match(REG_DOMAIN)
          domains_to_resolve.push(server)
       end
    end
@@ -119,18 +172,33 @@ begin
    domains_to_resolve.uniq!
 
    if not domains_to_resolve.empty?
+      host = '127.0.0.1'
+      port = IO.popen('uci -q get openclash.config.cn_port').read.strip
+      pw = IO.popen('uci -q get openclash.config.dashboard_password').read.strip
+
       ips_mutex = Mutex.new
       queue = Queue.new
-      domains_to_resolve.each{|d| queue << d}
+      domains_to_resolve.each do |d|
+         queue << [d, 'A']
+         queue << [d, 'AAAA']
+      end
 
       threads = (1..[10, queue.size].min).map do
          Thread.new do
-            while domain = queue.pop(true) rescue nil
-               syscall = '/usr/share/openclash/openclash_debug_dns.lua 2>/dev/null \"' + domain + '\" \"true\"'
+            while task = (queue.pop(true) rescue nil)
+               domain, qtype = task
+               syscall = 'curl -s -m 3 -H \"Authorization: Bearer ' + pw + '\" \"http://' + host + ':' + port + '/dns/query?name=' + domain + '&type=' + qtype + '\" | jsonfilter -e \"@.Answer[*].data\" 2>/dev/null'
                result = IO.popen(syscall).read.split(/\n+/)
                if result
                   ips_mutex.synchronize do
-                     result.each{|ip| ips.push(ip)}
+                     result.each do |ip|
+                        next if ip.nil? or ip.empty?
+                        if qtype == 'AAAA'
+                           ips.push(ip) if ip.match(REG6)
+                        else
+                           ips.push(ip) if ip.match(REG4)
+                        end
+                     end
                   end
                end
             end
@@ -142,28 +210,22 @@ begin
    ips.compact!
    ips.uniq!
 
-   # Add IPs to ipset/nft
    if not ips.empty? then
-      firewall_v = '$FW4'.empty? ? 'ipt' : 'nft'
-      set_commands = []
-      ips.each do |ip|
-         next if ip.nil? or ip.empty?
-         if ip.match(reg4) then
-            if firewall_v == 'nft' then
-               set_commands << 'nft add element inet fw4 localnetwork { \"' + ip + '\" } 2>/dev/null'
-            else
-               set_commands << 'ipset add localnetwork \"' + ip + '\" 2>/dev/null'
-            end
-         elsif ip.match(reg6) then
-            if firewall_v == 'nft' then
-               set_commands << 'nft add element inet fw4 localnetwork6 { \"' + ip + '\" } 2>/dev/null'
-            else
-               set_commands << 'ipset add localnetwork6 \"' + ip + '\" 2>/dev/null'
-            end
+      cache_lines = ['MAIN ' + File.mtime('$CONFIG_FILE').to_i.to_s + ' ' + File.size('$CONFIG_FILE').to_s]
+      provider_files.each do |pf|
+         if File.exist?(pf) then
+            cache_lines << 'PROV ' + File.mtime(pf).to_i.to_s + ' ' + File.size(pf).to_s + ' ' + pf
          end
       end
-      system(set_commands.join('; ')) if not set_commands.empty?
+      cache_lines << ''
+      ips.each{|ip| cache_lines << ip}
+      begin
+         File.open(CACHE_FILE, 'w'){|f| f.write(cache_lines.join(\"\n\"))}
+      rescue Exception
+      end
    end
+
+   write_ips_set(ips)
 rescue Exception => e
    YAML.LOG_ERROR('Set Proxies Address Skip: Failed【' + e.message + '】');
 end" 2>/dev/null >> $LOG_FILE
