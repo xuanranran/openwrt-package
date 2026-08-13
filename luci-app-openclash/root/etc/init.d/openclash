@@ -3758,7 +3758,6 @@ stop_service()
                 /tmp/openclash_cdn_info.json \
                 /tmp/openclash.change \
                 /tmp/openclash_announcement \
-                /tmp/openclash_proxy_ips_cache \
                 ${DNSMASQ_CONF_DIR}/dnsmasq_openclash_chnroute_pass.conf \
                 ${DNSMASQ_CONF_DIR}/dnsmasq_openclash_chnroute6_pass.conf \
                 ${DNSMASQ_CONF_DIR}/dnsmasq_openclash_custom_domain.conf
