@@ -2219,6 +2219,9 @@ html[data-darkmode="true"] .oc svg {
 
 .oc .form-select {
     cursor: pointer;
+    box-sizing: border-box;
+    padding: 0 12px;
+    line-height: 38px;
 }
 
 .oc .form-textarea {
@@ -6289,7 +6292,8 @@ html[data-darkmode=true] .oc .oix-msg-bar svg { color: inherit; }
     height: 36px;
     min-height: 36px;
     margin: 0;
-    padding: 8px 32px 8px 12px;
+    padding: 0 32px 0 12px;
+    line-height: 34px;
     border: 1px solid var(--border-light);
     border-radius: var(--radius-sm);
     background: var(--bg-white) !important;
