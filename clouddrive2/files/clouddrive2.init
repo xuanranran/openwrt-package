@@ -6,12 +6,70 @@ USE_PROCD=1
 
 SERVICE=clouddrive2
 PROGDIR=/usr/share/clouddrive2/clouddrive
+CLOUDDRIVE_HOME=/etc/CloudDrive2
+LEGACY_CLOUDDRIVE_HOMES="/etc/Waytech/CloudDrive2 /Waytech/CloudDrive2"
+DEFAULT_HTTP_PORT=19798
 
 load_config() {
     config_load 'clouddrive2'
     config_get_bool enabled main enabled 1
-    config_get port main port 19798
-    config_get mount_point main mount_point '/mnt/clouddrive'
+}
+
+migrate_config() {
+    local legacy_home
+
+    for legacy_home in $LEGACY_CLOUDDRIVE_HOMES; do
+        [ -d "$legacy_home" ] || continue
+
+        if [ -d "$CLOUDDRIVE_HOME" ] &&
+           [ -z "$(ls -A "$CLOUDDRIVE_HOME" 2>/dev/null)" ]; then
+            rmdir "$CLOUDDRIVE_HOME"
+        fi
+
+        if [ ! -e "$CLOUDDRIVE_HOME" ]; then
+            if ! mv "$legacy_home" "$CLOUDDRIVE_HOME"; then
+                logger -p daemon.err -t "$SERVICE" "failed to migrate configuration to $CLOUDDRIVE_HOME"
+                return 1
+            fi
+            rmdir "${legacy_home%/*}" 2>/dev/null || true
+            logger -t "$SERVICE" "migrated configuration from $legacy_home to $CLOUDDRIVE_HOME"
+        else
+            logger -t "$SERVICE" "legacy configuration left at $legacy_home because $CLOUDDRIVE_HOME already exists"
+        fi
+    done
+
+    mkdir -p "$CLOUDDRIVE_HOME"
+}
+
+get_http_port() {
+    local http_port
+
+    http_port=$(sed -n 's/^[[:space:]]*http_port[[:space:]]*=[[:space:]]*\([0-9][0-9]*\).*/\1/p' \
+        "$CLOUDDRIVE_HOME/config.toml" 2>/dev/null | head -n 1)
+
+    case "$http_port" in
+        ''|*[!0-9]*) http_port=$DEFAULT_HTTP_PORT ;;
+    esac
+
+    printf '%s\n' "$http_port"
+}
+
+port_in_use() {
+    local http_port="$1"
+
+    command -v netstat >/dev/null 2>&1 || return 1
+    netstat -lnt 2>/dev/null | awk -v port="$http_port" '
+        $4 ~ (":" port "$") && $6 == "LISTEN" { found = 1 }
+        END { exit !found }
+    '
+}
+
+get_port_owner() {
+    local http_port="$1"
+
+    netstat -lntp 2>/dev/null | awk -v port="$http_port" '
+        $4 ~ (":" port "$") && $6 == "LISTEN" { print $7; exit }
+    '
 }
 
 service_triggers() {
@@ -19,23 +77,32 @@ service_triggers() {
 }
 
 start_service() {
+    local http_port port_owner error_message
+
     load_config
     [ "$enabled" = "1" ] || return
 
-    [ -d "$mount_point" ] || mkdir -p "$mount_point"
+    migrate_config || return 1
+
+    http_port=$(get_http_port)
+    if port_in_use "$http_port" && ! service_running; then
+        port_owner=$(get_port_owner "$http_port")
+        error_message="HTTP port $http_port is already in use"
+        [ -n "$port_owner" ] && error_message="$error_message by $port_owner"
+        logger -p daemon.err -t "$SERVICE" "$error_message; service not started"
+        echo "$SERVICE: $error_message; service not started" >&2
+        return 1
+    fi
 
     procd_open_instance
     procd_set_param command "$PROGDIR"
-    procd_append_param command -p "$port"
-    procd_append_param command -m "$mount_point"
+    procd_set_param env CLOUDDRIVE_HOME="$CLOUDDRIVE_HOME"
     procd_set_param respawn
     procd_close_instance
-    echo "$SERVICE started on port $port, mounted at $mount_point"
+    echo "$SERVICE started on HTTP port $http_port with configuration in $CLOUDDRIVE_HOME"
 }
 
 stop_service() {
-    load_config
     echo "Stopping $SERVICE"
-    killall -3 clouddrive
-    [ -d "$mount_point" ] && fusermount -u "$mount_point"
+    killall -3 clouddrive 2>/dev/null || true
 }

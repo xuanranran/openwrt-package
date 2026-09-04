@@ -4,20 +4,23 @@ msgstr "Content-Type: text/plain; charset=UTF-8\n"
 msgid "CloudDrive2"
 msgstr "CloudDrive2"
 
-msgid "Configure and manage CloudDrive2"
-msgstr "配置和管理 CloudDrive2"
+msgid "CloudDrive2 runs as a native binary; this is not a Docker deployment."
+msgstr "本插件以原生二进制方式运行，并非 Docker 容器。"
+
+msgid "Configure ports, account credentials, mount points and other options in the CloudDrive2 web interface."
+msgstr "端口、账号密码、挂载点及其他选项，请前往 CloudDrive2 Web 后台设置。"
+
+msgid "The default HTTP port is 19798. The configured port is checked automatically before the service starts; a conflict prevents startup and is written to the system log."
+msgstr "默认 HTTP 端口为 19798。服务启动前会自动检查实际配置端口是否被占用；如有冲突则停止启动并写入系统日志。"
+
+msgid "We recommend mounting cloud drives under /mnt and using the Samba4 package for network sharing."
+msgstr "建议将云盘挂载到 /mnt 目录下，并搭配 Samba4 插件进行网络共享，使用体验更佳。"
 
 msgid "Settings"
 msgstr "设置"
 
 msgid "Enable"
 msgstr "启用"
-
-msgid "Port"
-msgstr "端口"
-
-msgid "Mount Point"
-msgstr "挂载点"
 
 msgid "RUNNING"
 msgstr "运行中"
@@ -30,3 +33,21 @@ msgstr "打开 Web 界面"
 
 msgid "Collecting data..."
 msgstr "正在收集数据..."
+
+msgid "Web Port"
+msgstr "Web 端口"
+
+msgid "Logged-in Account"
+msgstr "已登录账号"
+
+msgid "CPU Architecture"
+msgstr "CPU 架构"
+
+msgid "Binary Version"
+msgstr "二进制版本"
+
+msgid "Not logged in"
+msgstr "未登录"
+
+msgid "Unknown"
+msgstr "未知"

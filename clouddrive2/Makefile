@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=clouddrive2
 PKG_VERSION:=1.0.16
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_MAINTAINER:=Hannibal
 
@@ -67,6 +67,10 @@ define Package/clouddrive2/install
 	$(INSTALL_BIN) ./files/clouddrive2.init $(1)/etc/init.d/clouddrive2
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_CONF) ./files/clouddrive2.config $(1)/etc/config/clouddrive2
+	$(INSTALL_DIR) $(1)/lib/upgrade/keep.d
+	$(INSTALL_DATA) ./files/clouddrive2.upgrade $(1)/lib/upgrade/keep.d/clouddrive2
+	$(INSTALL_DIR) $(1)/usr/libexec/rpcd
+	$(INSTALL_BIN) ./files/clouddrive2.rpc $(1)/usr/libexec/rpcd/luci.clouddrive2
 	$(INSTALL_DIR) $(1)/usr/share/clouddrive2
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/clouddrive $(1)/usr/share/clouddrive2/
 	cp -rf $(PKG_BUILD_DIR)/wwwroot $(1)/usr/share/clouddrive2/
