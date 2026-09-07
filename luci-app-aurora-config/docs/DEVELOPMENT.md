@@ -491,8 +491,10 @@ it via `remove_font`):
   the rpcd script validates before anything touches flash:
   - shared size cap: 8MB (`MAX_UPLOAD`);
   - fonts: woff2 magic bytes (`wOF2`);
-  - images: extension allowlist `jpg jpeg png webp avif svg gif ico`,
-    path components rejected;
+  - images: extension allowlist `jpg jpeg png webp svg ico`, path
+    components rejected. The set is exactly what the themes hub will accept,
+    so nothing you can put on the router is something you cannot share --
+    avif and gif are absent because no asset slot can use them;
   - the gate deletes the tmp file on every rejection (front-end callers
     never clean up).
 - Front-end plumbing lives in `utils/asset-upload.js` (dropzone, progress

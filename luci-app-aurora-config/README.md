@@ -60,11 +60,11 @@ OpenWrt 25.12+ and snapshots use `apk`; other versions use `opkg`:
 cd /tmp
 
 # opkg
-uclient-fetch -O luci-app-aurora-config.ipk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config_1.2.0-r20260808_all.ipk
+uclient-fetch -O luci-app-aurora-config.ipk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config_1.2.1-r20260907_all.ipk
 opkg install luci-app-aurora-config.ipk
 
 # apk
-uclient-fetch -O luci-app-aurora-config.apk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config-1.2.0-r20260808.apk
+uclient-fetch -O luci-app-aurora-config.apk https://github.com/eamonxg/luci-app-aurora-config/releases/latest/download/luci-app-aurora-config-1.2.1-r20260907.apk
 apk add --allow-untrusted luci-app-aurora-config.apk
 ```
 

@@ -76,7 +76,7 @@ receive_upload() {
 		esac
 		ru_ext=$(printf '%s' "$ru_name" | sed 's/.*\.//' | tr 'A-Z' 'a-z')
 		case "$ru_ext" in
-		jpg|jpeg|png|webp|avif|svg|gif|ico) ;;
+		jpg|jpeg|png|webp|svg|ico) ;;
 		*)
 			rm -f "$ru_tmp"
 			echo '{ "result": 1, "error": "Unsupported image type" }'; return 1 ;;
@@ -721,25 +721,28 @@ write_hub_job_status() {
 
 # Prints the extension implied by a local file's leading bytes, or returns
 # non-zero. Two jobs in one read:
-#   1. Local re-verification. The hub sniffed these bytes on the way in and
-#      the review console re-encoded them, but they arrived here over the
-#      network -- same posture apply_hub_font_asset takes with `head -c 4 ==
-#      wOF2`. Not checking would outsource the check to the server.
+#   1. Local re-verification. The hub sniffed these bytes on the way in, but
+#      they arrived here over the network -- same posture apply_hub_font_asset
+#      takes with `head -c 4 == wOF2`. Not checking would outsource the check
+#      to the server.
 #   2. The on-disk extension. uhttpd derives Content-Type from it, and an SVG
 #      landed as .png simply does not render. The url the byte came from
 #      ("/assets/{id}/{kind}") carries no extension at all, so it cannot
 #      answer this -- the old login_bg branch parsed one out of that url and
-#      therefore always fell through to its "jpg" default, writing .jpg files
-#      that had been re-encoded to PNG by the console.
+#      therefore always fell through to its "jpg" default, mislabelling
+#      everything that was not JPEG.
 # hexdump is already relied on for device.key generation, so it is present.
 sniff_image_ext() {  # $1=file
 	local head8 offset
 
-	head8=$(head -c 8 "$1" 2>/dev/null | hexdump -v -e '/1 "%02x"' 2>/dev/null)
+	# 12 bytes, not 8: WebP is a RIFF container, so the four bytes that say
+	# "WEBP" sit at offset 8, past the container's own size field.
+	head8=$(head -c 12 "$1" 2>/dev/null | hexdump -v -e '/1 "%02x"' 2>/dev/null)
 	case "$head8" in
-	89504e470d0a1a0a) printf 'png'; return 0 ;;
-	ffd8ff*)          printf 'jpg'; return 0 ;;
-	00000100*)        printf 'ico'; return 0 ;;
+	89504e470d0a1a0a*)          printf 'png';  return 0 ;;
+	ffd8ff*)                    printf 'jpg';  return 0 ;;
+	00000100*)                  printf 'ico';  return 0 ;;
+	52494646????????57454250*)  printf 'webp'; return 0 ;;
 	esac
 
 	# SVG is text and has no fixed magic; mirror the hub's own isSvg -- drop a
@@ -757,15 +760,15 @@ sniff_image_ext() {  # $1=file
 }
 
 # True (0) when a sniffed extension is one this kind is allowed to be. Kinds
-# the hub pins to a single format say so; login_bg and toolbar icons are
-# genuinely two-format (the console re-encodes the bg kinds to JPEG; PNG is in
-# the schema, and a toolbar icon is whichever of SVG/PNG its author uploaded).
+# the hub pins to a single format say so; the backgrounds and the toolbar
+# icons are genuinely multi-format, because the hub stores whichever format
+# the sharer uploaded rather than converting it.
 hub_asset_ext_ok() {  # $1=kind  $2=ext
 	case "$1" in
 	logo_svg)                     [ "$2" = "svg" ] ;;
 	favicon_png|pwa_icon_192|pwa_icon_512) [ "$2" = "png" ] ;;
 	favicon_ico)                  [ "$2" = "ico" ] ;;
-	login_bg|main_bg)             [ "$2" = "png" ] || [ "$2" = "jpg" ] ;;
+	login_bg|main_bg)             [ "$2" = "png" ] || [ "$2" = "jpg" ] || [ "$2" = "webp" ] ;;
 	toolbar_icon_*)               [ "$2" = "png" ] || [ "$2" = "svg" ] ;;
 	*) return 1 ;;
 	esac
@@ -3747,6 +3750,9 @@ MANIFEST
 			3) case "$HUB_HTTP_STATUS" in
 			   429) echo '{ "result": 1, "error": "quota_exceeded" }' ;;
 			   403) echo '{ "result": 1, "error": "not_owner" }' ;;
+			   # 清单里就有一张图超了限,一个字节都还没传。说清楚是图的
+			   # 问题,别让它和「商店拒了这份配置」混成一句话。
+			   413) echo '{ "result": 1, "error": "asset_too_large" }' ;;
 			   *)   echo '{ "result": 1, "error": "hub_rejected" }' ;;
 			   esac ;;
 			2) echo '{ "result": 1, "error": "invalid_id" }' ;;
