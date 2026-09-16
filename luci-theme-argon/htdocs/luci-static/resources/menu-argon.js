@@ -221,14 +221,16 @@ return baseclass.extend({
 			}
 		}
 
-		// Attach event listeners for sidebar toggle functionality
+		// Attach event listeners for sidebar toggle functionality (prevent duplicate listeners on re-render)
 		var sidebarToggle = document.querySelector('a.showSide');
 		var darkMask = document.querySelector('.darkMask');
 		
-		if (sidebarToggle) {
+		if (sidebarToggle && !sidebarToggle.dataset.hasToggleListener) {
+			sidebarToggle.dataset.hasToggleListener = 'true';
 			sidebarToggle.addEventListener('click', ui.createHandlerFn(this, 'handleSidebarToggle'));
 		}
-		if (darkMask) {
+		if (darkMask && !darkMask.dataset.hasToggleListener) {
+			darkMask.dataset.hasToggleListener = 'true';
 			darkMask.addEventListener('click', ui.createHandlerFn(this, 'handleSidebarToggle'));
 		}
 

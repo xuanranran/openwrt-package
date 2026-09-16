@@ -50,6 +50,6 @@
 		}
 	});
 </script>
-<script type="text/javascript">L.require('menu-argon')</script>
+<script type="text/javascript">L.require('menu-argon'); L.require('argon-router').then(r => r.init());</script>
 </body>
 </html>

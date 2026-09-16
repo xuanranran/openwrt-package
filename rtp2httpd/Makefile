@@ -3,7 +3,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=rtp2httpd
 
 PKG_VERSION:=3.17.1
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_MAINTAINER:=Stackie Jia <jsq2627@gmail.com>
 PKG_LICENSE:=GPL-2.0-or-later
 PKG_LICENSE_FILES:=LICENSE
