@@ -27,6 +27,8 @@ from __future__ import absolute_import, division, print_function, \
 import os
 import sys
 import argparse
+import ipaddress
+import subprocess
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='See README')
@@ -46,8 +48,12 @@ if __name__ == '__main__':
             else:
                 ips[ip] += 1
             if ip not in banned and ips[ip] >= config.count:
+                try:
+                    ipaddress.ip_address(ip)
+                except ValueError:
+                    continue
                 banned.add(ip)
-                cmd = 'iptables -A INPUT -s %s -j DROP' % ip
-                print(cmd, file=sys.stderr)
+                cmd = ['iptables', '-A', 'INPUT', '-s', ip, '-j', 'DROP']
+                print(' '.join(cmd), file=sys.stderr)
                 sys.stderr.flush()
-                os.system(cmd)
+                subprocess.call(cmd)
