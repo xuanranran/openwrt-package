@@ -3221,7 +3221,7 @@ EOF
       CUSTOM_FAKEIP_FILTER_MODE:string \
       CUSTOM_HOST:int_bool \
       CUSTOM_NAME_POLICY:int_bool \
-      DA_PASSWORD:string \
+      DASHBOARD_PASSWORD:string \
       DELAY_START:int \
       DISABLE_QUIC_GO_GSO:int_bool \
       DISABLE_UDP_QUIC:int_bool \
@@ -3301,7 +3301,7 @@ EOF
    "
 
    allowed_types_map=$(printf '%s' "$allowed_keys_types" | tr ' ' '\n' | grep ':' | tr '\n' ' ')
-   allowed_names_map=$(printf '%s' "$allowed_keys_types" | tr ' ' '\n' | grep ':' | awk -F: '{printf "%s:%s ", $1, tolower($1)}')
+   allowed_names_map=$(printf '%s' "$allowed_keys_types" | tr ' ' '\n' | grep ':' | awk -F: '{ printf "%s:%s ", $1, tolower($1) }')
 
    uci -q add openclash overwrite >/dev/null 2>&1
 
@@ -3502,13 +3502,30 @@ EOF
             if [ "$key_u" = "CONFIG_FILE" ]; then
                strip_quotes "$val"
                RAW_CONFIG_FILE=$(expand_env_vars "$OVERWRITE_STRIPPED")
+               case "$RAW_CONFIG_FILE" in
+                  /etc/openclash/*) ;;
+                  *)
+                     LOG_WARN "skip config file outside /etc/openclash【General Key => $name: $RAW_CONFIG_FILE】"
+                     continue
+                     ;;
+               esac
+               case "$RAW_CONFIG_FILE" in
+                  *..*|*/)
+                     LOG_WARN "skip config file with unsafe path【General Key => $name: $RAW_CONFIG_FILE】"
+                     continue
+                     ;;
+               esac
+               cfg_name="${RAW_CONFIG_FILE##*/}"
+               case "$cfg_name" in
+                  .*)
+                     LOG_WARN "skip hidden config file【General Key => $name: $RAW_CONFIG_FILE】"
+                     continue
+                     ;;
+               esac
                uci -q set openclash.@overwrite[0].config_path="$RAW_CONFIG_FILE"
-               cfg_name=$(basename "$RAW_CONFIG_FILE" 2>/dev/null)
-               if [ -n "$cfg_name" ]; then
-                  age_config_name="${cfg_name%.*}"
-                  CONFIG_FILE="/etc/openclash/${cfg_name}"
-                  TMP_CONFIG_FILE="/tmp/${cfg_name}"
-               fi
+               age_config_name="${cfg_name%.*}"
+               CONFIG_FILE="/etc/openclash/${cfg_name}"
+               TMP_CONFIG_FILE="/tmp/${cfg_name}"
             elif [ "$key_u" = "SUB_INFO_URL" ]; then
                strip_quotes "$val"
                url_key=$(expand_env_vars "$OVERWRITE_STRIPPED")
@@ -3550,7 +3567,7 @@ EOF
                esac
             fi
          elif [ "$in_overwrite" -eq 1 ]; then
-            if printf "%s" "$trimmed" | grep -qE '^ruby_[a-z_]+\b'; then
+            if overwrite_ruby_line_check "$trimmed"; then
                echo "$trimmed" >> "$overwrite_script"
                LOG_TIP "Load Overwrite Script【Ruby Script => $trimmed】"
             else
@@ -3922,8 +3939,10 @@ stop_service()
             done
          fi
       done
-      # prevent respawn during stopping
-      procd_kill "openclash"
+      # prevent respawn during stopping, only the instances are removed so the procd
+      # service registration stays for the procd_kill appended by rc.common's stop()
+      procd_kill "openclash" "openclash"
+      procd_kill "openclash" "openclash-watchdog"
       for i in $(seq 1 10); do
          procd_running "openclash" >/dev/null && sleep 1 || break
       done
@@ -3951,6 +3970,12 @@ stop_service()
    } >/dev/null 2>&1
 
    echo "OpenClash Already Stop!"
+
+   # rc.common's stop() deletes the procd service right after this function and answers
+   # "Command failed: Not found" when nothing is registered, keep an empty definition
+   # so that delete always has a service to remove
+   procd_open_service "$(basename "${basescript:-$initscript}")" "$initscript"
+   procd_close_service "set"
 }
 
 restart()
