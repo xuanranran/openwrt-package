@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=clouddrive2
-PKG_VERSION:=1.0.20
+PKG_VERSION:=1.1.0
 PKG_RELEASE:=1
 
 PKG_MAINTAINER:=Hannibal
@@ -16,15 +16,15 @@ include $(INCLUDE_DIR)/package.mk
 
 ifeq ($(ARCH),x86_64)
   PKG_ARCH_Ctl:=x86_64
-  PKG_HASH:=1554fd0775cae0547c82410f81aa17875cee2f822e60d2592ec4b41f29df831b
+  PKG_HASH:=109e3293691445c4bdc4fe2eb0315adf2ca99ba9c923e19cb6337181f452b743
 endif
 ifeq ($(ARCH),aarch64)
   PKG_ARCH_Ctl:=aarch64
-  PKG_HASH:=6c500961583cd0dcbe6abaf91ac9eef8319ad0004ec8a2a2fbbcd99290df6368
+  PKG_HASH:=02fcf2ad4e1e720d0ed900dce01b3555b2dd8a6cfe522a87a1187abf5413d2f0
 endif
 ifeq ($(ARCH),arm)
   PKG_ARCH_Ctl:=armv7
-  PKG_HASH:=c093ceadf8693720c4cf6147e43f85dff619b8ee6e210ab92faa1f7c3f82f21b
+  PKG_HASH:=5e919ace50c40ad27e088a9992c618ef1bc1c255c4bd1f4533116b10ed8e2f79
 endif
 
 define Package/clouddrive2
