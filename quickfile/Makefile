@@ -22,8 +22,14 @@ PKG_LICENSE_FILES:=LICENSE
 PKG_BUILD_DEPENDS:=rust/host
 PKG_BUILD_PARALLEL:=1
 
+PKG_BUILD_FLAGS:=lto
 include $(INCLUDE_DIR)/package.mk
 include $(TOPDIR)/feeds/packages/lang/rust/rust-package.mk
+
+# Quickfile GCC LTO
+TARGET_CFLAGS := $(filter-out -fno-fat-lto-objects,$(TARGET_CFLAGS)) -ffat-lto-objects
+CARGO_PKG_VARS += TARGET_AR="$(TARGET_AR)"
+CARGO_RUSTFLAGS += -Clink-arg=-flto=auto -Clink-arg=-fuse-linker-plugin
 
 define Package/quickfile
 	SECTION:=net
