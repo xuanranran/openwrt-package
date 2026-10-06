@@ -639,11 +639,11 @@ html[data-darkmode="true"] .oc .oc-chart-card { background: var(--bg-gray); }
 .oc .oc-chart-row-label { flex: 0 0 auto; font-size: 11.5px; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
 .oc .oc-chart-row-foot .oc-chart-legend { flex: 1 1 auto; gap: 3px 10px; min-width: 0; }
 .oc .oc-chart-note { margin: 2px 0 0; font-size: 11px; color: var(--text-secondary); }
-.oc .oc-chart-exttip { position: absolute; z-index: 6; display: none; pointer-events: none; padding: 7px 9px; background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 6px; box-shadow: var(--shadow-md); font-size: 11px; color: var(--text-primary); }
-.oc .oc-chart-exttip.show { display: block; }
-.oc .oc-chart-exttip > b { display: block; font-size: 11px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.oc .oc-chart-exttip { position: absolute; z-index: 6; opacity: 0; transition: opacity .2s linear; pointer-events: none; padding: 8px; background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 6px; font-size: 11.5px; color: var(--text-primary); }
+.oc .oc-chart-exttip.show { opacity: 1; }
+.oc .oc-chart-exttip > b { display: block; font-size: 11.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
 .oc .oc-chart-tip-row { display: flex; align-items: baseline; gap: 5px; line-height: 1.9; color: var(--text-primary); white-space: nowrap; }
-.oc .oc-chart-tip-row i { width: 8px; height: 8px; border-radius: 2px; flex: 0 0 auto; align-self: center; }
+.oc .oc-chart-tip-row i { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; align-self: center; }
 .oc .oc-chart-tip-row em { font-style: normal; }
 .oc .oc-chart-tip-row span { font-weight: 700; margin-left: auto; padding-left: 12px; font-variant-numeric: tabular-nums; }
 .oc .oc-chart-tip-row u { text-decoration: none; color: var(--text-secondary); min-width: 34px; text-align: right; font-variant-numeric: tabular-nums; }

@@ -492,7 +492,8 @@ function ocChartDonut(host, items, centerValue, centerLabel) {
                 enabled: true,
                 external: function(context) {
                     var model = context.tooltip;
-                    if (!model.opacity || !model.dataPoints || !model.dataPoints.length) {
+                    var active = model.getActiveElements();
+                    if (!active.length || !model.dataPoints || !model.dataPoints.length) {
                         tip.classList.remove('show');
                         return;
                     }
@@ -521,7 +522,6 @@ function ocChartDonut(host, items, centerValue, centerLabel) {
                     pctEl.textContent = pctOf(item.value);
                     line.appendChild(pctEl);
                     tip.appendChild(line);
-                    tip.classList.add('show');
                     var canvasRect = context.chart.canvas.getBoundingClientRect();
                     var cardRect = card.getBoundingClientRect();
                     var x = mouse ? (mouse.clientX - cardRect.left) : (canvasRect.left - cardRect.left + model.caretX);
@@ -529,6 +529,7 @@ function ocChartDonut(host, items, centerValue, centerLabel) {
                     var left = Math.max(4, Math.min(x - tip.offsetWidth / 2, card.clientWidth - tip.offsetWidth - 4));
                     tip.style.left = left + 'px';
                     tip.style.top = (y + 14) + 'px';
+                    tip.classList.add('show');
                 }
             } }
         },
@@ -660,13 +661,13 @@ function ocChartStackRow(host, items, title) {
                     enabled: true,
                     external: function(context) {
                         var model = context.tooltip;
-                        if (!model.opacity) {
+                        var active = model.getActiveElements();
+                        if (!active.length || !model.dataPoints || !model.dataPoints.length) {
                             tip.classList.remove('show');
                             return;
                         }
                         if (!tip.parentNode) row.appendChild(tip);
-                        var hot = -1;
-                        if (model.dataPoints && model.dataPoints.length) hot = model.dataPoints[0].datasetIndex;
+                        var hot = model.dataPoints[0].datasetIndex;
                         tip.innerHTML = '';
                         var head = document.createElement('b');
                         head.textContent = title || '';
@@ -688,13 +689,13 @@ function ocChartStackRow(host, items, title) {
                             line.appendChild(pctEl);
                             tip.appendChild(line);
                         }
-                        tip.classList.add('show');
                         var canvasRect = context.chart.canvas.getBoundingClientRect();
                         var rowRect = row.getBoundingClientRect();
                         var x = mouse ? (mouse.clientX - rowRect.left) : (canvasRect.left - rowRect.left + model.caretX);
                         var left = Math.max(4, Math.min(x - tip.offsetWidth / 2, row.clientWidth - tip.offsetWidth - 4));
                         tip.style.left = left + 'px';
                         tip.style.top = (canvasRect.height + 4) + 'px';
+                        tip.classList.add('show');
                     }
                 }
             }

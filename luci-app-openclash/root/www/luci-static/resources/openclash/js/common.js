@@ -337,14 +337,14 @@ if (window.matchMedia && !window.ocThemeMediaBound) {
 
 // Level tag text shown in logs, used to colour whole lines by their [Info]/[Warning]/... tag
 function ocGetLogColor(log) {
-    if (log.indexOf('[<%:Info%>]') >= 0) return 'var(--info-color)';
+    if (log.indexOf('[<%:Info%>]') >= 0) return 'var(--primary-color)';
     if (log.indexOf('[<%:Warning%>]') >= 0) return 'var(--warning-color)';
     if (log.indexOf('[<%:Error%>]') >= 0) return 'var(--error-color)';
     if (log.indexOf('[<%:Debug%>]') >= 0) return 'var(--debug-color)';
     if (log.indexOf('[<%:Tip%>]') >= 0) return 'var(--tip-color)';
     if (log.indexOf('[<%:Watchdog%>]') >= 0) return 'var(--watchdog-color)';
     if (log.indexOf('[<%:Fatal%>]') >= 0) return 'var(--fatal-color)';
-    return 'var(--info-color)';
+    return 'var(--primary-color)';
 }
 
 function ocLogLevelText(level) {
