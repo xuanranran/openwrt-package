@@ -1400,9 +1400,9 @@ o = s:taboption("ipv6", Value, "fakeip_range6", translate("Fake-IP Range").." (I
 o.description = translate("Set Fake-IP Range").. " (IPv6 Cidr)"
 o:depends("ipv6_dns", "1")
 o:value("0", translate("Disable"))
-o:value("fdfe:dcba:9876::1/64")
+o:value("2001:2::1/64")
 o.default = "0"
-o.placeholder = "fdfe:dcba:9876::1/64"
+o.placeholder = "2001:2::1/64"
 function o.validate(self, value)
 	if value == "0" then
 		return "0"
@@ -1410,7 +1410,7 @@ function o.validate(self, value)
 	if datatype.cidr6(value) then
 		return value
 	end
-	return "fdfe:dcba:9876::1/64"
+	return "2001:2::1/64"
 end
 end
 

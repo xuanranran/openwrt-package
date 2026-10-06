@@ -3191,12 +3191,3 @@ html[data-darkmode="true"] .oc .oix-announcement::before {
     .oc .developer-label { font-size: 11px; padding: 3px 8px; margin-top: 6px; }
     .oc .developer-avatar.developer-more { font-size: 28px; }
 }
-
-/* myip loading spinner (added 2026-10-02) */
-.oc .myip-ip-addr .loading-spinner {
-    width: 13px;
-    height: 13px;
-    border-width: 2px;
-    margin: 0 6px 0 0;
-    flex-shrink: 0;
-}

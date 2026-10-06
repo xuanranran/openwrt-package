@@ -93,7 +93,7 @@
     var ipCheckXHR = null;
     var httpCheckXHR = null;
     function querying_html() {
-        return '<span class="loading-spinner"></span><%:Querying...%>';
+        return ocSpinnerRow('<%:Querying...%>');
     }
     $$.getElementById('ip-ipip').innerHTML = querying_html();
     $$.getElementById('ip-ipify').innerHTML = querying_html();
