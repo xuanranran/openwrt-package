@@ -144,7 +144,7 @@
 
     /* ── Card Titles (large / small cards) ── */
     --card-title-size: 15px;
-    --card-title-size-sm: 12px;
+    --card-title-size-sm: 13px;
 
     /* ── Row Heights (status page) ── */
     --row-1-height: 160px;
@@ -2269,8 +2269,8 @@ ul {
 
 @media (prefers-reduced-motion: reduce) {
     .oc-toast-stack .oc-toast { animation: none; transition: none; }
-    /* reduced motion inside our components; spinners, marquees and the oix cover unfold stay running */
-    .oc *:not(.loading-spinner):not(.announcement-content):not(.oix-announcement-content):not(.additional):not(.more-info):not(.general) {
+    /* reduced motion inside our components; spinners, marquees, the oix cover unfold and the developer card hovers stay running */
+    .oc *:not(.loading-spinner):not(.announcement-content):not(.oix-announcement-content):not(.additional):not(.more-info):not(.general):not(.developer-avatar-container):not(.developer-avatar):not(.developer-label) {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
