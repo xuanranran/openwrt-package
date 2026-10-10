@@ -3293,7 +3293,7 @@ var ConfigUploader = {
         this.selectedFile = null;
         uploadZone.classList.remove('has-file');
         uploadZone.querySelector('.upload-primary').textContent = '<%:Click to select file or drag and drop%>';
-        uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size 10MB%>';
+        uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size%>' + ' 20MB';
 
         this.updateSubmitButton();
         this.updateFoldSummaries();
@@ -3319,20 +3319,20 @@ var ConfigUploader = {
             this.selectedFile = null;
             uploadZone.classList.remove('has-file');
             uploadZone.querySelector('.upload-primary').textContent = '<%:Click to select file or drag and drop%>';
-            uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size 10MB%>';
+            uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size%>' + ' 20MB';
             statusText.classList.add('is-error');
             statusText.textContent = '<%:Please select a YAML file%>';
             this.updateSubmitButton();
             return;
         }
 
-        if (file.size > 10 * 1024 * 1024) {
+        if (file.size > 20 * 1024 * 1024) {
             this.selectedFile = null;
             uploadZone.classList.remove('has-file');
             uploadZone.querySelector('.upload-primary').textContent = '<%:Click to select file or drag and drop%>';
-            uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size 10MB%>';
+            uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size%>' + ' 20MB';
             statusText.classList.add('is-error');
-            statusText.textContent = '<%:File size exceeds 10MB limit%>';
+            statusText.textContent = '<%:File size exceeds the limit of%>' + ' 20MB';
             this.updateSubmitButton();
             return;
         }

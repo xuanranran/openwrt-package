@@ -437,7 +437,7 @@ var Guide = {
             place: 'bottom',
             tab: 'upload',
             body: function () {
-                return '<p><%:Click this area to pick your YAML file, or drop one onto it. Files up to 10 MB are accepted%><span class="guide-tag req"><%:Required%></span></p>';
+                return '<p><%:Click this area to pick your YAML file, or drop one onto it. Max size%>' + ' 20MB' + '<span class="guide-tag req"><%:Required%></span></p>';
             }
         },
         {

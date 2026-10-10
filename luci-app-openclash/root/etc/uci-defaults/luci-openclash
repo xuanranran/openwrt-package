@@ -248,10 +248,10 @@ if [ -d /etc/nginx/conf.d ]; then
 	[ -x /usr/share/openclash/openclash_nginx.sh ] && /usr/share/openclash/openclash_nginx.sh -n
 fi
 if grep -q 'HTTP_MAX_CONTENT' /usr/lib/lua/luci/http.lua 2>/dev/null; then
-	sed -i 's/\(HTTP_MAX_CONTENT[[:space:]]*=[[:space:]]*\)[0-9][0-9]*\([[:space:]]*\*[[:space:]]*[0-9][0-9]*\)*/\11024*10240/' /usr/lib/lua/luci/http.lua
+	sed -i 's/\(HTTP_MAX_CONTENT[[:space:]]*=[[:space:]]*\)[0-9][0-9]*\([[:space:]]*\*[[:space:]]*[0-9][0-9]*\)*/\11024*10240*2/' /usr/lib/lua/luci/http.lua
 fi
 if grep -q 'HTTP_MAX_CONTENT' /usr/share/ucode/luci/http.uc 2>/dev/null; then
-	sed -i 's/\(HTTP_MAX_CONTENT[[:space:]]*=[[:space:]]*\)[0-9][0-9]*\([[:space:]]*\*[[:space:]]*[0-9][0-9]*\)*/\11024*10240/' /usr/share/ucode/luci/http.uc
+	sed -i 's/\(HTTP_MAX_CONTENT[[:space:]]*=[[:space:]]*\)[0-9][0-9]*\([[:space:]]*\*[[:space:]]*[0-9][0-9]*\)*/\11024*10240*2/' /usr/share/ucode/luci/http.uc
 fi
 
 [ -x /etc/init.d/uhttpd ] && /etc/init.d/uhttpd restart >/dev/null 2>&1

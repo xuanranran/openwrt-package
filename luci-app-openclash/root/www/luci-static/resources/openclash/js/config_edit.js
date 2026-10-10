@@ -2046,7 +2046,7 @@ var ConfigEditor = {
                     </div>
                     <div class="upload-text">
                         <p class="upload-primary">${'<%:Click to select file or drag and drop%>'}</p>
-                        <p class="upload-secondary">${'<%:Support txt,conf files, max size 10MB%>'}</p>
+                        <p class="upload-secondary">${'<%:Support txt,conf files, max size%>' + ' 20MB'}</p>
                     </div>
                     <input type="file" id="overwrite-upload-file-input" accept=".txt,.conf,*" class="oc-hidden">
                 </div>

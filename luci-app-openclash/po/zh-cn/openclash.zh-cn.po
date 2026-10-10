@@ -3152,11 +3152,11 @@ msgstr "订阅链接"
 msgid "Click to select file or drag and drop"
 msgstr "点击选择文件或拖拽上传"
 
-msgid "Support YAML file, max size 10MB"
-msgstr "支持 YAML 文件，最大 10MB"
+msgid "Support YAML file, max size"
+msgstr "支持 YAML 文件，最大"
 
-msgid "Support txt,conf files, max size 10MB"
-msgstr "支持 txt,conf 文件，最大 10MB"
+msgid "Support txt,conf files, max size"
+msgstr "支持 txt,conf 文件，最大"
 
 msgid "Subscription URL"
 msgstr "订阅地址"
@@ -3245,8 +3245,8 @@ msgstr "大小："
 msgid "Please select a YAML file"
 msgstr "仅支持 YAML 文件"
 
-msgid "File size exceeds 10MB limit"
-msgstr "文件大小不能超过 10MB"
+msgid "File size exceeds the limit of"
+msgstr "文件大小不能超过"
 
 msgid "File ready to upload"
 msgstr "文件准备就绪"
@@ -4325,8 +4325,8 @@ msgstr "快捷键"
 msgid "How to add a config"
 msgstr "如何添加配置"
 
-msgid "Click this area to pick your YAML file, or drop one onto it. Files up to 10 MB are accepted"
-msgstr "点这块选 YAML 文件，也可以直接拖进来；最大 10 MB"
+msgid "Click this area to pick your YAML file, or drop one onto it. Max size"
+msgstr "点这块选 YAML 文件，也可以直接拖进来；最大"
 
 msgid "Save the config"
 msgstr "保存配置"
@@ -5269,9 +5269,6 @@ msgstr "清空日志"
 
 msgid "Switching the DNS mode requires a plugin restart to take effect. Continue?"
 msgstr "切换 DNS 模式后需要重启插件才能生效，是否继续？"
-
-msgid "File exceeds 10MB limit"
-msgstr "文件超过 10MB 限制"
 
 msgid "Backup downloaded"
 msgstr "备份已下载"

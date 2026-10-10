@@ -4928,10 +4928,10 @@ function action_upload_config()
 	end
 
 	local file_size = string.len(upload)
-	if file_size > 10 * 1024 * 1024 then
+	if file_size > 20 * 1024 * 1024 then
 		HTTP.write_json({
 			status = "error",
-			message = string.format("File size (%s) exceeds 10MB limit", fs.filesize(file_size))
+			message = string.format("File size (%s) exceeds 20MB limit", fs.filesize(file_size))
 		})
 		return
 	end
@@ -5046,10 +5046,10 @@ function action_config_file_read()
 		return
 	end
 
-	if stat.size > 10 * 1024 * 1024 then
+	if stat.size > 20 * 1024 * 1024 then
 		HTTP.write_json({
 			status = "error",
-			message = "Config file too large (max 10MB)"
+			message = "Config file too large (max 20MB)"
 		})
 		return
 	end
@@ -5120,10 +5120,10 @@ function action_config_file_save()
 		end
 	end
 
-	if string.len(content) > 10 * 1024 * 1024 then
+	if string.len(content) > 20 * 1024 * 1024 then
 		HTTP.write_json({
 			status = "error",
-			message = "Content too large (max 10MB)"
+			message = "Content too large (max 20MB)"
 		})
 		return
 	end
@@ -5969,8 +5969,8 @@ function action_upload_overwrite()
 		return
 	end
 	local file_size = string.len(upload)
-	if file_size > 10 * 1024 * 1024 then
-		HTTP.write_json({status = "error", message = string.format("File size (%s) exceeds 10MB limit", require("luci.openclash").filesize(file_size))})
+	if file_size > 20 * 1024 * 1024 then
+		HTTP.write_json({status = "error", message = string.format("File size (%s) exceeds 20MB limit", require("luci.openclash").filesize(file_size))})
 		return
 	end
 	local fp = io.open(target_path, "w")

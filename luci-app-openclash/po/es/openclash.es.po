@@ -3137,11 +3137,11 @@ msgstr "Enlace de suscripción"
 msgid "Click to select file or drag and drop"
 msgstr "Haz clic para seleccionar el archivo o arrástralo aquí"
 
-msgid "Support YAML file, max size 10MB"
-msgstr "Se admiten archivos YAML, tamaño máximo 10 MB"
+msgid "Support YAML file, max size"
+msgstr "Se admiten archivos YAML, tamaño máximo"
 
-msgid "Support txt,conf files, max size 10MB"
-msgstr "Se admiten archivos .txt y .conf, tamaño máximo 10 MB"
+msgid "Support txt,conf files, max size"
+msgstr "Se admiten archivos .txt y .conf, tamaño máximo"
 
 msgid "Subscription URL"
 msgstr "URL de suscripción"
@@ -3227,8 +3227,8 @@ msgstr "Tamaño:"
 msgid "Please select a YAML file"
 msgstr "Por favor, selecciona un archivo YAML"
 
-msgid "File size exceeds 10MB limit"
-msgstr "El tamaño del archivo supera el límite de 10 MB"
+msgid "File size exceeds the limit of"
+msgstr "El tamaño del archivo supera el límite de"
 
 msgid "File ready to upload"
 msgstr "Archivo listo para subir"
@@ -4316,8 +4316,8 @@ msgstr "Atajos"
 msgid "How to add a config"
 msgstr "Cómo añadir una configuración"
 
-msgid "Click this area to pick your YAML file, or drop one onto it. Files up to 10 MB are accepted"
-msgstr "Haz clic aquí para elegir tu archivo YAML o arrástralo; se aceptan archivos de hasta 10 MB"
+msgid "Click this area to pick your YAML file, or drop one onto it. Max size"
+msgstr "Haz clic aquí para elegir tu archivo YAML o arrástralo; tamaño máximo"
 
 msgid "Save the config"
 msgstr "Guarda la configuración"
@@ -5263,9 +5263,6 @@ msgstr "Borrar registro"
 
 msgid "Switching the DNS mode requires a plugin restart to take effect. Continue?"
 msgstr "Cambiar el modo DNS requiere reiniciar el plugin para que surta efecto. ¿Continuar?"
-
-msgid "File exceeds 10MB limit"
-msgstr "El archivo supera el límite de 10 MB"
 
 msgid "Backup downloaded"
 msgstr "Copia de seguridad descargada"
