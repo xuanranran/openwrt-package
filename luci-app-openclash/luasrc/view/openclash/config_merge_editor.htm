@@ -54,6 +54,7 @@ if (myEditor_use && myEditor_def) {
 	ocQueueEditor(myEditor_div_use, function() {
 		config_merge_editor(myEditor_use, myEditor_def, myEditor_div_use, myEditor_div_def, true, false, 'auto', '700px');
 	});
+	ocStreamEditorOnSubmit(myEditor_use);
 }
 })();
 

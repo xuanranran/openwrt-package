@@ -587,24 +587,19 @@ var ConfigEditor = {
         fetch(url)
             .then(function(r) {
                 if (!r.ok) throw new Error('HTTP ' + r.status);
-                return r.json();
+                return r.text();
             })
-            .then(function(data) {
-                if (data.status === 'success' && data.content !== undefined) {
-                    if (self.currentViewMode === 'runtime' && !self.isOverwrite) {
-                        self.runtimeContent = data.content;
-                        renderEditor(self.runtimeContent, "text/yaml", true, false);
-                        statusText.textContent = '<%:Runtime config (read only)%>';
-                    } else {
-                        self.originalContent = data.content;
-                        renderEditor(self.originalContent, mode, self.isOverwrite ? false : false, !self.isOverwrite);
-                        statusText.textContent = '<%:Ready%>';
-                    }
-                    self.updateModeTabs();
+            .then(function(content) {
+                if (self.currentViewMode === 'runtime' && !self.isOverwrite) {
+                    self.runtimeContent = content;
+                    renderEditor(self.runtimeContent, "text/yaml", true, false);
+                    statusText.textContent = '<%:Runtime config (read only)%>';
                 } else {
-                    ocHideLoading(textarea.parentNode);
-                    statusText.textContent = '<%:Load failed%>';
+                    self.originalContent = content;
+                    renderEditor(self.originalContent, mode, false, !self.isOverwrite);
+                    statusText.textContent = '<%:Ready%>';
                 }
+                self.updateModeTabs();
             })
             .catch(function(err) {
                 ocHideLoading(textarea.parentNode);
@@ -638,8 +633,8 @@ var ConfigEditor = {
             return new Promise(function(resolve, reject) {
                 if (self.originalContent) return resolve(self.originalContent);
                 var url = '/cgi-bin/luci/admin/services/openclash/config_file_read?config_file=' + encodeURIComponent(self.currentConfigFile);
-                fetch(url).then(function(r){return r.json()}).then(function(data){
-                    resolve(data.content || '');
+                fetch(url).then(function(r){return r.ok ? r.text() : ''}).then(function(text){
+                    resolve(text || '');
                 }).catch(function(){resolve('')});
             });
         };
@@ -648,8 +643,8 @@ var ConfigEditor = {
                 if (self.runtimeContent) return resolve(self.runtimeContent);
                 var runtimePath = '/etc/openclash/' + encodeURIComponent(self.formatDisplayName(self.currentConfigFile));
                 var url = '/cgi-bin/luci/admin/services/openclash/config_file_read?config_file=' + runtimePath;
-                fetch(url).then(function(r){return r.json()}).then(function(data){
-                    resolve(data.content || '');
+                fetch(url).then(function(r){return r.ok ? r.text() : ''}).then(function(text){
+                    resolve(text || '');
                 }).catch(function(){resolve('')});
             });
         };
@@ -763,15 +758,11 @@ var ConfigEditor = {
             return;
         }
 
+        var target = this.isOverwrite ? (this.currentConfigFile || '/etc/openclash/custom/openclash_custom_overwrite.sh') : this.currentConfigFile;
         var formData = new FormData();
-        if (this.isOverwrite) {
-            formData.append('config_file', this.currentConfigFile || '/etc/openclash/custom/openclash_custom_overwrite.sh');
-        } else {
-            formData.append('config_file', this.currentConfigFile);
-        }
-        formData.append('content', content);
+        formData.append('content', new Blob([content.replace(/\r\n?/g, '\n')], { type: 'text/plain' }), target.split('/').pop());
 
-        fetch('/cgi-bin/luci/admin/services/openclash/config_file_save', {
+        fetch('/cgi-bin/luci/admin/services/openclash/config_file_save?config_file=' + encodeURIComponent(target), {
             method: 'POST',
             body: formData
         })
@@ -2046,7 +2037,7 @@ var ConfigEditor = {
                     </div>
                     <div class="upload-text">
                         <p class="upload-primary">${'<%:Click to select file or drag and drop%>'}</p>
-                        <p class="upload-secondary">${'<%:Support txt,conf files, max size%>' + ' 20MB'}</p>
+                        <p class="upload-secondary">${'<%:Support txt,conf files%>'}</p>
                     </div>
                     <input type="file" id="overwrite-upload-file-input" accept=".txt,.conf,*" class="oc-hidden">
                 </div>
@@ -2321,45 +2312,35 @@ var ConfigEditor = {
                     return;
                 }
                 if (selectedFile) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        submitBtn.disabled = true;
-                        var fileContent = e.target.result;
-                        var selectedConfigPaths = self.getOverwriteConfigSelection(model, 'overwrite-upload-config-dropdown');
-                        if (!selectedConfigPaths.length) {
-                            selectedConfigPaths = ['all'];
-                        }
-                        var formData = new FormData();
-                        formData.append('filename', filename);
-                        formData.append('config_file', fileContent);
-                        formData.append('order', self.getNextOverwriteOrder());
-                        formData.append('enable', '0');
-                        formData.append('config', selectedConfigPaths.join('\n'));
+                    submitBtn.disabled = true;
+                    var selectedConfigPaths = self.getOverwriteConfigSelection(model, 'overwrite-upload-config-dropdown');
+                    if (!selectedConfigPaths.length) {
+                        selectedConfigPaths = ['all'];
+                    }
+                    var formData = new FormData();
+                    formData.append('config_file', selectedFile, filename);
+                    formData.append('order', self.getNextOverwriteOrder());
+                    formData.append('enable', '0');
+                    formData.append('config', selectedConfigPaths.join('\n'));
 
-                        fetch('/cgi-bin/luci/admin/services/openclash/upload_overwrite', {
-                            method: 'POST',
-                            body: formData
-                        }).then(r=>r.json()).then(function(data){
-                            if (data.status === 'success') {
-                                statusText.textContent = '<%:Upload successful%>';
-                                document.body.removeChild(ocDiv);
-                                self.loadOverwriteFiles();
-                                setTimeout(function() {
-                                    self.currentConfigFile = '/etc/openclash/overwrite/' + filename;
-                                    self.isOverwrite = true;
-                                    self.showOverwrite(self.currentConfigFile);
-                                }, 300);
-                            } else {
-                                statusText.textContent = '<%:Upload failed:%> ' + (data.message || '');
-                                validateAddOverwriteForm();
-                            }
-                        });
-                    };
-                    reader.onerror = function() {
-                        statusText.textContent = '<%:Failed to read file%>';
-                        validateAddOverwriteForm();
-                    };
-                    reader.readAsText(selectedFile, 'UTF-8');
+                    fetch('/cgi-bin/luci/admin/services/openclash/upload_overwrite', {
+                        method: 'POST',
+                        body: formData
+                    }).then(r=>r.json()).then(function(data){
+                        if (data.status === 'success') {
+                            statusText.textContent = '<%:Upload successful%>';
+                            document.body.removeChild(ocDiv);
+                            self.loadOverwriteFiles();
+                            setTimeout(function() {
+                                self.currentConfigFile = '/etc/openclash/overwrite/' + filename;
+                                self.isOverwrite = true;
+                                self.showOverwrite(self.currentConfigFile);
+                            }, 300);
+                        } else {
+                            statusText.textContent = '<%:Upload failed:%> ' + (data.message || '');
+                            validateAddOverwriteForm();
+                        }
+                    });
                 } else {
                     ocAlert('<%:No Specify Upload File%>');
                     return;

@@ -1985,6 +1985,9 @@ msgstr "备份文件恢复成功！"
 msgid "Backup File Restore Failed!"
 msgstr "备份文件恢复失败！"
 
+msgid "Restore Backup"
+msgstr "恢复备份"
+
 msgid "1. It may be that the plugin is not running"
 msgstr "1. 可能是插件未在运行"
 
@@ -3152,11 +3155,11 @@ msgstr "订阅链接"
 msgid "Click to select file or drag and drop"
 msgstr "点击选择文件或拖拽上传"
 
-msgid "Support YAML file, max size"
-msgstr "支持 YAML 文件，最大"
+msgid "Support YAML file"
+msgstr "支持 YAML 文件"
 
-msgid "Support txt,conf files, max size"
-msgstr "支持 txt,conf 文件，最大"
+msgid "Support txt,conf files"
+msgstr "支持 txt,conf 文件"
 
 msgid "Subscription URL"
 msgstr "订阅地址"
@@ -3244,9 +3247,6 @@ msgstr "大小："
 
 msgid "Please select a YAML file"
 msgstr "仅支持 YAML 文件"
-
-msgid "File size exceeds the limit of"
-msgstr "文件大小不能超过"
 
 msgid "File ready to upload"
 msgstr "文件准备就绪"
@@ -3341,8 +3341,8 @@ msgstr "对比模式：左侧（原始配置），右侧（运行配置）"
 msgid "Please select a config file first"
 msgstr "请先选择一个配置文件"
 
-msgid "No config files found, Please upload a config file to get started"
-msgstr "未找到配置文件，请先上传或订阅一个配置"
+msgid "No config file yet, Add one or restore a backup"
+msgstr "暂无配置文件，可添加配置或恢复备份"
 
 msgid "Unknown"
 msgstr "未知"
@@ -4325,8 +4325,8 @@ msgstr "快捷键"
 msgid "How to add a config"
 msgstr "如何添加配置"
 
-msgid "Click this area to pick your YAML file, or drop one onto it. Max size"
-msgstr "点这块选 YAML 文件，也可以直接拖进来；最大"
+msgid "Click this area to pick your YAML file, or drop one onto it"
+msgstr "点这块选 YAML 文件，也可以直接拖进来"
 
 msgid "Save the config"
 msgstr "保存配置"
@@ -4420,6 +4420,9 @@ msgstr "编辑普通配置文件时这里还会多一个「比较」按钮"
 
 msgid "A config holds your proxies, groups and rules, this is the step that gets OpenClash working"
 msgstr "配置文件里有节点、策略组和规则，这一步做完 OpenClash 才真正能用"
+
+msgid "Upload a config file, or restore the whole setup from a backup"
+msgstr "可上传配置文件，或从备份恢复整套设置"
 
 msgid "An older version rolls back after a bad release"
 msgstr "新版出问题时可以选回旧版"

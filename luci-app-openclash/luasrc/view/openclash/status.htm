@@ -227,11 +227,17 @@
                                     </div>
 
                                     <div id="config-file-empty-state" class="config-file-empty-state oc-hidden">
-                                        <div class="config-file-empty-message"><%:No config files found, Please upload a config file to get started%></div>
-                                        <button type="button" class="config-upload-btn-large" id="upload_config_large" onclick="return uploadConfig()">
-                                            <svg width="20" height="20"><use href="#oc-icon-upload"/></svg>
-                                            <%:Add Config File%>
-                                        </button>
+                                        <div class="config-file-empty-message"><%:No config file yet, Add one or restore a backup%></div>
+                                        <div class="config-file-empty-actions">
+                                            <button type="button" class="config-upload-btn-large" id="upload_config_large" onclick="return uploadConfig()">
+                                                <svg width="20" height="20"><use href="#oc-icon-upload"/></svg>
+                                                <span><%:Add Config%></span>
+                                            </button>
+                                            <button type="button" class="config-upload-btn-large" id="restore_backup_large" onclick="return restoreBackupFile()">
+                                                <svg width="20" height="20"><use href="#oc-icon-file-zip"/></svg>
+                                                <span><%:Restore Backup%></span>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <div class="config-file-bottom">

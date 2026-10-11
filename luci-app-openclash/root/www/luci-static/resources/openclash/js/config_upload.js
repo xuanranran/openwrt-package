@@ -3293,7 +3293,7 @@ var ConfigUploader = {
         this.selectedFile = null;
         uploadZone.classList.remove('has-file');
         uploadZone.querySelector('.upload-primary').textContent = '<%:Click to select file or drag and drop%>';
-        uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size%>' + ' 20MB';
+        uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file%>';
 
         this.updateSubmitButton();
         this.updateFoldSummaries();
@@ -3319,20 +3319,9 @@ var ConfigUploader = {
             this.selectedFile = null;
             uploadZone.classList.remove('has-file');
             uploadZone.querySelector('.upload-primary').textContent = '<%:Click to select file or drag and drop%>';
-            uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size%>' + ' 20MB';
+            uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file%>';
             statusText.classList.add('is-error');
             statusText.textContent = '<%:Please select a YAML file%>';
-            this.updateSubmitButton();
-            return;
-        }
-
-        if (file.size > 20 * 1024 * 1024) {
-            this.selectedFile = null;
-            uploadZone.classList.remove('has-file');
-            uploadZone.querySelector('.upload-primary').textContent = '<%:Click to select file or drag and drop%>';
-            uploadZone.querySelector('.upload-secondary').textContent = '<%:Support YAML file, max size%>' + ' 20MB';
-            statusText.classList.add('is-error');
-            statusText.textContent = '<%:File size exceeds the limit of%>' + ' 20MB';
             this.updateSubmitButton();
             return;
         }
@@ -3607,47 +3596,34 @@ var ConfigUploader = {
             }
         }, 100);
 
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var fileContent = e.target.result;
+        var formData = new FormData();
+        formData.append('config_file', this.selectedFile, filename);
 
-            var formData = new FormData();
-            formData.append('config_file', fileContent);
-            formData.append('filename', filename);
-
-            fetch('<%=url("admin", "services", "openclash", "upload_config")%>', {
-                method: 'POST',
-                body: formData
-            })
-            .then(function(response) {
-                clearInterval(progressInterval);
-
-                if (!response.ok) {
-                    throw new Error('HTTP error! status: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(function(data) {
-                progressFill.style.width = '100%';
-                progressText.textContent = '<%:Upload completed%> 100%';
-
-                if (data.status === 'success') {
-                    self.finishUpload(filename);
-                } else {
-                    throw new Error(data.message || '<%:Upload failed%>');
-                }
-            })
-            .catch(function(error) {
-                self.handleError('<%:Upload failed:%> ' + error.message);
-            });
-        };
-
-        reader.onerror = function() {
+        fetch('<%=url("admin", "services", "openclash", "upload_config")%>', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(response) {
             clearInterval(progressInterval);
-            self.handleError('<%:Failed to read file%>');
-        };
 
-        reader.readAsText(this.selectedFile, 'UTF-8');
+            if (!response.ok) {
+                throw new Error('HTTP error! status: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            progressFill.style.width = '100%';
+            progressText.textContent = '<%:Upload completed%> 100%';
+
+            if (data.status === 'success') {
+                self.finishUpload(filename);
+            } else {
+                throw new Error(data.message || '<%:Upload failed%>');
+            }
+        })
+        .catch(function(error) {
+            self.handleError('<%:Upload failed:%> ' + error.message);
+        });
     },
 
     processSubscription: function() {

@@ -1973,6 +1973,12 @@ msgstr "Archivo de copia de seguridad"
 msgid "Backup File Restore Successful!"
 msgstr "Restauración desde copia de seguridad completada."
 
+msgid "Backup File Restore Failed!"
+msgstr "No se pudo restaurar desde la copia de seguridad."
+
+msgid "Restore Backup"
+msgstr "Restaurar copia de seguridad"
+
 msgid "1. It may be that the plugin is not running"
 msgstr "1. Puede que el plugin no esté en ejecución."
 
@@ -3137,11 +3143,11 @@ msgstr "Enlace de suscripción"
 msgid "Click to select file or drag and drop"
 msgstr "Haz clic para seleccionar el archivo o arrástralo aquí"
 
-msgid "Support YAML file, max size"
-msgstr "Se admiten archivos YAML, tamaño máximo"
+msgid "Support YAML file"
+msgstr "Se admiten archivos YAML"
 
-msgid "Support txt,conf files, max size"
-msgstr "Se admiten archivos .txt y .conf, tamaño máximo"
+msgid "Support txt,conf files"
+msgstr "Se admiten archivos .txt y .conf"
 
 msgid "Subscription URL"
 msgstr "URL de suscripción"
@@ -3226,9 +3232,6 @@ msgstr "Tamaño:"
 
 msgid "Please select a YAML file"
 msgstr "Por favor, selecciona un archivo YAML"
-
-msgid "File size exceeds the limit of"
-msgstr "El tamaño del archivo supera el límite de"
 
 msgid "File ready to upload"
 msgstr "Archivo listo para subir"
@@ -3323,8 +3326,8 @@ msgstr "Modo comparación: izquierda (configuración original), derecha (configu
 msgid "Please select a config file first"
 msgstr "Selecciona un archivo de configuración primero"
 
-msgid "No config files found, Please upload a config file to get started"
-msgstr "No se encontraron archivos de configuración, sube uno para comenzar"
+msgid "No config file yet, Add one or restore a backup"
+msgstr "Aún no hay archivos de configuración, añade uno o restaura una copia de seguridad"
 
 msgid "Unknown"
 msgstr "Desconocido"
@@ -4316,8 +4319,8 @@ msgstr "Atajos"
 msgid "How to add a config"
 msgstr "Cómo añadir una configuración"
 
-msgid "Click this area to pick your YAML file, or drop one onto it. Max size"
-msgstr "Haz clic aquí para elegir tu archivo YAML o arrástralo; tamaño máximo"
+msgid "Click this area to pick your YAML file, or drop one onto it"
+msgstr "Haz clic aquí para elegir tu archivo YAML o arrástralo"
 
 msgid "Save the config"
 msgstr "Guarda la configuración"
@@ -4411,6 +4414,9 @@ msgstr "Al editar un archivo de configuración normal también aparece aquí el 
 
 msgid "A config holds your proxies, groups and rules, this is the step that gets OpenClash working"
 msgstr "La configuración contiene tus nodos, grupos y reglas; este paso pone OpenClash en marcha"
+
+msgid "Upload a config file, or restore the whole setup from a backup"
+msgstr "Sube un archivo de configuración o restaura toda la configuración desde una copia de seguridad"
 
 msgid "An older version rolls back after a bad release"
 msgstr "Una versión anterior permite volver atrás si una release falla"

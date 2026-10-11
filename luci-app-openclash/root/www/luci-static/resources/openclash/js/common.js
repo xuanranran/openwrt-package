@@ -1022,6 +1022,32 @@ function ocEditorFallback(id) {
     ocHideLoading(container);
 }
 
+var OC_EDITOR_STREAM_MARKER = 'oc-editor-streamed';
+
+function ocStreamEditorOnSubmit(id) {
+    if (!id || !id.form || id.form.ocStreamEditor) return;
+    var form = id.form;
+    form.ocStreamEditor = true;
+    form.enctype = 'multipart/form-data';
+
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.name = 'oc_editor_content';
+    input.style.display = 'none';
+    form.appendChild(input);
+
+    form.addEventListener('submit', function() {
+        try {
+            var dt = new DataTransfer();
+            dt.items.add(new File([id.value], 'content.yaml', { type: 'text/plain' }));
+            input.files = dt.files;
+            id.value = OC_EDITOR_STREAM_MARKER;
+        } catch (e) {
+            input.parentNode.removeChild(input);
+        }
+    });
+}
+
 // Single source for the F10/F11/Esc key hint line shared by the config editors.
 function ocEditorHelpHtml(withCompare) {
     var html = '<%:Press%>' + (withCompare ? ' <b class="oc-kbd">F10</b> <%:to toggle differences,%>' : '') +

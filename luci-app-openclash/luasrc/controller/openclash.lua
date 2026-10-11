@@ -100,6 +100,7 @@ function index()
 	entry({"admin", "services", "openclash", "config_file_read"}, call("action_config_file_read"))
 	entry({"admin", "services", "openclash", "config_file_save"}, call("action_config_file_save"))
 	entry({"admin", "services", "openclash", "upload_config"}, call("action_upload_config"))
+	entry({"admin", "services", "openclash", "restore_backup"}, call("action_restore_backup"))
 	entry({"admin", "services", "openclash", "add_subscription"}, call("action_add_subscription"))
 	entry({"admin", "services", "openclash", "config_stats"}, call("action_config_stats"))
 	entry({"admin", "services", "openclash", "runtime_stats"}, call("action_runtime_stats"))
@@ -4887,12 +4888,74 @@ function action_config_file_list()
 end
 
 function action_upload_config()
-	local upload = HTTP.formvalue("config_file")
-	local filename = HTTP.formvalue("filename")
+	local config_dir = "/etc/openclash/config/"
+	local started, fp, filename, target_path, file_size, stream_err = false, nil, nil, nil, 0, nil
 
+	HTTP.setfilehandler(function(meta, chunk, eof)
+		if stream_err then
+			return
+		end
+
+		if not started then
+			if not chunk then
+				return
+			end
+
+			started = true
+
+			local name = (meta and meta.file) or ""
+			if name == "" or not is_safe_filename(name) then
+				stream_err = "Invalid filename"
+				return
+			end
+
+			if not string.match(name, "%.ya?ml$") then
+				name = name .. ".yaml"
+			end
+
+			filename = name
+			target_path = config_dir .. name
+
+			SYS.call("mkdir -p " .. config_dir)
+
+			fp = io.open(target_path, "w")
+			if not fp then
+				stream_err = "Failed to save config file to disk"
+				return
+			end
+		end
+
+		if #chunk > 0 then
+			if not fp:write(chunk) then
+				stream_err = "Failed to save config file to disk"
+				return
+			end
+
+			file_size = file_size + #chunk
+		end
+
+		if eof then
+			fp:close()
+			fp = nil
+		end
+	end)
+
+	HTTP.formvalue("config_file")
 	HTTP.prepare_content("application/json")
 
-	if not upload or upload == "" then
+	if stream_err then
+		if target_path then
+			fs.unlink(target_path)
+		end
+
+		HTTP.write_json({
+			status = "error",
+			message = stream_err
+		})
+		return
+	end
+
+	if not target_path then
 		HTTP.write_json({
 			status = "error",
 			message = "No file uploaded"
@@ -4900,26 +4963,8 @@ function action_upload_config()
 		return
 	end
 
-	if not filename or filename == "" then
-		filename = "upload_" .. os.date("%Y%m%d_%H%M%S")
-	end
-
-	if not is_safe_filename(filename) then
-		HTTP.write_json({
-			status = "error",
-			message = "Invalid filename"
-		})
-		return
-	end
-
-	if not string.match(filename, "%.ya?ml$") then
-		filename = filename .. ".yaml"
-	end
-
-	local config_dir = "/etc/openclash/config/"
-	local target_path = config_dir .. filename
-
-	if string.len(upload) == 0 then
+	if file_size == 0 then
+		fs.unlink(target_path)
 		HTTP.write_json({
 			status = "error",
 			message = "Uploaded file is empty"
@@ -4927,17 +4972,13 @@ function action_upload_config()
 		return
 	end
 
-	local file_size = string.len(upload)
-	if file_size > 20 * 1024 * 1024 then
-		HTTP.write_json({
-			status = "error",
-			message = string.format("File size (%s) exceeds 20MB limit", fs.filesize(file_size))
-		})
-		return
-	end
-
 	local yaml_valid = false
-	local content_start = string.sub(upload, 1, 5000)
+	local content_start = ""
+	local rfp = io.open(target_path, "r")
+	if rfp then
+		content_start = rfp:read(5000) or ""
+		rfp:close()
+	end
 
 	if string.find(content_start, "proxy%-providers:") or
 	   string.find(content_start, "proxies:") or
@@ -4955,51 +4996,104 @@ function action_upload_config()
 		return
 	end
 
-	SYS.call("mkdir -p " .. config_dir)
+	SYS.call(string.format("chmod 644 '%s'", target_path))
+	SYS.call(string.format("chown root:root '%s'", target_path))
 
-	local fp = io.open(target_path, "w")
-	if fp then
-		fp:write(upload)
-		fp:close()
+	HTTP.write_json({
+		status = "success",
+		message = "Config file uploaded successfully",
+		filename = filename,
+		file_path = target_path,
+		file_size = file_size,
+		readable_size = fs.filesize(file_size)
+	})
+end
 
-		SYS.call(string.format("chmod 644 '%s'", target_path))
-		SYS.call(string.format("chown root:root '%s'", target_path))
+function action_restore_backup()
+	local backup_dir = "/tmp/"
+	local started, fp, target_path, stream_err = false, nil, nil, nil
 
-		local written_content = fs.readfile(target_path)
-		if not written_content or string.len(written_content) ~= file_size then
-			fs.unlink(target_path)
-			HTTP.write_json({
-				status = "error",
-				message = "File write verification failed"
-			})
+	HTTP.setfilehandler(function(meta, chunk, eof)
+		if stream_err then
 			return
 		end
 
+		if not started then
+			if not chunk then
+				return
+			end
+
+			started = true
+
+			local name = (meta and meta.file) or ""
+			if name == "" or not is_safe_filename(name) then
+				stream_err = "Invalid filename"
+				return
+			end
+
+			target_path = backup_dir .. name
+
+			fp = io.open(target_path, "w")
+			if not fp then
+				stream_err = "Failed to save backup file to disk"
+				return
+			end
+		end
+
+		if chunk and fp then
+			fp:write(chunk)
+		end
+
+		if eof and fp then
+			fp:close()
+			fp = nil
+		end
+	end)
+
+	HTTP.formvalue("backup_file")
+	HTTP.prepare_content("application/json")
+
+	if stream_err then
+		if target_path then
+			fs.unlink(target_path)
+		end
+
+		HTTP.write_json({
+			status = "error",
+			message = stream_err
+		})
+		return
+	end
+
+	if not target_path then
+		HTTP.write_json({
+			status = "error",
+			message = "No file uploaded"
+		})
+		return
+	end
+
+	local restored = fs.restore_backup(target_path)
+	fs.unlink(target_path)
+
+	if restored then
 		HTTP.write_json({
 			status = "success",
-			message = "Config file uploaded successfully",
-			filename = filename,
-			file_path = target_path,
-			file_size = file_size,
-			readable_size = fs.filesize(file_size)
+			message = "Backup File Restore Successful!"
 		})
 	else
 		HTTP.write_json({
 			status = "error",
-			message = "Failed to save config file to disk"
+			message = "Backup File Restore Failed!"
 		})
 	end
 end
 
 function action_config_file_read()
 	local config_file = HTTP.formvalue("config_file")
-	HTTP.prepare_content("application/json")
 
 	if not config_file then
-		HTTP.write_json({
-			status = "error",
-			message = "Missing config_file parameter"
-		})
+		HTTP.status(400, "Missing config_file parameter")
 		return
 	end
 
@@ -5015,157 +5109,136 @@ function action_config_file_read()
 	end
 
 	if not allow then
-		HTTP.write_json({
-			status = "error",
-			message = "Invalid config file path"
-		})
+		HTTP.status(403, "Invalid config file path")
 		return
 	end
 
 	local stat = fs.stat(config_file)
+	if stat and stat.type ~= "regular" then
+		HTTP.status(500, "Config file is not a regular file")
+		return
+	end
+
+	HTTP.header("X-Oc-Size", stat and tostring(stat.size) or "0")
+	HTTP.header("X-Oc-Mtime", stat and tostring(stat.mtime) or "0")
+	HTTP.prepare_content("text/plain; charset=utf-8")
+
 	if not stat then
-		HTTP.write_json({
-			status = "success",
-			content = "",
-			file_info = {
-				path = config_file,
-				size = 0,
-				mtime = 0,
-				readable_size = "0 KB",
-				last_modified = ""
-			}
-		})
 		return
 	end
 
-	if stat.type ~= "regular" then
-		HTTP.write_json({
-			status = "error",
-			message = "Config file is not a regular file"
-		})
+	local reader = ltn12_popen("exec cat " .. UTIL.shellquote(config_file))
+	if not reader then
 		return
 	end
-
-	if stat.size > 20 * 1024 * 1024 then
-		HTTP.write_json({
-			status = "error",
-			message = "Config file too large (max 20MB)"
-		})
-		return
-	end
-
-	local content = fs.readfile(config_file)
-	if content == nil then
-		HTTP.write_json({
-			status = "error",
-			message = "Failed to read config file"
-		})
-		return
-	end
-
-	HTTP.write_json({
-		status = "success",
-		content = content,
-		file_info = {
-			path = config_file,
-			size = stat.size,
-			mtime = stat.mtime,
-			readable_size = fs.filesize(stat.size),
-			last_modified = os.date("%Y-%m-%d %H:%M:%S", stat.mtime)
-		}
-	})
+	luci.ltn12.pump.all(reader, HTTP.write)
+	reader.kill()
 end
 
 function action_config_file_save()
-	local config_file = HTTP.formvalue("config_file")
-	local content = HTTP.formvalue("content")
+	local config_file, fp, file_size, backup_file, stream_err, started, opened = nil, nil, 0, nil, nil, false, false
+
+	HTTP.setfilehandler(function(meta, chunk, eof)
+		if stream_err then
+			return
+		end
+
+		if not started then
+			if not chunk then
+				return
+			end
+
+			started = true
+
+			config_file = HTTP.formvalue("config_file", true)
+			if not config_file then
+				stream_err = "Missing config_file parameter"
+				return
+			end
+
+			local is_overwrite = (config_file == "/etc/openclash/custom/openclash_custom_overwrite.sh" or config_file:match("^/etc/openclash/overwrite/[^/]+$"))
+			if not is_overwrite then
+				if not string.match(config_file, "^/etc/openclash/config/[^/]+%.ya?ml$") or string.find(config_file, "%.%.") then
+					stream_err = "Invalid config file path"
+					return
+				end
+			else
+				if not (config_file == "/etc/openclash/custom/openclash_custom_overwrite.sh" or (config_file:match("^/etc/openclash/overwrite/[^/]+$") and not string.find(config_file, "%.%."))) then
+					stream_err = "Invalid overwrite file path"
+					return
+				end
+			end
+
+			if fs.access(config_file) then
+				backup_file = config_file .. ".backup." .. os.time()
+				if SYS.call(string.format("cp '%s' '%s'", config_file, backup_file)) ~= 0 then
+					backup_file = nil
+					stream_err = "Failed to create backup file"
+					return
+				end
+			end
+		end
+
+		if #chunk > 0 then
+			if not fp then
+				fp = io.open(config_file, "w")
+				if not fp then
+					stream_err = "Failed to write config file"
+					return
+				end
+
+				opened = true
+			end
+
+			if not fp:write(chunk) then
+				stream_err = "Failed to write config file"
+				return
+			end
+
+			file_size = file_size + #chunk
+		end
+
+		if eof and fp then
+			fp:close()
+			fp = nil
+		end
+	end)
+
+	HTTP.formvalue("config_file")
 	HTTP.prepare_content("application/json")
-	if content then
-		content = content:gsub("\r\n", "\n"):gsub("\r", "\n")
+
+	if not stream_err and not config_file then
+		stream_err = "Missing config_file parameter"
 	end
 
-	if not config_file then
-		HTTP.write_json({
-			status = "error",
-			message = "Missing config_file parameter"
-		})
-		return
+	if not stream_err and file_size == 0 then
+		stream_err = "Missing content parameter"
 	end
 
-	if not content then
+	if not stream_err then
+		local saved = fs.stat(config_file)
+		if not saved or saved.size ~= file_size then
+			stream_err = "File write verification failed"
+		end
+	end
+
+	if stream_err then
+		if opened then
+			if backup_file then
+				SYS.call(string.format("mv '%s' '%s'", backup_file, config_file))
+			else
+				fs.unlink(config_file)
+			end
+		end
+
 		HTTP.write_json({
 			status = "error",
-			message = "Missing content parameter"
+			message = stream_err
 		})
 		return
 	end
 
 	local is_overwrite = (config_file == "/etc/openclash/custom/openclash_custom_overwrite.sh" or config_file:match("^/etc/openclash/overwrite/[^/]+$"))
-
-	if not is_overwrite then
-		if not string.match(config_file, "^/etc/openclash/config/[^/]+%.ya?ml$") or string.find(config_file, "%.%.") then
-			HTTP.write_json({
-				status = "error",
-				message = "Invalid config file path"
-			})
-			return
-		end
-	else
-		if not (config_file == "/etc/openclash/custom/openclash_custom_overwrite.sh" or (config_file:match("^/etc/openclash/overwrite/[^/]+$") and not string.find(config_file, "%.%."))) then
-			HTTP.write_json({
-				status = "error",
-				message = "Invalid overwrite file path"
-			})
-			return
-		end
-	end
-
-	if string.len(content) > 20 * 1024 * 1024 then
-		HTTP.write_json({
-			status = "error",
-			message = "Content too large (max 20MB)"
-		})
-		return
-	end
-
-	local backup_file = nil
-	if fs.access(config_file) then
-		backup_file = config_file .. ".backup." .. os.time()
-		local backup_success = SYS.call(string.format("cp '%s' '%s'", config_file, backup_file))
-		if backup_success ~= 0 then
-			HTTP.write_json({
-				status = "error",
-				message = "Failed to create backup file"
-			})
-			return
-		end
-	end
-
-	local success = fs.writefile(config_file, content)
-	if not success then
-		if backup_file then
-			SYS.call(string.format("mv '%s' '%s'", backup_file, config_file))
-		end
-
-		HTTP.write_json({
-			status = "error",
-			message = "Failed to write config file"
-		})
-		return
-	end
-
-	local written_content = fs.readfile(config_file)
-	if written_content ~= content then
-		if backup_file then
-			SYS.call(string.format("mv '%s' '%s'", backup_file, config_file))
-		end
-
-		HTTP.write_json({
-			status = "error",
-			message = "File write verification failed"
-		})
-		return
-	end
 
 	if not is_overwrite then
 		SYS.call(string.format("chmod 644 '%s'", config_file))
@@ -5935,8 +6008,77 @@ function action_template_preview()
 end
 
 function action_upload_overwrite()
-	local upload = HTTP.formvalue("config_file")
-	local filename = HTTP.formvalue("filename")
+	local overwrite_dir = "/etc/openclash/overwrite/"
+	local started, fp, filename, target_path, file_size, stream_err = false, nil, nil, nil, 0, nil
+
+	HTTP.setfilehandler(function(meta, chunk, eof)
+		if stream_err then
+			return
+		end
+
+		if not started then
+			if not chunk then
+				return
+			end
+
+			started = true
+
+			local name = (meta and meta.file) or ""
+			if name == "" or not is_safe_filename(name) then
+				stream_err = "Invalid filename"
+				return
+			end
+
+			filename = name
+			target_path = overwrite_dir .. name
+
+			SYS.call("mkdir -p " .. overwrite_dir)
+
+			fp = io.open(target_path, "w")
+			if not fp then
+				stream_err = "Failed to save file to disk"
+				return
+			end
+		end
+
+		if #chunk > 0 then
+			if not fp:write(chunk) then
+				stream_err = "Failed to save file to disk"
+				return
+			end
+
+			file_size = file_size + #chunk
+		end
+
+		if eof then
+			fp:close()
+			fp = nil
+		end
+	end)
+
+	HTTP.formvalue("config_file")
+	HTTP.prepare_content("application/json")
+
+	if stream_err then
+		if target_path then
+			fs.unlink(target_path)
+		end
+
+		HTTP.write_json({status = "error", message = stream_err})
+		return
+	end
+
+	if not target_path then
+		HTTP.write_json({status = "error", message = "No file uploaded"})
+		return
+	end
+
+	if file_size == 0 then
+		fs.unlink(target_path)
+		HTTP.write_json({status = "error", message = "Uploaded file is empty"})
+		return
+	end
+
 	local config_values = {}
 	local raw_config = HTTP.formvalue("config") or ""
 	if raw_config ~= "" then
@@ -5949,43 +6091,8 @@ function action_upload_overwrite()
 	end
 	local enable = HTTP.formvalue("enable")
 	local order = HTTP.formvalue("order")
-	HTTP.prepare_content("application/json")
-	if not upload or upload == "" then
-		HTTP.write_json({status = "error", message = "No file uploaded"})
-		return
-	end
-	if not filename or filename == "" then
-		filename = "upload_" .. os.date("%Y%m%d_%H%M%S")
-	end
-	if not is_safe_filename(filename) then
-		HTTP.write_json({status = "error", message = "Invalid filename"})
-		return
-	end
-	local overwrite_dir = "/etc/openclash/overwrite/"
-	SYS.call("mkdir -p " .. overwrite_dir)
-	local target_path = overwrite_dir .. filename
-	if string.len(upload) == 0 then
-		HTTP.write_json({status = "error", message = "Uploaded file is empty"})
-		return
-	end
-	local file_size = string.len(upload)
-	if file_size > 20 * 1024 * 1024 then
-		HTTP.write_json({status = "error", message = string.format("File size (%s) exceeds 20MB limit", require("luci.openclash").filesize(file_size))})
-		return
-	end
-	local fp = io.open(target_path, "w")
-	if fp then
-		fp:write(upload)
-		fp:close()
-		SYS.call(string.format("chmod 644 '%s'", target_path))
-		SYS.call(string.format("chown root:root '%s'", target_path))
-		local written_content = fs.readfile(target_path)
-		if not written_content or string.len(written_content) ~= file_size then
-			fs.unlink(target_path)
-			HTTP.write_json({status = "error", message = "File write verification failed"})
-			return
-		end
 
+	if target_path then
 		local section_name = filename
 		local found = false
 
@@ -6046,8 +6153,6 @@ function action_upload_overwrite()
 			file_size = file_size,
 			readable_size = fs.filesize(file_size)
 		})
-	else
-		HTTP.write_json({status = "error", message = "Failed to save file to disk"})
 	end
 end
 

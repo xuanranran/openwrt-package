@@ -125,6 +125,7 @@ var Guide = {
             done: function (s) { return s.configs.length > 0; },
             body: function () {
                 return '<p><%:A config holds your proxies, groups and rules, this is the step that gets OpenClash working%><span class="guide-tag req"><%:Required%></span></p>'
+                    + '<p class="guide-tip"><%:Upload a config file, or restore the whole setup from a backup%></p>'
                     + '<p class="guide-tip"><%:“Open and continue” opens this window and walks you through it%></p>';
             }
         },
@@ -437,7 +438,7 @@ var Guide = {
             place: 'bottom',
             tab: 'upload',
             body: function () {
-                return '<p><%:Click this area to pick your YAML file, or drop one onto it. Max size%>' + ' 20MB' + '<span class="guide-tag req"><%:Required%></span></p>';
+                return '<p><%:Click this area to pick your YAML file, or drop one onto it%><span class="guide-tag req"><%:Required%></span></p>';
             }
         },
         {
