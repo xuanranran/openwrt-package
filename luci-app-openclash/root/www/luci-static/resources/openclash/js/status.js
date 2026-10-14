@@ -1766,6 +1766,7 @@ var ocLang = window.ocLang || '';
                     modules.push({
                         name: moduleName,
                         type: moduleInfo.type || 'unknown',
+                        desc: moduleInfo.desc || '',
                         order: parseInt(moduleInfo.order, 10) || 0
                     });
                 }
@@ -1852,7 +1853,7 @@ var ocLang = window.ocLang || '';
                 var moduleItem = enabledModules[i];
                 var tag = document.createElement('span');
                 tag.className = 'subscription-overwrite-tag ' + this.getTypeClass(moduleItem.type);
-                tag.title = moduleItem.name;
+                tag.title = moduleItem.desc ? moduleItem.name + '\n' + moduleItem.desc : moduleItem.name;
                 tag.textContent = moduleItem.name;
                 tag.setAttribute('data-module', moduleItem.name);
                 tag.addEventListener('click', function(e) {

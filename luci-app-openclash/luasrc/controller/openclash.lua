@@ -111,6 +111,7 @@ function index()
 	entry({"admin", "services", "openclash", "add_age_config"}, call("action_add_age_config"))
 	entry({"admin", "services", "openclash", "upload_overwrite"}, call("action_upload_overwrite"))
 	entry({"admin", "services", "openclash", "overwrite_subscribe_info"}, call("action_overwrite_subscribe_info"))
+	entry({"admin", "services", "openclash", "overwrite_module_preview"}, call("action_overwrite_module_preview"))
 	entry({"admin", "services", "openclash", "overwrite_file_list"}, call("action_overwrite_file_list"))
 	entry({"admin", "services", "openclash", "delete_overwrite_file"}, call("delete_overwrite_file"))
 	entry({"admin", "services", "openclash", "get_subscribe_data"}, call("action_get_subscribe_data"))
@@ -129,6 +130,7 @@ local HTTP = require "luci.http"
 local DISP = require "luci.dispatcher"
 local UTIL = require "luci.util"
 local fs = require "luci.openclash"
+local is_safe_filename = fs.is_safe_filename
 local json = require "luci.jsonc"
 local uci = require("luci.model.uci").cursor()
 local datatype = require "luci.cbi.datatypes"
@@ -476,6 +478,14 @@ function action_update_config()
 		return
 	end
 
+	if not is_safe_filename(filename) then
+		HTTP.write_json({
+			status = "error",
+			message = "Invalid filename"
+		})
+		return
+	end
+
 	local no_restart = HTTP.formvalue("no_restart")
 	local restart_arg = no_restart == "1" and " norestart" or ""
 
@@ -490,7 +500,7 @@ function action_update_config()
 	else
 		HTTP.write_json({
 			status = "error",
-			message = "Failed to update config"
+			message = luci.i18n.translate("Subscription update failed; existing configuration was kept")
 		})
 	end
 end
@@ -2460,9 +2470,22 @@ function ltn12_popen(command)
 	end
 end
 
+-- Only the plugin's own directories may be written, and the directory comes from this
+-- table instead of the request; names are validated by is_safe_filename().
+local plugin_file_dirs = {
+	["/etc/openclash/config/"] = true,
+	["/etc/openclash/proxy_provider/"] = true,
+	["/etc/openclash/rule_provider/"] = true,
+}
+
 function create_file()
 	local file_name = HTTP.formvalue("filename")
-	local file_path = HTTP.formvalue("filepath")..file_name
+	local file_dir = HTTP.formvalue("filepath")
+	if not plugin_file_dirs[file_dir] or not is_safe_filename(file_name) then
+		HTTP.status(400, "Invalid file path")
+		return
+	end
+	local file_path = file_dir..file_name
 	fs.writefile(file_path, "")
 	if not fs.isfile(file_path) then
 		HTTP.status(500, "Create File Failed")
@@ -2474,6 +2497,10 @@ function rename_file()
 	local new_file_name = HTTP.formvalue("new_file_name")
 	local file_path = HTTP.formvalue("file_path")
 	local old_file_name = HTTP.formvalue("file_name")
+	if not plugin_file_dirs[file_path] or not is_safe_filename(old_file_name) or not is_safe_filename(new_file_name) then
+		HTTP.status(400, "Invalid file path")
+		return
+	end
 	local old_file_path = file_path .. old_file_name
 	local new_file_path = file_path .. new_file_name
 	local old_run_file_path = "/etc/openclash/" .. old_file_name
@@ -4721,10 +4748,6 @@ function FindProxyForURLEx(url, host) {
 	return pac_script
 end
 
-local function is_safe_filename(filename)
-	return filename and filename:match("^[%w%._%-]+$") and not filename:match("^%.")
-end
-
 local function kill_process()
 	local cmd = string.format("%s |grep -E 'openclash|clash|mihomo' |grep -v grep |awk '{print $1}' |xargs -r kill -9 >/dev/null 2>&1", fs.ps_cmd())
 	SYS.call(cmd)
@@ -5302,6 +5325,14 @@ function action_add_subscription()
 		HTTP.write_json({
 			status = "error",
 			message = "Missing name parameter"
+		})
+		return
+	end
+
+	if not is_safe_filename(name) then
+		HTTP.write_json({
+			status = "error",
+			message = "Invalid filename"
 		})
 		return
 	end
@@ -6089,6 +6120,8 @@ function action_upload_overwrite()
 	end
 	local enable = HTTP.formvalue("enable")
 	local order = HTTP.formvalue("order")
+	local param = HTTP.formvalue("param")
+	local desc = HTTP.formvalue("desc")
 
 	if target_path then
 		local section_name = filename
@@ -6110,6 +6143,12 @@ function action_upload_overwrite()
 				-- an uploaded local file replaces the remote source of this module
 				uci:set("openclash", s[".name"], "type", "file")
 				uci:set("openclash", s[".name"], "url", "")
+				if param ~= nil then
+					uci:set("openclash", s[".name"], "param", param)
+				end
+				if desc ~= nil then
+					uci:set("openclash", s[".name"], "desc", desc)
+				end
 				if order ~= nil then
 					uci:set("openclash", s[".name"], "order", tostring(tonumber(order) or 0))
 				end
@@ -6123,6 +6162,12 @@ function action_upload_overwrite()
 			uci:delete("openclash", sid, "config")
 			if #config_values > 0 then
 				uci:set_list("openclash", sid, "config", config_values)
+			end
+			if param ~= nil then
+				uci:set("openclash", sid, "param", param)
+			end
+			if desc ~= nil then
+				uci:set("openclash", sid, "desc", desc)
 			end
 			if enable ~= nil then
 				uci:set("openclash", sid, "enable", tostring(enable))
@@ -6152,6 +6197,69 @@ function action_upload_overwrite()
 			readable_size = fs.filesize(file_size)
 		})
 	end
+end
+
+-- Runs one curl download while streaming NDJSON progress lines, so the browser bar follows real bytes.
+-- Returns the curl exit code, or nil when the wait ran out.
+local function stream_curl_download(url, tmp_file, max_filesize, emit_progress)
+	local hdr_file = tmp_file .. ".hdr"
+	local rc_file = tmp_file .. ".rc"
+	SYS.call(string.format("rm -f '%s' '%s' '%s'", tmp_file, hdr_file, rc_file))
+	local cmd = string.format(
+		"curl -fsSL --connect-timeout 5 -m 60 --retry 2%s -D '%s' -o '%s' %s >/dev/null 2>&1; echo $? > '%s'",
+		max_filesize and (" --max-filesize " .. tostring(max_filesize)) or "",
+		hdr_file, tmp_file, UTIL.shellquote(url), rc_file
+	)
+	local pid = nixio.fork()
+	if not pid or pid < 0 then
+		return nil
+	end
+	if pid == 0 then
+		nixio.exec("/bin/sh", "-c", cmd)
+	end
+
+	local total = 0
+	local reported = -1
+	local code = nil
+	local waited = 0
+	while waited < 120 do
+		local stat = fs.stat(tmp_file)
+		local received = (stat and stat.type == "regular" and stat.size) or 0
+		if total == 0 then
+			local header_text = nixio.fs.readfile(hdr_file)
+			for value in (header_text or ""):gmatch("[Cc]ontent%-[Ll]ength:%s*(%d+)") do
+				total = tonumber(value) or total
+			end
+		end
+		if received ~= reported then
+			if emit_progress then
+				write_padded(json.stringify({type = "progress", received = received, total = total}))
+			end
+			reported = received
+		end
+		if nixio.fs.access(rc_file) then
+			local rc_code = tonumber((nixio.fs.readfile(rc_file) or ""):match("%d+"))
+			if rc_code then
+				code = rc_code
+				break
+			end
+		end
+		nixio.nanosleep(0, 250000000)
+		waited = waited + 0.25
+	end
+
+	if code == nil then
+		pcall(nixio.kill, pid, nixio.const.SIGTERM)
+	end
+	for _ = 1, 20 do
+		local ok_w, wpid = pcall(nixio.waitpid, pid, "nohang")
+		if ok_w and wpid then break end
+		local ok_k, alive = pcall(nixio.kill, pid, 0)
+		if not (ok_k and alive) then break end
+		nixio.nanosleep(0, 50000000)
+	end
+	SYS.call(string.format("rm -f '%s' '%s'", hdr_file, rc_file))
+	return code
 end
 
 function action_overwrite_subscribe_info()
@@ -6201,6 +6309,7 @@ function action_overwrite_subscribe_info()
 					order = tonumber(s.order) or 0,
 					type = s.type or "file",
 					param = s.param or "",
+					desc = s.desc or "",
 					official = tonumber(s.official) or 0,
 					enable = tonumber(s.enable) or 0
 				}
@@ -6219,6 +6328,7 @@ function action_overwrite_subscribe_info()
 		local update_hour = HTTP.formvalue("update_hour") or ""
 		local order = HTTP.formvalue("order")
 		local param = HTTP.formvalue("param") or ""
+		local desc = HTTP.formvalue("desc")
 		local config_values = {}
 		local raw_config = HTTP.formvalue("config") or ""
 		if raw_config ~= "" then
@@ -6231,11 +6341,21 @@ function action_overwrite_subscribe_info()
 		end
 		typ = HTTP.formvalue("type") or typ or "file"
 		local enable = HTTP.formvalue("enable")
+		local stream_progress = HTTP.formvalue("stream") == "1"
+
+		-- a streamed reply already carries progress lines, its result must travel the same channel
+		local function respond_json(payload)
+			if stream_progress then
+				write_padded(json.stringify(payload))
+				return
+			end
+			HTTP.prepare_content("application/json")
+			HTTP.write_json(payload)
+		end
 
 		if typ == "http" then
 			if not url or url == "" then
-				HTTP.prepare_content("application/json")
-				HTTP.write_json({
+				respond_json({
 					status = "error",
 					message = "Subscribe URL cannot be empty"
 				})
@@ -6246,8 +6366,7 @@ function action_overwrite_subscribe_info()
 				is_valid_url = true
 			end
 			if not is_valid_url then
-				HTTP.prepare_content("application/json")
-				HTTP.write_json({
+				respond_json({
 					status = "error",
 					message = "Invalid subscribe URL format, only single HTTP/HTTPS link is supported"
 				})
@@ -6284,19 +6403,19 @@ function action_overwrite_subscribe_info()
 
 		if need_download then
 			local tmp_file = "/tmp/openclash_overwrite_download"
-			SYS.call("rm -f " .. tmp_file)
-			local ret = SYS.call(string.format('curl -fsSL --connect-timeout 5 -m 30 --retry 2 "%s" -o "%s"', url, tmp_file))
+			if stream_progress then
+				HTTP.prepare_content("text/plain; charset=utf-8")
+			end
+			local ret = stream_curl_download(url, tmp_file, nil, stream_progress)
 			local stat = fs.stat(tmp_file)
 			if ret ~= 0 or not stat or stat.type ~= "regular" or stat.size == 0 then
 				SYS.call("rm -f " .. tmp_file)
-				HTTP.prepare_content("application/json")
-				HTTP.write_json({status="error", message="Download failed"})
+				respond_json({status="error", message="Download failed"})
 				return
 			end
 			SYS.call(string.format("mkdir -p /etc/openclash/overwrite && mv -f '%s' '%s' && chmod 644 '%s'", tmp_file, file_path, file_path))
 			if not fs.access(file_path) then
-				HTTP.prepare_content("application/json")
-				HTTP.write_json({status="error", message="Failed to save downloaded file"})
+				respond_json({status="error", message="Failed to save downloaded file"})
 				return
 			end
 		end
@@ -6337,6 +6456,10 @@ function action_overwrite_subscribe_info()
 		uci:set("openclash", sid, "update_days", update_days)
 		uci:set("openclash", sid, "update_hour", update_hour)
 		uci:set("openclash", sid, "param", param)
+		-- desc stays untouched when the caller does not send one
+		if desc ~= nil then
+			uci:set("openclash", sid, "desc", desc)
+		end
 		if #config_values > 0 then
 			uci:delete("openclash", sid, "config")
 			uci:set_list("openclash", sid, "config", config_values)
@@ -6361,12 +6484,49 @@ function action_overwrite_subscribe_info()
 		uci:set("openclash", sid, "enable", tostring(enable_num == 1 and 1 or 0))
 		uci:commit("openclash")
 
-		HTTP.prepare_content("application/json")
-		HTTP.write_json({status="success"})
+		respond_json({status="success"})
 		return
 	else
 		HTTP.status(500, "Method Not Allowed")
 	end
+end
+
+-- Reads the head of a remote module file so the add dialog can prefill its fields from the #! markers.
+function action_overwrite_module_preview()
+	local url = HTTP.formvalue("url") or ""
+
+	if not url:match("^https?://") or url:find("%s") or url:find("|") then
+		HTTP.prepare_content("application/json")
+		HTTP.write_json({status = "error", message = "Invalid subscribe URL format, only single HTTP/HTTPS link is supported"})
+		return
+	end
+
+	HTTP.prepare_content("text/plain; charset=utf-8")
+	local tmp_file = "/tmp/openclash_overwrite_preview"
+	local ret = stream_curl_download(url, tmp_file, 524288, true)
+	local stat = fs.stat(tmp_file)
+	if ret ~= 0 or not stat or stat.type ~= "regular" or stat.size == 0 then
+		SYS.call("rm -f " .. tmp_file)
+		write_padded(json.stringify({type = "result", status = "error", message = "Download failed"}))
+		return
+	end
+
+	-- only the head is needed: the markers live at the top of the file
+	local f = io.open(tmp_file, "r")
+	local head = f and f:read(131072) or nil
+	if f then
+		f:close()
+	end
+	SYS.call("rm -f " .. tmp_file)
+
+	if not head then
+		write_padded(json.stringify({type = "result", status = "error", message = "Failed to read the downloaded file"}))
+		return
+	end
+
+	-- raw control bytes would break the JSON response; whitespace stays intact
+	head = head:gsub("[%z\1-\8\11\12\14-\31\127]", "")
+	write_padded(json.stringify({type = "result", status = "success", content = head}))
 end
 
 function action_overwrite_file_list()
@@ -6841,45 +7001,94 @@ local function fetch_oix_sub(token)
 	if type(sub_url) ~= "string" or not sub_url:match("^https://[^/%s]+/") or sub_url:find("[%c]") then
 		return nil, "Unable to fetch managed configuration"
 	end
+	oix_progress("downloading_config", "Downloading config...")
+	local temporary = SYS.exec("mktemp /etc/openclash/config/.oixCloud.XXXXXX 2>/dev/null")
+	temporary = temporary and temporary:match("^(/etc/openclash/config/%.oixCloud%.[%w]+)%s*$")
+	if not temporary then
+		return nil, "Unable to save subscription; existing configuration was kept"
+	end
+	local function fail(message, detail)
+		fs.unlink(temporary)
+		if detail then message = string.format(luci.i18n.translate(message), detail) end
+		return nil, message
+	end
+	local result = SYS.exec(string.format("curl -fsSL --connect-timeout 10 -m 10 --retry 2 --proto '=https' --proto-redir '=https' --user-agent clash -w '%%{http_code}' -o %s -- %s 2>/dev/null; printf ':%%s' \"$?\"", oix_quote(temporary), oix_quote(sub_url)))
+	local status, code = (result or ""):match("^(%d%d%d):(%d+)$")
+	if status and status ~= "000" and status ~= "200" then
+		return fail("Subscription download failed (HTTP %s); existing configuration was kept", status)
+	end
+	if code == "28" then
+		return fail("Subscription download timed out; existing configuration was kept")
+	end
+	if code ~= "0" or status ~= "200" then
+		return fail("Subscription request failed (curl %s); existing configuration was kept", code or "unknown")
+	end
+	local validation_result = SYS.exec("ruby -ryaml -rYAML -I /usr/share/openclash -E UTF-8 -e 'puts YAML.subscription_status(ARGV[0], ARGV.drop(1))' " .. oix_quote(temporary) .. " oixCloud 'oixCloud - smart' 2>/dev/null; printf ':%s' \"$?\"")
+	local validation, validation_code = (validation_result or ""):match("^%s*([%u_]+)%s*:(%d+)$")
+	if validation_code ~= "0" then validation = nil end
+	if validation == "EMPTY" then
+		return fail("Subscription response is empty; existing configuration was kept")
+	elseif validation == "INVALID" then
+		return fail("Subscription is not a valid Clash configuration; existing configuration was kept")
+	elseif validation == "NO_PROXIES" then
+		return fail("Subscription has no proxies or proxy providers; existing configuration was kept")
+	elseif validation ~= "OK" then
+		return fail("Subscription validation could not run; check Ruby dependencies. Existing configuration was kept")
+	end
 	local core = coremetacv()
 	if core == "0" or not string.match(core, "oix") then
 		oix_progress("downloading_core", "Installing oixCloud core and restarting...")
 		SYS.call("OIX_INSTALL_ONLY=1 /usr/share/openclash/openclash_core.sh Oix >/dev/null 2>&1")
 		local installed = coremetacv()
 		if installed == "0" or not string.match(installed, "oix") then
-			return nil, "Unable to update the oixCloud core"
+			return fail("Unable to update the oixCloud core")
 		end
 	end
+	local age_secret = SYS.exec("(. /usr/share/openclash/uci.sh; uci_get_age_secret_keys oixCloud; uci_get_age_secret_keys 'oixCloud - smart') 2>/dev/null") or ""
+	if SYS.call("OIX_TOKEN=" .. oix_quote(token) .. " OIX_CLIENT=openclash /etc/openclash/clash -t -d /etc/openclash -f " .. oix_quote(temporary) .. " -age-secret-key " .. oix_quote(age_secret) .. " >/dev/null 2>&1") ~= 0 then
+		return fail("Subscription failed core validation; existing configuration was kept")
+	end
+	local config_file = "/etc/openclash/config/oixCloud.yaml"
+	local legacy_file = "/etc/openclash/config/oixCloud - smart.yaml"
+	if not fs.rename(temporary, config_file) then
+		return fail("Unable to save subscription; existing configuration was kept")
+	end
+	fs.chmod(config_file, "rw-r--r--")
 	uci:set("openclash", "config", "oix_token", token)
+	local current_config = uci:get("openclash", "config", "config_path")
+	if not current_config or current_config == "" or current_config == legacy_file then
+		uci:set("openclash", "config", "config_path", config_file)
+	end
 	uci:commit("openclash")
-	local sub_match, sub_convert, sid = false, false, nil
-	uci:foreach("openclash", "config_subscribe",
-	function(s)
-		if s.name == "oixCloud - smart" and s.address == sub_url then
-			sub_match = true; return false
-		end
-		if s.name == "oixCloud - smart" then
-			sub_convert = true; sid = s['.name']; return false
+	local managed_sids = {}
+	uci:foreach("openclash", "config_subscribe", function(s)
+		if s.name == "oixCloud - smart" then managed_sids[s['.name']] = true end
+	end)
+	fs.config_refs("oixCloud - smart.yaml", "oixCloud.yaml")
+	uci:load("openclash")
+	local sid, duplicates = nil, {}
+	uci:foreach("openclash", "config_subscribe", function(s)
+		-- adopt only sections renamed from the legacy name or still pointing at the managed URL
+		if s.name == "oixCloud" and (managed_sids[s['.name']] or s.address == nil or s.address == "" or s.address == sub_url) then
+			if not sid then sid = s['.name'] else duplicates[#duplicates + 1] = s['.name'] end
 		end
 	end)
-	if not sub_match then
-		if sub_convert then uci:set("openclash", sid, "address", sub_url)
-		else
-			sid = uci:add("openclash", "config_subscribe")
-			uci:set("openclash", sid, "name", "oixCloud - smart")
-			uci:set("openclash", sid, "address", sub_url)
+	sid = sid or uci:add("openclash", "config_subscribe")
+	uci:set("openclash", sid, "name", "oixCloud")
+	uci:set("openclash", sid, "address", sub_url)
+	for _, duplicate in ipairs(duplicates) do uci:delete("openclash", duplicate) end
+	uci:foreach("openclash", "overwrite", function(s)
+		local paths, changed = s.config, false
+		if type(paths) == "string" then paths = {paths} end
+		if type(paths) == "table" then
+			for i, path in ipairs(paths) do
+				if path == legacy_file then paths[i] = config_file; changed = true end
+			end
+			if changed then uci:set("openclash", s['.name'], "config", paths) end
 		end
-		uci:commit("openclash")
-	end
-	oix_progress("downloading_config", "Downloading config...")
-	local yaml_rc = SYS.call(string.format("curl -sL -m 10 --retry 2 --user-agent \"clash\" %s -o \"/tmp/oixCloud-smart.yaml.new\" >/dev/null 2>&1", oix_quote(sub_url)))
-	if yaml_rc ~= 0 then
-		fs.unlink("/tmp/oixCloud-smart.yaml.new")
-		return nil, "Unable to fetch managed configuration"
-	end
-	if SYS.call("mv -f \"/tmp/oixCloud-smart.yaml.new\" \"/etc/openclash/config/oixCloud - smart.yaml\" >/dev/null 2>&1") ~= 0 then
-		return nil, "Unable to fetch managed configuration"
-	end
+	end)
+	uci:commit("openclash")
+	fs.unlink(legacy_file)
 	oix_progress("restarting", "Restarting...")
 	SYS.exec("/etc/init.d/openclash restart >/dev/null 2>&1")
 	return oix_wait_loaded()
