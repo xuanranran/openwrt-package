@@ -17,13 +17,18 @@
 -#}
 
 {%
-	import { readfile, access } from 'fs';
+	import { access } from 'fs';
 	import { cursor } from 'uci';
+	import { dark_palette, appearance_modes } from 'luci.argon-palette';
 	import { srand } from 'math';
 	import { getuid, getspnam } from 'luci.core';
 
 	const boardinfo = ubus.call("system", "board");
 	const hostname = striptags(boardinfo?.hostname ?? '?');
+	// First-child entries keep their URL but render a deeper resolved page.
+	const request_path = type(ctx.request_path) == 'array' ? ctx.request_path : [];
+	const resolved_path = type(ctx.path) == 'array' ? ctx.path : [];
+	const page_path = length(resolved_path) > length(request_path) ? resolved_path : request_path;
 
 	let cfg = cursor();
 
@@ -32,40 +37,58 @@
 
 	srand(+substr(reverse(time() + ""), 0, 8));
 
-	//Custom settings
-	let mode = 'normal';
-	let bar_color = '#5e72e4';
-	let font_weight = '600';
-	let primary, dark_primary, blur_radius, blur_radius_dark, blur_opacity, blur_opacity_dark;
-	const dark_css = readfile('/www/luci-static/argon/css/dark.css');
-	if (access('/etc/config/argon')) {
-		primary = cfg.get_first('argon', 'global', 'primary');
-		dark_primary = cfg.get_first('argon', 'global', 'dark_primary');
-		blur_radius = cfg.get_first('argon', 'global', 'blur');
-		blur_radius_dark = cfg.get_first('argon', 'global', 'blur_dark');
-		blur_opacity = cfg.get_first('argon', 'global', 'transparency');
-		blur_opacity_dark = cfg.get_first('argon', 'global', 'transparency_dark');
-		mode = cfg.get_first('argon', 'global', 'mode');
-		bar_color = (mode == 'dark') ? dark_primary : primary;
-		font_weight = cfg.get_first('argon', 'global', 'font_weight');
-		progressbar_font = cfg.get_first('argon', 'global', 'progressbar_font');
-		if (!progressbar_font) {
-			progressbar_font = "#2e2b60";
-		};
-		if (font_weight == "normal") {
-			main_left_font_color = "#5f6368";
-		} else {
-			main_left_font_color = "#69758c";
-		};
+	function validColor(value, fallback) {
+		return type(value) == 'string' && match(value, /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/) ? value : fallback;
 	}
+
+	function validNumber(value, fallback, maximum) {
+		return type(value) == 'string' && match(value, /^(0|[1-9][0-9]*)(\.[0-9]+)?$/) && +value <= maximum ? value : fallback;
+	}
+
+	let mode = 'normal';
+	let primary = '#5e72e4';
+	let dark_primary = '#483d8b';
+	let blur_radius = '10';
+	let blur_radius_dark = '10';
+	let blur_opacity = '0.5';
+	let blur_opacity_dark = '0.5';
+	const has_argon_config = access('/etc/config/argon');
+	if (has_argon_config) {
+		primary = validColor(cfg.get_first('argon', 'global', 'primary'), primary);
+		dark_primary = validColor(cfg.get_first('argon', 'global', 'dark_primary'), dark_primary);
+		blur_radius = validNumber(cfg.get_first('argon', 'global', 'blur'), blur_radius, 100);
+		blur_radius_dark = validNumber(cfg.get_first('argon', 'global', 'blur_dark'), blur_radius_dark, 100);
+		blur_opacity = validNumber(cfg.get_first('argon', 'global', 'transparency'), blur_opacity, 1);
+		blur_opacity_dark = validNumber(cfg.get_first('argon', 'global', 'transparency_dark'), blur_opacity_dark, 1);
+		let configured_mode = cfg.get_first('argon', 'global', 'mode');
+		if (configured_mode == 'normal' || configured_mode == 'dark' || configured_mode == 'light')
+			mode = configured_mode;
+	}
+	// Infer legacy choices without changing any stored custom values.
+	let dark_settings = {};
+	for (let key in ['dark_primary_mode', 'dark_primary', 'dark_glass_mode', 'blur', 'blur_dark', 'transparency', 'transparency_dark'])
+		dark_settings[key] = cfg.get_first('argon', 'global', key);
+	const dark_modes = appearance_modes(dark_settings);
+	const palette = dark_palette(dark_modes.color == 'custom' ? dark_primary : primary, dark_modes.color == 'custom');
+	dark_primary = palette.primary;
+	if (dark_modes.glass == 'inherit') {
+		blur_radius_dark = blur_radius;
+		blur_opacity_dark = blur_opacity;
+	}
+	const glass_configured = dark_settings.dark_glass_mode == 'inherit' || dark_settings.dark_glass_mode == 'custom';
+	const bar_color = mode == 'dark' ? dark_primary : primary;
+
+	let font_weight = cfg.get_first('argon', 'global', 'font_weight') == 'normal' ? 'normal' : '600';
+	let main_left_font_color = font_weight == 'normal' ? '#5f6368' : '#69758c';
+	let progressbar_font = validColor(cfg.get_first('argon', 'global', 'progressbar_font'), '#2e2b60');
 
 -%}
 <!DOCTYPE html>
-<html lang="{{ dispatcher.lang }}">
+<html lang="{{ dispatcher.lang }}" data-argon-mode="{{ mode }}" data-argon-color-mode="{{ dark_modes.color }}" data-argon-glass-configured="{{ glass_configured ? 'true' : 'false' }}">
 
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ hostname }}{{ node?.title ? ` - ${striptags(node.title)}` : '' }} - LuCI</title>
 
 	<!-- SEO and Description -->
@@ -85,48 +108,32 @@
 
 	<!-- Theme and Colors -->
 	{% if (mode == 'normal'): %}
-		<meta name="theme-color" content="{{ bar_color }}">
-		<script type="text/javascript">
-			let prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-			if (prefersDarkMode) {
-				const viewport = document.querySelector("meta[name=theme-color]");
-				viewport.setAttribute('content', '#444950');
-			}
-		</script>
-	{% elif (mode == 'dark'): %}
-		<meta name="theme-color" content="#444950">
-	{% elif (mode == 'light'): %}
-		<meta name="theme-color" content="{{ bar_color }}">
+	<meta name="theme-color" media="(prefers-color-scheme: light)" content="{{ primary }}">
+	<meta name="theme-color" media="(prefers-color-scheme: dark)" content="{{ dark_primary }}">
+	{% else %}
+	<meta name="theme-color" content="{{ bar_color }}">
 	{% endif %}
 	<meta name="msapplication-TileColor" content="{{ bar_color }}">
 	<meta name="msapplication-TileImage" content="{{ media }}/icon/ms-icon-144x144.png">
 	<meta itemprop="image" content="{{ media }}/icon/android-icon-192x192.png">
 	<meta name="application-name" content="{{ hostname }} - LuCI">
 
-	<!-- Icons and Manifest -->
-	<link rel="icon" type="image/x-icon" href="{{ media }}/favicon.ico">
-	<link rel="icon" type="image/png" sizes="16x16" href="{{ media }}/icon/favicon-16x16.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="{{ media }}/icon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="{{ media }}/icon/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="192x192" href="{{ media }}/icon/android-icon-192x192.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="{{ media }}/icon/apple-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="192x192" href="{{ media }}/icon/apple-icon-192x192.png">
-	<link rel="manifest" href="{{ media }}/icon/manifest.json" crossorigin="use-credentials">
+	{% include("themes/" + theme + "/branding_icons") %}
 
 	<link rel="stylesheet" href="{{ media }}/css/cascade.css{# ?v=PKG_VERSION #}">
+	<link id="argon-dark-stylesheet" rel="stylesheet" href="{{ media }}/css/dark.css" media="{{ mode == 'dark' ? 'all' : mode == 'light' ? 'not all' : '(prefers-color-scheme: dark)' }}">
 	<style title="text/css">
-		{% if (mode == 'normal'): %}
-			@media (prefers-color-scheme: dark) {
-				{{ dark_css }}
-			}
-		{% endif %}
-		{% if (mode == 'dark'): %}
-			{{ dark_css }}
-		{% endif -%}
 		{% if (access('/etc/config/argon')): %}
 		:root {
 			--primary: {{ primary }};
+			--light-primary: {{ primary }};
 			--dark-primary: {{ dark_primary }};
+			--dark-on-primary: {{ palette.on_primary }};
+			--dark-link-color: {{ palette.link }};
+			--dark-focus-ring: {{ palette.focus }};
+			--dark-control-focus: {{ palette.control_focus }};
+			--dark-selected-bg: {{ palette.selected }};
+			--dark-selected-hover-bg: {{ palette.hover }};
 			--blur-radius:{{ blur_radius }}px;
 			--blur-opacity:{{ blur_opacity }};
 			--blur-radius-dark:{{ blur_radius_dark }}px;
@@ -153,7 +160,7 @@
 
 <body
 	class="lang_{{ dispatcher.lang }} {{ node?.title ? ` - ${striptags(node.title)}` : '' }} {% if (ctx.authsession): %}logged-in{% endif %}"
-	data-page="{{ entityencode(join('-', ctx.request_path), true) }}">
+	data-page="{{ entityencode(join('-', page_path), true) }}">
 
 	<div class="main">
 		<div class="main-left" id="mainmenu" style="display:none">
@@ -177,10 +184,13 @@
 				<div class="fill">
 					<div class="container">
 						<div class="flex1">
-							<a class="showSide"></a>
+							<a class="showSide" href="#mainmenu" role="button" aria-label="{{ entityencode(_('Toggle navigation'), true) }}" aria-controls="mainmenu" aria-expanded="false"></a>
 							<a class="brand" href="/">{{ hostname }}</a>
 						</div>
-						<div class="status" id="indicators"></div>
+						<div class="header-actions">
+							<div class="status" id="indicators"></div>
+							<div id="argon-appearance" hidden></div>
+						</div>
 					</div>
 				</div>
 			</header>

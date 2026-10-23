@@ -16,6 +16,14 @@ const SlideAnimations = {
 		slow: 600
 	},
 
+	getDuration: function(duration) {
+		if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+			return 0;
+		return typeof duration === 'string' ?
+			(this.durations[duration] || this.durations.normal) :
+			(duration == null ? this.durations.normal : duration);
+	},
+
 	/**
 	 * Map to track running animations and their cleanup functions
 	 */
@@ -37,9 +45,7 @@ const SlideAnimations = {
 		this.stop(element);
 		
 		// Convert duration string to milliseconds
-		const animDuration = typeof duration === 'string' ? 
-			this.durations[duration] || this.durations.normal : 
-			(duration || this.durations.normal);
+		const animDuration = this.getDuration(duration);
 		
 		// Store original styles
 		const originalStyles = {
@@ -103,9 +109,7 @@ const SlideAnimations = {
 		this.stop(element);
 		
 		// Convert duration string to milliseconds
-		const animDuration = typeof duration === 'string' ? 
-			this.durations[duration] || this.durations.normal : 
-			(duration || this.durations.normal);
+		const animDuration = this.getDuration(duration);
 		
 		// Store original styles
 		const originalStyles = {
@@ -222,7 +226,7 @@ return baseclass.extend({
 		}
 
 		// Attach event listeners for sidebar toggle functionality (prevent duplicate listeners on re-render)
-		var sidebarToggle = document.querySelector('a.showSide');
+		var sidebarToggle = document.querySelector('.showSide');
 		var darkMask = document.querySelector('.darkMask');
 		
 		if (sidebarToggle && !sidebarToggle.dataset.hasToggleListener) {
@@ -232,6 +236,15 @@ return baseclass.extend({
 		if (darkMask && !darkMask.dataset.hasToggleListener) {
 			darkMask.dataset.hasToggleListener = 'true';
 			darkMask.addEventListener('click', ui.createHandlerFn(this, 'handleSidebarToggle'));
+		}
+		if (sidebarToggle && !sidebarToggle.dataset.hasEscapeListener) {
+			sidebarToggle.dataset.hasEscapeListener = 'true';
+			document.addEventListener('keydown', function(ev) {
+				if (ev.key === 'Escape' && sidebarToggle.isConnected && sidebarToggle.classList.contains('active')) {
+					sidebarToggle.click();
+					sidebarToggle.focus();
+				}
+			});
 		}
 
 		document.addEventListener('click', L.bind(this.handleLogScroll, this), true);
@@ -737,12 +750,8 @@ return baseclass.extend({
 			container.style.display = '';
 
 			// Recursively render nested tab menus if there's an active node
-			if (activeNode) {
-				var nestedTabs = this.renderTabMenu(activeNode, url + '/' + activeNode.name, currentLevel);
-				if (nestedTabs.children.length > 0) {
-					container.appendChild(nestedTabs);
-				}
-			}
+			if (activeNode)
+				this.renderTabMenu(activeNode, url + '/' + activeNode.name, currentLevel);
 		}
 
 		return tabContainer;
@@ -754,7 +763,7 @@ return baseclass.extend({
 	 * @param {Event} ev - Click event from sidebar toggle button or dark mask
 	 */
 	handleSidebarToggle: function (ev) {
-		var showSideButton = document.querySelector('a.showSide');
+		var showSideButton = document.querySelector('.showSide');
 		var sidebar = document.querySelector('#mainmenu');
 		var darkMask = document.querySelector('.darkMask');
 		var scrollbarArea = document.querySelector('.main-right');
@@ -769,12 +778,14 @@ return baseclass.extend({
 		if (showSideButton.classList.contains('active')) {
 			// Close sidebar
 			showSideButton.classList.remove('active');
+			showSideButton.setAttribute('aria-expanded', 'false');
 			sidebar.classList.remove('active');
 			scrollbarArea.classList.remove('active');
 			darkMask.classList.remove('active');
 		} else {
 			// Open sidebar
 			showSideButton.classList.add('active');
+			showSideButton.setAttribute('aria-expanded', 'true');
 			sidebar.classList.add('active');
 			scrollbarArea.classList.add('active');
 			darkMask.classList.add('active');

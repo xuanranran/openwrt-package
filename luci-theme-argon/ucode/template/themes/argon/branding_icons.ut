@@ -1,0 +1,17 @@
+{%
+	import { get_branding } from 'luci.argon-branding';
+	const branding = get_branding();
+%}
+{% if (branding.favicon): %}
+<link rel="icon" type="image/png" href="{{ media }}/branding/{{ branding.favicon }}">
+<link rel="apple-touch-icon" href="{{ media }}/branding/{{ branding.favicon }}">
+{% if (branding.manifest): %}
+<link rel="manifest" href="{{ media }}/branding/{{ branding.manifest }}">
+{% endif %}
+{% else %}
+<link rel="icon" type="image/x-icon" href="{{ media }}/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ media }}/icon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ media }}/icon/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="192x192" href="{{ media }}/icon/apple-icon-192x192.png">
+<link rel="manifest" href="{{ media }}/icon/manifest.json">
+{% endif %}

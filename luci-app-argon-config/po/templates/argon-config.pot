@@ -177,3 +177,110 @@ msgstr ""
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:97
 msgid "valid HEX color value"
 msgstr ""
+msgid "Wallhaven"
+msgstr ""
+
+msgid "Wallpaper API key"
+msgstr ""
+
+msgid "Unsplash requires your own API access key."
+msgstr ""
+
+msgid "Login layout"
+msgstr ""
+
+msgid "Classic sidebar"
+msgstr ""
+
+msgid "Centered card"
+msgstr ""
+
+msgid "Login layout preview"
+msgstr ""
+
+msgid "Font"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "[Light mode] Progress bar Font Color"
+msgstr ""
+
+msgid "A HEX color (default: #2e2b60)."
+msgstr ""
+
+msgid "Custom branding"
+msgstr ""
+
+msgid "Unable to delete background."
+msgstr ""
+
+msgid "Browser icon"
+msgstr ""
+
+msgid "Login logo"
+msgstr ""
+
+msgid "Invalid PNG image or dimensions."
+msgstr ""
+
+msgid "Another update is running. Please try again."
+msgstr ""
+
+msgid "Unable to save custom branding."
+msgstr ""
+
+msgid "Upload PNG..."
+msgstr ""
+
+msgid "Restore default"
+msgstr ""
+
+msgid "PNG images, 16-1024 pixels per side, up to 1 MiB. Browser icons must be square."
+msgstr ""
+
+msgid "Upload for both..."
+msgstr ""
+
+msgid "Changes apply immediately. Reload open pages to update their icons."
+msgstr ""
+
+msgid "Unable to load custom branding. Reload this page or reinstall the theme."
+msgstr ""
+
+msgid "Read-only"
+msgstr ""
+
+msgid "Saving theme mode..."
+msgstr ""
+
+msgid "Unable to save theme mode. Please try again."
+msgstr ""
+
+msgid "Theme mode saved."
+msgstr ""
+
+msgid "Dark mode colors"
+msgstr ""
+
+msgid "Automatically generate dark colors from the primary color, or choose a custom dark color."
+msgstr ""
+
+msgid "Automatic"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
+msgid "Dark mode login panel"
+msgstr ""
+
+msgid "Use the same opacity and blur in both modes, or customize the dark login panel."
+msgstr ""
+
+msgid "Follow light mode"
+msgstr ""

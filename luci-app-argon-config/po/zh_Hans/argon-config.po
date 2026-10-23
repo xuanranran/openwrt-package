@@ -211,3 +211,95 @@ msgstr "正常"
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:88
 msgid "Bold"
 msgstr "粗体"
+msgid "Wallhaven"
+msgstr "Wallhaven"
+
+msgid "Wallpaper API key"
+msgstr "壁纸 API 密钥"
+
+msgid "Unsplash requires your own API access key."
+msgstr "Unsplash 需要填写你自己的 API 访问密钥。"
+
+msgid "Login layout"
+msgstr "登录布局"
+
+msgid "Classic sidebar"
+msgstr "经典侧栏"
+
+msgid "Centered card"
+msgstr "居中卡片"
+
+msgid "Login layout preview"
+msgstr "登录布局预览"
+
+msgid "Custom branding"
+msgstr "自定义图标"
+
+msgid "Unable to delete background."
+msgstr "无法删除背景文件。"
+
+msgid "Browser icon"
+msgstr "网站图标"
+
+msgid "Login logo"
+msgstr "登录页 Logo"
+
+msgid "Invalid PNG image or dimensions."
+msgstr "PNG 图片或尺寸不符合要求。"
+
+msgid "Another update is running. Please try again."
+msgstr "有其他更新正在进行，请稍后重试。"
+
+msgid "Unable to save custom branding."
+msgstr "无法保存自定义图标。"
+
+msgid "Upload PNG..."
+msgstr "上传 PNG…"
+
+msgid "Restore default"
+msgstr "恢复默认"
+
+msgid "PNG images, 16-1024 pixels per side, up to 1 MiB. Browser icons must be square."
+msgstr "PNG 图片，每边 16-1024 像素，最大 1 MiB。网站图标必须为正方形。"
+
+msgid "Upload for both..."
+msgstr "同时用于两处…"
+
+msgid "Changes apply immediately. Reload open pages to update their icons."
+msgstr "更改立即生效。请刷新已打开的页面以更新图标。"
+
+msgid "Unable to load custom branding. Reload this page or reinstall the theme."
+msgstr "无法加载自定义图标。请刷新页面或重新安装主题。"
+
+msgid "Read-only"
+msgstr "只读"
+
+msgid "Saving theme mode..."
+msgstr "正在保存主题模式…"
+
+msgid "Unable to save theme mode. Please try again."
+msgstr "无法保存主题模式，请重试。"
+
+msgid "Theme mode saved."
+msgstr "主题模式已保存。"
+
+msgid "Dark mode colors"
+msgstr "暗色配色"
+
+msgid "Automatically generate dark colors from the primary color, or choose a custom dark color."
+msgstr "根据主色自动生成暗色配色，也可以自定义暗色主色。"
+
+msgid "Automatic"
+msgstr "自动"
+
+msgid "Custom"
+msgstr "自定义"
+
+msgid "Dark mode login panel"
+msgstr "暗色登录面板"
+
+msgid "Use the same opacity and blur in both modes, or customize the dark login panel."
+msgstr "默认两种模式共用透明度和模糊程度，也可以单独设置暗色面板。"
+
+msgid "Follow light mode"
+msgstr "跟随亮色模式"

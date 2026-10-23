@@ -2019,8 +2019,10 @@ td>table>tbody>tr>td,
 }
 
 .cbi-filebrowser {
-  min-width: 400px !important;
+  min-width: 0 !important;
+  width: 400px;
   max-width: 100%;
+  box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 3px;
   display: flex;
@@ -2066,13 +2068,18 @@ td>table>tbody>tr>td,
 
 .cbi-filebrowser > ul > li > div:first-child {
   flex: 10;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .cbi-filebrowser > ul > li > div:last-child {
-  flex: 3;
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   text-align: right;
+  white-space: normal;
 }
 
 .cbi-filebrowser > ul > li > div:last-child > button {
@@ -2431,7 +2438,7 @@ td>table>tbody>tr>td,
   min-width: 16rem;
 }
 
-.cbi-dynlist>.add-item input {
+.cbi-dynlist>.add-item > input {
   display: block;
   padding: .5rem .75rem;
   box-sizing: border-box;
@@ -2671,7 +2678,6 @@ td>table>tbody>tr>td,
   flex-grow: 1
 }
 
-.cbi-dropdown[empty]>ul>li,
 .cbi-dropdown[optional][open]>ul.dropdown>li[placeholder],
 .cbi-dropdown[multiple][open]>ul.dropdown>li>form {
   display: block
@@ -2945,9 +2951,15 @@ td>table>tbody>tr>td,
   margin-top: 1rem
 }
 
-.modal ul li {
+.modal > ul:not(.cbi-tabmenu):not(.tabs):not(.dropdown) > li {
   list-style-type: square;
   /* color: #808080; */
+}
+
+.modal .cbi-tabmenu > li,
+.modal .tabs > li,
+.modal .cbi-dropdown li {
+  list-style: none;
 }
 
 .modal p {
@@ -3611,6 +3623,7 @@ label[data-index][data-depends] {
 }
 
 [data-page="admin-network-diagnostics"] .table {
+  overflow: visible;
   box-shadow: none
 }
 
@@ -3838,8 +3851,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
 }
 
 [data-page="admin-system-crontab"] #view p textarea {
-  line-height: 1.25;
-  overflow-y: hidden;
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: start;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  line-height: 1.5;
+  overflow-y: auto;
   width: 100%;
   min-height: 15rem;
   padding: 1rem;
@@ -4883,9 +4900,6 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #dns-rc-o
     margin-bottom: 1rem;
   }
   
-  .cbi-filebrowser {
-    min-width: 210px !important;
-  }
 }
 
 @media screen and (min-width: 600px) {
@@ -5138,8 +5152,8 @@ div#add_link_div {
 
 /* luci-app-mwan3 */
 #mwan3-service-status>.alert-message {
-  height: 6rem !important;
-  min-height: 8rem !important;
+  height: auto !important;
+  min-height: 6rem !important;
 }
 
 @media screen and (max-width: 600px) {
@@ -5573,4 +5587,778 @@ div#upgrade_log {
   visibility: hidden;
   height: 0;
   overflow: clip;
+}
+
+/* Selected upstream fixes; keep this fork's layout and circular progress bars. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.login-page .main-bg > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.login-page .volume-control {
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+}
+
+.showSide:focus-visible,
+.login-page .volume-control:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+
+.cbi-value-field .cbi-dynlist {
+  width: 18rem;
+  max-width: 100%;
+}
+
+.cbi-dynlist > .add-item {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.cbi-dynlist > .add-item > input,
+.cbi-dynlist > .add-item:not([ondrop]) > input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 0;
+}
+
+.cbi-dropdown[open] > ul.dropdown > li,
+.cbi-dropdown[multiple][open] > ul.dropdown > li,
+.cbi-dropdown[multiple] > ul.dropdown > li > label {
+  display: block;
+}
+
+.cbi-dropdown[open] > ul.dropdown > li:has(> img),
+.cbi-dropdown[multiple][open] > ul.dropdown > li:has(> img),
+.cbi-dropdown[multiple] > ul.dropdown > li > label:has(> img) {
+  display: flex;
+  align-items: flex-start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Preserve graph width while LuCI initializes inactive wireless bands. */
+/* Raise only the toolbar; the header's decorative tail must stay behind content. */
+header .header-actions {
+  position: relative;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-width: 0;
+  max-width: 100%;
+  margin-inline-start: auto;
+}
+
+#argon-appearance {
+  --argon-menu-bg: #fff;
+  --argon-menu-text: #32325d;
+  --argon-menu-border: #dee2e6;
+  --argon-menu-hover: #e4e9ee;
+  --argon-menu-selected: #e8ecff;
+  --argon-trigger-bg: #fff;
+  --argon-menu-focus: #3446ab;
+  --argon-menu-muted: #626f80;
+  --argon-menu-shadow: 0 4px 8px rgba(0, 0, 0, .06), 0 12px 24px rgba(0, 0, 0, .12);
+  position: relative;
+  flex: 0 0 auto;
+  z-index: 60;
+}
+
+#argon-appearance[hidden],
+#argon-appearance [hidden] {
+  display: none !important;
+}
+
+#argon-appearance .argon-appearance-trigger {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: var(--argon-trigger-bg);
+  color: var(--argon-menu-text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .15s ease-out;
+}
+
+#argon-appearance .argon-appearance-trigger::before,
+#argon-appearance .argon-appearance-option::before {
+  content: '';
+  display: block;
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+  background-color: currentColor;
+  -webkit-mask: url('../icon/monitor.svg') center / contain no-repeat;
+  mask: url('../icon/monitor.svg') center / contain no-repeat;
+}
+
+/* Match upstream's visible circle without shrinking its pointer target. */
+#argon-appearance .argon-appearance-trigger::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  transform: translate(-50%, -50%);
+  border-radius: inherit;
+}
+
+#argon-appearance .argon-appearance-trigger[aria-expanded="true"] {
+  background-color: var(--argon-menu-hover);
+}
+
+#argon-appearance[data-mode="light"] .argon-appearance-trigger::before,
+#argon-appearance .argon-appearance-option[data-mode="light"]::before {
+  -webkit-mask-image: url('../icon/sun.svg');
+  mask-image: url('../icon/sun.svg');
+}
+
+#argon-appearance[data-mode="dark"] .argon-appearance-trigger::before,
+#argon-appearance .argon-appearance-option[data-mode="dark"]::before {
+  -webkit-mask-image: url('../icon/moon.svg');
+  mask-image: url('../icon/moon.svg');
+}
+
+#argon-appearance .argon-appearance-panel {
+  position: absolute;
+  inset-block-start: calc(100% + .5rem);
+  inset-inline-end: 0;
+  z-index: 100;
+  width: 11rem;
+  min-width: 0;
+  max-width: calc(100vw - 2.5rem);
+  max-height: calc(100dvh - 5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  padding: calc(.75rem - .25rem - 1px);
+  box-sizing: border-box;
+  border: 1px solid var(--argon-menu-border);
+  border-radius: .75rem;
+  background: var(--argon-menu-bg);
+  color: var(--argon-menu-text);
+  box-shadow: var(--argon-menu-shadow);
+  font-size: .8125rem;
+  text-align: start;
+  opacity: 1;
+  transition: opacity .15s ease-out;
+}
+
+#argon-appearance .argon-appearance-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.125rem;
+  margin: 0;
+  padding: .375rem .5rem;
+  box-sizing: border-box;
+  border-radius: .25rem;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background-color .15s ease-out;
+}
+
+#argon-appearance .argon-appearance-option + .argon-appearance-option {
+  margin-block-start: .25rem;
+}
+
+#argon-appearance .argon-appearance-option > span {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow-wrap: anywhere;
+}
+
+#argon-appearance .argon-appearance-option::after {
+  content: '';
+  width: .75rem;
+  height: .75rem;
+  flex: 0 0 .75rem;
+  visibility: hidden;
+  background: currentColor;
+  -webkit-mask: url('../icon/check.svg') center / contain no-repeat;
+  mask: url('../icon/check.svg') center / contain no-repeat;
+}
+
+#argon-appearance .argon-appearance-option:has(input:checked) {
+  color: var(--argon-menu-text);
+  background: var(--argon-menu-selected);
+}
+
+#argon-appearance .argon-appearance-option:has(input:checked)::after {
+  visibility: visible;
+}
+
+#argon-appearance .argon-appearance-option:has(input:disabled) {
+  cursor: default;
+  opacity: .6;
+}
+
+#argon-appearance .argon-appearance-trigger:focus-visible,
+#argon-appearance .argon-appearance-option:has(input:focus-visible) {
+  outline: 2px solid var(--argon-menu-focus);
+  outline-offset: -2px;
+}
+
+#argon-appearance .argon-appearance-panel > p {
+  margin: .5rem .75rem;
+  color: var(--argon-menu-muted);
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+#argon-appearance .argon-appearance-panel input[type="radio"] {
+  outline: none;
+  box-shadow: none;
+}
+
+html.argon-theme-changing *,
+html.argon-theme-changing *::before,
+html.argon-theme-changing *::after {
+  transition: none !important;
+}
+
+@media (hover: hover) {
+  #argon-appearance .argon-appearance-trigger:hover {
+    background-color: var(--argon-menu-hover);
+  }
+
+  #argon-appearance .argon-appearance-option:has(input:not(:disabled)):not(:has(input:checked)):hover {
+    background: var(--argon-menu-hover);
+  }
+}
+
+@media (pointer: coarse) {
+  #argon-appearance .argon-appearance-option {
+    min-height: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #argon-appearance .argon-appearance-trigger {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  #argon-appearance .argon-appearance-trigger::before {
+    width: .875rem;
+    height: .875rem;
+  }
+
+  #argon-appearance .argon-appearance-panel {
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #argon-appearance .argon-appearance-trigger {
+    transition: scale .15s ease-out, background-color .15s ease-out;
+  }
+
+  #argon-appearance .argon-appearance-trigger:active {
+    scale: .96;
+  }
+
+  #argon-appearance .argon-appearance-panel {
+    transform: translateY(0);
+    transition: opacity .2s cubic-bezier(.2, 0, 0, 1), transform .2s cubic-bezier(.2, 0, 0, 1);
+  }
+
+  @starting-style {
+    #argon-appearance .argon-appearance-panel {
+      transform: translateY(-.375rem);
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  #argon-appearance .argon-appearance-trigger::before,
+  #argon-appearance .argon-appearance-option::before,
+  #argon-appearance .argon-appearance-option::after {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+}
+
+@starting-style {
+  #argon-appearance .argon-appearance-panel {
+    opacity: 0;
+  }
+}
+
+/* Optional layout: leave the classic sidebar rules unchanged. */
+.login-page[data-login-style="centered"] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.login-page[data-login-style="centered"] .main-bg,
+.login-page[data-login-style="centered"] .video {
+  position: fixed;
+}
+
+.login-page[data-login-style="centered"] .login-container {
+  position: relative;
+  top: auto;
+  width: 26rem;
+  max-width: 100%;
+  height: auto;
+  min-height: 0;
+  margin: auto !important;
+  align-items: stretch;
+  border-radius: 1rem;
+  background-color: rgba(244, 245, 247, var(--blur-opacity, .5));
+  -webkit-backdrop-filter: blur(var(--blur-radius, 10px));
+  backdrop-filter: blur(var(--blur-radius, 10px));
+}
+
+.login-page[data-login-style="centered"] .login-container .login-form {
+  position: relative;
+  min-height: 0;
+  max-width: 100%;
+  padding-top: 2rem;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.login-page[data-login-style="centered"] .login-container .login-form .brand {
+  max-width: 100%;
+  margin: 0 1.5rem 1.5rem;
+  gap: 1rem;
+}
+
+.login-page[data-login-style="centered"] .login-container .login-form .brand .icon {
+  width: 2.5rem;
+  max-height: 4rem;
+  margin: 0;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.login-page[data-login-style="centered"] .login-container .login-form .brand-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.login-page[data-login-style="centered"] .login-container .form-login {
+  padding: 0 2rem;
+}
+
+.login-page[data-login-style="centered"] .login-container .form-login .input-group input {
+  margin-bottom: 0;
+}
+
+.login-page[data-login-style="centered"] .login-container .login-form .cbi-button-apply {
+  height: auto;
+  margin: .5rem 0 0;
+  letter-spacing: .1rem;
+  white-space: normal;
+}
+
+.login-page[data-login-style="centered"] .login-container footer {
+  position: static;
+  display: block;
+  width: auto;
+  margin: 0;
+  padding: 1.5rem 2rem;
+  overflow-wrap: anywhere;
+}
+
+.argon-login-preview > img {
+  display: block;
+  width: 18rem;
+  max-width: 100%;
+  margin-top: .75rem;
+  border-radius: .5rem;
+}
+
+.argon-color-picker {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  gap: .5rem;
+}
+
+.argon-color-picker > input:not([type="color"]) {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+input.argon-color-swatch[type="color"] {
+  width: 2.5rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: .2rem;
+  cursor: pointer;
+}
+
+#argon-branding .argon-branding-content {
+  padding: 1rem;
+}
+
+#argon-branding .argon-branding-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+#argon-branding .argon-branding-card {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid #8898aa;
+  border-radius: .5rem;
+}
+
+#argon-branding .argon-branding-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+#argon-branding .argon-branding-row > img {
+  flex: 0 0 64px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: .25rem;
+}
+
+#argon-branding .argon-branding-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+@media screen and (max-width: 480px) {
+  .login-page[data-login-style="centered"] {
+    padding: 1rem;
+  }
+
+  .login-page[data-login-style="centered"] .login-container .form-login {
+    padding-inline: 1.25rem;
+  }
+}
+
+[data-page="admin-status-channel_analysis"] [data-tab-title]:not([data-tab-active="true"]) {
+  display: block !important;
+  visibility: hidden;
+  padding: 0;
+}
+
+/* MultiWAN status cards must grow with long interface names and warnings. */
+#mwan3-service-status {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+#mwan3-service-status > div.alert-message {
+  position: static;
+  transform: none;
+  z-index: auto;
+  max-width: calc(100% - 2rem);
+  overflow-wrap: anywhere;
+}
+
+[data-page="admin-system-flash"] .modal .btn {
+  height: auto;
+  min-height: 2.5rem;
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* Upstream switch/VLAN palette and membership-state fixes (6945d29). */
+[data-page="admin-network-switch-vlan"] #switch-vlan-view {
+  --background-color-medium: #f4f5f7;
+  --background-color-high: #fff;
+  --text-color-high: var(--gray-dark);
+  --text-color-low: #626b7a;
+  --border-color-low: #dee2e6;
+  --border-color-medium: #cbd5e1;
+  --border-color-high: #8898aa;
+  --primary-color-high: var(--primary);
+  --svc-row-bg: var(--background-color-medium);
+  --svc-row-hover-bg: var(--background-color-high);
+  --svc-row-add-bg: var(--background-color-medium);
+  --svc-port-selected-bg: #e8ecff;
+  --svc-port-selected-hover-bg: #dfe4ff;
+  --svc-port-selected-border: var(--primary);
+  --svc-port-selected-ring: rgba(94, 114, 228, 0.28);
+  --svc-vlan-tagged: #8c4800;
+  --svc-vlan-untagged: #06685f;
+  --svc-vlan-checked-text: #fff;
+  color: var(--text-color-high);
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view input[type="text"],
+[data-page="admin-network-switch-vlan"] #switch-vlan-view input[type="number"] {
+  background-color: var(--background-color-high) !important;
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view input[type="text"]::placeholder,
+[data-page="admin-network-switch-vlan"] #switch-vlan-view input[type="number"]::placeholder {
+  color: var(--text-color-low);
+  opacity: 1;
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view input[type="text"]:focus,
+[data-page="admin-network-switch-vlan"] #switch-vlan-view input[type="number"]:focus {
+  border-color: var(--primary-color-high) !important;
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-port-tile.selected:hover {
+  background: var(--svc-port-selected-hover-bg);
+  border-color: var(--svc-port-selected-border);
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-btn-tagged,
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-btn-assign-tagged {
+  --svc-role-color: var(--svc-vlan-tagged);
+  --svc-role-bg: var(--svc-vlan-tagged-bg);
+  --svc-role-stripe: var(--svc-vlan-tagged-stripe);
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-btn-untagged,
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-btn-assign-untagged {
+  --svc-role-color: var(--svc-vlan-untagged);
+  --svc-role-bg: var(--svc-vlan-untagged-bg);
+  --svc-role-stripe: var(--svc-vlan-untagged-stripe);
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-btn-tagged:not(:disabled),
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-btn-untagged:not(:disabled),
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-assign-btn:not(.svc-vlan-assign-disabled) {
+  color: var(--svc-role-color) !important;
+  border-color: var(--svc-role-color) !important;
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-assign-btn.svc-vlan-assign-checked {
+  background: var(--svc-role-color);
+  color: var(--svc-vlan-checked-text) !important;
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-assign-btn.svc-vlan-assign-mixed {
+  background: repeating-linear-gradient(135deg, var(--svc-role-stripe) 0 0.5rem, var(--svc-role-bg) 0.5rem 1rem);
+}
+[data-page="admin-network-switch-vlan"] #switch-vlan-view .svc-vlan-assign-btn.svc-vlan-assign-checked .svc-vlan-btn-prefix {
+  color: inherit;
+}
+
+/* Current LuCI uses a TableSection and PEM editor, not the legacy dynlist. */
+[data-page="admin-system-admin-repokeys"] .cbi-section-node {
+  min-width: 0;
+  margin: .5rem 0;
+  padding: .75rem 1rem;
+  box-shadow: none;
+}
+
+[data-page="admin-system-admin-repokeys"] textarea {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: .5rem .75rem;
+  border-radius: .375rem;
+  resize: vertical;
+}
+
+[data-page="admin-system-admin-repokeys"] :is(textarea, [data-name="filename"] output) {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: start;
+  font-family: Consolas, "SFMono-Regular", "Liberation Mono", monospace;
+  line-height: 1.5;
+}
+
+[data-page="admin-system-admin-repokeys"] [data-name="filename"] output {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+[data-page="admin-system-admin-repokeys"] [data-name="key"] textarea {
+  min-height: 6.5rem;
+}
+
+[data-page="admin-system-admin-repokeys"] [data-name="_newkey"] {
+  padding: .75rem 1rem;
+  line-height: 1.5;
+}
+
+[data-page="admin-system-admin-repokeys"] [data-name="_newkey"] :is(.cbi-value-field, output) {
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+
+[data-page="admin-system-admin-repokeys"] [data-name="_newkey"] :is(.cbi-section-node, .cbi-section-descr) {
+  margin: 0;
+  padding: 0;
+}
+
+[data-page="admin-system-admin-repokeys"] [data-name="_newkey"] .cbi-section-node > div[style="height: 20px"] {
+  display: none;
+}
+
+[data-page="admin-system-admin-repokeys"] [data-name="_newkey"] .right {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media screen and (min-width: 1281px) {
+  [data-page="admin-system-admin-repokeys"] :is(.cbi-section-table, .cbi-section-table > .thead, .cbi-section-table > .tbody) {
+    display: block;
+  }
+
+  [data-page="admin-system-admin-repokeys"] .cbi-section-table .tr {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr) 6rem;
+    align-items: stretch;
+  }
+
+  [data-page="admin-system-admin-repokeys"] .cbi-section-table :is(.th, .td) {
+    min-width: 0;
+    width: auto !important;
+  }
+
+  [data-page="admin-system-admin-repokeys"] .cbi-section-table .td {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  [data-page="admin-system-admin-repokeys"] .cbi-section-actions > div {
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  [data-page="admin-system-admin-repokeys"] .cbi-section-table > .tbody {
+    display: block;
+  }
+
+  [data-page="admin-system-admin-repokeys"] .cbi-section-table .thead > .tr.cbi-section-table-titles:not(.cbi-section-table-filter) {
+    display: none;
+  }
+
+  [data-page="admin-system-admin-repokeys"] .td:is([data-name="filename"], [data-name="key"]) {
+    flex-basis: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  [data-page="admin-system-admin-repokeys"] .td:is([data-name="filename"], [data-name="key"])[data-title]::before {
+    display: block;
+    white-space: normal;
+  }
+}
+
+/* Native-page backports use this fork's 1280px table/card breakpoint. */
+:is([data-page="admin-network-firewall-zones"],
+    [data-page="admin-network-firewall-forwards"],
+    [data-page="admin-network-firewall-rules"],
+    [data-page="admin-network-firewall-snats"],
+    [data-page="admin-network-network"]) .td.cbi-section-actions > div {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
+}
+
+:is([data-page="admin-network-firewall-zones"],
+    [data-page="admin-network-firewall-forwards"],
+    [data-page="admin-network-firewall-rules"],
+    [data-page="admin-network-firewall-snats"],
+    [data-page="admin-network-network"]) .td.cbi-section-actions :is(.btn, .cbi-button) {
+  height: auto;
+  min-height: 2.5rem;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+[data-page="admin-network-firewall-zones"] #cbi-firewall-zone .cbi-input-select {
+  min-width: 6.5rem;
+}
+
+:is([data-page="admin-network-firewall-forwards"],
+    [data-page="admin-network-firewall-rules"],
+    [data-page="admin-network-firewall-snats"]) :is([data-name="_match"], [data-name="_target"]) small {
+  line-height: 1.5;
+}
+
+:is([data-page="admin-network-firewall-forwards"],
+    [data-page="admin-network-firewall-rules"],
+    [data-page="admin-network-firewall-snats"]) :is([data-name$="_ip"], [data-name$="_port"], [data-name="src_dip"], [data-name="src_dport"]) :is(input[type="text"], .cbi-dropdown > ul),
+[data-page="admin-network-firewall-ipsets"] [data-name="entry"] input[type="text"] {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: start;
+}
+
+[data-page="admin-network-network"] #cbi-network-interface .td {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+[data-page="admin-network-network"] #cbi-network-interface .ifacebox {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+[data-page="admin-network-network"] .td > .ifacebadge > .cbi-tooltip-container {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 1280px) {
+  [data-page="admin-network-firewall-zones"] #cbi-firewall-zone .td[data-name="_info"],
+  :is([data-page="admin-network-firewall-forwards"],
+      [data-page="admin-network-firewall-rules"],
+      [data-page="admin-network-firewall-snats"]) .td[data-name="_match"],
+  [data-page="admin-network-network"] #cbi-network-interface .td.cbi-section-actions {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+
+  [data-page="admin-network-network"] #cbi-network-interface .td[data-name="_ifacestat"] {
+    flex: 1 1 16rem;
+  }
+
+  :is([data-page="admin-network-firewall-forwards"],
+      [data-page="admin-network-firewall-rules"],
+      [data-page="admin-network-firewall-snats"]) .tr[data-title]::before {
+    overflow-wrap: anywhere;
+  }
+
 }

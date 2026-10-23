@@ -1,5 +1,6 @@
 'use strict';
 'require form';
+'require argon.branding as branding';
 'require fs';
 'require rpc';
 'require uci';
@@ -14,6 +15,7 @@ var callAvailSpace = rpc.declare({
 var callRemoveArgon = rpc.declare({
 	object: 'luci.argon',
 	method: 'remove',
+	raise: true,
 	params: ['filename'],
 	expect: { '': {} }
 });
@@ -21,6 +23,7 @@ var callRemoveArgon = rpc.declare({
 var callRenameArgon = rpc.declare({
 	object: 'luci.argon',
 	method: 'rename',
+	raise: true,
 	params: ['newname'],
 	expect: { '': {} }
 });
@@ -30,31 +33,67 @@ var bg_path = '/www/luci-static/argon/background/';
 var trans_set = [0, 0.1, 0.2, 0.3, 0.4,
 	0.5, 0.6, 0.7, 0.8, 0.9, 1 ];
 
-function createColorPicker(textInput) {
-	const colorPicker = document.createElement('input');
-	colorPicker.type = 'color';
-	colorPicker.value = textInput.value;
-	colorPicker.style.width = '24px';
-	colorPicker.style.height = '24px';
-	colorPicker.style.padding = '0px';
-	colorPicker.style.marginLeft = '5px';
-	colorPicker.style.borderRadius = '4px';
-	colorPicker.style.border = '1px solid #d9d9d9';
-	textInput.parentNode.insertBefore(colorPicker, textInput.nextSibling);
-	colorPicker.addEventListener('input', function() {
-		textInput.value = colorPicker.value;
-	});
-	textInput.addEventListener('input', function() {
-		colorPicker.value = textInput.value;
-	});
+function expandHex(value) {
+	if (/^#[0-9a-f]{3}$/i.test(value))
+		return value.replace(/[0-9a-f]/gi, function(digit) { return digit + digit; }).toLowerCase();
+	return /^#[0-9a-f]{6}$/i.test(value) ? value.toLowerCase() : null;
 }
+
+var ColorValue = form.Value.extend({
+	validate: function(section_id, value) {
+		return expandHex(value) !== null ||
+			_('Expecting: %s').format(_('valid HEX color value'));
+	},
+
+	renderWidget: function(section_id, option_index, cfgvalue) {
+		// Keep the native Textfield and its binding as the saved form value.
+		var node = this.super('renderWidget', [section_id, option_index, cfgvalue]);
+		var input = node.querySelector('input');
+		var picker = E('input', {
+			'type': 'color',
+			'id': this.cbid(section_id) + '-picker',
+			'class': 'argon-color-swatch',
+			'value': expandHex(input.value) || this.default,
+			'disabled': input.disabled || null,
+			'aria-label': this.title,
+			'title': this.title
+		});
+
+		node.classList.add('argon-color-picker');
+		input.setAttribute('spellcheck', 'false');
+		input.setAttribute('autocapitalize', 'off');
+		input.setAttribute('autocomplete', 'off');
+		node.appendChild(picker);
+
+		var updatePicker = function() {
+			var color = expandHex(input.value);
+			if (color !== null)
+				picker.value = color;
+		};
+		var updateText = L.bind(function() {
+			if (input.disabled || input.readOnly)
+				return;
+			input.value = picker.value;
+			input.dispatchEvent(new Event('change', { bubbles: true }));
+			this.triggerValidation(section_id);
+		}, this);
+		input.addEventListener('input', updatePicker);
+		input.addEventListener('change', updatePicker);
+		picker.addEventListener('input', updateText);
+		picker.addEventListener('change', updateText);
+		return node;
+	}
+});
 
 return view.extend({
 	load: function() {
 		return Promise.all([
 			uci.load('argon'),
 			L.resolveDefault(callAvailSpace(), {}),
-			L.resolveDefault(fs.list(bg_path), {})
+			L.resolveDefault(fs.list(bg_path).then(function(files) {
+				return files.filter(function(file) { return file.type === 'file' && /\.(jpe?g|png|gif|webp|mp4|webm)$/i.test(file.name); });
+			}), []),
+			branding.load()
 		]);
 	},
 
@@ -68,12 +107,37 @@ return view.extend({
 		s.addremove = false;
 		s.anonymous = true;
 
+		o = s.option(form.ListValue, 'login_style', _('Login layout'));
+		o.value('classic', _('Classic sidebar'));
+		o.value('centered', _('Centered card'));
+		o.default = 'classic';
+		o.rmempty = false;
+		o.renderWidget = function(section_id, option_index, cfgvalue) {
+			var style = cfgvalue === 'centered' ? 'centered' : 'classic';
+			return E('div', { 'class': 'argon-login-preview' }, [
+				form.ListValue.prototype.renderWidget.call(this, section_id, option_index, style),
+				E('img', { 'id': this.cbid(section_id) + '-preview', 'src': L.resource('argon-config/login-' + style + '.svg'), 'alt': _('Login layout preview') })
+			]);
+		};
+		o.onchange = function(ev, section_id, value) {
+			var preview = document.getElementById(this.cbid(section_id) + '-preview');
+			if (preview)
+				preview.src = L.resource('argon-config/login-' + (value === 'centered' ? 'centered' : 'classic') + '.svg');
+		};
+
 		o = s.option(form.ListValue, 'online_wallpaper', _('Wallpaper source'));
 		o.value('none', _('Built-in'));
 		o.value('bing', _('Bing'));
 		o.value('unsplash', _('Unsplash'));
+		o.value('wallhaven', _('Wallhaven'));
 		o.default = 'bing';
 		o.rmempty = false;
+
+		o = s.option(form.Value, 'use_api_key', _('Wallpaper API key'),
+			_('Unsplash requires your own API access key.'));
+		o.password = true;
+		o.depends('online_wallpaper', 'unsplash');
+		o.depends('online_wallpaper', 'wallhaven');
 
 		o = s.option(form.ListValue, 'mode', _('Theme mode'));
 		o.value('normal', _('Follow system'));
@@ -81,6 +145,21 @@ return view.extend({
 		o.value('dark', _('Dark mode'));
 		o.default = 'normal';
 		o.rmempty = false;
+		// The header shortcut saves only mode, independently of pending form edits.
+		o.renderWidget = function(section_id, option_index, cfgvalue) {
+			var option = this;
+			var node = form.ListValue.prototype.renderWidget.call(this, section_id, option_index, cfgvalue);
+			var syncMode = function(event) {
+				if (!node.isConnected) {
+					window.removeEventListener('argon-appearance-saved', syncMode);
+					return;
+				}
+				option.cfgvalue(section_id, event.detail.mode);
+				L.dom.callClassMethod(node, 'setValue', event.detail.mode);
+			};
+			window.addEventListener('argon-appearance-saved', syncMode);
+			return node;
+		};
 
 		o = s.option(form.ListValue, 'font_weight', _('Font'));
 		o.value('normal', _('Normal'));
@@ -88,23 +167,9 @@ return view.extend({
 		o.default = '600';
 		o.rmempty = false;
 
-		o = s.option(form.Value, 'primary', _('[Light mode] Primary Color'), _('A HEX color (default: #5e72e4).'))
+		o = s.option(ColorValue, 'primary', _('[Light mode] Primary Color'), _('A HEX color (default: #5e72e4).'))
 		o.default = '#5e72e4';
 		o.rmempty = false;
-		o.validate = function(section_id, value) {
-			if (section_id)
-				return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(value) ||
-					_('Expecting: %s').format(_('valid HEX color value'));
-			return true;
-		};
-		o.render = function(section_id, option_index, cfgvalue) {
-			var el = form.Value.prototype.render.apply(this, arguments);
-			setTimeout(function() {
-				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".primary"]');
-				createColorPicker(textInput);
-			}, 0);
-			return el;
-		};
 
 		o = s.option(form.ListValue, 'transparency', _('[Light mode] Transparency'),
 			_('0 transparent - 1 opaque (suggest: transparent: 0 or translucent preset: 0.5).'));
@@ -115,45 +180,49 @@ return view.extend({
 
 		o = s.option(form.Value, 'blur', _('[Light mode] Frosted Glass Radius'),
 			_('Larger value will more blurred (suggest: clear: 1 or blur preset: 10).'));
-		o.datatype = 'ufloat';
+		o.datatype = 'and(ufloat,range(0,100))';
 		o.default = '10';
 		o.rmempty = false;
 
-		o = s.option(form.Value, 'progressbar_font', _('[Light mode] Progress bar Font Color'), _('A HEX color (default: #2e2b60).'))
+		o = s.option(ColorValue, 'progressbar_font', _('[Light mode] Progress bar Font Color'), _('A HEX color (default: #2e2b60).'))
 		o.default = '#2e2b60';
 		o.rmempty = false;
-		o.validate = function(section_id, value) {
-			if (section_id)
-				return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(value) ||
-					_('Expecting: %s').format(_('valid HEX color value'));
-			return true;
-		};
-		o.render = function(section_id, option_index, cfgvalue) {
-			var el = form.Value.prototype.render.apply(this, arguments);
-			setTimeout(function() {
-				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".progressbar_font"]');
-				createColorPicker(textInput);
-			}, 0);
-			return el;
+
+		o = s.option(form.ListValue, 'dark_primary_mode', _('Dark mode colors'),
+			_('Automatically generate dark colors from the primary color, or choose a custom dark color.'));
+		o.value('auto', _('Automatic'));
+		o.value('custom', _('Custom'));
+		o.default = 'auto';
+		o.rmempty = false;
+		o.cfgvalue = function(section_id) {
+			var mode = uci.get('argon', section_id, 'dark_primary_mode');
+			return mode === 'auto' || mode === 'custom' ? mode :
+				(expandHex(uci.get('argon', section_id, 'dark_primary')) ? 'custom' : 'auto');
 		};
 
-		o = s.option(form.Value, 'dark_primary', _('[Dark mode] Primary Color'),
-			_('A HEX Color (default: #483d8b).'))
+		o = s.option(ColorValue, 'dark_primary', _('[Dark mode] Primary Color'),
+			_('A HEX Color (default: #483d8b).'));
 		o.default = '#483d8b';
 		o.rmempty = false;
-		o.validate = function(section_id, value) {
-			if (section_id)
-				return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(value) ||
-					_('Expecting: %s').format(_('valid HEX color value'));
-			return true;
-		};
-		o.render = function(section_id, option_index, cfgvalue) {
-			var el = form.Value.prototype.render.apply(this, arguments);
-			setTimeout(function() {
-				const textInput = document.querySelector('[id^="widget.cbid.argon."][id$=".dark_primary"]');
-				createColorPicker(textInput);
-			}, 0);
-			return el;
+		o.depends('dark_primary_mode', 'custom');
+		o.retain = true;
+
+		o = s.option(form.ListValue, 'dark_glass_mode', _('Dark mode login panel'),
+			_('Use the same opacity and blur in both modes, or customize the dark login panel.'));
+		o.value('inherit', _('Follow light mode'));
+		o.value('custom', _('Custom'));
+		o.default = 'inherit';
+		o.rmempty = false;
+		o.cfgvalue = function(section_id) {
+			var mode = uci.get('argon', section_id, 'dark_glass_mode');
+			if (mode === 'inherit' || mode === 'custom')
+				return mode;
+			var blur = uci.get('argon', section_id, 'blur') || '10';
+			var opacity = uci.get('argon', section_id, 'transparency') || '0.5';
+			var darkBlur = uci.get('argon', section_id, 'blur_dark');
+			var darkOpacity = uci.get('argon', section_id, 'transparency_dark');
+			return (darkBlur != null && +darkBlur !== +blur) ||
+				(darkOpacity != null && +darkOpacity !== +opacity) ? 'custom' : 'inherit';
 		};
 
 		o = s.option(form.ListValue, 'transparency_dark', _('[Dark mode] Transparency'),
@@ -162,20 +231,28 @@ return view.extend({
 			o.value(i);
 		o.default = '0.5';
 		o.rmempty = false;
+		o.depends('dark_glass_mode', 'custom');
+		o.retain = true;
 
 		o = s.option(form.Value, 'blur_dark', _('[Dark mode] Frosted Glass Radius'),
-			_('Larger value will more blurred (suggest: clear: 1 or blur preset: 10).'))
-		o.datatype = 'ufloat';
+			_('Larger value will more blurred (suggest: clear: 1 or blur preset: 10).'));
+		o.datatype = 'and(ufloat,range(0,100))';
 		o.default = '10';
 		o.rmempty = false;
+		o.depends('dark_glass_mode', 'custom');
+		o.retain = true;
 
 		o = s.option(form.Button, '_save', _('Save settings'));
 		o.inputstyle = 'apply';
 		o.inputtitle = _('Save current settings');
 		o.onclick = function() {
-			ui.changes.apply(true);
-			return this.map.save(null, true);
+			if (this.map.readonly)
+				return Promise.resolve();
+			return this.map.save(null, true).then(function() { return ui.changes.apply(true); });
 		}
+
+		s = m.section(form.TypedSection, null, _('Custom branding'));
+		s.render = function() { return branding.render(this.map, data[3]); };
 
 		s = m.section(form.TypedSection, null, _('Upload background (available space: %1024.2mB)')
 			.format(data[1].avail * 1024),
@@ -188,18 +265,23 @@ return view.extend({
 		o.inputstyle = 'action';
 		o.inputtitle = _('Upload...');
 		o.onclick = function(ev, section_id) {
+			if (this.map.readonly)
+				return Promise.resolve();
 			var file = '/tmp/argon_background.tmp';
+			var uploaded = false;
 			return ui.uploadFile(file, ev.target).then(function(res) {
-				return L.resolveDefault(callRenameArgon(res.name), {}).then(function(ret) {
+				uploaded = true;
+				return callRenameArgon(res.name).then(function(ret) {
 					if (ret.result === 0)
 						return location.reload();
-					else {
-						ui.addNotification(null, E('p', _('Failed to upload file: %s.').format(res.name)));
-						return L.resolveDefault(fs.remove(file), {});
-					}
+					throw new Error(_('Failed to upload file: %s.').format(res.name));
 				});
 			})
-			.catch(function(e) { ui.addNotification(null, E('p', e.message)); });
+			.catch(function(e) {
+				ui.addNotification(null, E('p', e.message));
+				if (uploaded)
+					return L.resolveDefault(fs.remove(file));
+			});
 		};
 		o.modalonly = true;
 
@@ -221,9 +303,15 @@ return view.extend({
 					String.format('%1024.2mB', file.size),
 					E('button', {
 						'class': 'btn cbi-button cbi-button-remove',
+						'disabled': m.readonly || null,
 						'click': ui.createHandlerFn(this, function() {
-							return L.resolveDefault(callRemoveArgon(file.name), {})
-							.then(function() { return location.reload(); });
+							if (m.readonly)
+								return Promise.resolve();
+							return callRemoveArgon(file.name).then(function(result) {
+								if (result.result !== 0)
+									throw new Error(_('Unable to delete background.'));
+								location.reload();
+							}).catch(function(error) { ui.addNotification(null, E('p', {}, error.message), 'error'); });
 						})
 					}, [ _('Delete') ])
 				];

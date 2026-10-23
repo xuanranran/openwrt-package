@@ -8,31 +8,60 @@
 # defaults to 'bing' to be compatible with old config
 WEB_PIC_SRC="$(uci -q get argon.@global[0].online_wallpaper || echo 'bing')"
 
+# Only known sources may contribute to cache paths and API requests.
+case "$WEB_PIC_SRC" in
+bing|unsplash|wallhaven|none) ;;
+unsplash_*|wallhaven_*)
+	source_id="${WEB_PIC_SRC#*_}"
+	case "$source_id" in ''|*[!0-9]*) WEB_PIC_SRC=none ;; esac
+	;;
+*) WEB_PIC_SRC=none ;;
+esac
+
+# API_KEY is used by Unsplash and Wallhaven when configured.
+# EXACT_RESO is used for exact resolution by default, if not use 'atleast' instead of 'resolutions'
+API_KEY="$(uci -q get argon.@global[0].use_api_key)"
+EXACT_RESO="$(uci -q get argon.@global[0].use_exact_resolution || echo '1')"
+
 CACHE="/var/run/argon_${WEB_PIC_SRC}.url"
 WRLOCK="/var/lock/argon_${WEB_PIC_SRC}.lock"
 
 fetch_pic_url() {
 	case "$WEB_PIC_SRC" in
 	bing)
-		local picpath="$(curl -s -m 3 \
+		local picpath="$(curl -fsS --connect-timeout 3 --max-time 3 \
 			"https://www.bing.com/HPImageArchive.aspx?format=js&n=1" |
 			jsonfilter -qe '@.images[0].url' |
 			sed 's/1920x1080/UHD/g')"
-		[ -n "${picpath}" ] && echo "//www.bing.com${picpath}"
+		[ -n "${picpath}" ] && echo "https://www.bing.com${picpath}"
 		;;
 	unsplash)
-		curl -fks --max-time 3 \
-			--header "Authorization: Client-ID kmFIroj2ELqXJPtC0XUoyww-Tr_lDU8Ho8uxjptIrCo" \
-			"https://api.unsplash.com/photos/random?count=1&orientation=landscape" |
-			jsonfilter -e "@[0]['urls']['full']" |
-			sed 's/$/&\&w=1920\&h=1080\&fit=crop\&q=90/'
+		if [ -n "$API_KEY" ]; then
+			curl -fsS --connect-timeout 3 --max-time 3 "https://api.unsplash.com/photos/random?client_id=${API_KEY}" |
+				jsonfilter -qe '@["urls"]["regular"]'
+		fi
 		;;
 	unsplash_*)
-		curl -fks --max-time 3 \
-			--header "Authorization: Client-ID kmFIroj2ELqXJPtC0XUoyww-Tr_lDU8Ho8uxjptIrCo" \
-			"https://api.unsplash.com/photos/random?count=1&orientation=landscape" |
-			jsonfilter -e "@[0]['urls']['full']" |
-			sed 's/$/&\&w=1920\&h=1080\&fit=crop\&q=90/'
+		local collection_id="${WEB_PIC_SRC#unsplash_}"
+		if [ -n "$API_KEY" ]; then
+			curl -fsS --connect-timeout 3 --max-time 3 \
+				"https://api.unsplash.com/photos/random?client_id=${API_KEY}&collections=${collection_id}" |
+				jsonfilter -qe '@["urls"]["regular"]'
+		fi
+		;;
+	wallhaven)
+		curl -fsS --connect-timeout 3 --max-time 3 \
+			"https://wallhaven.cc/api/v1/search?resolutions=1920x1080&sorting=random${API_KEY:+&apikey=$API_KEY}" |
+			jsonfilter -qe "@.data[0].path"
+		;;
+	wallhaven_*)
+		local tag_id="${WEB_PIC_SRC#wallhaven_}"
+		local use_reso="resolutions"
+		[ "$EXACT_RESO" -eq "1" ] || use_reso="atleast"
+		[ -z "$API_KEY" ] || API_KEY="apikey=$API_KEY&"
+		curl -fsS --connect-timeout 3 --max-time 3 \
+			"https://wallhaven.cc/api/v1/search?${API_KEY}q=id%3A${tag_id}&${use_reso}=1920x1080&sorting=random" |
+			jsonfilter -qe '@.data[0].path'
 		;;
 	esac
 }
@@ -50,17 +79,15 @@ try_update() {
 			# download or browsed first before it can be shown as a background image
 			# if not, browser only displays a blank image
 			# NOTE: only happens to Wallhaven.cc source images
-			if [[ "$WEB_PIC_SRC" == wallhave* ]] ; then
-				curl -s -m 3 "${picurl}" > /dev/null
-			fi
+			case "$WEB_PIC_SRC" in
+			wallhaven*) curl -fsS --connect-timeout 3 --max-time 3 "${picurl}" > /dev/null ;;
+			esac
 
 			echo "$picurl" | tee "$CACHE"
 		else
-			if [ -s "$CACHE" ]; then
-				cat "$CACHE"
-			else
-				touch "$CACHE"
-			fi
+			# An expired URL may no longer load. Mark a short failure window
+			# and let the login page select a local background instead.
+			: > "$CACHE"
 		fi
 		flock -u 200 >"/dev/null" 2>&1
 	elif [ -s "$CACHE" ]; then
@@ -80,6 +107,17 @@ case "$1" in
 	case "$2" in
 	"get_url")
 		read -r input
+		case "$WEB_PIC_SRC" in
+		unsplash|unsplash_*)
+			if [ -z "$API_KEY" ]; then
+				json_init
+				json_add_string "url" ""
+				json_dump
+				json_cleanup
+				exit 0
+			fi
+			;;
+		esac
 		if [ -f "$CACHE" ]; then
 			idle_t="$(($(date '+%s') - $(date -r "$CACHE" '+%s' 2>/dev/null || echo '0')))"
 			if [ -s "$CACHE" ]; then
@@ -88,12 +126,12 @@ case "$1" in
 					json_add_string "url" "$(cat "$CACHE")"
 					json_dump
 					json_cleanup
-					return 0
+					exit 0
 				fi
 			else
 				if [ "$idle_t" -le 120 ]; then
 					echo '{ "url": "" }'
-					return 1
+					exit 0
 				fi
 			fi
 		fi
@@ -102,7 +140,7 @@ case "$1" in
 		json_add_string "url" "$(try_update)"
 		json_dump
 		json_cleanup
-		return 0
+		exit 0
 		;;
 	esac
 	;;
