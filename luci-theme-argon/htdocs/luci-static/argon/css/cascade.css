@@ -4220,9 +4220,10 @@ pre.command-output {
 }
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc {
-  --bg-white: #000000;
-  --bg-light: #242424;
-  --hover-bg: #242424;
+  /* Keep neutral surfaces when OpenClash appends preset/custom palette rules. */
+  --bg-white: #000000 !important;
+  --bg-light: #242424 !important;
+  --hover-bg: #242424 !important;
 }
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .developer-container {
