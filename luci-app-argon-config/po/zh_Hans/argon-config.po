@@ -211,14 +211,6 @@ msgstr "正常"
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:88
 msgid "Bold"
 msgstr "粗体"
-msgid "Wallhaven"
-msgstr "Wallhaven"
-
-msgid "Wallpaper API key"
-msgstr "壁纸 API 密钥"
-
-msgid "Unsplash requires your own API access key."
-msgstr "Unsplash 需要填写你自己的 API 访问密钥。"
 
 msgid "Login layout"
 msgstr "登录布局"

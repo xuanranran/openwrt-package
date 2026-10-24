@@ -177,14 +177,6 @@ msgstr ""
 #: applications/luci-app-argon-config/htdocs/luci-static/resources/view/argon-config.js:97
 msgid "valid HEX color value"
 msgstr ""
-msgid "Wallhaven"
-msgstr ""
-
-msgid "Wallpaper API key"
-msgstr ""
-
-msgid "Unsplash requires your own API access key."
-msgstr ""
 
 msgid "Login layout"
 msgstr ""

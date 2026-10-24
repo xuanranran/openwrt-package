@@ -1,0 +1,98 @@
+@layer base {
+	/* Element reset (Meyer, trimmed to what a LuCI view can emit). */
+
+	/* scroll-margin-top: anchor jump must clear the sticky bar (WCAG 2.2 SC 2.4.11). Its designed
+	 * height, 46px, is the floor everywhere; the rule below raises it where the bar is measured. */
+	*, *::before, *::after {
+		scroll-margin-top: var(--fs-bar-h);
+		margin: 0;
+		padding: 0;
+		border: 0;
+		box-sizing: border-box;
+	}
+
+	/* The document-scrolled bar outgrows 46px when the brand wraps or a row is added; the measured
+	 * height (fs-chrome.js publishBarHeight) replaces it there. .fs-main only: overlays and the
+	 * sidebar before fitShell keep 46px. */
+	:where(:root[data-layout="top"] .fs-main, :root[data-narrow] .fs-main) * {
+		scroll-margin-top: var(--fs-bar-live, var(--fs-bar-h));
+	}
+
+	abbr[title], acronym[title] {
+		border-bottom: 1px dotted;
+		cursor: help;
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+
+	/* Outranks every layer's `display`, id rules included: docs/css.md "Reset: [hidden] must
+	 * outrank every layer, not patch one mistake". */
+	[hidden]:not([hidden="until-found"]) { display: none !important; }
+
+	html {
+		height: 100%;
+	}
+
+	/* :focus-visible: UA heuristic keeps the ring off a mouse click. */
+	a:focus-visible {
+		outline: 2px solid var(--fs-accent);
+		outline-offset: 2px;
+	}
+
+	sub, sup {
+		font-size: 75%;
+		line-height: 0;
+		position: relative;
+		vertical-align: baseline;
+	}
+
+	sup {
+		top: -.5em;
+	}
+
+	sub {
+		bottom: -.25em;
+	}
+
+	/* font-size: button/label in base/30-forms.css; input/select/option/textarea in theme/60-inputs.css — absorbed */
+	button,
+	input,
+	select,
+	option {
+		vertical-align: baseline;
+	}
+
+	button,
+	input[type="button"],
+	input[type="reset"],
+	input[type="submit"] {
+		cursor: pointer;
+		appearance: button;
+	}
+
+	/* disabled-opacity fade: 30-forms.css, same elements + pointer-events/cursor */
+
+	input[type="search"] {
+		appearance: textfield; /* not content-box: contradicts border-box above, ~22px too wide */
+	}
+
+	input[type="search"]::-webkit-search-decoration {
+		appearance: none;
+	}
+
+	textarea {
+		overflow: auto;
+		vertical-align: top;
+		font-family: var(--fs-font-mono);
+	}
+
+	/* Unjoined (issue #7): bootstrap's joins square the trailing button's corner; this theme's
+	 * buttons keep full radius. Password reveal stays joined (theme/60-inputs.css). */
+	.control-group {
+		display: inline-flex;
+		gap: var(--fs-space-2);
+	}
+}

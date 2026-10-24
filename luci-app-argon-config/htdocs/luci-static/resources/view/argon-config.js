@@ -128,16 +128,14 @@ return view.extend({
 		o = s.option(form.ListValue, 'online_wallpaper', _('Wallpaper source'));
 		o.value('none', _('Built-in'));
 		o.value('bing', _('Bing'));
-		o.value('unsplash', _('Unsplash'));
 		o.value('wallhaven', _('Wallhaven'));
 		o.default = 'bing';
 		o.rmempty = false;
-
-		o = s.option(form.Value, 'use_api_key', _('Wallpaper API key'),
-			_('Unsplash requires your own API access key.'));
-		o.password = true;
-		o.depends('online_wallpaper', 'unsplash');
-		o.depends('online_wallpaper', 'wallhaven');
+		o.cfgvalue = function(section_id) {
+			var value = uci.get('argon', section_id, 'online_wallpaper');
+			// Do not let ListValue restore a removed source as an unknown choice.
+			return typeof(value) === 'string' && /^unsplash(?:_|$)/.test(value) ? this.default : value;
+		};
 
 		o = s.option(form.ListValue, 'mode', _('Theme mode'));
 		o.value('normal', _('Follow system'));
