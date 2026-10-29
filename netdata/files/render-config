@@ -1,0 +1,42 @@
+#!/bin/sh
+set -eu
+config="$1"
+shift
+temporary="$(mktemp "${config}.XXXXXX")"
+trap 'rm -f "$temporary"' EXIT HUP INT TERM
+awk -v settings="$*" '
+function trim(text) { sub(/^[ \t]+/, "", text); sub(/[ \t]+$/, "", text); return text }
+BEGIN {
+    section_for["PROC"]="plugins"; key_for["PROC"]="proc"
+    section_for["DISKSPACE"]="plugins"; key_for["DISKSPACE"]="diskspace"
+    section_for["TIMEX"]="plugins"; key_for["TIMEX"]="timex"
+    section_for["CGROUPS"]="plugins"; key_for["CGROUPS"]="cgroups"
+    section_for["TC"]="plugins"; key_for["TC"]="tc"
+    section_for["IDLEJITTER"]="plugins"; key_for["IDLEJITTER"]="idlejitter"
+    section_for["HEALTH"]="health"; key_for["HEALTH"]="enabled"
+    section_for["REGISTRY"]="registry"; key_for["REGISTRY"]="enabled"
+    section_for["EXPORTING"]="exporting:global"; key_for["EXPORTING"]="enabled"
+    count=split(settings, entries, " ")
+    for(i=1;i<=count;i++) {
+        split(entries[i], pair, "=")
+        if(pair[1] in section_for) {
+            section=section_for[pair[1]]; key=key_for[pair[1]]
+            overrides[section SUBSEP key]=pair[2]; sections[section]=1
+        }
+    }
+}
+/^[ \t]*\[/ {
+    section=$0; sub(/^[ \t]*\[/,"",section); sub(/\].*$/,"",section)
+    print; seen[section]=1
+    for(entry in overrides) { split(entry, parts, SUBSEP); if(parts[1]==section) print "\t" parts[2] " = " overrides[entry] }
+    next
+}
+{ key=$0; sub(/=.*/,"",key); if((section SUBSEP trim(key)) in overrides && index($0,"=")) next; print }
+END {
+    for(section in sections) if(!(section in seen)) {
+        print "\n[" section "]"
+        for(entry in overrides) { split(entry,parts,SUBSEP); if(parts[1]==section) print "\t" parts[2] " = " overrides[entry] }
+    }
+}' "$config" > "$temporary"
+chmod 644 "$temporary"
+mv -f "$temporary" "$config"

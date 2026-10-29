@@ -1,0 +1,25 @@
+From: OpenWrt Netdata maintainers
+Subject: [PATCH] cmake: give optional network helpers their own components
+
+Keep helper files out of the core package when selecting optional collectors.
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -3166,7 +3166,7 @@
+     target_link_libraries(cgroup-network libnetdata)
+ 
+     install(TARGETS cgroup-network
+-            COMPONENT netdata
++            COMPONENT plugin-cgroup-network
+             DESTINATION usr/libexec/netdata/plugins.d)
+ endif()
+ 
+@@ -3496,7 +3496,7 @@
+                               "$<$<BOOL:${MNL_FOUND}>:${MNL_LIBRARIES}>")
+ 
+         install(TARGETS local-listeners
+-                COMPONENT netdata
++                COMPONENT plugin-local-listeners
+                 DESTINATION usr/libexec/netdata/plugins.d)
+ endif()
+ 

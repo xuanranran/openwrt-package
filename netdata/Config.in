@@ -1,0 +1,114 @@
+# Optional library gates must not depend back on the package selecting them.
+menu "Core features"
+
+config NETDATA_EXTERNAL_TOOLCHAINS
+    bool "Use preinstalled Go and Rust host toolchains"
+    default n
+    help
+      For SDK CI builds, use NETDATA_GO_ROOT, NETDATA_RUSTC and NETDATA_CARGO
+      from the build environment. The Rust toolchain must include the target
+      standard library. Normal OpenWrt builds use the feeds toolchains.
+
+config NETDATA_FEED_TOOLCHAINS
+    bool
+    default y if !NETDATA_EXTERNAL_TOOLCHAINS
+
+config NETDATA_DBENGINE
+    bool "DBENGINE historical metrics storage"
+    default y
+    help
+      Store tiered historical metrics using Netdata DBENGINE. Disable for a
+      smaller agent using RAM storage. Existing user configuration is preserved;
+      change [db] db to ram manually when upgrading an existing installation.
+
+config NETDATA_LIBUNWIND
+    bool "Stack traces using libunwind"
+    default y
+    help
+      Include libunwind support for diagnostic stack traces. This does not
+      enable systemd journal or other log collectors.
+
+config NETDATA_ML
+    bool "Machine-learning anomaly detection"
+    depends on NETDATA_DBENGINE
+    default n
+    help
+      Compile dlib-based machine learning into the agent. CMake fetches the
+      pinned upstream dlib sources; requires additional build time and RAM.
+
+config NETDATA_PROMETHEUS_REMOTE_WRITE
+    bool "Prometheus remote-write exporter"
+    default n
+    help
+      Export metrics to a Prometheus remote-write endpoint. A static copy of
+      snappy is built if the SDK does not provide a system library.
+
+config NETDATA_WEBRTC
+    bool "WebRTC dashboard transport (experimental)"
+    default n
+    help
+      Enable upstream libdatachannel-based WebRTC transport. Its dependencies
+      are built by upstream CMake and require network access during configure.
+
+config NETDATA_CGROUP_LOOKUP
+    bool "Cgroup process-to-container lookup server"
+    default n
+    help
+      Enable the in-process cgroup lookup service for process and network
+      collectors. Requires suitable cgroup support on the running kernel.
+
+config NETDATA_ND_MCP
+    bool "MCP stdio bridge"
+    depends on PACKAGE_netdata-plugin-go
+    default n
+    help
+      Build the optional nd-mcp Go executable alongside the Go plugin.
+
+endmenu
+
+menu "Built-in collectors and service defaults"
+    depends on PACKAGE_netdata
+
+config NETDATA_RUNTIME_PROC
+    bool "Proc collector: CPU memory disks network and kernel metrics"
+    default y
+
+config NETDATA_RUNTIME_DISKSPACE
+    bool "Filesystem space and inode collector"
+    default y
+
+config NETDATA_RUNTIME_TIMEX
+    bool "Clock synchronization collector"
+    default y
+
+config NETDATA_RUNTIME_CGROUPS
+    bool "Cgroup and container resource collector"
+    default n
+
+config NETDATA_RUNTIME_TC
+    bool "Traffic Control QoS collector"
+    default n
+
+config NETDATA_RUNTIME_IDLEJITTER
+    bool "Idle jitter and scheduling latency collector"
+    default y
+
+config NETDATA_RUNTIME_HEALTH
+    bool "Health checks alerts and notifications"
+    default y
+
+config NETDATA_RUNTIME_REGISTRY
+    bool "Local dashboard registry"
+    default n
+
+config NETDATA_RUNTIME_EXPORTING
+    bool "Exporting engine (configure destinations separately)"
+    default n
+    help
+      Enable the built-in Graphite JSON and OpenTSDB exporting engine.
+      Configure connector instances in exporting.conf. Prometheus scraping
+      via the HTTP API does not require this engine.
+
+comment "Defaults apply to new netdata.conf files; existing settings are preserved"
+
+endmenu

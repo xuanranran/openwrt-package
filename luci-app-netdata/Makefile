@@ -5,7 +5,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI support for Netdata
-LUCI_DEPENDS:=+netdata +netdata-dashboard-v3
+LUCI_DEPENDS:=+netdata +netdata-dashboard-v3 +netdata-plugin-logread
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

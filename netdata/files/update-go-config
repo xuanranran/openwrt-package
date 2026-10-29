@@ -1,0 +1,20 @@
+#!/bin/sh
+set -eu
+
+root="${1:-}"
+directory="$root/usr/lib/netdata/conf.d"
+mkdir -p "$directory"
+temporary="$(mktemp "$directory/go.d.conf.XXXXXX")"
+trap 'rm -f "$temporary"' EXIT HUP INT TERM
+{
+    printf 'enabled: yes\ndefault_run: no\nmodules:\n'
+    for config in "$directory"/go.d/*.conf; do
+        [ -f "$config" ] || continue
+        module="${config##*/}"
+        module="${module%.conf}"
+        case "$module" in *[!a-zA-Z0-9_]*) continue ;; esac
+        printf '  %s: yes\n' "$module"
+    done
+} > "$temporary"
+chmod 644 "$temporary"
+mv -f "$temporary" "$directory/go.d.conf"

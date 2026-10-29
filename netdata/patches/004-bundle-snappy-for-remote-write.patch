@@ -1,0 +1,30 @@
+From: OpenWrt Netdata maintainers
+Subject: [PATCH] cmake: build snappy when remote-write is selected
+
+OpenWrt does not currently ship a snappy package. Build a static copy only
+for the optional Prometheus remote-write exporter.
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -3637,6 +3637,21 @@
+ 
+ if(ENABLE_EXPORTER_PROMETHEUS_REMOTE_WRITE)
+         pkg_check_modules(SNAPPY snappy)
++        if(NOT SNAPPY_FOUND)
++                include(FetchContent)
++                set(SNAPPY_BUILD_TESTS OFF CACHE BOOL "" FORCE)
++                set(SNAPPY_BUILD_BENCHMARKS OFF CACHE BOOL "" FORCE)
++                set(SNAPPY_INSTALL OFF CACHE BOOL "" FORCE)
++                set(BUILD_SHARED_LIBS OFF)
++                FetchContent_Declare(snappy
++                        GIT_REPOSITORY https://github.com/google/snappy.git
++                        GIT_TAG 1.2.2
++                )
++                FetchContent_MakeAvailable(snappy)
++                set(SNAPPY_FOUND TRUE)
++                set(SNAPPY_LIBRARIES snappy)
++                set(SNAPPY_INCLUDE_DIRS "${snappy_SOURCE_DIR};${snappy_BINARY_DIR}")
++        endif()
+         if (NOT SNAPPY_FOUND)
+                 include(CheckLibraryExists)
+                 check_library_exists(snappy snappy_compress "" HAVE_SNAPPY_LIB)

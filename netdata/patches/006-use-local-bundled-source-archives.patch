@@ -1,0 +1,63 @@
+--- a/packaging/cmake/Modules/NetdataSQLite.cmake
++++ b/packaging/cmake/Modules/NetdataSQLite.cmake
+@@ -18,6 +18,8 @@
+ set(SQLITE_GIT_SHA "b09c88c14082339b66c7b7158d609a771e64ca69") # tag is: version-${SQLITE_VERSION}
+ 
+ option(SQLITE_USE_GIT "Fetch SQLite sources via git clone instead of tarball" OFF)
++set(SQLITE_SOURCE_ARCHIVE "https://www.sqlite.org/${SQLITE_VERSION_YEAR}/sqlite-src-${SQLITE_VERSION_NUMBER}.zip"
++        CACHE STRING "SQLite source archive URL or local path")
+ 
+ function(netdata_bundle_sqlite3)
+         message(STATUS "Preparing SQLite ${SQLITE_VERSION}")
+@@ -37,8 +39,16 @@
+         else()
+                 message(STATUS "Fetching SQLite via tarball")
+                 set(SQLITE_FETCH_ARGS
+-                        URL "https://www.sqlite.org/${SQLITE_VERSION_YEAR}/sqlite-src-${SQLITE_VERSION_NUMBER}.zip"
++                        URL "${SQLITE_SOURCE_ARCHIVE}"
+                         URL_HASH "SHA256=${SQLITE_TARBALL_SHA256}"
++                )
++        endif()
++
++        if(NETDATA_HOST_CC)
++                set(SQLITE_HOST_ENV
++                        "CC=${NETDATA_HOST_CC}" "CC_FOR_BUILD=${NETDATA_HOST_CC}"
++                        "CFLAGS=${NETDATA_HOST_CFLAGS}" "CFLAGS_FOR_BUILD=${NETDATA_HOST_CFLAGS}"
++                        "LDFLAGS=${NETDATA_HOST_LDFLAGS}"
+                 )
+         endif()
+ 
+@@ -47,9 +57,10 @@
+                 ${SQLITE_FETCH_ARGS}
+                 SOURCE_DIR "${sqlite_SOURCE_DIR}"
+                 BINARY_DIR "${sqlite_BINARY_DIR}"
+-                CONFIGURE_COMMAND "${sqlite_SOURCE_DIR}/configure" --enable-update-limit
++                CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env ${SQLITE_HOST_ENV}
++                        "${sqlite_SOURCE_DIR}/configure" --enable-update-limit
+                 # GNU Make jobserver flags are not understood by FreeBSD make.
+-                BUILD_COMMAND "${CMAKE_COMMAND}" -E env MAKEFLAGS= make sqlite3.c sqlite3.h
++                BUILD_COMMAND "${CMAKE_COMMAND}" -E env ${SQLITE_HOST_ENV} MAKEFLAGS= make sqlite3.c sqlite3.h
+                 INSTALL_COMMAND ${CMAKE_COMMAND} -E copy
+                         "${sqlite_BINARY_DIR}/sqlite3.c"
+                         "${sqlite_BINARY_DIR}/sqlite3.h"
+--- a/packaging/cmake/Modules/NetdataEBPFCORE.cmake
++++ b/packaging/cmake/Modules/NetdataEBPFCORE.cmake
+@@ -2,6 +2,9 @@
+ # Handling for eBPF CO-RE files
+ 
+ include(ExternalProject)
++
++set(EBPF_CORE_SOURCE_ARCHIVE "https://github.com/netdata/ebpf-co-re/releases/download/v1.7.0.3/netdata-ebpf-co-re-glibc-v1.7.0.3.tar.xz"
++    CACHE STRING "eBPF CO-RE archive URL or local path")
+ 
+ set(ebpf-co-re_SOURCE_DIR "${CMAKE_BINARY_DIR}/ebpf-co-re")
+ 
+@@ -9,7 +12,7 @@
+ function(netdata_fetch_ebpf_co_re)
+     ExternalProject_Add(
+         ebpf-co-re
+-        URL https://github.com/netdata/ebpf-co-re/releases/download/v1.7.0.3/netdata-ebpf-co-re-glibc-v1.7.0.3.tar.xz
++        URL "${EBPF_CORE_SOURCE_ARCHIVE}"
+         URL_HASH SHA256=b6363b308db6aa0bc637acacc7a3b3faafce13e5026a15b9e5764dc3a16e88d7
+         SOURCE_DIR "${ebpf-co-re_SOURCE_DIR}"
+         CONFIGURE_COMMAND ""

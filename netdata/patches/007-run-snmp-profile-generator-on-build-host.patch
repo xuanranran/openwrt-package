@@ -1,0 +1,16 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -4796,9 +4796,13 @@
+                 "${CMAKE_SOURCE_DIR}/src/go/plugin/go.d/config/go.d/snmp.trap-profiles/catalogue.json"
+                 "${SNMP_TRAP_PROFILE_PACK_DIR}/catalogue.json"
+             COMMAND "${CMAKE_COMMAND}" -E env
++                --unset=GOOS --unset=GOARCH
++                --unset=GOARM --unset=GOARM64
++                --unset=GOMIPS --unset=GOMIPS64
++                GOENV=off
+                 GOROOT=${GO_ROOT}
+                 CGO_ENABLED=0
+                 GOPROXY=https://proxy.golang.org,direct
+                 "${GO_EXECUTABLE}" run -buildvcs=false -ldflags "${GO_LDFLAGS}" ./cmd/snmptrapprofilegen compress-zstd --rm
+                 "${SNMP_TRAP_PROFILE_PACK_DEFAULT_DIR}"
+                 "${SNMP_TRAP_PROFILE_PACK_DIR}/catalogue.json"

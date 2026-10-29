@@ -1,0 +1,18 @@
+From: OpenWrt Netdata maintainers
+Subject: [PATCH] cmake: give log2journal its own install component
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -3825,11 +3825,11 @@
+         netdata_add_libyaml_to_target(log2journal)
+ 
+         install(TARGETS log2journal
+-                COMPONENT netdata
++                COMPONENT tools-log2journal
+                 DESTINATION "${BINDIR}")
+ 
+         install(DIRECTORY src/collectors/log2journal/log2journal.d
+-                COMPONENT netdata
++                COMPONENT tools-log2journal
+                 DESTINATION usr/lib/netdata/conf.d)
+ endif()
