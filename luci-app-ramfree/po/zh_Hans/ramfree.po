@@ -10,3 +10,9 @@ msgstr ""
 
 msgid "Freeping Memory Cache"
 msgstr "释放内存"
+
+msgid "Failed to release memory cache."
+msgstr "释放内存缓存失败。"
+
+msgid "Memory cache was not released."
+msgstr "内存缓存未释放。"
