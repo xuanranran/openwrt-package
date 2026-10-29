@@ -6303,9 +6303,33 @@ input.argon-color-swatch[type="color"] {
     [data-page="admin-network-network"]) .td.cbi-section-actions :is(.btn, .cbi-button) {
   height: auto;
   min-height: 2.5rem;
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: anywhere;
+  flex: 0 0 auto;
+  max-width: none;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Reserve the desktop action group's intrinsic width instead of wrapping it. */
+@media screen and (min-width: 1281px) {
+  :is([data-page="admin-network-firewall-zones"],
+      [data-page="admin-network-firewall-forwards"],
+      [data-page="admin-network-firewall-rules"],
+      [data-page="admin-network-firewall-snats"],
+      [data-page="admin-network-network"]) .td.cbi-section-actions {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  :is([data-page="admin-network-firewall-zones"],
+      [data-page="admin-network-firewall-forwards"],
+      [data-page="admin-network-firewall-rules"],
+      [data-page="admin-network-firewall-snats"],
+      [data-page="admin-network-network"]) .td.cbi-section-actions > div {
+    flex-wrap: nowrap;
+    width: max-content;
+    max-width: none;
+  }
 }
 
 [data-page="admin-network-firewall-zones"] #cbi-firewall-zone .cbi-input-select {
@@ -6343,6 +6367,16 @@ input.argon-color-swatch[type="color"] {
 }
 
 @media screen and (max-width: 1280px) {
+  :is([data-page="admin-network-firewall-zones"],
+      [data-page="admin-network-firewall-forwards"],
+      [data-page="admin-network-firewall-rules"],
+      [data-page="admin-network-firewall-snats"],
+      [data-page="admin-network-network"]) .td.cbi-section-actions {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+
   [data-page="admin-network-firewall-zones"] #cbi-firewall-zone .td[data-name="_info"],
   :is([data-page="admin-network-firewall-forwards"],
       [data-page="admin-network-firewall-rules"],
