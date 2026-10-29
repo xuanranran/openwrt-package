@@ -1,0 +1,74 @@
+#!/bin/sh /etc/rc.common
+
+USE_PROCD=1
+START=99
+STOP=10
+
+NAME=substore
+PROG=/usr/bin/node
+BUNDLE=/usr/libexec/substore/sub-store.bundle.js
+
+uci_get() {
+	local ret=$(uci -q get substore.config.$1)
+	echo "${ret:-$2}"
+}
+
+start_service() {
+	local enabled=$(uci_get enabled 0)
+	[ "$enabled" = "1" ] || return 0
+
+	local data_dir=$(uci_get data_dir /etc/sub-store)
+	mkdir -p "$data_dir"
+
+	local frontend_port=$(uci_get frontend_port 3001)
+	local frontend_host=$(uci_get frontend_host ::)
+	local frontend_backend_path=$(uci_get frontend_backend_path /sub-store-api)
+	local backend_sync_cron=$(uci_get backend_sync_cron "")
+	local push_service=$(uci_get push_service "")
+	local cors_origins=$(uci_get cors_allowed_origins "*")
+	local default_proxy=$(uci_get backend_default_proxy "")
+	local max_header_size=$(uci_get max_header_size 32768)
+	local body_json_limit=$(uci_get body_json_limit 1mb)
+	local backend_upload_cron=$(uci_get backend_upload_cron "")
+	local backend_download_cron=$(uci_get backend_download_cron "")
+	local produce_cron=$(uci_get produce_cron "")
+	local data_url=$(uci_get data_url "")
+	local data_url_post=$(uci_get data_url_post "")
+	local custom_name=$(uci_get backend_custom_name "OpenWrt")
+	local custom_icon=$(uci_get backend_custom_icon "")
+	local x_powered_by=$(uci_get x_powered_by "")
+
+	procd_open_instance
+	procd_set_param command "$PROG" "$BUNDLE"
+	procd_set_param respawn 3600 5 0
+	procd_set_param stdout 1
+	procd_set_param stderr 1
+
+	procd_set_param env SUB_STORE_DATA_BASE_PATH="$data_dir" SUB_STORE_BACKEND_API_PORT="$frontend_port" SUB_STORE_BACKEND_API_HOST="$frontend_host" SUB_STORE_FRONTEND_BACKEND_PATH="$frontend_backend_path" SUB_STORE_FRONTEND_PATH=/www/sub-store/dist SUB_STORE_BACKEND_MERGE=true
+
+	[ -n "$backend_sync_cron" ] && procd_append_param env SUB_STORE_BACKEND_SYNC_CRON="$backend_sync_cron"
+	[ -n "$push_service" ] && procd_append_param env SUB_STORE_PUSH_SERVICE="$push_service"
+	[ -n "$cors_origins" ] && procd_append_param env SUB_STORE_CORS_ALLOWED_ORIGINS="$cors_origins"
+	[ -n "$default_proxy" ] && procd_append_param env SUB_STORE_BACKEND_DEFAULT_PROXY="$default_proxy"
+	[ -n "$max_header_size" ] && procd_append_param env SUB_STORE_MAX_HEADER_SIZE="$max_header_size"
+	[ -n "$body_json_limit" ] && procd_append_param env SUB_STORE_BODY_JSON_LIMIT="$body_json_limit"
+	[ -n "$backend_upload_cron" ] && procd_append_param env SUB_STORE_BACKEND_UPLOAD_CRON="$backend_upload_cron"
+	[ -n "$backend_download_cron" ] && procd_append_param env SUB_STORE_BACKEND_DOWNLOAD_CRON="$backend_download_cron"
+	[ -n "$produce_cron" ] && procd_append_param env SUB_STORE_PRODUCE_CRON="$produce_cron"
+	[ -n "$data_url" ] && procd_append_param env SUB_STORE_DATA_URL="$data_url"
+	[ -n "$data_url_post" ] && procd_append_param env SUB_STORE_DATA_URL_POST="$data_url_post"
+	[ -n "$custom_name" ] && procd_append_param env SUB_STORE_BACKEND_CUSTOM_NAME="$custom_name"
+	[ -n "$custom_icon" ] && procd_append_param env SUB_STORE_BACKEND_CUSTOM_ICON="$custom_icon"
+	[ -n "$x_powered_by" ] && procd_append_param env SUB_STORE_X_POWERED_BY="$x_powered_by"
+
+	procd_close_instance
+}
+
+reload_service() {
+	stop
+	start
+}
+
+service_triggers() {
+	procd_add_reload_trigger "substore"
+}
