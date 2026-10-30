@@ -1651,7 +1651,7 @@ td>table>tbody>tr>td,
   white-space: nowrap;
   text-decoration: none;
   text-transform: uppercase;
-  color: #fff !important;
+  color: #fff;
   border: 0;
   border-radius: 0.375rem;
   background-color: #5e72e4;
@@ -4219,6 +4219,25 @@ pre.command-output {
   width: auto
 }
 
+/* Keep Argon's global button spacing out of OpenClash's fixed-size theme panel. */
+.oc.oc-theme-panel button {
+  margin: 0;
+  line-height: normal;
+}
+
+.oc.oc-theme-panel .tp-seg .tp-opt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0 6px;
+}
+
+/* OpenClash gives diagnostic inputs a light editor background, even for actions. */
+html:not([data-darkmode="true"]) [data-page^="admin-services-openclash"] .oc .diag-style input.cbi-button {
+  color: var(--text-primary, #32325d) !important;
+}
+
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc {
   /* Keep neutral surfaces when OpenClash appends preset/custom palette rules. */
   --bg-white: #000000 !important;
@@ -5366,7 +5385,7 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-head
 }
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li.cbi-tab {
-  background: #2864e6 !important;
+  background: var(--primary-color) !important;
 }
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li > a {
@@ -5407,14 +5426,14 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-cont
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-content .radio-button label:hover {
   color: #fff !important;
-  border-color: #2864e6 !important;
+  border-color: var(--primary-color) !important;
   background: #111 !important;
 }
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-content .radio-button input[type="radio"]:checked + label {
   color: #fff !important;
-  background: #2864e6 !important;
-  border-color: #2864e6 !important;
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
 
 /* OpenClash configuration editor colors; keep native DOM layout. */
@@ -5442,24 +5461,15 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-m
   background: transparent !important;
 }
 
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-mode-tabs .mode-tab {
-  color: #d0d8e0 !important;
-  background: #000 !important;
-  border: 1px solid #536273 !important;
-  border-radius: 6px !important;
+/* Keep inactive editor/upload modes distinct without overriding the selected accent. */
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc :is(#config-mode-tabs, .upload-mode-selector) .mode-tab:not(.active) {
+  background: var(--bg-white, #000) !important;
+  border: 1px solid var(--border-light, #536273) !important;
 }
 
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-mode-tabs .mode-tab:hover {
-  color: #fff !important;
-  background: #111 !important;
-  border-color: #2864e6 !important;
-}
-
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #config-mode-tabs .mode-tab.active {
-  color: #fff !important;
-  background: #2864e6 !important;
-  border-color: #2864e6 !important;
-  box-shadow: none !important;
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc :is(#config-mode-tabs, .upload-mode-selector) .mode-tab:not(.active):hover {
+  background: var(--hover-bg, #242424) !important;
+  border-color: var(--primary-color) !important;
 }
 
 /* OpenClash internal section tabs */
@@ -5487,8 +5497,8 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab
 }
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li.cbi-tab {
-  background: #2864e6 !important;
-  border-color: #2864e6 !important;
+  background: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li > a {
@@ -6349,6 +6359,109 @@ input.argon-color-swatch[type="color"] {
   direction: ltr;
   unicode-bidi: isolate;
   text-align: start;
+}
+
+@media screen and (max-width: 600px) {
+  /* Realtime summaries alternate label/value cells; keep each pair in one column. */
+  :is([data-page="admin-status-realtime-load"],
+      [data-page="admin-status-realtime-bandwidth"],
+      [data-page="admin-status-realtime-connections"]) #map .cbi-section {
+    padding: .75rem;
+  }
+
+  :is([data-page="admin-status-realtime-load"],
+      [data-page="admin-status-realtime-bandwidth"],
+      [data-page="admin-status-realtime-connections"]) #map .cbi-section > table.table > tbody,
+  [data-page="admin-status-realtime-connections"] #connections > tbody {
+    display: block;
+    width: 100%;
+  }
+
+  :is([data-page="admin-status-realtime-load"],
+      [data-page="admin-status-realtime-bandwidth"],
+      [data-page="admin-status-realtime-connections"]) #map .cbi-section > table.table .tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .375rem .5rem;
+    padding: .5rem 0;
+  }
+
+  :is([data-page="admin-status-realtime-load"],
+      [data-page="admin-status-realtime-bandwidth"],
+      [data-page="admin-status-realtime-connections"]) #map .cbi-section > table.table .td {
+    display: block;
+    min-width: 0;
+    width: auto;
+    padding: .125rem;
+    border-top: 0;
+    /* Native labels use .right !important; values must share their alignment. */
+    text-align: center !important;
+    font-size: .8125rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :is([data-page="admin-status-realtime-load"],
+      [data-page="admin-status-realtime-bandwidth"],
+      [data-page="admin-status-realtime-connections"]) #map .cbi-section > table.table .tr + .tr {
+    border-top: 1px solid rgba(128, 128, 128, .2);
+  }
+
+  :is([data-page="admin-status-realtime-load"],
+      [data-page="admin-status-realtime-bandwidth"],
+      [data-page="admin-status-realtime-connections"]) #map .cbi-section > table.table .td:nth-child(odd) {
+    grid-row: 1;
+    white-space: nowrap;
+  }
+
+  :is([data-page="admin-status-realtime-load"],
+      [data-page="admin-status-realtime-bandwidth"],
+      [data-page="admin-status-realtime-connections"]) #map .cbi-section > table.table .td:nth-child(even) {
+    grid-row: 2;
+  }
+
+  [data-page="admin-status-realtime-connections"] #settings-row {
+    flex-wrap: wrap;
+    gap: .75rem;
+  }
+
+  [data-page="admin-status-realtime-connections"] #settings-row > span {
+    flex: 1 1 100% !important;
+    min-width: 0;
+  }
+
+  [data-page="admin-status-realtime-connections"] #settings-row .toggle-lookups {
+    width: 100% !important;
+    margin: 0;
+    white-space: normal;
+  }
+
+  [data-page="admin-status-realtime-connections"] #connections .tr:not(.table-titles):not(.placeholder) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .375rem .75rem;
+    padding: .75rem 0;
+  }
+
+  [data-page="admin-status-realtime-connections"] #connections .td {
+    min-width: 0;
+    width: auto;
+    padding: .25rem;
+    border-top: 0;
+    text-align: left;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  [data-page="admin-status-realtime-connections"] #connections .td:nth-child(n+3) {
+    grid-column: 1 / -1;
+  }
+
+  [data-page="admin-status-realtime-connections"] #connections .td:nth-child(n+3)[data-title]::before {
+    display: block;
+    padding: 0;
+  }
 }
 
 [data-page="admin-network-network"] #cbi-network-interface .td {
