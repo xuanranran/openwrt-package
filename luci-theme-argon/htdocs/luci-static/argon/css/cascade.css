@@ -3236,6 +3236,79 @@ td>.ifacebadge,
   outline: 0
 }
 
+/* The native syslog view uses ungrouped inline filters inside one section. */
+[data-page="admin-status-logs-syslog"] #content_syslog {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  min-width: 0;
+}
+
+[data-page="admin-status-logs-syslog"] #content_syslog > div {
+  min-width: 0;
+  margin-block: 0 !important;
+}
+
+[data-page="admin-status-logs-syslog"] #content_syslog > .cbi-section-descr:empty {
+  display: none;
+}
+
+[data-page="admin-status-logs-syslog"] #content_syslog > div:has(> .cbi-button) {
+  padding-block: 0 !important;
+}
+
+[data-page="admin-status-logs-syslog"] #content_syslog > div:has(> input, > select) {
+  line-height: 2.5rem;
+}
+
+[data-page="admin-status-logs-syslog"] #content_syslog > div:has(> input, > select) > :is(label, input, select) {
+  vertical-align: middle;
+}
+
+[data-page="admin-status-logs-syslog"] #content_syslog > div:has(> input, > select) > :is(input, select) {
+  margin-block: 0 !important;
+  max-width: 100%;
+}
+
+[data-page="admin-status-logs-syslog"] #syslog {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  border: 1px solid #dee2e6;
+}
+
+@media screen and (max-width: 600px) {
+  [data-page="admin-status-logs-syslog"] #content_syslog > div:has(> #logFacilitySelect, > #logTextFilter) {
+    display: grid;
+    grid-template-columns: max-content 1rem max-content minmax(0, 1fr);
+    align-items: center;
+    gap: .5rem;
+    line-height: 1.5;
+  }
+
+  [data-page="admin-status-logs-syslog"] #content_syslog > div:has(> #logFacilitySelect, > #logTextFilter) > :is(label, input, select) {
+    margin: 0 !important;
+  }
+
+  [data-page="admin-status-logs-syslog"] #content_syslog > div:has(> #logFacilitySelect, > #logTextFilter) > label {
+    white-space: nowrap;
+  }
+
+  [data-page="admin-status-logs-syslog"] #content_syslog > div:has(> #logFacilitySelect, > #logTextFilter) > :is(input:not([type="checkbox"]), select) {
+    min-width: 0;
+    width: 100%;
+  }
+
+  [data-page="admin-status-logs-syslog"] #content_syslog label[for="logMaxRows"] {
+    grid-column: 1 / 4;
+  }
+
+  [data-page="admin-status-logs-syslog"] #logMaxRows {
+    grid-column: 4;
+  }
+}
+
 .uci-change-list {
   font-family: monospace;
   overflow: scroll;
@@ -3925,6 +3998,497 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   border: 1px solid hsl(from var(--primary) h s l / 60%) !important;
 }
 
+/* Narrow adapters for native/community plugin markup; do not replace their views. */
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"], [data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) {
+  --argon-plugin-surface: #fff;
+  --argon-plugin-control: #fff;
+  --argon-plugin-text: #666a88;
+  --argon-plugin-muted: #69758c;
+  --argon-plugin-border: #dee2e6;
+  --argon-plugin-hover: #f4f5f7;
+  --argon-plugin-selected: var(--primary);
+  --argon-plugin-selected-text: #fff;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-dropdown-container {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  min-width: 0;
+  max-width: 100%;
+  vertical-align: middle;
+  white-space: normal;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-dropdown-container > .node-actions {
+  margin: 0 !important;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-dropdown-display {
+  display: inline-flex;
+  flex: 0 1 20rem;
+  align-items: center;
+  gap: .5rem;
+  width: 20rem !important;
+  min-width: 0 !important;
+  max-width: 100%;
+  height: 2.5rem !important;
+  min-height: 2.5rem !important;
+  margin: 0 !important;
+  padding: .5rem .75rem !important;
+  line-height: 1.5rem !important;
+  border: 1px solid var(--argon-plugin-border) !important;
+  border-radius: .25rem !important;
+  background-color: var(--argon-plugin-control) !important;
+  color: var(--argon-plugin-text) !important;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-dropdown-label {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Opened panels are moved to body; retain the plugin's position and width. */
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-dropdown-panel {
+  max-height: min(50vh, 18rem) !important;
+  line-height: 1.5 !important;
+  border: 1px solid var(--argon-plugin-border) !important;
+  border-radius: .375rem !important;
+  background-color: var(--argon-plugin-surface) !important;
+  color: var(--argon-plugin-text) !important;
+  box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .15);
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-dropdown-panel .lv-dropdown-search {
+  padding: .5rem .75rem;
+  border: 1px solid var(--argon-plugin-border);
+  background-color: var(--argon-plugin-control);
+  color: var(--argon-plugin-text);
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-dropdown-panel.cbi-listvalue-panel li[data-key] {
+  min-height: 2.5rem;
+  padding: .5rem .75rem;
+  background-color: transparent;
+  color: inherit;
+  text-align: start !important;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-dropdown-panel.cbi-listvalue-panel li[data-key].is-selected {
+  background-color: var(--argon-plugin-selected) !important;
+  color: var(--argon-plugin-selected-text) !important;
+}
+
+/* Match the ID specificity of the plugin's generated group-title rule. */
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]):has(#maincontent) .lv-dropdown-panel .lv-group-title {
+  gap: .5rem;
+  padding: .5rem .75rem;
+  background-color: var(--argon-plugin-hover) !important;
+  color: var(--argon-plugin-text);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-group-title > :is(b, span) {
+  margin: 0 !important;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) .lv-group-title > span[id^="group-count-"] {
+  margin-inline-start: auto !important;
+  color: var(--argon-plugin-muted) !important;
+}
+
+:is([data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) #service_status_display {
+  display: block;
+  padding: 1rem;
+  border-radius: .375rem;
+  background-color: var(--argon-plugin-surface);
+  box-shadow: 0 0 1rem rgba(136, 152, 170, .15);
+  overflow-x: auto;
+}
+
+:is([data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) #tailscale_devices_display {
+  display: block;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+:is([data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) :is(#service_status_display, #tailscale_devices_display) table {
+  display: table;
+  line-height: normal;
+}
+
+:is([data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) :is(#service_status_display, #tailscale_devices_display) thead {
+  display: table-header-group;
+}
+
+:is([data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) :is(#service_status_display, #tailscale_devices_display) tbody {
+  display: table-row-group;
+}
+
+:is([data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) :is(#service_status_display, #tailscale_devices_display) tr {
+  display: table-row;
+}
+
+:is([data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) :is(#service_status_display, #tailscale_devices_display) :is(th, td) {
+  display: table-cell;
+  padding: 1.1em 1.25rem;
+  border-top: 1px solid var(--argon-plugin-border);
+  line-height: normal;
+  text-align: center !important;
+  white-space: nowrap;
+  color: var(--argon-plugin-text);
+}
+
+[data-page="admin-services-wol"] #cbi-luci-wol-defaults-_info {
+  padding-bottom: 1rem;
+  line-height: 1.5;
+}
+
+[data-page="admin-services-wol"] #cbi-luci-wol-defaults-_info > output {
+  width: 100%;
+  min-width: 0;
+}
+
+[data-page="admin-services-wol"] #cbi-luci-wol-defaults-_info output p {
+  padding: 0;
+}
+
+[data-page="admin-services-wol"] #cbi-luci-wol-defaults-_info .control-group {
+  margin-block-start: .5rem;
+}
+
+[data-page="admin-services-wol"] .cbi-section:has(> #wol-output-text) {
+  padding-bottom: 1rem;
+}
+
+[data-page="admin-services-wol"] #wol-output-text {
+  display: block;
+  width: calc(100% - 2rem) !important;
+  margin-inline: 1rem;
+  resize: vertical;
+}
+
+/* Remove duplicate log-card chrome without changing pane transforms or clipping. */
+[data-page="admin-services-openclash-log"] #tab.oc {
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+[data-page="admin-services-openclash-log"] #tab.oc > #tab-header {
+  padding: 1rem 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+[data-page="admin-services-openclash-log"] #tab.oc > #tab-header > ul.oc-tabmenu {
+  background: transparent !important;
+}
+
+[data-page="admin-services-openclash-log"] #tab.oc + .oc {
+  border-radius: 0;
+}
+
+[data-page="admin-services-openclash-log"] #tab.oc > #tab-content > .dom {
+  padding: 0;
+  /* Editor initialization adds .oc here; its larger radius clips the child border. */
+  border-radius: 0;
+}
+
+[data-page="admin-services-openclash-log"] #tab.oc > #tab-content > .dom :is(.cm-editor:not(.cm-fullscreen), #debug-rendered, textarea.oc-input-textarea) {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-radius: .375rem !important;
+}
+
+[data-page="admin-services-openclash-log"] #tab.oc > #tab-content > .dom .cm-editor:not(.cm-fullscreen) {
+  border: 1px solid var(--border-light, #536273) !important;
+  padding: 0;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+[data-page="admin-services-openclash-log"] #tab.oc > #tab-content > .dom .cm-editor:not(.cm-fullscreen) > .cm-scroller {
+  border-radius: calc(.375rem - 1px);
+}
+
+[data-page="admin-services-openclash-log"] #tab.oc > #tab-content > .dom .cm-editor.cm-focused:not(.cm-fullscreen) {
+  outline: 0 !important;
+  border-color: var(--primary-color, var(--primary)) !important;
+}
+
+[data-page="admin-services-openclash-log"] .oc .select-popup-footer.log-footer {
+  margin: 0;
+  padding: 1rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Only paint thumbs: preserve native scrollbar sizes, tracks and editor frames. */
+[data-page^="admin-services-openclash"] :is(textarea, .oc, .oc *, .oc .cm-editor .cm-scroller, .oc #debug-rendered, .oc #debug-rendered pre)::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color, var(--primary)) !important;
+}
+
+[data-page^="admin-services-openclash"] :is(textarea, .oc, .oc *, .oc .cm-editor .cm-scroller, .oc #debug-rendered, .oc #debug-rendered pre)::-webkit-scrollbar-thumb:hover {
+  background-color: var(--btn-primary-hover, var(--primary-color, var(--primary))) !important;
+}
+
+/* ZeroTier already renders a real name cell; do not synthesize a second one. */
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network .tr[data-title]::before,
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network .tr.cbi-section-table-titles.named::before,
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network .td[data-title]::before {
+  display: none;
+  content: none;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > .cbi-section-table {
+  display: table;
+  width: 100%;
+  min-width: 70rem;
+  table-layout: auto;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > .cbi-section-table > :is(thead, .thead) {
+  display: table-header-group;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > .cbi-section-table > :is(tbody, .tbody) {
+  display: table-row-group;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > .cbi-section-table > :is(tfoot, .tfoot) {
+  display: table-footer-group;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > .cbi-section-table .tr {
+  display: table-row;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > .cbi-section-table :is(.th, .td) {
+  display: table-cell !important;
+  width: auto;
+  padding: .75rem;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network .td.cbi-section-actions > div {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  width: max-content;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network .cbi-button {
+  white-space: nowrap;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network .tr.placeholder > .td {
+  position: static;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > :is(h3, .cbi-section-create) {
+  position: sticky;
+  left: 0;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > .cbi-section-create {
+  flex-wrap: wrap;
+  gap: .25rem;
+  max-width: 100%;
+}
+
+[data-page="admin-vpn-zerotier-config"] #cbi-zerotier-network > .cbi-section-create > input {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+  [data-page="admin-vpn-zerotier-interface"] #view > div:has(> table.table) {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: visible;
+  }
+
+  [data-page="admin-vpn-zerotier-interface"] #view > div:has(> table.table) > :is(h2, .cbi-map-descr) {
+    position: static;
+  }
+
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table {
+    --argon-zt-info-surface: #fff;
+    --argon-zt-info-heading: #e9ecef;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 1rem 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table :is(thead, tbody, .thead, .tbody) {
+    display: block;
+  }
+
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table .th {
+    display: block !important;
+    border: 0 !important;
+    border-radius: .575rem .575rem 0 0;
+    margin-top: 1rem;
+    padding: .875rem;
+    background: var(--argon-zt-info-heading);
+    white-space: normal;
+  }
+
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table .th:first-child {
+    margin-top: 0;
+  }
+
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table .tr {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: .5rem;
+    border: 0 !important;
+    background: var(--argon-zt-info-surface);
+  }
+
+  /* Native headings delimit interfaces without changing the desktop DOM. */
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table .tr:has(+ .th),
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table .tr:last-child {
+    border-radius: 0 0 .575rem .575rem;
+    padding-bottom: .25rem;
+  }
+
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table .td {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100%;
+    min-width: 0;
+    justify-self: stretch;
+    padding: .75rem .875rem;
+    border: 0 !important;
+    background: transparent;
+    text-align: left !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table .td:last-child {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+}
+
+/* Keep the legacy OpenClash traffic ACL inside its own horizontal viewport. */
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic > .cbi-section-table {
+  display: table;
+  width: 100%;
+  min-width: 100rem;
+  table-layout: auto;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic > .cbi-section-table > :is(thead, .thead) {
+  display: table-header-group;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic > .cbi-section-table > :is(tbody, .tbody) {
+  display: table-row-group;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic > .cbi-section-table .tr {
+  display: table-row;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic > .cbi-section-table :is(.td, .th) {
+  display: table-cell !important;
+  padding: .75rem;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic .tr::before,
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic .td::before {
+  display: none;
+  content: none;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic [data-name] {
+  --argon-ac-control-width: 10rem;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic [data-name="comment"] {
+  --argon-ac-control-width: 12rem;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic [data-name="src_port"] {
+  --argon-ac-control-width: 14rem;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic [data-name="src_ip"] {
+  --argon-ac-control-width: 18rem;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic [data-name="dscp"] {
+  --argon-ac-control-width: 5rem;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic [data-name] :is(input[type="text"], input[type="number"], select, .cbi-dropdown) {
+  box-sizing: border-box;
+  width: var(--argon-ac-control-width) !important;
+  min-width: var(--argon-ac-control-width) !important;
+  max-width: none !important;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic .cbi-section-actions > div {
+  display: flex;
+  flex-wrap: nowrap;
+  width: max-content;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic .tr.placeholder > .td {
+  position: static;
+}
+
+[data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic > :is(h3, .cbi-section-descr, .cbi-section-create) {
+  position: sticky;
+  left: 0;
+  max-width: 100%;
+}
+
 /* wireless overview */
 #cbi-wireless>#wifi_assoclist_table>.tr {
   box-shadow: inset 1px -1px 0 #ddd, inset -1px -1px 0 #ddd;
@@ -3946,8 +4510,88 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   box-shadow: 0 -1px 0 0 #ddd;
 }
 
-#wifi_assoclist_table>.tr>.td[data-title="RX Rate / TX Rate"] {
-  width: 23rem;
+.ifacebadge[data-signal] {
+  min-width: min-content;
+  padding-inline: .5rem;
+  white-space: nowrap;
+}
+
+.ifacebadge[data-signal] > img {
+  flex: none;
+  margin: 0;
+}
+
+.ifacebadge[data-signal] > span {
+  flex-shrink: 0;
+  max-width: none;
+  direction: ltr;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+#wifi_assoclist_table .ifacebadge[data-ssid] {
+  display: flex;
+  width: 100%;
+  gap: .5rem;
+  padding: .5rem;
+}
+
+#wifi_assoclist_table .ifacebadge[data-ssid] > img {
+  flex: none;
+  margin: 0;
+}
+
+#wifi_assoclist_table .ifacebadge[data-ssid] > span {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: start;
+}
+
+#wifi_assoclist_table .ifacebadge[data-ssid] small {
+  display: block;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+#wifi_assoclist_table > .tr > .td > span.hide-xs {
+  display: block;
+}
+
+@media screen and (min-width: 1281px) {
+  #wifi_assoclist_table .td > .cbi-dropdown:is(.btn, .cbi-button):not([multiple]) {
+    min-width: max-content;
+  }
+
+  #wifi_assoclist_table .td > .cbi-dropdown:is(.btn, .cbi-button):not([multiple]) > ul:not(.dropdown) > li {
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+
+  #wifi_assoclist_table > .tr > :is(.th, .td) {
+    padding-inline: .5rem;
+    overflow-wrap: break-word;
+  }
+
+  #wifi_assoclist_table > .tr > :is(.th, .td):first-child {
+    width: 22%;
+    min-width: 10rem;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .table .td:has(.ifacebadge[data-signal]),
+  #cbi-wireless .td:has(.ifacebadge[data-signal]) {
+    min-width: min-content;
+    padding-inline: .5rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #wifi_assoclist_table .td:has(> .ifacebadge[data-ssid]) {
+    flex-basis: 100%;
+    padding-inline: .5rem;
+  }
 }
 
 [data-page="admin-network-dhcp"] .cbi-value {

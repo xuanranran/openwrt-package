@@ -17,7 +17,7 @@
 -#}
 
 {%
-	import { access } from 'fs';
+	import { access, stat } from 'fs';
 	import { cursor } from 'uci';
 	import { dark_palette, appearance_modes } from 'luci.argon-palette';
 	import { srand } from 'math';
@@ -36,6 +36,12 @@
 	http.prepare_content('text/html; charset=UTF-8');
 
 	srand(+substr(reverse(time() + ""), 0, 8));
+
+	function stylesheetVersion(name) {
+		// ctime catches replacements that preserve both mtime and size.
+		const info = stat('/www' + media + '/css/' + name + '.css');
+		return info ? sprintf('%d-%d-%d', info.mtime, info.ctime, info.size) : '0';
+	}
 
 	function validColor(value, fallback) {
 		return type(value) == 'string' && match(value, /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/) ? value : fallback;
@@ -120,8 +126,8 @@
 
 	{% include("themes/" + theme + "/branding_icons") %}
 
-	<link rel="stylesheet" href="{{ media }}/css/cascade.css{# ?v=PKG_VERSION #}">
-	<link id="argon-dark-stylesheet" rel="stylesheet" href="{{ media }}/css/dark.css" media="{{ mode == 'dark' ? 'all' : mode == 'light' ? 'not all' : '(prefers-color-scheme: dark)' }}">
+	<link rel="stylesheet" href="{{ media }}/css/cascade.css?v={{ stylesheetVersion('cascade') }}">
+	<link id="argon-dark-stylesheet" rel="stylesheet" href="{{ media }}/css/dark.css?v={{ stylesheetVersion('dark') }}" media="{{ mode == 'dark' ? 'all' : mode == 'light' ? 'not all' : '(prefers-color-scheme: dark)' }}">
 	<style title="text/css">
 		{% if (access('/etc/config/argon')): %}
 		:root {

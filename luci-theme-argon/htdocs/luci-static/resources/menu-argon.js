@@ -200,6 +200,7 @@ return baseclass.extend({
 	 * Load menu data and trigger rendering
 	 */
 	__init__: function () {
+		this.bindSidebarToggle();
 		ui.menu.load().then(L.bind(this.render, this));
 	},
 
@@ -216,7 +217,7 @@ return baseclass.extend({
 		// Render tab menu if we're deep enough in the navigation hierarchy
 		if (L.env.dispatchpath.length >= 3) {
 			for (var i = 0; i < 3 && node; i++) {
-				node = node.children[L.env.dispatchpath[i]];
+				node = node.children ? node.children[L.env.dispatchpath[i]] : null;
 				url = url + (url ? '/' : '') + L.env.dispatchpath[i];
 			}
 
@@ -225,17 +226,27 @@ return baseclass.extend({
 			}
 		}
 
-		// Attach event listeners for sidebar toggle functionality (prevent duplicate listeners on re-render)
+		this.bindSidebarToggle();
+
+		document.addEventListener('click', L.bind(this.handleLogScroll, this), true);
+
+		// Initialize circular progress bars
+		this.initCircularProgressBars();
+		this.initQuickFileFrame();
+	},
+
+	bindSidebarToggle: function () {
+		// Synchronous controls must not acquire createHandlerFn's busy state.
 		var sidebarToggle = document.querySelector('.showSide');
 		var darkMask = document.querySelector('.darkMask');
 		
 		if (sidebarToggle && !sidebarToggle.dataset.hasToggleListener) {
 			sidebarToggle.dataset.hasToggleListener = 'true';
-			sidebarToggle.addEventListener('click', ui.createHandlerFn(this, 'handleSidebarToggle'));
+			sidebarToggle.addEventListener('click', L.bind(this.handleSidebarToggle, this));
 		}
 		if (darkMask && !darkMask.dataset.hasToggleListener) {
 			darkMask.dataset.hasToggleListener = 'true';
-			darkMask.addEventListener('click', ui.createHandlerFn(this, 'handleSidebarToggle'));
+			darkMask.addEventListener('click', L.bind(this.handleSidebarToggle, this));
 		}
 		if (sidebarToggle && !sidebarToggle.dataset.hasEscapeListener) {
 			sidebarToggle.dataset.hasEscapeListener = 'true';
@@ -246,12 +257,6 @@ return baseclass.extend({
 				}
 			});
 		}
-
-		document.addEventListener('click', L.bind(this.handleLogScroll, this), true);
-
-		// Initialize circular progress bars
-		this.initCircularProgressBars();
-		this.initQuickFileFrame();
 	},
 
 	/**

@@ -352,6 +352,11 @@ div>.table>.tbody>.tr:nth-of-type(2n) {
   background-color: #242424;
 }
 
+[data-page="admin-status-logs-syslog"] #syslog {
+  border-color: #444;
+  background-color: #000;
+}
+
 #iwsvg,
 #iwsvg2,
 #bwsvg {
@@ -1106,6 +1111,25 @@ div#channel_graph {
 [data-page="admin-system-admin-repokeys"] .cbi-dynlist .add-item textarea.cbi-input-text:focus {
   background: #24304a;
   border-color: #276ef1;
+}
+
+/* Scoped native/community plugin surfaces; follow the active dark stylesheet. */
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"], [data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) {
+  --argon-plugin-surface: #242424;
+  --argon-plugin-control: #000;
+  --argon-plugin-text: #ccc;
+  --argon-plugin-muted: #9aa3af;
+  --argon-plugin-border: #444;
+  --argon-plugin-hover: #333;
+  --argon-plugin-selected: var(--dark-primary);
+  --argon-plugin-selected-text: var(--dark-on-primary, #fff);
+}
+
+@media screen and (max-width: 600px) {
+  [data-page="admin-vpn-zerotier-interface"] #view > div > table.table {
+    --argon-zt-info-surface: #242424;
+    --argon-zt-info-heading: #303030;
+  }
 }
 
 /* luci-app-openclash */
