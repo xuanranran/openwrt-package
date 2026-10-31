@@ -1132,13 +1132,6 @@ div#channel_graph {
   }
 }
 
-/* luci-app-openclash */
-#cbi-openclash .cbi-section > legend{
-  background: #242424 !important;
-  border-bottom: 1px solid #242424;
-  line-height: 2.4;
-}
-
 /* Keep switch/VLAN membership states readable in forced and system dark mode. */
 #argon-appearance {
   --argon-menu-bg: #2d2d2d;

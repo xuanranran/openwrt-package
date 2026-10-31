@@ -4405,6 +4405,185 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 }
 
+/* Keep mobile file lists scrollable and their separate action bars full-width. */
+@media screen and (max-width: 600px) {
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) .cbi-section:has(td[data-title]) {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: .875rem;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.cbi-section-table:has(td[data-title]) {
+    display: table;
+    width: 100%;
+    min-width: 54rem;
+    table-layout: auto;
+  }
+
+  [data-page="admin-services-openclash-config"] #cbi-config_file_list table.cbi-section-table:has(td[data-title]) {
+    min-width: 70rem;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.cbi-section-table:has(td[data-title]) > tbody {
+    display: table-row-group;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.cbi-section-table:has(td[data-title]) .tr {
+    display: table-row;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.cbi-section-table:has(td[data-title]) :is(.th, .td) {
+    display: table-cell !important;
+    padding: .875rem;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.cbi-section-table:has(td[data-title]) .cbi-button {
+    min-height: 2.5rem;
+    margin: 0 !important;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) .cbi-section:has(> table.oc-cbi-table) {
+    padding: .875rem;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) .cbi-map table.oc-cbi-table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    border-radius: 0;
+    overflow: visible;
+    background: transparent;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.oc-cbi-table > tbody {
+    display: block;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.oc-cbi-table .tr:not(.cbi-section-table-titles) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .75rem .5rem;
+    width: 100%;
+    background: transparent !important;
+  }
+
+  [data-page="admin-services-openclash-config"] #cbi-openclash table.oc-cbi-table .tr:not(.cbi-section-table-titles) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"]) #cbi-openclash .cbi-section:has(> table.oc-cbi-table) {
+    padding: .875rem;
+    border-radius: .375rem;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.oc-cbi-table .cbi-section-table-titles {
+    display: none !important;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.oc-cbi-table .td {
+    display: block !important;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.oc-cbi-table .cbi-button {
+    width: 100% !important;
+    min-width: 0;
+    max-width: none;
+    height: 32px !important;
+    min-height: 32px;
+    margin: 0 !important;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm, 6px);
+    font-size: 12px;
+    line-height: normal;
+    box-sizing: border-box;
+  }
+
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.cbi-section-table:has(td[data-title]) .tr::before {
+    display: none;
+    content: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  :is([data-page="admin-services-openclash-config"],
+      [data-page="admin-services-openclash-config-subscribe"],
+      [data-page="admin-services-openclash-config-overwrite"],
+      [data-page="admin-services-openclash-settings"],
+      [data-page="admin-services-openclash-proxy-providers-file-manage"],
+      [data-page="admin-services-openclash-rule-providers-file-manage"]) table.oc-cbi-table .cbi-button {
+    height: 30px !important;
+    min-height: 30px;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+}
+
 /* Keep the legacy OpenClash traffic ACL inside its own horizontal viewport. */
 [data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic {
   min-width: 0;
@@ -4835,12 +5014,6 @@ pre.command-output {
   padding: 0 1rem 1rem 1rem
 }
 
-[data-page^="admin-services-openclash"] .cbi-input-file {
-  padding: .2813rem;
-  box-sizing: content-box;
-  width: 15rem !important
-}
-
 [data-page^="admin-services-openclash"] #diag-rc-output>pre,
 [data-page^="admin-services-openclash"] #dns-rc-output>pre {
   font-size: 1.000rem;
@@ -4856,11 +5029,6 @@ pre.command-output {
 [data-page^="admin-services-openclash"] .cbi-button-up,
 [data-page^="admin-services-openclash"] .cbi-button-down {
   padding: 7px 14px;
-}
-
-[data-page^="admin-services-openclash"] select#CORE_VERSION,
-[data-page^="admin-services-openclash"] select#RELEASE_BRANCH {
-  width: auto
 }
 
 /* Keep Argon's global button spacing out of OpenClash's fixed-size theme panel. */
@@ -4905,17 +5073,10 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #dns-rc-o
 
 [data-page^="admin-services-openclash"] .cbi-value-description,
 [data-page^="admin-services-openclash"] .cbi-map-descr,
-[data-page^="admin-services-openclash"] .oc,
 [data-page^="admin-services-openclash"] .cbi-section p,
-[data-page^="admin-services-openclash"] .tool_label_span,
 [data-page^="admin-services-openclash"] b,
 [data-page^="admin-services-openclash"] strong,
-[data-page^="admin-services-openclash"] .form-group label,
-[data-page^="admin-services-openclash"] .status-item .label,
-[data-page^="admin-services-openclash"] [class^="info-cell"],
-[data-page^="admin-services-openclash"] [class^="info-cell"] *,
-[data-page^="admin-services-openclash"] .settings-cell,
-[data-page^="admin-services-openclash"] .sub_div {
+[data-page^="admin-services-openclash"] .form-group label {
   font-family: 'Google Sans', 'Twemoji Mozilla' !important;
 }
 
@@ -4935,11 +5096,6 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #dns-rc-o
 
 [data-page^="admin-services-openclash"] .oc .subscription-info-text {
   white-space: normal;
-}
-
-[data-page^="admin-services-openclash"] .status-item .value b {
-  font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-  font-weight: 700;
 }
 
 /* OpenClash unified font */
@@ -6009,42 +6165,6 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-head
   border-radius: 12px !important;
 }
 
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu {
-  display: flex !important;
-  gap: 12px !important;
-  align-items: stretch;
-  padding: 0 !important;
-  overflow: visible !important;
-  background: transparent !important;
-}
-
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li {
-  flex: 1 1 0;
-  min-width: 0;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: #050505 !important;
-  border: 0 !important;
-  border-radius: 8px !important;
-}
-
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li.cbi-tab {
-  background: var(--primary-color) !important;
-}
-
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li > a {
-  display: block;
-  padding: 11px 14px !important;
-  color: #c8cdd5 !important;
-  text-align: center;
-  border: 0 !important;
-  border-radius: 8px !important;
-}
-
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-header .cbi-tabmenu > li.cbi-tab > a {
-  color: #fff !important;
-}
-
 /* OpenClash log level buttons */
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #tab-content .radio-button {
   display: flex;
@@ -6140,11 +6260,6 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab
   border-radius: 6px !important;
 }
 
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li.cbi-tab {
-  background: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-}
-
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li > a {
   display: block;
   padding: 10px 14px !important;
@@ -6152,10 +6267,6 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab
   text-align: center;
   border: 0 !important;
   border-radius: 6px !important;
-}
-
-html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li.cbi-tab > a {
-  color: #fff !important;
 }
 
 /* Let OpenClash's native theme control these two built-in editors. */
@@ -6183,15 +6294,6 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(>
 }
 
 
-#tab-header-openclash-groups,
-#tab-header-openclash-proxy-provider,
-#tab-header-openclash-servers,
-#tab-header-openclash-game_config,
-#tab-header-openclash-rule_provider_config,
-#tab-header-openclash-rule_providers {
-  border-radius: 6px;
-}
-
 #cbi-openclash .cbi-section {
   position: relative;
   background: #fff;
@@ -6200,23 +6302,6 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc .oc:has(>
   padding: 0px;
   padding-top: 0px;
   box-sizing: border-box;
-}
-
-#cbi-openclash .cbi-section>legend {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: block !important;
-  float: none !important;
-  margin: 0;
-  padding: 14px 16px;
-  line-height: 1.4;
-  white-space: normal;
-  background: #fff;
-  border-radius: 6px 6px 0 0;
-  box-sizing: border-box;
-  border-bottom: 1px solid #eef0f6;
 }
 
 /* luci-app-ota */
