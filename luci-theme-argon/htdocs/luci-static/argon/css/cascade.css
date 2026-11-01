@@ -4406,7 +4406,7 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
 }
 
 /* Keep mobile file lists scrollable and their separate action bars full-width. */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 600px), screen and (max-width: 768px) and (pointer: coarse) {
   :is([data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-proxy-providers-file-manage"],
       [data-page="admin-services-openclash-rule-providers-file-manage"]) .cbi-section:has(td[data-title]) {
@@ -4459,6 +4459,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4471,6 +4477,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4488,6 +4500,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4498,6 +4516,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4516,6 +4540,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4525,6 +4555,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4535,6 +4571,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4551,6 +4593,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4580,6 +4628,12 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
 
 @media screen and (max-width: 480px) {
   :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page^="admin-services-openclash-config-subscribe-edit-"],
+      [data-page^="admin-services-openclash-custom-dns-edit-"],
+      [data-page^="admin-services-openclash-proxies-config-"],
+      [data-page^="admin-services-openclash-proxy-groups-config-"],
+      [data-page^="admin-services-openclash-proxy-providers-config-"],
+      [data-page="admin-services-openclash-servers"],
       [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
@@ -4592,6 +4646,169 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     font-size: 11px;
   }
 }
+
+/* Mobile OpenClash editor gutters, subscriptions and DNS controls. */
+@media screen and (max-width: 600px), screen and (max-width: 768px) and (pointer: coarse) {
+  [data-page^="admin-services-openclash"] .oc .cm-editor .cm-gutters {
+    padding-right: 0 !important;
+  }
+
+  [data-page^="admin-services-openclash"] .oc .cm-lineNumbers .cm-gutterElement {
+    min-width: 2ch;
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+
+  [data-page^="admin-services-openclash"] .oc :is(.cm-foldGutter, .cm-gutter-lint) {
+    font-size: .8em;
+  }
+
+  [data-page^="admin-services-openclash"] .oc .cm-gutter-lint {
+    width: 1em;
+  }
+
+  [data-page^="admin-services-openclash"] .oc :is(.cm-foldGutter, .cm-gutter-lint) .cm-gutterElement {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe > table.cbi-section-table {
+    display: table;
+    width: 100%;
+    min-width: 76rem;
+    table-layout: auto;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe > table > tbody {
+    display: table-row-group;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe .tr {
+    display: table-row;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe :is(.th, .td) {
+    display: table-cell !important;
+    padding: .75rem .875rem;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe :is(th, td):nth-child(1) {
+    min-width: 10rem;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe :is(th, td):nth-child(2) {
+    min-width: 28rem;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe :is(th, td):nth-child(3) {
+    min-width: 10rem;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe :is(th, td):nth-child(4) {
+    min-width: 12rem;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe :is(th, td):nth-child(5) {
+    min-width: 6rem;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe :is(th, td):nth-child(6) {
+    min-width: 10rem;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe textarea {
+    width: 100% !important;
+    min-width: 24rem;
+    max-width: none;
+    height: 6rem;
+    min-height: 5rem;
+    box-sizing: border-box;
+    resize: vertical;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe :is(.tr, .td)::before {
+    content: none;
+    display: none;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe .tr.placeholder > .td {
+    position: static;
+  }
+
+  [data-page="admin-services-openclash-config-subscribe"] #cbi-openclash-config_subscribe > :is(h3, .cbi-section-descr, .cbi-section-create) {
+    position: sticky;
+    left: 0;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .dom-openclash-dns_servers {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers table.oc-tbl {
+    width: 100%;
+    min-width: 76rem;
+    table-layout: auto;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row > td:nth-child(1) {
+    min-width: 3rem;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row > td:nth-child(2) {
+    min-width: 4rem;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row > td:nth-child(3) {
+    min-width: 11rem;
+    --argon-oc-dns-control: 9rem;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row > td:nth-child(4) {
+    min-width: 20rem;
+    --argon-oc-dns-control: 18rem;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row > td:nth-child(5) {
+    min-width: 6rem;
+    --argon-oc-dns-control: 5rem;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row > td:nth-child(6) {
+    min-width: 7rem;
+    --argon-oc-dns-control: 6rem;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row > td:nth-child(7) {
+    min-width: 6rem;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row > td:is(:nth-child(8), :nth-child(9)) {
+    min-width: 10rem;
+    white-space: nowrap;
+  }
+
+  [data-page="admin-services-openclash-config-overwrite"] #cbi-openclash-dns_servers .oc-tbl-row :is(input[type="text"], input[type="number"], select, .cbi-dropdown) {
+    width: 100% !important;
+    min-width: var(--argon-oc-dns-control, 5rem) !important;
+    max-width: none;
+    box-sizing: border-box;
+  }
+}
+/* End mobile OpenClash editor gutters, subscriptions and DNS controls. */
 
 /* Keep the legacy OpenClash traffic ACL inside its own horizontal viewport. */
 [data-page="admin-services-openclash-settings"] #cbi-openclash-lan_ac_traffic {
@@ -6264,18 +6481,27 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab
   flex: 1 1 0;
   margin: 0 !important;
   padding: 0 !important;
-  background: #000 !important;
-  border: 1px solid #536273 !important;
+  background: var(--bg-white, #000) !important;
+  border: 1px solid var(--border-light, #536273) !important;
   border-radius: 6px !important;
+}
+
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li.oc-tab {
+  background: var(--primary-color, var(--primary)) !important;
+  border-color: var(--primary-color, var(--primary)) !important;
 }
 
 html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li > a {
   display: block;
   padding: 10px 14px !important;
-  color: #d0d8e0 !important;
+  color: var(--text-secondary, #d0d8e0) !important;
   text-align: center;
   border: 0 !important;
   border-radius: 6px !important;
+}
+
+html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc [id^="tab-header-openclash-"] > ul > li.oc-tab > a {
+  color: var(--text-on-primary, #fff) !important;
 }
 
 /* Let OpenClash's native theme control these two built-in editors. */
