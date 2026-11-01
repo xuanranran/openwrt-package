@@ -4458,7 +4458,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     margin: 0 !important;
   }
 
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"],
@@ -4469,7 +4470,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     max-width: 100%;
   }
 
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"],
@@ -4485,7 +4487,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     background: transparent;
   }
 
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"],
@@ -4494,7 +4497,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     display: block;
   }
 
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"],
@@ -4511,7 +4515,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"]) #cbi-openclash .cbi-section:has(> table.oc-cbi-table) {
@@ -4519,7 +4524,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     border-radius: .375rem;
   }
 
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"],
@@ -4528,7 +4534,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     display: none !important;
   }
 
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"],
@@ -4543,7 +4550,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     background: transparent;
   }
 
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"],
@@ -4571,7 +4579,8 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
 }
 
 @media screen and (max-width: 480px) {
-  :is([data-page="admin-services-openclash-config"],
+  :is([data-page^="admin-services-openclash-other-file-edit-"],
+      [data-page="admin-services-openclash-config"],
       [data-page="admin-services-openclash-config-subscribe"],
       [data-page="admin-services-openclash-config-overwrite"],
       [data-page="admin-services-openclash-settings"],
