@@ -3831,6 +3831,29 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   margin-left: 1rem
 }
 
+/* Keep native password-strength states readable without changing validation. */
+:is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) {
+  --argon-strength-weak: #b42318;
+  --argon-strength-medium: #805600;
+  --argon-strength-strong: #166534;
+}
+
+:is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) [data-name="pw2"] .cbi-value-description:has(> span[style^="color:"]) {
+  opacity: 1;
+}
+
+:is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) [data-name="pw2"] .cbi-value-description > span[style="color:red"] {
+  color: var(--argon-strength-weak) !important;
+}
+
+:is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) [data-name="pw2"] .cbi-value-description > span[style="color:orange"] {
+  color: var(--argon-strength-medium) !important;
+}
+
+:is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) [data-name="pw2"] .cbi-value-description > span[style="color:green"] {
+  color: var(--argon-strength-strong) !important;
+}
+
 /* software */
 [data-page="admin-system-opkg"] h2 {
   margin-left: 0;
@@ -3873,6 +3896,86 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   margin-bottom: 1rem
 }
 
+/* Native package views inject their own control styles after the theme. */
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  margin: 0 !important;
+  gap: .75rem;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls > div {
+  flex: 1 1 18rem;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  gap: .5rem;
+  white-space: normal;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls > div:first-child {
+  flex-basis: 100%;
+  min-width: 0;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls > div > label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls .control-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  gap: .375rem;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls .control-group > input {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+  width: 0;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls .control-group > .btn {
+  flex: 0 0 auto;
+  max-width: 100%;
+  margin: 0;
+  white-space: normal;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls .pager {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls label:has(> input[type="radio"]) {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  vertical-align: middle;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) .controls input[type="radio"] {
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  top: 0;
+  right: 0;
+}
+
+:is([data-page="admin-system-opkg"], [data-page="admin-system-package-manager"]) #view > #packages {
+  min-width: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: visible;
+}
+
 .td.version,
 .td.size {
   white-space: normal !important;
@@ -3889,6 +3992,20 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
 
 [data-page="admin-system-system"] .cbi-dynlist {
   margin: .25rem 0
+}
+
+/* Only the Notes widget overrides ui.Textarea's full-width wrapper. */
+[data-page="admin-system-system"] [data-name="notes"] .cbi-value-field > div:has(> .cbi-input-textarea) {
+  box-sizing: border-box;
+  width: 20rem !important;
+  max-width: 100%;
+  min-width: 0;
+}
+
+[data-page="admin-system-system"] [data-name="notes"] .cbi-input-textarea {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
 }
 
 [data-page="admin-system-startup"] [data-tab-title] p {
@@ -4052,6 +4169,84 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Update rows can have extra section wrappers in newer PassWall versions. */
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version .cbi-value:has(input[data-update-app]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem .75rem;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version .cbi-value:has(input[data-update-app]) > .cbi-value-title {
+  flex: 0 1 12rem;
+  width: 12rem;
+  min-width: 0;
+  max-width: 100%;
+  padding-right: 0;
+  overflow-wrap: anywhere;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version .cbi-value-field:has(> input[data-update-app]) {
+  display: grid !important;
+  flex: 1 1 22rem;
+  grid-template-columns: max-content max-content minmax(0, 1fr);
+  align-items: center;
+  gap: .5rem .75rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version input[data-update-app] {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  max-width: 100%;
+  margin: 0;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version input[data-update-app][id$="-force_btn"] {
+  grid-column: 2;
+}
+
+:is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version .cbi-value-field > span[id$="-detail"] {
+  grid-column: 3;
+  grid-row: 1;
+  min-width: 0;
+  max-width: 100%;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+@media screen and (max-width: 768px) {
+  :is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version .cbi-value:has(input[data-update-app]) > .cbi-value-title {
+    flex-basis: 100%;
+    width: 100%;
+    text-align: left;
+  }
+
+  :is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version .cbi-value-field:has(> input[data-update-app]) {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-basis: 100%;
+  }
+
+  :is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version input[data-update-app] {
+    flex: 0 1 auto;
+    white-space: normal;
+  }
+
+  :is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"]) #app_version .cbi-value-field > span[id$="-detail"] {
+    flex: 1 1 100%;
+  }
 }
 
 /* Opened panels are moved to body; retain the plugin's position and width. */
@@ -5271,6 +5466,61 @@ pre.command-output {
   padding: 0 6px;
 }
 
+/* Nested forms are repaired by HTML5 parsers; do not depend on a form parent. */
+@media screen and (max-width: 600px), screen and (max-width: 768px) and (pointer: coarse) {
+  [data-page="admin-services-openclash-settings"] .oc fieldset.diag-style {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-inline-size: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: .875rem;
+    border: 0;
+  }
+
+  [data-page="admin-services-openclash-settings"] .oc fieldset.diag-style > .oc-text-center {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .5rem;
+    float: none !important;
+    width: auto !important;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal !important;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  [data-page="admin-services-openclash-settings"] .oc fieldset.diag-style > .oc-text-center > input[type="text"] {
+    grid-column: 1;
+    grid-row: 2;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: 2.5rem;
+    margin: 0;
+  }
+
+  [data-page="admin-services-openclash-settings"] .oc fieldset.diag-style > .oc-text-center > input.cbi-button {
+    grid-column: 2;
+    grid-row: 2;
+    box-sizing: border-box;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    height: 2.5rem;
+    margin: 0;
+    padding: .375rem .75rem;
+    white-space: nowrap;
+  }
+}
+
 /* OpenClash gives diagnostic inputs a light editor background, even for actions. */
 html:not([data-darkmode="true"]) [data-page^="admin-services-openclash"] .oc .diag-style input.cbi-button {
   color: var(--text-primary, #32325d) !important;
@@ -5916,10 +6166,6 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #dns-rc-o
     padding-right: 0 !important;
   }
 
-  [data-page="admin-system-admin-password"] .cbi-value-field {
-    display: table-cell !important;
-  }
-
   .modal.cbi-modal {
     max-width: 95%;
     max-height: none;
@@ -5946,6 +6192,109 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #dns-rc-o
     margin-bottom: 1rem;
   }
   
+}
+
+@media screen and (max-width: 600px), screen and (max-width: 768px) and (pointer: coarse) {
+  /* Password forms must not retain table cells beside fixed-width widgets. */
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-map > .cbi-section {
+    margin: .75rem 0 0;
+    padding: 0;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-section-node {
+    padding: 0;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value:not(.hidden):not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: .5rem;
+    min-width: 0;
+    padding: .75rem 0;
+    line-height: 1.5;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value:is(.hidden, [hidden]) {
+    display: none !important;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value-title {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    text-align: left;
+    line-height: 1.5;
+    word-break: normal;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value-field {
+    display: block !important;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value-field > div {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value-field .cbi-dropdown {
+    width: 100% !important;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value input.cbi-input-text {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .control-group:has(> input.cbi-input-password) {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    gap: 0;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value input.cbi-input-password {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    max-width: 100%;
+    height: 2.5rem;
+    margin: 0;
+    border-radius: .375rem 0 0 .375rem;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .control-group:has(> input.cbi-input-password) > .cbi-button-neutral {
+    flex: 0 0 2.75rem;
+    width: 2.75rem;
+    min-width: 2.75rem;
+    height: 2.5rem;
+    margin: 0;
+    top: 0;
+    border-radius: 0 .375rem .375rem 0;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value-description {
+    padding: .375rem 0 0;
+    line-height: 1.5;
+  }
+
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .cbi-value[data-name="rpcd"]:not(.hidden):not([hidden]) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) [data-name="rpcd"] .cbi-value-field {
+    width: auto;
+  }
 }
 
 @media screen and (min-width: 600px) {

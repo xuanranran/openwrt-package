@@ -1113,6 +1113,12 @@ div#channel_graph {
   border-color: #276ef1;
 }
 
+:is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) {
+  --argon-strength-weak: #ffb4ab;
+  --argon-strength-medium: #f5c24b;
+  --argon-strength-strong: #86efac;
+}
+
 /* Scoped native/community plugin surfaces; follow the active dark stylesheet. */
 :is([data-page="admin-vpn-passwall"], [data-page^="admin-vpn-passwall-"], [data-page="admin-services-passwall"], [data-page^="admin-services-passwall-"], [data-page="admin-vpn-tailscale"], [data-page="admin-services-tailscale"]) {
   --argon-plugin-surface: #242424;
