@@ -1736,8 +1736,21 @@ local START_SCRIPT_PATTERNS = {
 	["openclash_update.sh"] = { "[o]penclash_update\\.sh", "/etc/init\\.d/[o]penclash" },
 }
 
+local function start_script_running()
+	for _, patterns in pairs(START_SCRIPT_PATTERNS) do
+		for _, pattern in ipairs(patterns) do
+			if process_status(pattern) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- returns true on ##FINISHED## only; ##CONTINUE## means the client reconnects to the same run
 local function stream_log_and_parse(reader)
 	local buf = ""
+	local finished = false
 
 	while true do
 		local chunk = reader()
@@ -1750,7 +1763,10 @@ local function stream_log_and_parse(reader)
 			buf = buf:sub(nl + 1)
 			line = line:gsub("^%s+", ""):gsub("%s+$", "")
 			if line ~= "" then
-				if line == "##FINISHED##" or line == "##CONTINUE##" then
+				if line == "##FINISHED##" then
+					finished = true
+					write_padded(line)
+				elseif line == "##CONTINUE##" then
 					write_padded(line)
 				else
 					write_padded(trans_line(line))
@@ -1759,6 +1775,7 @@ local function stream_log_and_parse(reader)
 		end
 	end
 	reader.kill()
+	return finished
 end
 
 function action_start()
@@ -1823,6 +1840,12 @@ function action_start()
 			logfile, #patterns
 		)
 	else
+		-- the log is append-only and several scripts write it: a page-load probe shows it
+		-- only while a start script runs, otherwise it replays output from earlier runs
+		if HTTP.formvalue("probe") == "1" and not start_script_running() then
+			write_padded("##FINISHED##")
+			return
+		end
 		cmd = string.format(
 			"logfile='%s'; " ..
 			"bytes=$(wc -c < \"$logfile\" 2>/dev/null); bytes=${bytes:-0}; " ..
@@ -1856,7 +1879,12 @@ function action_start()
 	local reader = ltn12_popen(cmd)
 	if not reader then return end
 
-	stream_log_and_parse(reader)
+	local finished = stream_log_and_parse(reader)
+	-- clear the log once the watched run ended so a later page load cannot replay it;
+	-- the liveness guard keeps a run started in the same moment from losing its first lines
+	if patterns and finished and not start_script_running() then
+		fs.writefile(logfile, "")
+	end
 end
 
 function action_update()
@@ -7555,7 +7583,7 @@ end
 local function clients_need_fix()
 	local en_mode = fs.uci_get_config("config", "en_mode") or ""
 	local redirect_dns = tonumber(fs.uci_get_config("config", "enable_redirect_dns") or "0") or 0
-	return (en_mode:find("fake%-ip") ~= nil) and redirect_dns ~= 2
+	return (en_mode:find("fake%-ip") ~= nil) and redirect_dns == 1
 end
 
 function action_clients_ac()

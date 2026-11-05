@@ -2888,8 +2888,8 @@ msgstr "遵循规则"
 msgid "Whether or not The Connection to the DNS Server Follow the Rules in Config"
 msgstr "与 DNS 服务器的连接是否遵循配置文件中的规则"
 
-msgid "To Use in Fake-IP Mode, Please Switch The Dns Redirect Mode To Firewall Forwarding"
-msgstr "要在 Fake-IP 模式下使用，请将 Dns 重定向模式切换为防火墙转发模式"
+msgid "In Fake-IP Mode, DNS Queries of Direct Devices Must Bypass The Core And Proxied Devices Must Go Through It"
+msgstr "Fake-IP 模式下，直连设备的 DNS 查询不得经过内核，代理设备的 DNS 查询必须经过内核"
 
 msgid "Skip Proxy Address"
 msgstr "绕过服务器地址"
@@ -5617,6 +5617,12 @@ msgstr "全部直连"
 
 msgid "Download Rate"
 msgstr "下载速率"
+
+msgid "Ensure DNS queries of direct devices bypass the core"
+msgstr "请确保直连设备的 DNS 查询不经过内核"
+
+msgid "Ensure DNS queries of proxy devices go through the core"
+msgstr "请确保代理设备的 DNS 查询经过内核"
 
 msgid "Using access control in Fake-IP mode requires DNS hijack set to Firewall Forwarding"
 msgstr "Fake-IP 模式下使用访问控制需要将 DNS 劫持方式切换为防火墙转发"

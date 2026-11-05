@@ -1988,7 +1988,7 @@ var ocLang = window.ocLang || '';
         },
 
         // Clear the log before streaming so the operation API is served first and the stream does not block it
-        startLogDisplay: function(initialMessage, skipClearLog, scriptName) {
+        startLogDisplay: function(initialMessage, skipClearLog, scriptName, probe) {
             if (this.stream) {
                 if (initialMessage) {
                     this.stream.abort();
@@ -2012,6 +2012,7 @@ var ocLang = window.ocLang || '';
             var stream = ocCreateLogStream({
                 url: '<%=url("admin", "services", "openclash", "startlog")%>',
                 script: scriptName,
+                probe: probe,
                 initialMessage: initialMessage,
                 skipLines: this.lastLogLineCount,
                 onSkipLines: function(n) { self.lastLogLineCount = n; },
@@ -3377,6 +3378,7 @@ var ocLang = window.ocLang || '';
         envFails: 0,
         envRetryTimer: null,
         probeTimer: null,
+        hintTimer: null,
         statsTs: 0,
         lastCost: 0,
         pollSeq: 0,
@@ -3558,10 +3560,14 @@ var ocLang = window.ocLang || '';
         },
 
         stopTimers: function() {
+            var hint;
             if (this.envTimer) { clearInterval(this.envTimer); this.envTimer = null; }
             if (this.statsTimer) { clearInterval(this.statsTimer); this.statsTimer = null; }
             if (this.envRetryTimer) { clearTimeout(this.envRetryTimer); this.envRetryTimer = null; }
             if (this.probeTimer) { clearTimeout(this.probeTimer); this.probeTimer = null; }
+            if (this.hintTimer) { clearTimeout(this.hintTimer); this.hintTimer = null; }
+            hint = document.getElementById('ac-dns-hint');
+            if (hint) hint.classList.add('oc-hidden');
             if (this.statsAbort) { this.statsAbort.abort(); this.statsAbort = null; }
             this.prevFlows = null;
             this.statsTs = 0;
@@ -3946,6 +3952,7 @@ var ocLang = window.ocLang || '';
                 self.busy--;
                 if (x && x.status == 200 && data && data.ok) {
                     d.dir = dir;
+                    self.showDnsHint(dir);
                     ocToast(!data.core_running ? '<%:Saved; applies at the next start%>'
                         : (dir === 'direct' ? '<%:Set as Direct%>' : '<%:Set as Proxy%>'), 'success');
                 } else {
@@ -3975,6 +3982,7 @@ var ocLang = window.ocLang || '';
                         self.env.default_dir = dir;
                         self.env.ac_mode = dir === 'proxy' ? 0 : 1;
                     }
+                    self.showDnsHint(dir);
                     ocToast(!data.core_running ? '<%:Saved; applies at the next start%>'
                         : (dir === 'proxy' ? '<%:All set to Proxy%>' : '<%:All set to Direct%>'), 'success');
                 } else {
@@ -4012,6 +4020,32 @@ var ocLang = window.ocLang || '';
             if (!env) return;
             var fixEl = document.getElementById('ac-warn-fix');
             if (fixEl) fixEl.classList.toggle('oc-hidden', !env.need_fix);
+        },
+
+        // with DNS hijack disabled the client DNS path is the user's own setup;
+        // redir-host keeps real addresses, so only fake-ip needs the direct-side reminder
+        showDnsHint: function(dir) {
+            var env = this.env, self = this, el, txt, show;
+            show = !!env && !env.need_fix && Number(env.redirect_dns) === 0
+                && (dir !== 'direct' || (!!env.en_mode && env.en_mode.indexOf('fake-ip') >= 0));
+            el = document.getElementById('ac-dns-hint');
+            if (!el) return;
+            if (!show) {
+                if (this.hintTimer) { clearTimeout(this.hintTimer); this.hintTimer = null; }
+                el.classList.add('oc-hidden');
+                return;
+            }
+            txt = document.getElementById('ac-dns-hint-text');
+            if (!txt) return;
+            txt.textContent = dir === 'direct'
+                ? '<%:Ensure DNS queries of direct devices bypass the core%>'
+                : '<%:Ensure DNS queries of proxy devices go through the core%>';
+            el.classList.remove('oc-hidden');
+            if (this.hintTimer) clearTimeout(this.hintTimer);
+            this.hintTimer = setTimeout(function() {
+                self.hintTimer = null;
+                el.classList.add('oc-hidden');
+            }, 6000);
         },
 
         syncCounts: function() {
@@ -4845,8 +4879,9 @@ var ocLang = window.ocLang || '';
             }
 
             if (status.clash && status.daip) {
+                // keep the start log so a page opened from another tab shows the run already in progress
                 if (!WSManager.hasActiveConnections()) {
-                    LogManager.startLogDisplay(null, false, 'view');
+                    LogManager.startLogDisplay(null, true, 'view', true);
                 }
                 initializeWebSocketConnections(status);
             } else {
