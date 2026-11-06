@@ -2562,7 +2562,6 @@ var ocLang = window.ocLang || '';
         textarea: null,
         statusEl: null,
         initialized: false,
-        bubbleTimer: null,
 
         init: function() {
             if (this.initialized) return;
@@ -2570,23 +2569,11 @@ var ocLang = window.ocLang || '';
             this.textarea = document.getElementById('usage-help-textarea');
             this.statusEl = document.getElementById('usage-help-status');
 
-            var floatBtn = document.getElementById('usage-help-float');
-            if (floatBtn) {
-                floatBtn.addEventListener('click', function() {
-                    UsageHelpManager.show();
-                });
-                floatBtn.addEventListener('mouseenter', function() {
-                    UsageHelpManager.dismissBubble();
-                });
-            }
-
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && UsageHelpManager.overlay && UsageHelpManager.overlay.style.display === 'flex') {
                     UsageHelpManager.hide();
                 }
             });
-
-            this.startBubbleTimer();
 
             this.initialized = true;
         },
@@ -2667,33 +2654,49 @@ var ocLang = window.ocLang || '';
                 if (btn) { btn.innerHTML = origHTML; btn.disabled = false; }
                 self.hide();
             }, 2000);
+        }
+    };
+
+    var FloatHintManager = {
+        bubbles: [],
+        timer: null,
+        started: false,
+
+        init: function() {
+            var stack = document.getElementById('oc-float-stack');
+            if (!stack || this.started) return;
+            this.started = true;
+            // the tour hint is noise for someone who already walked through it
+            var ids = ['usage-help-bubble'];
+            if (localStorage.getItem('oc_guide_done') !== '1') ids.unshift('guide-bubble');
+            for (var i = 0; i < ids.length; i++) {
+                var el = document.getElementById(ids[i]);
+                if (el) this.bubbles.push(el);
+            }
+            var self = this;
+            stack.addEventListener('mouseenter', function() { self.dismiss(); });
+            stack.addEventListener('click', function() { self.dismiss(); });
+            this.startTimer();
         },
 
-        startBubbleTimer: function() {
-            var bubble = document.getElementById('usage-help-bubble');
-            if (!bubble) return;
-
+        startTimer: function() {
+            if (!this.bubbles.length) return;
             var delay = Math.random() * 60000;
+            // skip most visits so the hint stays an occasional nudge
             if (delay > 20000) return;
-
             var self = this;
-            this.bubbleTimer = setTimeout(function() {
-                bubble.classList.add('show');
+            this.timer = setTimeout(function() {
+                self.timer = null;
+                for (var i = 0; i < self.bubbles.length; i++) self.bubbles[i].classList.add('show');
             }, Math.min(delay, 5000));
         },
 
-        dismissBubble: function() {
-            var bubble = document.getElementById('usage-help-bubble');
-            if (!bubble) return;
-            bubble.classList.remove('show');
-            if (this.bubbleAutoHide) {
-                clearTimeout(this.bubbleAutoHide);
-                this.bubbleAutoHide = null;
+        dismiss: function() {
+            if (this.timer) {
+                clearTimeout(this.timer);
+                this.timer = null;
             }
-            if (this.bubbleTimer) {
-                clearTimeout(this.bubbleTimer);
-                this.bubbleTimer = null;
-            }
+            for (var i = 0; i < this.bubbles.length; i++) this.bubbles[i].classList.remove('show');
         }
     };
 
@@ -4909,12 +4912,8 @@ var ocLang = window.ocLang || '';
         OverwriteSubscribeManager.init();
         SubscriptionManager.init();
         UsageHelpManager.init();
+        FloatHintManager.init();
         loadAnnouncement();
-        var guideBubble = document.getElementById('guide-bubble');
-        if (guideBubble && localStorage.getItem('oc_guide_done') !== '1') {
-            guideBubble.classList.add('show');
-            setTimeout(function() { guideBubble.classList.remove('show'); }, 6000);
-        }
     }, 300);
 
     setTimeout(function() { check_core(); }, 1000);

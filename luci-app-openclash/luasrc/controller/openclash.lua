@@ -447,7 +447,7 @@ local function oplv()
 end
 
 local function opup()
-	return SYS.call("bash /usr/share/openclash/openclash_update.sh >/dev/null 2>&1 &")
+	return SYS.call("/usr/share/openclash/openclash_update.sh >/dev/null 2>&1 &")
 end
 
 local function coreup()
@@ -476,9 +476,9 @@ function core_download()
 	local core_type = is_oix() and "Oix" or "Meta"
 
 	if download_url and download_url ~= "" then
-		SYS.call(string.format("bash /usr/share/openclash/openclash_core.sh '%s' '%s' >/dev/null 2>&1 &", core_type, download_url))
+		SYS.call(string.format("/usr/share/openclash/openclash_core.sh '%s' '%s' >/dev/null 2>&1 &", core_type, download_url))
 	else
-		SYS.call(string.format("bash /usr/share/openclash/openclash_core.sh '%s' >/dev/null 2>&1 &", core_type))
+		SYS.call(string.format("/usr/share/openclash/openclash_core.sh '%s' >/dev/null 2>&1 &", core_type))
 	end
 
 end
@@ -582,23 +582,23 @@ function action_one_key_update()
 
 	if update_type == "plugin" then
 		if download_url and download_url ~= "" then
-			return SYS.call(string.format("bash /usr/share/openclash/openclash_update.sh 'plugin_update' '%s' '%s' >/dev/null 2>&1 &",
+			return SYS.call(string.format("/usr/share/openclash/openclash_update.sh 'plugin_update' '%s' '%s' >/dev/null 2>&1 &",
 				cdn_url or "", download_url))
 		elseif cdn_url and cdn_url ~= "" then
-			return SYS.call(string.format("bash /usr/share/openclash/openclash_update.sh 'plugin_update' '%s' >/dev/null 2>&1 &", cdn_url))
+			return SYS.call(string.format("/usr/share/openclash/openclash_update.sh 'plugin_update' '%s' >/dev/null 2>&1 &", cdn_url))
 		else
-			return SYS.call("bash /usr/share/openclash/openclash_update.sh 'plugin_update' >/dev/null 2>&1 &")
+			return SYS.call("/usr/share/openclash/openclash_update.sh 'plugin_update' >/dev/null 2>&1 &")
 		end
 	end
 
 	if download_url and download_url ~= "" then
 		-- Full download URL: pass as $3 to the update script
-		return SYS.call(string.format("bash /usr/share/openclash/openclash_update.sh 'one_key_update' '%s' '%s' >/dev/null 2>&1 &",
+		return SYS.call(string.format("/usr/share/openclash/openclash_update.sh 'one_key_update' '%s' '%s' >/dev/null 2>&1 &",
 			cdn_url or "", download_url))
 	elseif cdn_url and cdn_url ~= "" then
-		return SYS.call(string.format("bash /usr/share/openclash/openclash_update.sh 'one_key_update' '%s' >/dev/null 2>&1 &", cdn_url))
+		return SYS.call(string.format("/usr/share/openclash/openclash_update.sh 'one_key_update' '%s' >/dev/null 2>&1 &", cdn_url))
 	else
-		return SYS.call("bash /usr/share/openclash/openclash_update.sh 'one_key_update' >/dev/null 2>&1 &")
+		return SYS.call("/usr/share/openclash/openclash_update.sh 'one_key_update' >/dev/null 2>&1 &")
 	end
 end
 

@@ -5803,3 +5803,12 @@ msgstr "Google 登录已超时，请重试"
 
 msgid "Google sign-in expired or could not be verified, please try again"
 msgstr "Google 登录已过期或无法验证，请重试"
+
+msgid "System Hosts"
+msgstr "系统 Hosts"
+
+msgid "Write The Entries Below To The System /etc/hosts While OpenClash Is Running"
+msgstr "在 OpenClash 运行期间将下列条目写入系统 /etc/hosts"
+
+msgid "One IP Domain Pair Per Line, Invalid Lines Are Ignored"
+msgstr "每行一条「IP 域名」记录，非法行会被忽略"
