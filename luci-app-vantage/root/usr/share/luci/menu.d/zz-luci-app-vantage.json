@@ -7,7 +7,12 @@
 			"path": "vantage/overview"
 		},
 		"depends": {
-			"acl": [ "luci-app-vantage" ]
+			"acl": [ "luci-app-vantage" ],
+			"uci": {
+				"luci": {
+					"main": { "mediaurlbase": "/luci-static/vantage" }
+				}
+			}
 		}
 	},
 	"admin/status/dashboard": {

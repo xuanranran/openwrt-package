@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Register the menu refresh trigger on installation as well as at boot.
+if [ -z "$IPKG_INSTROOT" ]; then
+	/bin/sh /usr/share/luci/vantage-menu-reload.sh
+	/etc/init.d/ucitrack reload
+fi
+
+exit 0

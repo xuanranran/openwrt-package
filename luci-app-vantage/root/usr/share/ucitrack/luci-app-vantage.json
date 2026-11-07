@@ -1,0 +1,4 @@
+{
+	"config": "luci",
+	"exec": "/bin/sh /usr/share/luci/vantage-menu-reload.sh"
+}
