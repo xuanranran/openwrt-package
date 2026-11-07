@@ -848,17 +848,29 @@ function fetch_sub_info(sub_url, sub_ua, sub_headers, raw_info)
 	return nil
 end
 
-local function parse_url_with_name(raw_url, default_name)
-	local url, name = string.match(raw_url, "^(.-)#name=(.+)$")
+-- subscription links may carry "#name=xxx&ua=xxx" markers after the url
+local function parse_sub_url(raw_url)
+	local url, fragment = string.match(raw_url, "^(.-)#(.+)$")
 	if url then
-		return url, name
-	else
-		return raw_url, default_name
+		local name, ua
+		for key, value in string.gmatch(fragment, "([%w_%-]+)=([^&]*)") do
+			if value ~= "" then
+				if key == "name" then
+					name = value
+				elseif key == "ua" then
+					ua = value
+				end
+			end
+		end
+		if name or ua then
+			return url, name, ua
+		end
 	end
+	return raw_url
 end
 
 function get_sub_url(filename)
-	local sub_url = nil
+	local sub_url, sub_url_ua = nil, nil
 	local info_tb = {}
 	local providers = {}
 
@@ -874,16 +886,17 @@ function get_sub_url(filename)
 					string.gsub(s.url, '[^\n]+', function(w) info_tb[#info_tb + 1] = w end)
 				end
 				if #info_tb == 1 then
-					local url, name = parse_url_with_name(info_tb[1], filename)
-					if url ~= info_tb[1] then
-						providers[#providers + 1] = {name = name, url = url}
+					local url, name, ua = parse_sub_url(info_tb[1])
+					if name then
+						providers[#providers + 1] = {name = name, url = url, ua = ua}
 					else
 						sub_url = url
+						sub_url_ua = ua
 					end
 				elseif #info_tb > 1 then
 					for _, raw in ipairs(info_tb) do
-						local url, name = parse_url_with_name(raw, filename)
-						providers[#providers + 1] = {name = name, url = url}
+						local url, name, ua = parse_sub_url(raw)
+						providers[#providers + 1] = {name = name or filename, url = url, ua = ua}
 					end
 				end
 				return false
@@ -892,7 +905,7 @@ function get_sub_url(filename)
 	)
 
 	if sub_url then
-		return {type = "single", url = sub_url}
+		return {type = "single", url = sub_url, ua = sub_url_ua}
 	end
 
 	if #providers > 0 then
@@ -950,12 +963,13 @@ function get_sub_url(filename)
 			if s.name == filename and s.address and string.find(s.address, "http") then
 				string.gsub(s.address, '[^\n]+', function(w) info_tb[#info_tb + 1] = w end)
 				if #info_tb == 1 then
-					local url, _ = parse_url_with_name(info_tb[1], filename)
+					local url, _, ua = parse_sub_url(info_tb[1])
 					sub_url = url
+					sub_url_ua = ua
 				elseif #info_tb > 1 then
 					for _, raw in ipairs(info_tb) do
-						local url, name = parse_url_with_name(raw, filename)
-						providers[#providers + 1] = {name = name, url = url}
+						local url, name, ua = parse_sub_url(raw)
+						providers[#providers + 1] = {name = name or filename, url = url, ua = ua}
 					end
 				end
 			end
@@ -963,7 +977,7 @@ function get_sub_url(filename)
 	)
 
 	if sub_url then
-		return {type = "single", url = sub_url}
+		return {type = "single", url = sub_url, ua = sub_url_ua}
 	end
 
 	if #providers > 0 then
@@ -979,7 +993,7 @@ function sub_info_get()
 
 	filename = HTTP.formvalue("filename")
 	sub_info = ""
-	sub_ua = "Clash"
+	sub_ua = "clash-verge/v2.5.10"
 	sub_headers = ""
 
 	-- the config list passes the file name; subscription entries are keyed by the bare config name
@@ -1004,13 +1018,13 @@ function sub_info_get()
 
 		if url_result then
 			if url_result.type == "single" then
-				local info = fetch_sub_info(url_result.url, sub_ua, sub_headers)
+				local info = fetch_sub_info(url_result.url, url_result.ua or sub_ua, sub_headers)
 				if info then
 					providers_data[#providers_data + 1] = info
 				end
 			elseif #url_result.providers <= 1 then
 				for i, provider in ipairs(url_result.providers) do
-					local info = fetch_sub_info(provider.url, sub_ua, sub_headers)
+					local info = fetch_sub_info(provider.url, provider.ua or sub_ua, sub_headers)
 					if info then
 						info.provider_name = provider.name
 						providers_data[#providers_data + 1] = info
@@ -1027,7 +1041,7 @@ function sub_info_get()
 					end
 				end
 
-				local function fork_provider_curl(url)
+				local function fork_provider_curl(url, ua)
 					local fdi, fdo = nixio.pipe()
 					if not fdi or not fdo then return nil end
 					local cmd = string.format(
@@ -1035,7 +1049,7 @@ function sub_info_get()
 						.. 'CODE=$(echo "$OUT" | grep -o "http_code=[0-9]*" | head -1 | cut -d= -f2); '
 						.. 'if [ -n "$OUT" ] && [ "$CODE" = "200" ]; then echo "$OUT"; '
 						.. 'else curl -sLI -X GET -m 5 --retry 2 -w "http_code=%%{http_code}" -H "User-Agent: Quantumultx"%s "%s" 2>/dev/null; fi',
-						sub_ua, header_args, url, header_args, url
+						ua, header_args, url, header_args, url
 					)
 					local child = nixio.fork()
 					if child > 0 then
@@ -1057,7 +1071,7 @@ function sub_info_get()
 				local jobs = {}
 
 				for i, provider in ipairs(providers) do
-					local job = fork_provider_curl(provider.url)
+					local job = fork_provider_curl(provider.url, provider.ua or sub_ua)
 					if job then
 						job.idx = i
 						job.name = provider.name
@@ -1098,7 +1112,8 @@ function sub_info_get()
 					end
 					for _, job in ipairs(jobs) do
 						if job.done and job.buf ~= "" then
-							local info = fetch_sub_info(providers[job.idx].url, sub_ua, sub_headers, job.buf)
+							local provider = providers[job.idx]
+							local info = fetch_sub_info(provider.url, provider.ua or sub_ua, sub_headers, job.buf)
 							if info then
 								info.provider_name = job.name
 								providers_data[#providers_data + 1] = info
@@ -1109,7 +1124,7 @@ function sub_info_get()
 				-- Fallback: if all forks failed, try serial
 				if #providers_data == 0 then
 					for i, provider in ipairs(providers) do
-						local info = fetch_sub_info(provider.url, sub_ua, sub_headers)
+						local info = fetch_sub_info(provider.url, provider.ua or sub_ua, sub_headers)
 						if info then
 							info.provider_name = provider.name
 							providers_data[#providers_data + 1] = info
@@ -5232,7 +5247,7 @@ end
 function action_add_subscription()
 	local name = HTTP.formvalue("name")
 	local address = HTTP.formvalue("address")
-	local sub_ua = HTTP.formvalue("sub_ua") or "clash-verge/v2.4.5"
+	local sub_ua = HTTP.formvalue("sub_ua") or "clash-verge/v2.5.10"
 	local sub_convert = HTTP.formvalue("sub_convert") or "0"
 	local convert_address = HTTP.formvalue("convert_address") or ""
 	local template = HTTP.formvalue("template") or ""
@@ -7482,34 +7497,42 @@ local function clients_meta_write(meta)
 	end
 end
 
--- device names come from the LAN's DHCP server: dnsmasq leases, then static host entries,
--- then the addn-hosts files it publishes for the same records
+-- device names and addresses come from the LAN's DHCP server: dnsmasq leases, then
+-- static host entries, then the addn-hosts files it publishes for the same records
 local function clients_device_names()
-	local by_mac, by_ip = {}, {}
+	local by_mac, by_ip, ip_by_mac = {}, {}, {}
 	local data = fs.readfile("/tmp/dhcp.leases")
 	if data then
 		for line in data:gmatch("[^\n]+") do
 			local mac, ip, name = line:match("^%d+ (%S+) (%S+) (%S+)")
-			if mac and mac ~= "*" and ip and ip ~= "*" and name and name ~= "*" then
-				by_mac[mac:lower()] = name
-				by_ip[ip] = name
+			if mac and mac ~= "*" and ip and ip ~= "*" then
+				ip_by_mac[mac:lower()] = ip
+				if name and name ~= "*" then
+					by_mac[mac:lower()] = name
+					by_ip[ip] = name
+				end
 			end
 		end
 	end
 	uci:foreach("dhcp", "host", function(s)
 		local name = s.name
-		if not name or name == "" then return end
+		if name == "" then name = nil end
+		local ip = s.ip and s.ip:match("^%d+%.%d+%.%d+%.%d+$") and s.ip or nil
 		local macs = type(s.mac) == "table" and s.mac or { s.mac }
 		for _, mac in ipairs(macs) do
-			if mac and mac:match("^%x%x:%x%x:%x%x:%x%x:%x%x:%x%x$") then by_mac[mac:lower()] = name end
+			if mac and mac:match("^%x%x:%x%x:%x%x:%x%x:%x%x:%x%x$") then
+				mac = mac:lower()
+				if name then by_mac[mac] = name end
+				if ip then ip_by_mac[mac] = ip end
+			end
 		end
-		if s.ip and s.ip:match("^%d+%.%d+%.%d+%.%d+$") then by_ip[s.ip] = name end
+		if name and ip then by_ip[ip] = name end
 	end)
 	local hosts = SYS.exec("cat /tmp/hosts/* 2>/dev/null")
 	for ip, name in (hosts or ""):gmatch("(%d+%.%d+%.%d+%.%d+)%s+([%w%-%._]+)") do
 		if not by_ip[ip] then by_ip[ip] = name end
 	end
-	return by_mac, by_ip
+	return by_mac, by_ip, ip_by_mac
 end
 
 local function clients_list_values(key)
@@ -7598,7 +7621,7 @@ function action_clients_ac()
 	local ip6_by_mac, v4_state, v4_mac, v4_dev = clients_neighbors(own_macs)
 	local ac_mode = clients_ac_mode()
 	local meta = clients_meta_read()
-	local lease_by_mac, lease_by_ip = clients_device_names()
+	local lease_by_mac, lease_by_ip, lease_ip_by_mac = clients_device_names()
 
 	local black_ips = clients_list_values("lan_ac_black_ips")
 	local white_ips = clients_list_values("lan_ac_white_ips")
@@ -7668,18 +7691,27 @@ function action_clients_ac()
 
 	local probing = clients_probe_trigger(cache, candidates)
 
-	-- list entries without a current neighbour stay manageable while offline
+	-- list entries without a current neighbour stay manageable while offline; a MAC is
+	-- paired with its leased or last-seen address so one device keeps one row
+	local ip_by_mac = {}
+	for mac, ip in pairs(lease_ip_by_mac) do ip_by_mac[mac] = ip end
+	for ip, m in pairs(ip_mac) do
+		if not ip_by_mac[m.mac] then ip_by_mac[m.mac] = ip end
+	end
+	local function ensure_list_mac(mac)
+		mac = mac:lower()
+		if by_mac[mac] then return end
+		local ip = ip_by_mac[mac]
+		if ip and (by_ip[ip] or not clients_is_lan_ip(ip, nets, own)) then ip = nil end
+		ensure(mac, ip)
+	end
+	for _, mac in ipairs(black_mac_list) do ensure_list_mac(mac) end
+	for _, mac in ipairs(white_mac_list) do ensure_list_mac(mac) end
 	for _, ip in ipairs(black_ips) do
 		if not by_ip[ip] and clients_is_lan_ip(ip, nets, own) then ensure(nil, ip) end
 	end
 	for _, ip in ipairs(white_ips) do
 		if not by_ip[ip] and clients_is_lan_ip(ip, nets, own) then ensure(nil, ip) end
-	end
-	for _, mac in ipairs(black_mac_list) do
-		if not by_mac[mac:lower()] then ensure(mac:lower(), nil) end
-	end
-	for _, mac in ipairs(white_mac_list) do
-		if not by_mac[mac:lower()] then ensure(mac:lower(), nil) end
 	end
 
 	-- IPv6-only devices still belong to the list
