@@ -1662,6 +1662,43 @@ td>table>tbody>tr>td,
   touch-action: manipulation;
 }
 
+/* Complete standalone input buttons without repainting plugin variants. */
+input:where([type="button"], [type="submit"], [type="reset"]):where(:not(.btn, .cbi-button)) {
+  font-size: .8rem;
+  padding: .45rem .8rem;
+  cursor: pointer;
+  border-radius: .375rem;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-user-select: none;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+}
+
+@media (hover: hover) {
+  input:where([type="button"], [type="submit"], [type="reset"]):where(:not(.btn, .cbi-button)):where(:not(:disabled, [disabled], [aria-disabled="true"], [disabled] *, [aria-disabled="true"] *)):hover {
+    box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 2px 2px rgba(0, 0, 0, .2);
+  }
+}
+
+input:where([type="button"], [type="submit"], [type="reset"]):where(:not(.btn, .cbi-button)):focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+html[data-darkmode="true"] input:where([type="button"], [type="submit"], [type="reset"]):where(:not(.btn, .cbi-button)):focus-visible {
+  outline-color: var(--dark-primary, var(--primary));
+}
+
+input:where([type="button"], [type="submit"], [type="reset"]):where(:not(.btn, .cbi-button)):is(:disabled, [disabled], [aria-disabled="true"]) {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: .5;
+  box-shadow: none;
+}
+
 .cbi-button-up,
 .cbi-button-down {
   font-size: 1.2rem;
@@ -3767,36 +3804,6 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
     padding: .875rem .5rem;
     font-size: .6rem
   }
-}
-
-/* Identify native port groups by content, not firmware-specific inline styles. */
-:is([data-page="admin-status"], [data-page="admin-status-overview"]) #view div:has(> .ifacebox):has(img[src*="/icons/port_"]) {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr)) !important;
-  align-items: stretch !important;
-  justify-items: stretch !important;
-  min-width: 0;
-  max-width: 100%;
-  gap: .75rem;
-  margin: 0 !important;
-}
-
-:is([data-page="admin-status"], [data-page="admin-status-overview"]) #view div:has(> .ifacebox):has(img[src*="/icons/port_"]) > .ifacebox {
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  align-self: stretch;
-}
-
-:is([data-page="admin-status"], [data-page="admin-status-overview"]) #view div:has(> .ifacebox):has(img[src*="/icons/port_"]) > .ifacebox > .ifacebox-head:first-child {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-:is([data-page="admin-status"], [data-page="admin-status-overview"]) #view div:has(> .ifacebox):has(img[src*="/icons/port_"]) > .ifacebox > .ifacebox-body:nth-child(2) {
-  flex-grow: 1;
-  min-width: 0;
 }
 
 [data-page="admin-system-attendedsysupgrade"] #view .cbi-button {
