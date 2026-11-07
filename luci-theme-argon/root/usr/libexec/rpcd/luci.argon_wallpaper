@@ -68,9 +68,9 @@ fetch_pic_url() {
 
 try_update() {
 	local lock="$WRLOCK"
-	exec 200>"$lock"
+	exec 9>"$lock"
 
-	if flock -n 200 >"/dev/null" 2>&1; then
+	if flock -n 9 >"/dev/null" 2>&1; then
 		local picurl="$(fetch_pic_url)"
 		if [ -n "$picurl" ]; then
 
@@ -89,7 +89,7 @@ try_update() {
 			# and let the login page select a local background instead.
 			: > "$CACHE"
 		fi
-		flock -u 200 >"/dev/null" 2>&1
+		flock -u 9 >"/dev/null" 2>&1
 	elif [ -s "$CACHE" ]; then
 		cat "$CACHE"
 	fi

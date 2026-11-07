@@ -3769,6 +3769,36 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   }
 }
 
+/* Identify native port groups by content, not firmware-specific inline styles. */
+:is([data-page="admin-status"], [data-page="admin-status-overview"]) #view div:has(> .ifacebox):has(img[src*="/icons/port_"]) {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr)) !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  min-width: 0;
+  max-width: 100%;
+  gap: .75rem;
+  margin: 0 !important;
+}
+
+:is([data-page="admin-status"], [data-page="admin-status-overview"]) #view div:has(> .ifacebox):has(img[src*="/icons/port_"]) > .ifacebox {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  align-self: stretch;
+}
+
+:is([data-page="admin-status"], [data-page="admin-status-overview"]) #view div:has(> .ifacebox):has(img[src*="/icons/port_"]) > .ifacebox > .ifacebox-head:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+:is([data-page="admin-status"], [data-page="admin-status-overview"]) #view div:has(> .ifacebox):has(img[src*="/icons/port_"]) > .ifacebox > .ifacebox-body:nth-child(2) {
+  flex-grow: 1;
+  min-width: 0;
+}
+
 [data-page="admin-system-attendedsysupgrade"] #view .cbi-button {
   margin-left: 0 !important;
   margin-top: 1rem !important

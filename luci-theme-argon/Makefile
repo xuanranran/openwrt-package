@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=Argon Theme
 LUCI_DEPENDS:=+luci-base +curl +jsonfilter +ucode-mod-math +flock
-PKG_VERSION:=3.1.1
+PKG_VERSION:=3.1.3
 PKG_RELEASE:=20261023
 PKG_LICENSE:=Apache-2.0 MIT
 

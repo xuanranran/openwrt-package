@@ -1,0 +1,649 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:69
+msgctxt "Yet unknown nftables table family (\"family\" table \"name\")"
+msgid "\"%h\" table \"%h\""
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:352
+msgctxt "vantage-theme"
+msgid "%d more chain at this hook"
+msgid_plural "%d more chains at this hook"
+msgstr[0] ""
+msgstr[1] ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1403
+msgctxt "vantage-theme"
+msgid "%d result"
+msgid_plural "%d results"
+msgstr[0] ""
+msgstr[1] ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:345
+msgctxt "vantage-theme"
+msgid "%d rule"
+msgid_plural "%d rules"
+msgstr[0] ""
+msgstr[1] ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:407
+msgctxt "vantage-theme"
+msgid "%s matched"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:306
+msgctxt "vantage-theme"
+msgid "%s: table %s (%s), priority %d"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:435
+msgctxt "vantage-theme"
+msgid "(open above)"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:436
+msgctxt "vantage-theme"
+msgid "(too deep to open here)"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:66
+msgid "ARP traffic table \"%h\""
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:155
+msgctxt "vantage-theme"
+msgid "Accept"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1323
+msgid "Actions"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:399
+msgctxt "nft match any traffic"
+msgid "Any packet"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1311
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1312
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1313
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1316
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1320
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1677
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:132
+msgctxt "vantage-theme"
+msgid "Appearance"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/sysauth.ut:48
+msgid "Authorization Required"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1679
+msgctxt "vantage-theme"
+msgid "Auto"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:378
+msgctxt "vantage-theme"
+msgid "Back to %s"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:380
+msgctxt "vantage-theme"
+msgid "Back to the calling chain"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:120
+msgctxt "vantage-theme"
+msgid "Breadcrumb"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:50
+msgid "Bridge"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:67
+msgid "Bridge traffic table \"%h\""
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:51
+msgctxt "vantage-theme"
+msgid "Bridged between ports"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:462
+msgid "Buffered"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:473
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:483
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:487
+msgid "Cache"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:462
+msgid "Cached"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:208
+msgctxt "vantage-theme"
+msgid "Chains"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:216
+msgctxt "vantage-theme"
+msgid "Chains no rule jumps to"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:216
+msgctxt "vantage-theme"
+msgid "Chains no rule jumps to directly"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:544
+msgid "Channel"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:950
+msgid "Collapse navigation"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1678
+msgid "Colour theme"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1347
+msgid "Command palette"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:399
+msgctxt "vantage-theme"
+msgid "Conditions in the rules table"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:438
+msgctxt "vantage-theme"
+msgid "Continues in %s and does not come back here"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:438
+msgctxt "vantage-theme"
+msgid "Continues in %s, then comes back here"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1714
+msgid "Could not save this for every browser. Try again."
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1679
+msgctxt "vantage-theme"
+msgid "Dark"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:156
+msgctxt "vantage-theme"
+msgid "Drop"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:381
+msgctxt "vantage-theme"
+msgid "Drop: %s policy"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:368
+msgctxt "vantage-theme"
+msgid "Drops unmatched"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:43
+msgid "Egress"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:950
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:105
+msgid "Expand navigation"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:231
+msgctxt "vantage-theme"
+msgid "Flow"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:267
+msgctxt "vantage-theme"
+msgid ""
+"Flow offloading is on: once a forwarded connection is established, its "
+"packets can skip prerouting, forward and postrouting, so these chains and "
+"their counters see only its first packets."
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1313
+msgid "Follow system theme"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:39
+msgctxt "vantage-theme"
+msgid "Forward"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:265
+msgctxt "vantage-theme"
+msgid ""
+"Frames bridged between ports of one bridge, such as Wi-Fi and LAN in br-lan "
+"on an access point, never reach the input, forward or output chains, and no "
+"bridge chain filters them here. (The kernel can hand them to the IP chains "
+"if br_netfilter is enabled; the ruleset doesn't show that.)"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:474
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:488
+msgctxt "vantage-theme"
+msgid "Free"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1558
+msgid "Grid packets"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:100
+msgctxt "vantage-theme"
+msgid "Home"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:63
+msgid "IPv4 traffic table \"%h\""
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:65
+msgid "IPv4/IPv6 traffic table \"%h\""
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:64
+msgid "IPv6 traffic table \"%h\""
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:473
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:482
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:486
+msgctxt "vantage-theme"
+msgid "In use"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:42
+msgid "Ingress"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:38
+msgctxt "vantage-theme"
+msgid "Input"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/sysauth.ut:52
+msgid "Invalid username and/or password! Please try again."
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1343
+msgid "Jump to a page or action…"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:370
+msgctxt "vantage-theme"
+msgid "Leaves unmatched unchanged"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1679
+msgctxt "vantage-theme"
+msgid "Light"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/sysauth.ut:28
+#: luci-theme-vantage/ucode/template/themes/vantage/sysauth.ut:64
+msgid "Log in"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1712
+msgid "Log in again to save Appearance for every browser."
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1322
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:135
+msgid "Log out"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1316
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1681
+msgid "Login background"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:99
+msgctxt "vantage-theme"
+msgid "Main navigation"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:160
+msgctxt "vantage-theme"
+msgid "Masquerade"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:457
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:472
+msgid "Memory"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1961
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1978
+msgctxt "vantage-theme"
+msgid "More actions"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:310
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:342
+msgid "NAT"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:249
+msgid "Network"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:68
+msgid "Network device table \"%h\""
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1320
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1670
+msgid "Network path background"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:162
+msgctxt "vantage-theme"
+msgid "Next rule"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1401
+msgid "No matching pages"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:475
+msgctxt "vantage-theme"
+msgid "No rule matched"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:332
+msgctxt "vantage-theme"
+msgid "No rules: %s"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1558
+msgctxt "vantage-theme"
+msgid "None"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1218
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:17
+msgid "Not found"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1238
+msgid "Other pages in %s"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:40
+msgctxt "vantage-theme"
+msgid "Output"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:206
+msgctxt "vantage-theme"
+msgid "Packet path"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:141
+msgid "Page tabs"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:382
+msgctxt "vantage-theme"
+msgid "Pass: %s policy"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:369
+msgctxt "vantage-theme"
+msgid "Passes unmatched"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/sysauth.ut:61
+msgid "Password"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:41
+msgctxt "vantage-theme"
+msgid "Postrouting"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:37
+msgctxt "vantage-theme"
+msgid "Prerouting"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:158
+msgctxt "vantage-theme"
+msgid "Queue to a program"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:161
+msgctxt "vantage-theme"
+msgid "Redirect"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:157
+msgctxt "vantage-theme"
+msgid "Reject"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1345
+msgctxt "vantage-theme"
+msgid "Results"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:161
+msgctxt "vantage-theme"
+msgid "Rewrite destination"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:160
+msgctxt "vantage-theme"
+msgid "Rewrite source"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:231
+msgctxt "vantage-theme"
+msgid "Rules table"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1713
+msgid "Saved in this browser only."
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1343
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:123
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:125
+msgid "Search pages"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1322
+msgid "Session"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:421
+msgctxt "vantage-theme"
+msgid "Show %d more rule"
+msgid_plural "Show %d more rules"
+msgstr[0] ""
+msgstr[1] ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:2118
+msgid "Show full description"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:2107
+msgid "Show full help: %s"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/header.ut:96
+msgid "Skip to content"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1558
+msgid "Starfield"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:509
+msgid "Storage"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:495
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:497
+msgctxt "vantage-theme"
+msgid "Swap"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:462
+msgid "Swap free"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:249
+msgctxt "vantage-theme"
+msgid "This device"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:474
+msgctxt "vantage-theme"
+msgid "Total"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:461
+msgid "Total Available"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:406
+msgctxt "nft counter"
+msgid "Traffic matched by rule: %.1000mPackets, %.1024mBytes"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:383
+msgctxt "vantage-theme"
+msgid "Unchanged"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1311
+msgid "Use dark theme"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1312
+msgid "Use light theme"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:461
+msgid "Used"
+msgstr ""
+
+#: luci-theme-vantage/ucode/template/themes/vantage/sysauth.ut:57
+msgid "Username"
+msgstr ""
+
+#: luci-theme-vantage/root/usr/share/rpcd/acl.d/luci-theme-vantage.json:3
+msgid ""
+"Vantage theme: save its Appearance (colour mode, login and network path "
+"backgrounds) and the dashboard's chart style and layouts for every browser, "
+"in /etc/config/vantage_theme only"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:454
+msgctxt "vantage-theme"
+msgid "Verdict map %s"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:204
+msgctxt "vantage-theme"
+msgid "View"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:537
+msgid "Wireless"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:478
+msgctxt "vantage-theme"
+msgid "available"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1353
+msgid "close"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:293
+msgctxt "vantage-theme"
+msgid "drops unmatched"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:293
+msgctxt "vantage-theme"
+msgid "drops unmatched %s"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:524
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:528
+msgid "free"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1351
+msgid "navigate"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:297
+msgctxt "vantage-theme"
+msgid "no bridge chains"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:312
+msgctxt "vantage-theme"
+msgid "no rules"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:343
+msgctxt "vantage-theme"
+msgid "on %s"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:1352
+msgctxt "vantage-theme"
+msgid "open"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:340
+msgctxt "vantage-theme"
+msgid "priority %d"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:473
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:483
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:487
+msgid "reclaimable"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/vantage-theme/nftflow.js:295
+msgctxt "vantage-theme"
+msgid "rules drop some"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:524
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:528
+msgid "total"
+msgstr ""
+
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:524
+#: luci-theme-vantage/htdocs/luci-static/resources/menu-vantage.js:528
+msgid "used"
+msgstr ""
