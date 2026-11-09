@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=clouddrive2
 PKG_VERSION:=1.1.3
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_MAINTAINER:=Hannibal
 
@@ -40,6 +40,14 @@ define Package/clouddrive2/description
   CloudDrive2 is a cloud storage mounting tool for OpenWrt.
 endef
 
+define Package/clouddrive2/postinst
+#!/bin/sh
+[ -n "$${IPKG_INSTROOT}" ] && exit 0
+rmdir /bg/clouddrive2 2>/dev/null || true
+rmdir /bg 2>/dev/null || true
+exit 0
+endef
+
 define Download/clouddrive2
   URL:=https://github.com/cloud-fs/cloud-fs.github.io/releases/download/v$(PKG_VERSION)
   URL_FILE:=clouddrive-2-linux-$(PKG_ARCH_Ctl)-$(PKG_VERSION).tgz
@@ -62,7 +70,6 @@ define Build/Compile
 endef
 
 define Package/clouddrive2/install
-	$(INSTALL_DIR) $(1)/bg/clouddrive2
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/clouddrive2.init $(1)/etc/init.d/clouddrive2
 	$(INSTALL_DIR) $(1)/etc/config
