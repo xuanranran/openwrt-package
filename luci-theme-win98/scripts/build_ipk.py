@@ -14,7 +14,7 @@ from pathlib import Path
 
 
 PKG_NAME = "luci-theme-win98"
-PKG_VERSION = "2026.05.16-r147"
+PKG_VERSION = "2026.05.16-r148"
 PKG_ARCH = "all"
 PKG_DEPENDS = "luci-base, luci-theme-openwrt"
 PKG_DESCRIPTION = "OpenWrt LuCI 24.x Windows 98 retro theme"

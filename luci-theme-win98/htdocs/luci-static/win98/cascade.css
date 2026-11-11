@@ -2596,6 +2596,9 @@ button.win98-desktop-icon.is-selected {
 	width: min(430px, calc(100vw - 32px)) !important;
 	min-width: 0 !important;
 	max-width: none !important;
+	max-height: calc(100vh - 32px) !important;
+	flex-shrink: 0 !important;
+	overflow: auto !important;
 	margin: 0 !important;
 	padding: 2px !important;
 	box-sizing: border-box !important;
@@ -2609,6 +2612,10 @@ button.win98-desktop-icon.is-selected {
 	box-shadow:
 		inset -1px -1px 0 var(--win98-shadow),
 		inset 1px 1px 0 var(--win98-mid) !important;
+}
+
+#modal_overlay .modal:has(.cbi-map) {
+	width: min(720px, calc(100vw - 32px)) !important;
 }
 
 #modal_overlay .modal > h1:first-child,
