@@ -1560,15 +1560,11 @@ var SubPanel = {
             this.chartSource = source;
             if (this.chartsFailed || this.chartsPending) return;
             var self = this;
-            var url = window.ocChartUrl || ('/luci-static/resources/openclash/js/chart.umd.min.js?v=' + (window.ocPluginVer || ''));
             this.chartsPending = true;
-            ocRequireScript(url, function() {
+            ocRequireChart(function(ok) {
                 self.chartsPending = false;
-                if (typeof Chart !== 'undefined') {
-                    if (self.view === 'result') self.renderCharts(self.chartSource);
-                    return;
-                }
-                self.chartsFailed = true;
+                if (!ok) { self.chartsFailed = true; return; }
+                if (self.view === 'result') self.renderCharts(self.chartSource);
             });
             return;
         }
@@ -2391,12 +2387,11 @@ var TemplatePreview = {
             var self = this;
             this.chartData = data;
             if (this.chartsPending || this.chartsFailed) return;
-            var url = window.ocChartUrl || ('/luci-static/resources/openclash/js/chart.umd.min.js?v=' + (window.ocPluginVer || ''));
             this.chartsPending = true;
-            ocRequireScript(url, function() {
+            ocRequireChart(function(ok) {
                 self.chartsPending = false;
-                if (typeof Chart !== 'undefined') self.renderCharts(self.chartData);
-                else self.chartsFailed = true;
+                if (!ok) { self.chartsFailed = true; return; }
+                self.renderCharts(self.chartData);
             });
             return;
         }
@@ -4038,43 +4033,14 @@ var ConfigUploader = {
 
     addHeaderRow: function(name, value) {
         var container = document.getElementById('subscribe-headers-container');
-        var row = document.createElement('div');
-        row.className = 'form-row header-row';
-        row.style.cssText = 'align-items: center; gap: 6px; margin-bottom: 6px;';
-
-        var nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.className = 'form-input';
-        nameInput.placeholder = 'Header-Name';
-        nameInput.value = name || '';
-        nameInput.style.cssText = 'flex: 1; height: 32px;';
-
-        var valueInput = document.createElement('input');
-        valueInput.type = 'text';
-        valueInput.className = 'form-input';
-        valueInput.placeholder = 'value';
-        valueInput.value = value || '';
-        valueInput.style.cssText = 'flex: 1.5; height: 32px;';
-
-        var removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'icon-btn';
-        removeBtn.title = '<%:Remove%>';
-        removeBtn.style.cssText = 'flex-shrink: 0;';
-        removeBtn.innerHTML = '<svg width="14" height="14"><use href="#oc-icon-close"/></svg>';
-        removeBtn.addEventListener('click', function() {
-            row.parentNode.removeChild(row);
-            if (container.children.length === 0) {
-                container.classList.add('oc-hidden');
-            }
-            ConfigUploader.updateFoldSummaries();
+        ocKeyValueRow(container, {
+            rowClass: 'header-row',
+            keyPlaceholder: 'Header-Name',
+            valuePlaceholder: 'value',
+            key: name,
+            value: value,
+            onRemove: function() { ConfigUploader.updateFoldSummaries(); }
         });
-
-        row.appendChild(nameInput);
-        row.appendChild(valueInput);
-        row.appendChild(removeBtn);
-        container.appendChild(row);
-        container.classList.remove('oc-hidden');
         this.updateFoldSummaries();
     },
 
@@ -4196,7 +4162,7 @@ var CoreStartFlow = {
         SubPanel.stopTimer();
         this.stopLogMirror();
         if (window.ocStatusWatchLog) {
-            this.logListener = function(reset) { self.onLogUpdate(reset); };
+            this.logListener = function(lines, reset) { self.onLogUpdate(lines, reset); };
             window.ocStatusWatchLog(this.logListener);
         }
         var status = SubPanel.el('sw-status');
@@ -4209,16 +4175,24 @@ var CoreStartFlow = {
         this.viewPoll(0);
     },
 
-    // the shared stream pushes every new line, so the dialog mirrors it without a timer
-    onLogUpdate: function(reset) {
+    // the shared stream pushes every new line, so the dialog mirrors it without a timer;
+    // open/reset replay the buffer, steady-state appends only touch the new lines
+    onLogUpdate: function(lines, reset) {
         if (this.mode !== 'view') return;
         if (reset) {
             this.shownLines = 0;
             this.lastMirrored = null;
             SubPanel.clearLog('sw-log-host');
             this.adoptSession();
+            this.syncLog();
+            return;
         }
-        this.syncLog();
+        var host = SubPanel.el('sw-log-host');
+        if (!host || !host.ocLogView) return;
+        if (!lines || !lines.length) return;
+        SubPanel.appendLog('sw-log-host', lines.join('\n'));
+        this.shownLines += lines.length;
+        this.lastMirrored = lines[lines.length - 1];
     },
 
     stopLogMirror: function() {

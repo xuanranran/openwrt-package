@@ -220,32 +220,9 @@ var ocLang = window.ocLang || '';
             this.cachedXHR(url, params, callback, force);
         },
 
-        clearCache: function(url, params) {
-            var cacheKey = params ? url + JSON.stringify(params) : url;
-            delete this.request_cache[cacheKey];
-            delete this.last_request_time[cacheKey];
-        },
-
         clearAllCache: function() {
             this.request_cache = {};
             this.last_request_time = {};
-        },
-
-        hasCache: function(url, params) {
-            var cacheKey = params ? url + JSON.stringify(params) : url;
-            return !!this.request_cache[cacheKey];
-        },
-
-        getCacheAge: function(url, params) {
-            var cacheKey = params ? url + JSON.stringify(params) : url;
-            if (!this.last_request_time[cacheKey]) {
-                return null;
-            }
-            return Date.now() - this.last_request_time[cacheKey];
-        },
-
-        setCacheTTL: function(ttl) {
-            this.cache_ttl = ttl;
         },
 
         batchUpdateDOM: function(updates) {
@@ -267,27 +244,6 @@ var ocLang = window.ocLang || '';
                     self.last_request_time[cacheKey] = Date.now();
                 }
             });
-        },
-
-        cachedXHRGetWithRetry: function(url, params, callback, force, maxRetries) {
-            maxRetries = maxRetries || 3;
-            var retryCount = 0;
-            var self = this;
-
-            function attemptRequest() {
-                self.cachedXHRGetWithParams(url, params, function(x, data) {
-                    if (x && x.status == 200) {
-                        callback(x, data);
-                    } else if (retryCount < maxRetries) {
-                        retryCount++;
-                        setTimeout(attemptRequest, 1000 * retryCount);
-                    } else {
-                        callback(x, data);
-                    }
-                }, force && retryCount === 0);
-            }
-
-            attemptRequest();
         }
     };
 
@@ -541,14 +497,6 @@ var ocLang = window.ocLang || '';
         getConnectionState: function(type) {
             var connection = this.connections[type];
             return connection ? connection.state : this.connectionStates.DISCONNECTED;
-        },
-
-        getAllConnectionStates: function() {
-            var states = {};
-            for (var type in this.connections) {
-                states[type] = this.getConnectionState(type);
-            }
-            return states;
         },
 
         hasActiveConnections: function() {
@@ -1676,13 +1624,6 @@ var ocLang = window.ocLang || '';
                 SubscriptionManager.getSubscriptionInfo();
                 SubscriptionManager.startAutoUpdate();
             }, 60000 * 15);
-        },
-
-        stopAutoUpdate: function() {
-            if (this.updateTimer) {
-                clearTimeout(this.updateTimer);
-                this.updateTimer = null;
-            }
         }
     };
 
@@ -2022,7 +1963,7 @@ var ocLang = window.ocLang || '';
             try { sessionStorage.setItem('ocCoreStartAt', String(Date.now())); } catch (e) {}
         },
 
-        // every operation that owns the log stamps its start, _oclog is not start-only
+        // push each display batch to the dialog viewer; reset means a new operation started
         notifyLog: function(lines, reset) {
             for (var i = 0; i < this.listeners.length; i++) {
                 try { this.listeners[i](lines, reset); } catch (e) {}
@@ -2043,6 +1984,7 @@ var ocLang = window.ocLang || '';
             // otherwise a finished run would keep the dialog clock and the old lines alive
             this.scriptDone = !initialMessage && scriptName === 'view';
             if (initialMessage) {
+                // _oclog serves every operation, so each new run stamps its own start
                 this.markCoreStart();
                 this.lastLogLineCount = null;
                 this.logLines = [];
@@ -2125,12 +2067,7 @@ var ocLang = window.ocLang || '';
 
         displayLog: function(logContent) {
             if (!this.stream || !this.stream.isRunning() || !DOMCache.oclog) return;
-            var lines = logContent.split('\n');
-            var allLines = [];
-            for (var i = 0; i < lines.length; i++) {
-                var t = lines[i].replace(/##FINISHED##|##CONTINUE##|##FINISH##/g, '').trim().replace(/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s*/, '');
-                if (t) allLines.push(t);
-            }
+            var allLines = ocCleanLogLines(logContent);
             if (allLines.length === 0) return;
             this.logLines = this.logLines.concat(allLines);
             this.notifyLog(allLines, false);
@@ -3369,10 +3306,10 @@ var ocLang = window.ocLang || '';
             var el = document.getElementById('stats-chart');
             if (!el) return;
             if (typeof Chart === 'undefined') {
-                if (!this.chartLoadPending && window.ocChartUrl) {
+                if (!this.chartLoadPending) {
                     this.chartLoadPending = true;
                     var self = this;
-                    ocRequireScript(window.ocChartUrl, function() {
+                    ocRequireChart(function() {
                         self.chartLoadPending = false;
                         if (self.view === 'chart') self.render();
                     });
@@ -4292,10 +4229,10 @@ var ocLang = window.ocLang || '';
         },
 
         loadChartLib: function() {
-            if (this.chartLoading || typeof Chart !== 'undefined' || !window.ocChartUrl) return;
+            if (this.chartLoading || typeof Chart !== 'undefined') return;
             this.chartLoading = true;
             var self = this;
-            ocRequireScript(window.ocChartUrl, function() {
+            ocRequireChart(function() {
                 self.chartLoading = false;
                 self.lastStruct = null;
                 if (self.active) self.renderList();
@@ -5372,20 +5309,7 @@ var ocLang = window.ocLang || '';
             init: init,
             pause: pause,
             resume: resume,
-            destroy: destroy,
-            updateAnnouncements: function(newList, newRandomFlag) {
-                announcements = newList || announcements;
-                isRandomTips = (newRandomFlag !== undefined) ? newRandomFlag : isRandomTips;
-                currentIndex = 0;
-                if (pauseTimeout) clearTimeout(pauseTimeout);
-                if (nextAnimationTimeout) clearTimeout(nextAnimationTimeout);
-                if (animationEndHandler) {
-                    contentElement.removeEventListener('animationend', animationEndHandler);
-                    animationEndHandler = null;
-                }
-                contentElement.classList.remove('scrolling');
-                startSingleScroll();
-            }
+            destroy: destroy
         };
     }
 
@@ -6522,7 +6446,7 @@ var ocLang = window.ocLang || '';
 
         panel.innerHTML = '<div class="tp-head">'
             + '<div class="tp-title"><%:Switch Theme%></div>'
-            + '<button type="button" class="icon-btn" id="tp-close" title="<%:Close%>"><svg width="14" height="14"><use href="#oc-icon-close"/></svg></button>'
+            + ocIconButtonHtml('close', '<%:Close%>', 'id="tp-close"')
             + '</div>'
             + '<div class="tp-label"><%:Mode%></div>'
             + '<div class="tp-seg" id="tp-modes">'
