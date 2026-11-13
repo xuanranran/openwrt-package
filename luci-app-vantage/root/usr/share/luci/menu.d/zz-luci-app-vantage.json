@@ -36,7 +36,12 @@
 		},
 		"depends": {
 			"acl": [ "luci-app-firewall" ],
-			"uci": { "firewall": true }
+			"uci": {
+				"firewall": true,
+				"luci": {
+					"main": { "mediaurlbase": "/luci-static/vantage" }
+				}
+			}
 		}
 	}
 }
