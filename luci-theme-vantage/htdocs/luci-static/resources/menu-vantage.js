@@ -879,7 +879,14 @@ return baseclass.extend({
 		this.setupKeys();
 		this.loadHost();
 
-		ui.menu.load().then(L.bind(this.render, this));
+		/* Theme-dependent entries must not reuse another theme's session
+		   menu. Leave no stored menu behind when switching away either. */
+		ui.menu.flushCache();
+		ui.menu.menu = null;
+		ui.menu.load().then(tree => {
+			ui.menu.flushCache();
+			this.render(tree);
+		});
 	},
 
 	/* ---------------------------------------------------------- menu */
