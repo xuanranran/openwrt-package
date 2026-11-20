@@ -31,7 +31,7 @@
 		{% endif %}
 	</div>
 </footer>
-</div>
+</main>
 </div>
 <script>
 	// thanks for Jo-Philipp Wich <jow@openwrt.org>

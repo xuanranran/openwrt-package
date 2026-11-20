@@ -4,36 +4,98 @@
 'require rpc';
 'require argon-menutree as tree';
 
-// Track setInterval to prevent background timer leaks across SPA navigations
-const _viewIntervals = (window.__argonViewIntervals || (window.__argonViewIntervals = new Map()));
-(function hookIntervals() {
-	if (window.__argonIntervalsHooked) return;
-	window.__argonIntervalsHooked = true;
-	const _si = window.setInterval, _ci = window.clearInterval;
-	window.setInterval = function(fn, ms) {
-		const id = _si.apply(window, arguments);
-		_viewIntervals.set(id, { fn, ms, rest: Array.prototype.slice.call(arguments, 2), live: id });
+const viewOwners = new WeakMap();
+const viewIntervals = new Map();
+let timerOwner = null;
+
+function inViewScope(owner, fn, receiver, args) {
+	const previous = timerOwner;
+	timerOwner = owner;
+	try { return fn.apply(receiver, args); }
+	finally { timerOwner = previous; }
+}
+
+function installViewTimerTracking() {
+	const methods = (window.L || L).view?.prototype;
+	if (!methods || typeof methods.__init__ !== 'function')
+		return;
+	const init = methods.__init__;
+	const set = window.setInterval, clear = window.clearInterval;
+	window.setInterval = function(fn, ms, ...args) {
+		const owner = timerOwner;
+		if (!owner || typeof fn !== 'function')
+			return set.call(window, fn, ms, ...args);
+		const call = function(...values) {
+			if (id === L.Poll?.timer)
+				return fn.apply(this, values);
+			if (!owner.disposed && !owner.suspended && !_expired)
+				return inViewScope(owner, fn, this, values);
+		};
+		const id = set.call(window, call, ms, ...args);
+		if (owner.disposed || _expired)
+			clear.call(window, id);
+		else
+			viewIntervals.set(id, owner);
 		return id;
 	};
 	window.clearInterval = function(id) {
-		const spec = _viewIntervals.get(id);
-		_viewIntervals.delete(id);
-		if (spec) return (spec.live == null) ? undefined : _ci.call(window, spec.live);
-		return _ci.apply(window, arguments);
+		viewIntervals.delete(+id);
+		return clear.call(window, id);
 	};
-})();
 
-function pollTickId() {
-	if (!L.Poll) return false;
-	const running = (typeof L.Poll.active === 'function') ? L.Poll.active() : (L.Poll.timer != null);
-	if (running && L.Poll.timer == null) return false;
-	return running ? L.Poll.timer : null;
+	methods.__init__ = function() {
+		const root = document.getElementById('view');
+		if (!root)
+			return init.apply(this, arguments);
+		const owner = viewOwners.get(root) || { disposed: false };
+		viewOwners.set(root, owner);
+		const wrappers = [];
+		// LuCI binds these methods during __init__, then calls them asynchronously.
+		// Only their synchronous execution (not the entire loading window) owns timers.
+		for (const name of ['load', 'render', 'addFooter']) {
+			const fn = this[name];
+			if (typeof fn !== 'function')
+				continue;
+			const own = Object.getOwnPropertyDescriptor(this, name);
+			Object.defineProperty(this, name, {
+				configurable: true,
+				writable: true,
+				value: function() { return inViewScope(owner, fn, this, arguments); }
+			});
+			wrappers.push([name, own]);
+		}
+		try {
+			const rendering = init.apply(this, arguments);
+			owner.rendering = rendering;
+			return rendering;
+		}
+		finally {
+			for (const [name, own] of wrappers) {
+				if (own)
+					Object.defineProperty(this, name, own);
+				else
+					delete this[name];
+			}
+		}
+	};
 }
 
-function clearViewIntervals() {
-	const keep = pollTickId();
-	if (keep === false) return;
-	_viewIntervals.forEach((spec, id) => { if (id !== keep) window.clearInterval(id); });
+function clearViewIntervals(root) {
+	const owner = root ? viewOwners.get(root) : null;
+	if (root && !owner)
+		return;
+	if (owner) {
+		owner.disposed = true;
+		viewOwners.delete(root);
+	}
+	for (const [id, current] of viewIntervals) {
+		if (!root || current === owner) {
+			if (id === L.Poll?.timer)
+				viewIntervals.delete(id);
+			else
+				window.clearInterval(id);
+		}
+	}
 }
 
 function flushUciCache() {
@@ -65,25 +127,26 @@ function markExpired() {
 }
 
 function watchSession() {
-	if (L.Request && typeof L.Request.addInterceptor === 'function') {
-		L.Request.addInterceptor((xhr) => {
+	const request = (window.L || L).Request;
+	if (request && typeof request.addInterceptor === 'function') {
+		request.addInterceptor((res) => {
 			try {
-				if (xhr && xhr.status === 403 &&
-				    xhr.getResponseHeader &&
-				    xhr.getResponseHeader('X-LuCI-Login-Required') === 'yes') {
+				if (res?.status === 403 &&
+				    (res.headers?.get?.('X-LuCI-Login-Required') ??
+				     res.getResponseHeader?.('X-LuCI-Login-Required')) === 'yes') {
 					markExpired();
 				}
 			} catch (e) {}
 		});
 	}
 	if (rpc && typeof rpc.addInterceptor === 'function') {
-		rpc.addInterceptor((msg) => {
-			try {
-				if (!msg || msg.jsonrpc !== '2.0') return;
-				if (msg.error && msg.error.code && msg.error.message) {
-					markExpired();
-				}
-			} catch (e) {}
+		rpc.addInterceptor((msg, req) => {
+			// LuCI checks this permission after an ordinary RPC reports access denied.
+			const args = req?.params;
+			if (req?.object === 'session' && req.method === 'access' &&
+			    args?.scope === 'uci' && args.object === 'luci' && args.function === 'read' &&
+			    msg?.jsonrpc === '2.0' && msg.error?.code === -32002)
+				markExpired();
 		});
 	}
 }
@@ -151,6 +214,8 @@ function ensureOverviewHelpers() {
 // Staging and Observation
 const RENDER_TIMEOUT = 15000;
 let _inflight = Promise.resolve();
+let _activeStage = null;
+let _reloadRequired = false;
 
 function getContentHost() {
 	const live = document.getElementById('view');
@@ -164,24 +229,37 @@ function stageView(contentHost) {
 	}
 	const wrapper = document.createElement('div');
 	wrapper.className = 'argon-staging';
+	wrapper.inert = true;
 	wrapper.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 0; max-height: 0; overflow: hidden; visibility: hidden; pointer-events: none; opacity: 0; z-index: -9999; margin: 0; padding: 0; border: none;';
 	const view = document.createElement('div');
 	view.id = 'view';
 	view.style.cssText = 'margin: 0; padding: 0; border: none; width: 100%;';
 	wrapper.appendChild(view);
-	contentHost.insertBefore(wrapper, contentHost.firstChild);
-	return { wrapper, view };
+	const outgoing = contentHost.querySelector(':scope > #view');
+	const scroll = scrollContainer()?.scrollTop || 0;
+	if (outgoing) {
+		const owner = viewOwners.get(outgoing);
+		if (owner) owner.suspended = true;
+		outgoing.replaceWith(wrapper);
+	} else {
+		contentHost.appendChild(wrapper);
+	}
+	return { wrapper, view, outgoing, scroll };
+}
+
+function hasRenderedView(view) {
+	return view.querySelector(':scope > :not(.spinning):not(script)') !== null;
 }
 
 function renderedIn(view) {
-	const painted = () => view.querySelector(':scope > :not(.spinning):not(script)') !== null;
+	const painted = () => hasRenderedView(view);
 	if (painted()) return Promise.resolve();
 	return new Promise((resolve, reject) => {
 		const timer = window.setTimeout(() => {
 			finish(() => reject(new Error('argon-router: view did not render within ' + RENDER_TIMEOUT + ' ms')));
 		}, RENDER_TIMEOUT);
 		const mo = new MutationObserver(() => {
-			if (painted() || view.childElementCount === 0) finish(resolve);
+			if (painted()) finish(resolve);
 		});
 		function finish(settle) {
 			window.clearTimeout(timer);
@@ -193,7 +271,30 @@ function renderedIn(view) {
 }
 
 function dropStage(stage) {
-	if (stage && stage.wrapper && stage.wrapper.parentNode) discard(stage.wrapper);
+	clearViewIntervals(stage.view);
+	const host = stage.wrapper.parentNode;
+	const after = stage.wrapper.nextSibling;
+	discard(stage.wrapper);
+	if (host && stage.outgoing) {
+		const owner = viewOwners.get(stage.outgoing);
+		if (owner) owner.suspended = false;
+		host.insertBefore(stage.outgoing, after);
+		const scroller = scrollContainer();
+		if (scroller) scroller.scrollTop = stage.scroll;
+	}
+}
+
+async function beforeRenderDeadline(job) {
+	let timeout;
+	try {
+		return await Promise.race([job, new Promise((resolve, reject) => {
+			timeout = window.setTimeout(() => {
+				reject(new Error('argon-router: view load or render timed out'));
+			}, RENDER_TIMEOUT);
+		})]);
+	} finally {
+		window.clearTimeout(timeout);
+	}
 }
 
 function sweepAround(contentHost, rsegs) {
@@ -206,24 +307,15 @@ function sweepAround(contentHost, rsegs) {
 	});
 }
 
-function liveView(contentHost, stage) {
-	for (const el of contentHost.querySelectorAll(':scope > #view'))
-		if (el !== stage.view) return el;
-	const v = document.createElement('div');
-	v.id = 'view';
-	contentHost.appendChild(v);
-	return v;
-}
-
 function commitStage(stage, contentHost, rsegs) {
 	sweepAround(contentHost, rsegs);
-	const live = liveView(contentHost, stage);
-	const nodes = Array.from(stage.view.childNodes);
-	const dom = window.L ? window.L.dom : null;
-	if (live && dom && typeof dom.content === 'function')
-		dom.content(live, nodes);
-	else if (live)
-		live.replaceChildren(...nodes);
+	const live = stage.view;
+	live.removeAttribute('style');
+	stage.wrapper.replaceWith(live);
+	if (stage.outgoing) {
+		clearViewIntervals(stage.outgoing);
+		discard(stage.outgoing);
+	}
 
 	if (rsegs && rsegs.join('-') === 'admin-status-overview') {
 		let h2 = contentHost.querySelector('h2[name="content"]');
@@ -236,8 +328,6 @@ function commitStage(stage, contentHost, rsegs) {
 		}
 	}
 
-	renderMenu();
-	dropStage(stage);
 }
 
 // Nav progress indicator (Argon primary color)
@@ -286,6 +376,9 @@ function moduleUrl(className) {
 
 const PRAGMA_HEAD = 2000;
 const PREFETCH_DEPTH = 3;
+const PREFETCH_LIMIT = 64;
+const PREFETCH_CONCURRENCY = 8;
+const PREFETCH_TIMEOUT = 5000;
 
 function pragmaDeps(src) {
 	const re = /(['"])require[ \t]+([^'"]+?)\1/g;
@@ -312,22 +405,38 @@ function classLoaded(name) {
 const _seenClasses = new Set();
 const _prefetched = new Set();
 const _warming = new Map();
-const _committed = new Set();
 
 function warmClass(name, depth, root) {
-	if (_prefetched.has(name)) return;
-	_prefetched.add(name);
-	if (classLoaded(name)) return;
-	let req;
-	try { req = fetch(moduleUrl(name), { credentials: 'same-origin' }); }
-	catch (e) { return; }
-	const body = req.then((res) => (res.ok ? res.text() : '')).catch(() => '');
-	_warming.set(name, body.then(() => {}, () => {}));
-	if (depth < PREFETCH_DEPTH)
-		body.then((src) => {
-			if (_committed.has(root)) return;
-			for (const d of pragmaDeps(src)) warmClass(d, depth + 1, root);
+	if (_expired || classLoaded(name) || _warming.has(name) ||
+	    _warming.size >= PREFETCH_CONCURRENCY)
+		return;
+	if (_prefetched.delete(name)) {
+		_prefetched.add(name);
+		return;
+	}
+	const controller = new AbortController();
+	const timer = window.setTimeout(() => controller.abort(), PREFETCH_TIMEOUT);
+	const entry = { claimed: false, body: null };
+	entry.body = Promise.resolve()
+		.then(() => fetch(moduleUrl(name), { credentials: 'same-origin', signal: controller.signal }))
+		.then(res => {
+			if (!res.ok) throw new Error('Prefetch HTTP ' + res.status);
+			return res.text();
+		})
+		.then(src => {
+			_prefetched.add(name);
+			while (_prefetched.size > PREFETCH_LIMIT)
+				_prefetched.delete(_prefetched.values().next().value);
+			if (!entry.claimed && depth < PREFETCH_DEPTH && !classLoaded(root)) {
+				for (const d of pragmaDeps(src)) warmClass(d, depth + 1, root);
+			}
+		}).catch(() => {
+			// Speculative failures must stay retryable.
+		}).finally(() => {
+			window.clearTimeout(timer);
+			_warming.delete(name);
 		});
+	_warming.set(name, entry);
 }
 
 function prefetchSegs(segs) {
@@ -344,11 +453,11 @@ function prefetchView(pathname) {
 
 const WARM_WAIT_MS = 5000;
 function warmedThen(className) {
-	_committed.add(className);
-	const body = _warming.get(className);
-	if (!body) return Promise.resolve();
+	const entry = _warming.get(className);
+	if (!entry) return Promise.resolve();
+	entry.claimed = true;
 	let t = 0;
-	return Promise.race([ body, new Promise((r) => { t = window.setTimeout(r, WARM_WAIT_MS); }) ])
+	return Promise.race([ entry.body, new Promise((r) => { t = window.setTimeout(r, WARM_WAIT_MS); }) ])
 		.finally(() => window.clearTimeout(t));
 }
 
@@ -358,11 +467,13 @@ const _scrollSess = Date.now().toString(36) + Math.floor(Math.random() * 1e6).to
 let _histN = 0;
 let _curId = null;
 const SCROLL_MEM_MAX = 50;
-let _pendingRestore = null;
 
 function newEntryId() { return _scrollSess + ':' + (++_histN); }
 
 function adoptEntry() {
+	// Native history restoration can apply after popstate and overwrite the SPA offset.
+	if ('scrollRestoration' in history)
+		history.scrollRestoration = 'manual';
 	const st = history.state;
 	if (st && st.argonid) { _curId = st.argonid; return; }
 	_curId = newEntryId();
@@ -372,13 +483,22 @@ function adoptEntry() {
 function saveScroll() {
 	if (!_curId) return;
 	_scrollMem.delete(_curId);
-	_scrollMem.set(_curId, Math.round(window.scrollY) || 0);
+	_scrollMem.set(_curId, Math.round(_activeStage?.scroll ?? (scrollContainer()?.scrollTop || 0)));
 	while (_scrollMem.size > SCROLL_MEM_MAX)
 		_scrollMem.delete(_scrollMem.keys().next().value);
 }
 
+function scrollContainer() {
+	return document.querySelector('.main-right') || document.scrollingElement;
+}
+
 function restoreScroll(pos, gen) {
-	if (!pos) return;
+	const scroller = scrollContainer();
+	if (!scroller) return;
+	if (!pos) {
+		scroller.scrollTop = 0;
+		return;
+	}
 	const until = Date.now() + 5000;
 	let cancelled = false;
 	const stop = () => { cancelled = true; off(); };
@@ -386,18 +506,23 @@ function restoreScroll(pos, gen) {
 	function off() {
 		window.removeEventListener('wheel', stop, opts);
 		window.removeEventListener('touchstart', stop, opts);
-		window.removeEventListener('keydown', stop, opts);
+		window.removeEventListener('keydown', onKey, opts);
 	}
 	window.addEventListener('wheel', stop, opts);
 	window.addEventListener('touchstart', stop, opts);
-	window.addEventListener('keydown', stop, opts);
+	const onKey = ev => {
+		if (!ev.target?.closest?.('input, textarea, select, [contenteditable]') &&
+		    ['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '].includes(ev.key))
+			stop();
+	};
+	window.addEventListener('keydown', onKey, opts);
 
 	(function tick() {
 		if (cancelled) return;
-		if (gen !== _navGen || Date.now() > until) { off(); return; }
-		const de = document.documentElement;
-		if (de.scrollHeight - de.clientHeight >= pos) {
-			window.scrollTo(0, pos);
+		if (gen !== _navGen) { off(); return; }
+		const max = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+		if (max >= pos || Date.now() > until) {
+			scroller.scrollTop = Math.min(max, pos);
 			off();
 		} else {
 			requestAnimationFrame(tick);
@@ -460,117 +585,117 @@ function renderMenu() {
 let _navGen = 0;
 let _curPath = window.location.pathname;
 
-function navigate(pathname, push) {
-	if (_expired) return false;
-
+function navigate(pathname, push, entryId = null) {
+	if (_expired || _reloadRequired || !getContentHost()) return false;
 	const segs = tree.segsFromPath(pathname);
-	if (!segs) return false;
-
-	const res = tree.resolveSegs(segs);
+	const res = segs && tree.resolveSegs(segs);
 	if (!res) return false;
-
 	const node = res.node;
 	const className = tree.viewClassFor(node);
-	if (!className) return false;
-
-	if (typeof node.css === 'string' && node.css !== '') return false;
+	if (!className || (typeof node.css === 'string' && node.css !== '')) return false;
 
 	const rsegs = res.segs;
 	const gen = ++_navGen;
-	const restoreTo = _pendingRestore;
-	_pendingRestore = null;
-	_curPath = pathname;
-
-	const contentHost = getContentHost();
-	if (!contentHost) return false;
-
-	if (ui.hideModal) {
-		try { ui.hideModal(); } catch (e) {}
-	}
-
-	L.env.requestpath  = rsegs.slice();
-	L.env.dispatchpath = rsegs.slice();
-	L.env.pathinfo     = '/' + segs.join('/');
-	L.env.nodespec     = {
-		satisfied: true,
-		action: node.action,
-		title: node.title,
-		depends: node.depends,
-		readonly: tree.readonlyForSegs(rsegs)
-	};
-
-	if (push) {
-		const same = pathname === window.location.pathname;
-		if (!same) _curId = newEntryId();
-		history[same ? 'replaceState' : 'pushState']({ argonnav: true, argonid: _curId }, '', pathname);
-	}
-
-	const host = titleHost();
-	document.title = node.title ? (host + ' - ' + _(node.title) + ' - LuCI') : (host + ' - LuCI');
-
-	const main = document.getElementById('maincontent');
-	if (main) main.focus({ preventScroll: true });
-
-	// Use window.L to avoid the two-L trap
-	const RT = window.L || L;
-	const cached = _seenClasses.has(className);
+	const restoreTo = push ? 0 : (_scrollMem.get(entryId) ?? 0);
 	const previous = _inflight;
-	let release;
-	_inflight = new Promise((r) => { release = r; });
 	progressStart();
-
-	Promise.all([ warmedThen(className), previous.catch(() => {}) ]).then(() => {
-		if (gen !== _navGen) return null;
-
-		if (L.Poll && L.Poll.queue) {
-			L.Poll.queue.length = 0;
-			L.Poll.stop();
-			L.Poll.start();
-		}
-		syncPollIndicator();
-		clearViewIntervals();
-		const uciWarm = flushUciCache();
-
-		const stage = stageView(contentHost);
-		const painted = renderedIn(stage.view);
-		_seenClasses.add(className);
-
-		return Promise.resolve(uciWarm)
-			.then(() => RT.require(className))
-			.then((view) => {
+	_inflight = Promise.all([warmedThen(className), previous.catch(() => {})]).then(async () => {
+		if (gen !== _navGen) return;
+		if (_expired || _reloadRequired) throw new Error('SPA render unavailable');
+		const contentHost = getContentHost();
+		if (!contentHost) throw new Error('Missing SPA content host');
+		const RT = window.L || L;
+		const env = RT.env || L.env;
+		const route = {
+			requestpath: rsegs.slice(),
+			dispatchpath: rsegs.slice(),
+			pathinfo: '/' + segs.join('/'),
+			nodespec: {
+				satisfied: true, action: node.action, title: node.title, depends: node.depends,
+				readonly: tree.readonlyForSegs(rsegs)
+			}
+		};
+		const prior = Object.fromEntries(Object.keys(route).map(key => [key, env[key]]));
+		const poll = L.Poll;
+		const queue = poll?.queue?.slice();
+		const polling = poll?.active?.();
+		try { ui.hideModal?.(); } catch (e) {}
+		const stage = _activeStage = stageView(contentHost);
+		let committed = false;
+		try {
+			if (queue) {
+				poll.stop();
+				poll.queue.length = 0;
+				poll.start();
+			}
+			syncPollIndicator();
+			Object.assign(env, route);
+			await beforeRenderDeadline(Promise.resolve().then(async () => {
+				await flushUciCache();
+				if (gen !== _navGen || _expired || _reloadRequired) return;
+				const cached = _seenClasses.has(className) || classLoaded(className);
+				const view = await RT.require(className);
 				if (RT.view && !(view instanceof RT.view))
 					throw new TypeError('Loaded class ' + className + ' is not a view');
-				if (cached) new view.constructor();
-				return painted;
-			})
-			.then(() => {
-				if (gen !== _navGen) { dropStage(stage); return; }
-				document.body.setAttribute('data-page', rsegs.join('-'));
-				commitStage(stage, contentHost, rsegs);
-				if (push && !restoreTo) {
-					window.scrollTo(0, 0);
+				_seenClasses.add(className);
+				if (cached && gen === _navGen && !_expired && !_reloadRequired) new view.constructor();
+				const rendering = viewOwners.get(stage.view)?.rendering;
+				if (rendering) await rendering;
+				else if (gen === _navGen && !_expired) await renderedIn(stage.view);
+				else if (!cached) throw new Error('Cannot verify a superseded native view finished');
+			}));
+			if (gen !== _navGen) return;
+			if (_expired || !hasRenderedView(stage.view)) throw new Error('View failed to render');
+			const host = titleHost();
+			const title = node.title ? (host + ' - ' + _(node.title) + ' - LuCI') : (host + ' - LuCI');
+			if (push) {
+				const same = pathname === window.location.pathname;
+				const id = same ? _curId : newEntryId();
+				history[same ? 'replaceState' : 'pushState']({ argonnav: true, argonid: id }, '', pathname);
+				_curId = id;
+			} else {
+				_curId = entryId;
+			}
+			_curPath = pathname;
+			document.body.dataset.page = rsegs.join('-');
+			commitStage(stage, contentHost, rsegs);
+			committed = true;
+			document.title = title;
+			document.getElementById('maincontent')?.focus({ preventScroll: true });
+			renderMenu();
+			restoreScroll(restoreTo, gen);
+			if (rsegs.join('-') === 'admin-status-overview')
+				RT.require('menu-argon').then(ma => ma.initCircularProgressBars?.()).catch(() => {});
+			syncPollIndicator();
+		} catch (e) {
+			// On timeout a late native render may still look up the global #view.
+			_reloadRequired = true;
+			throw e;
+		} finally {
+			_activeStage = null;
+			if (!committed) {
+				dropStage(stage);
+				Object.assign(env, prior);
+				if (queue) {
+					poll.stop();
+					poll.queue.splice(0, poll.queue.length, ...queue);
+					if (polling && !_expired && !_reloadRequired) poll.start();
 				}
-				if (rsegs.join('-') === 'admin-status-overview') {
-					window.L.require('menu-argon').then(ma => {
-						if (typeof ma.initCircularProgressBars === 'function') {
-							ma.initCircularProgressBars();
-						}
-					});
-				}
-				syncPollIndicator();
-				if (restoreTo) restoreScroll(restoreTo, gen);
-			})
-			.catch((e) => { dropStage(stage); throw e; });
-	}).catch((e) => {
+			}
+		}
+	}).catch(e => {
+		if (gen !== _navGen) return;
 		console.error('argon-router: SPA nav to ' + className + ' failed, falling back to full load', e);
-		if (gen === _navGen) window.location = pathname;
-	}).then(() => {
-		progressEnd();
-		release();
-	});
+		if (pathname === window.location.pathname)
+			window.location.reload();
+		else
+			window.location.assign(pathname);
+	}).finally(progressEnd);
 
 	return true;
 }
+
+
 
 function linkUrlFrom(ev) {
 	const a = ev.target.closest ? ev.target.closest('a[href]') : null;
@@ -583,7 +708,6 @@ function linkUrlFrom(ev) {
 	return url.origin === window.location.origin ? url : null;
 }
 
-let _lastHovered = null;
 function prefetchFrom(ev) {
 	const url = linkUrlFrom(ev);
 	if (url && !url.search && !url.hash)
@@ -603,7 +727,10 @@ function wireRouter() {
 	if (curClass) _seenClasses.add(curClass);
 
 	const vp = document.getElementById('view');
-	if (vp) _inflight = renderedIn(vp).catch(() => {});
+	if (vp) {
+		const ready = viewOwners.get(vp)?.rendering || renderedIn(vp);
+		_inflight = beforeRenderDeadline(ready).catch(() => { _reloadRequired = true; });
+	}
 
 	watchSession();
 	syncPollIndicator();
@@ -625,8 +752,7 @@ function wireRouter() {
 
 	document.addEventListener('pointerover', (ev) => {
 		const a = ev.target.closest ? ev.target.closest('a[href]') : null;
-		if (!a || a === _lastHovered) return;
-		_lastHovered = a;
+		if (!a || a.contains(ev.relatedTarget)) return;
 		prefetchFrom(ev);
 	}, { passive: true });
 
@@ -639,18 +765,18 @@ function wireRouter() {
 			return;
 		}
 
-		if (window.location.pathname === _curPath)
+		if (window.location.pathname === _curPath && !_progressPending)
 			return;
 
 		saveScroll();
-		adoptEntry();
-		_pendingRestore = _scrollMem.get(_curId) || null;
-		if (!navigate(window.location.pathname, false)) {
-			_pendingRestore = null;
+		const entry = history.state?.argonid;
+		if (!navigate(window.location.pathname, false, entry)) {
 			window.location.reload();
 		}
 	});
 }
+
+installViewTimerTracking();
 
 return baseclass.extend({
 	init: function() {

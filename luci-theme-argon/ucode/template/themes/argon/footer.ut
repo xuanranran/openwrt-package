@@ -32,7 +32,7 @@
 				<ul class="breadcrumb pull-right" id="modemenu" style="display:none"></ul>
 			</div>
 		</footer>
-	</div>
+	</main>
 </div>
 <script>
 	// thanks for Jo-Philipp Wich <jow@openwrt.org>
@@ -50,6 +50,6 @@
 		}
 	});
 </script>
-<script type="text/javascript">L.require('menu-argon'); L.require('argon-appearance').catch(function() {}); L.require('argon-router').then(r => r.init());</script>
+<script type="text/javascript">L.require('menu-argon'); L.require('argon-compat').catch(function() {}); L.require('argon-graphs').catch(function() {}); L.require('argon-layout').catch(function() {}); L.require('argon-appearance').catch(function() {}); L.require('argon-router').then(r => r.init());</script>
 </body>
 </html>

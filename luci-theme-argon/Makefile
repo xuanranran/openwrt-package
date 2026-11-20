@@ -8,8 +8,8 @@ include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=Argon Theme
 LUCI_DEPENDS:=+luci-base +curl +jsonfilter +ucode-mod-math +flock
-PKG_VERSION:=3.1.3
-PKG_RELEASE:=20261023
+PKG_VERSION:=3.1.4
+PKG_RELEASE:=20261113
 PKG_LICENSE:=Apache-2.0 MIT
 
 # Keep styles intact and ship template source across stable/snapshot runtimes.

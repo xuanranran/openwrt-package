@@ -436,6 +436,141 @@ h5 {
   pointer-events: none
 }
 
+/* Keep dropdowns outside the short table scrollport used by native LuCI. */
+body:not([data-page^="admin-services-openclash"]):not([data-page^="admin-vpn-zerotier"]) .cbi-tblsection:is(:has(.cbi-dropdown), .argon-dropdown-section),
+body:not([data-page^="admin-services-openclash"]):not([data-page^="admin-vpn-zerotier"]) .cbi-tblsection .table:is(:has(.cbi-dropdown), .argon-dropdown-section) {
+  overflow: visible;
+}
+
+.control-group.argon-joined-control {
+  flex-wrap: nowrap;
+  gap: 0;
+}
+
+.control-group.argon-joined-control > input {
+  flex: 0 1 15.5rem;
+  min-width: 0;
+  border-inline-end-width: 0;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  margin-inline-end: 0;
+}
+
+.control-group.argon-joined-control > input + .cbi-button {
+  flex: 0 0 auto;
+  border-inline-start-width: 0;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  margin-inline-start: 0;
+}
+
+.control-group.argon-joined-control > .cbi-input-password + .cbi-button {
+  flex-basis: 2.5rem;
+  padding-inline: 0;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 6000;
+  inset-block-start: .5rem;
+  inset-inline-start: 1rem;
+  padding: .5rem .75rem;
+  color: #32325d;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: .375rem;
+  transform: translateY(calc(-100% - .5rem));
+}
+
+.skip-link:focus {
+  transform: none;
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Keep the header in view when the browser follows #maincontent. */
+main#maincontent[tabindex="-1"] {
+  scroll-margin-block-start: 4.5rem;
+}
+
+/* Focus the SPA landmark without drawing a ring around the entire page. */
+main#maincontent[tabindex="-1"]:focus {
+  outline: none;
+}
+
+@media screen and (min-width: 600px) {
+  @supports (-moz-appearance: none) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) transparent;
+    }
+  }
+}
+
+.login-page .background-controls {
+  position: fixed;
+  inset-block-start: 1rem;
+  inset-inline-end: 1rem;
+  display: flex;
+  gap: .5rem;
+  z-index: 5000;
+}
+
+.login-page .background-controls > button {
+  position: static;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: .5rem;
+  border: 1px solid #ddd;
+  border-radius: .375rem;
+  background: rgba(255, 255, 255, .85);
+  color: #32325d;
+  cursor: pointer;
+}
+
+.login-page .background-controls > button::before {
+  content: '';
+  width: 1rem;
+  height: 1rem;
+  background-color: currentColor;
+  -webkit-mask: var(--background-control-icon) center / contain no-repeat;
+  mask: var(--background-control-icon) center / contain no-repeat;
+}
+
+.login-page .playback-control {
+  --background-control-icon: url('../icon/play.svg');
+}
+
+.login-page .playback-control.playing {
+  --background-control-icon: url('../icon/pause.svg');
+}
+
+.login-page .background-controls .volume-control {
+  --background-control-icon: url('../img/volume_high.svg');
+  background-image: none;
+}
+
+.login-page .background-controls .volume-control.mute {
+  --background-control-icon: url('../img/volume_off.svg');
+  background-image: none;
+}
+
+.login-page .background-controls > button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .login-page .background-controls > button::before {
+    forced-color-adjust: none;
+    background-color: ButtonText;
+  }
+}
+
 .login-page {
   height: 100%
 }
@@ -792,6 +927,7 @@ small {
 }
 
 .main-right>#maincontent {
+  --argon-mobile-panel-inset: .875rem;
   position: relative;
   z-index: 50;
   flex: 1;
@@ -994,6 +1130,7 @@ div[style="width:100%;height:300px;border:1px solid #000;background:#fff"] {
 
 .alert-message {
   opacity: 1;
+  z-index: auto;
   transition: opacity 0.3s ease-in-out
 }
 
@@ -2014,6 +2151,14 @@ input:where([type="button"], [type="submit"], [type="reset"]):where(:not(.btn, .
 .cbi-tabmenu li[class~="cbi-tab"] a {
   color: #5e72e4;
   color: var(--primary)
+}
+
+#maincontent ul.argon-tabs-compact {
+  padding-inline: .35rem;
+}
+
+#maincontent ul.argon-tabs-compact > li > a {
+  padding-inline: .5rem;
 }
 
 .cbi-tab-descr {
@@ -3085,6 +3230,41 @@ body.modal-overlay-active #modal_overlay {
   opacity: 1
 }
 
+#modal_overlay > .modal[data-argon-package-dialog] {
+  max-width: 34rem;
+}
+
+#modal_overlay > .modal[data-argon-package-dialog="details"] {
+  max-width: 44rem;
+}
+
+#modal_overlay > .modal[data-argon-package-dialog="log"] {
+  max-width: 56.25rem;
+}
+
+@media screen and (max-width: 768px), screen and (max-width: 1024px) and (pointer: coarse) {
+  #modal_overlay > .modal[data-argon-package-dialog] {
+    display: block;
+    box-sizing: border-box;
+    width: calc(100% - 1.25rem);
+    min-width: 0;
+    max-height: calc(100vh - 1.25rem);
+    max-height: calc(100dvh - 1.25rem);
+    margin: .625rem auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  #modal_overlay > .modal[data-argon-package-dialog] > :is(.right, .button-row):last-child {
+    position: sticky;
+    inset-block-end: 0;
+    margin: 0;
+    padding: .625rem 0 .25rem;
+    background-color: inherit;
+    border-block-start: 1px solid rgba(128, 128, 128, .25);
+  }
+}
+
 .spinning {
   position: relative;
   padding-left: 32px !important
@@ -3160,6 +3340,20 @@ body.modal-overlay-active #modal_overlay {
 
 .cbi-page-actions>form[method="post"] {
   display: inline-block
+}
+
+@media screen and (max-width: 768px), screen and (max-width: 1024px) and (pointer: coarse) {
+  /* LuCI views and legacy plugin forms share the same page action gutter. */
+  #maincontent .cbi-page-actions:not(:where(.modal *, [role="dialog"] *, dialog *)) {
+    position: static;
+    margin-inline: var(--argon-mobile-panel-inset);
+    padding-inline: 0;
+    text-align: end;
+  }
+
+  #maincontent .cbi-page-actions:not(:where(.modal *, [role="dialog"] *, dialog *)) > :last-child {
+    margin-inline-end: 0;
+  }
 }
 
 .th[data-type="button"],
@@ -3864,8 +4058,122 @@ div[style*="display:grid;grid-template-columns:repeat"] .ifacebox .ifacebox-body
   color: var(--gray-dark);
 }
 
-[data-page="admin-system-admin-sshkeys"] .cbi-dynlist {
-  margin-left: 1rem
+[data-page="admin-system-admin-sshkeys"] #view .cbi-section-descr {
+  margin-block-end: .75rem;
+  overflow-wrap: anywhere;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist {
+  --argon-ssh-panel: #fff;
+  --argon-ssh-text: #32325d;
+  --argon-ssh-muted: #526176;
+  --argon-ssh-accent: var(--primary);
+  display: grid;
+  gap: .75rem;
+  width: 100%;
+  max-width: 48rem;
+  margin: 0;
+  padding: 1rem;
+  border-radius: .625rem;
+  background: var(--argon-ssh-panel);
+  cursor: default;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .item {
+  min-width: 0;
+  max-width: none;
+  padding-block: .75rem;
+  padding-inline: .875rem 3.75rem;
+  border: 1px solid rgba(128, 128, 128, .25);
+  border-radius: .5rem;
+  color: var(--argon-ssh-text);
+  background: rgba(128, 128, 128, .075);
+  overflow-wrap: anywhere;
+  cursor: default;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .item::after {
+  /* LuCI handles clicks on the key row; keep its existing delete affordance. */
+  inset: auto;
+  inset-block-start: 50%;
+  inset-inline-end: .75rem;
+  width: 2.5rem !important;
+  height: 2.5rem;
+  margin: 0;
+  transform: translateY(-50%);
+  border-radius: .375rem;
+  cursor: pointer;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .item > strong {
+  display: inline-block;
+  margin-bottom: .25rem;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .item small {
+  color: var(--argon-ssh-muted);
+  line-height: 1.6;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view :is(.cbi-section-descr, .cbi-dynlist > .item) code {
+  padding: .125rem .25rem;
+  border-radius: .25rem;
+  background: rgba(128, 128, 128, .12);
+  color: inherit;
+  font-family: var(--font-family-monospace);
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist:has(> .add-item > button:disabled) > .item {
+  padding-inline-end: .875rem;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist:has(> .add-item > button:disabled) > .item::after {
+  display: none;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .add-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .5rem;
+  min-width: 0;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .add-item > input {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.5rem;
+  border-radius: .375rem;
+  border-inline-end-width: 1px;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .add-item > .cbi-button {
+  min-height: 2.5rem;
+  margin: 0;
+  border-color: var(--argon-ssh-accent);
+  border-radius: .375rem;
+  background-color: var(--argon-ssh-accent);
+  color: #fff;
+}
+
+[data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .add-item > :is(input, button):focus-visible {
+  outline: 2px solid var(--argon-ssh-accent);
+  outline-offset: 2px;
+}
+
+@media screen and (max-width: 480px) {
+  [data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist {
+    padding: .75rem;
+  }
+
+  [data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .add-item {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-page="admin-system-admin-sshkeys"] #view .cbi-dynlist > .add-item > .cbi-button {
+    width: 100% !important;
+  }
 }
 
 /* Keep native password-strength states readable without changing validation. */
@@ -6290,7 +6598,7 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #dns-rc-o
     max-width: 100%;
   }
 
-  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .control-group:has(> input.cbi-input-password) {
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .control-group:is(:has(> input.cbi-input-password), .argon-joined-control) {
     display: flex;
     flex-wrap: nowrap;
     align-items: stretch;
@@ -6310,7 +6618,7 @@ html[data-darkmode="true"] [data-page^="admin-services-openclash"] .oc #dns-rc-o
     border-radius: .375rem 0 0 .375rem;
   }
 
-  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .control-group:has(> input.cbi-input-password) > .cbi-button-neutral {
+  :is([data-page="admin-system-admin"], [data-page="admin-system-admin-password"]) .control-group:is(:has(> input.cbi-input-password), .argon-joined-control) > .cbi-button-neutral {
     flex: 0 0 2.75rem;
     width: 2.75rem;
     min-width: 2.75rem;
@@ -6550,7 +6858,203 @@ div#add_link_div {
   padding: 4px;
 }
 
+/* Stock status overview (not luci-mod-dashboard). */
+body[data-page="admin-status-overview"] .argon-lease-list {
+  container: argon-lease-list / inline-size;
+}
+
+@container argon-lease-list (max-width: 44rem) {
+  .argon-lease-list > table,
+  .argon-lease-list > table > tbody {
+    display: block;
+    width: 100%;
+  }
+
+  /* Keep the original headers available to assistive technology. */
+  .argon-lease-list > table .table-titles {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .argon-lease-list > table .tr:not(.table-titles) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .625rem .875rem;
+    width: 100%;
+    margin-block: .625rem;
+    padding: .75rem;
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-radius: .625rem;
+    background: rgba(128, 128, 128, .07);
+  }
+
+  .argon-lease-list > table .tr:not(.table-titles) > .td {
+    display: block;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    text-align: start !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .argon-lease-list > table .td[data-argon-lease-label]:not([data-argon-lease-label=""])::before {
+    content: attr(data-argon-lease-label);
+    content: attr(data-argon-lease-label) / "";
+    display: block;
+    margin-block-end: .125rem;
+    font-size: .8rem;
+    font-weight: 600;
+    opacity: .85;
+  }
+
+  .argon-lease-list > table .tr > :is(.td[data-argon-lease-action], .td[colspan]),
+  .argon-lease-list > table .tr.placeholder > .td {
+    grid-column: 1 / -1;
+  }
+
+  .argon-lease-list > table .tr > .td[data-argon-lease-action] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    padding-block-start: .5rem;
+    border-block-start: 1px solid rgba(128, 128, 128, .25);
+  }
+}
+
 /* luci-mod-dashboard */
+/* Keep native dashboard grids, without changing existing card colors. */
+#view > .Dashboard {
+  display: block;
+  min-width: 0;
+}
+
+#view > .Dashboard .dashboard-kpi-row > .cbi-section {
+  min-width: min(100%, 16rem);
+  padding: .75rem 1rem;
+  gap: .75rem;
+}
+
+#view > .Dashboard .dashboard-kpi-text {
+  overflow-wrap: anywhere;
+}
+
+#view > .Dashboard .dashboard-charts > .cbi-section {
+  min-width: min(100%, 18rem);
+  padding-block-end: .75rem;
+}
+
+#view > .Dashboard .dashboard-charts > .cbi-section > h3:first-child {
+  padding: .75rem 1rem;
+}
+
+#view > .Dashboard .dashboard-charts > .cbi-section > :not(h3:first-child) {
+  margin-inline: 1rem;
+}
+
+#view > .Dashboard .dashboard-charts > .cbi-section > :is(.cbi-section-descr, em) {
+  padding: 0;
+}
+
+#view > .Dashboard .dashboard-charts > .cbi-section > .cbi-section-descr {
+  margin-block-end: .75rem;
+  overflow-wrap: anywhere;
+}
+
+#view > .Dashboard .dashboard-legend-inline {
+  margin-block-start: .75rem;
+}
+
+#view > .Dashboard .dashboard-bars {
+  direction: ltr;
+}
+
+#view > .Dashboard .dashboard-net-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.25rem), 1fr));
+}
+
+#view > .Dashboard .dashboard-net-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#view > .Dashboard .ifacebox {
+  min-width: 0;
+  max-width: 100%;
+}
+
+#view > .Dashboard .ifacebox-body {
+  text-align: start;
+}
+
+#view > .Dashboard [data-tab="internet"] > div > div > em {
+  display: block;
+  padding: .75rem 1rem;
+}
+
+:where(#view > .Dashboard [data-tab="layout"]) .cbi-page-actions {
+  padding: .75rem 1rem;
+}
+
+#view > .Dashboard .dashboard-widget-list > .item {
+  align-items: flex-start;
+  pointer-events: auto;
+}
+
+#view > .Dashboard .dashboard-widget-list > .item > span {
+  flex: 1 1 auto;
+  width: auto;
+}
+
+#view > .Dashboard .dashboard-widget-list:not(.dashboard-sorting) > .item > span {
+  pointer-events: auto;
+}
+
+#view > .Dashboard .dashboard-widget-settings {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 1px solid var(--dashboard-border, #ddd);
+  border-radius: .375rem 0 0 .375rem;
+}
+
+#view > .Dashboard .dashboard-widget-settings > summary {
+  box-sizing: border-box;
+  min-height: calc(2.5rem - 2px);
+  padding: .5rem .75rem;
+  line-height: 1.5;
+  list-style-position: inside;
+  overflow-wrap: anywhere;
+}
+
+#view > .Dashboard .dashboard-widget-settings > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+  border-radius: inherit;
+}
+
+[dir="rtl"] #view > .Dashboard .dashboard-widget-settings {
+  direction: rtl;
+}
+
+#view > .Dashboard .dashboard-widget-options {
+  margin: 0;
+  padding: .5rem .75rem;
+}
+
+#view > .Dashboard .dashboard-widget-options .cbi-checkbox {
+  height: auto;
+  min-height: 2.5rem;
+}
+
+#view > .Dashboard .dashboard-widget-options .cbi-checkbox + br {
+  display: none;
+}
+
 .Dashboard .dashboard-bg {
   background-color: #ffffff !important;
 }
@@ -7172,22 +7676,26 @@ header .header-actions {
   mask: url('../icon/check.svg') center / contain no-repeat;
 }
 
-#argon-appearance .argon-appearance-option:has(input:checked) {
+#argon-appearance[data-mode="light"] .argon-appearance-option[data-mode="light"],
+#argon-appearance[data-mode="dark"] .argon-appearance-option[data-mode="dark"],
+#argon-appearance[data-mode="normal"] .argon-appearance-option[data-mode="normal"] {
   color: var(--argon-menu-text);
   background: var(--argon-menu-selected);
 }
 
-#argon-appearance .argon-appearance-option:has(input:checked)::after {
+#argon-appearance[data-mode="light"] .argon-appearance-option[data-mode="light"]::after,
+#argon-appearance[data-mode="dark"] .argon-appearance-option[data-mode="dark"]::after,
+#argon-appearance[data-mode="normal"] .argon-appearance-option[data-mode="normal"]::after {
   visibility: visible;
 }
 
-#argon-appearance .argon-appearance-option:has(input:disabled) {
+#argon-appearance .argon-appearance-option[aria-disabled="true"] {
   cursor: default;
   opacity: .6;
 }
 
 #argon-appearance .argon-appearance-trigger:focus-visible,
-#argon-appearance .argon-appearance-option:has(input:focus-visible) {
+#argon-appearance .argon-appearance-option:focus-within {
   outline: 2px solid var(--argon-menu-focus);
   outline-offset: -2px;
 }
@@ -7215,7 +7723,7 @@ html.argon-theme-changing *::after {
     background-color: var(--argon-menu-hover);
   }
 
-  #argon-appearance .argon-appearance-option:has(input:not(:disabled)):not(:has(input:checked)):hover {
+  #argon-appearance .argon-appearance-option:not([aria-disabled="true"]):hover {
     background: var(--argon-menu-hover);
   }
 }
@@ -7827,6 +8335,152 @@ input.argon-color-swatch[type="color"] {
 [data-page="admin-network-network"] .td > .ifacebadge > .cbi-tooltip-container {
   display: flex;
   align-items: center;
+}
+
+@media screen and (max-width: 768px), screen and (max-width: 1024px) and (pointer: coarse) {
+  [data-page="admin-network-network"] #cbi-network :is(#cbi-network-interface, #cbi-network-device):not([data-tab-active="false"]) {
+    container: argon-network-list / inline-size;
+    padding: var(--argon-mobile-panel-inset) !important;
+  }
+}
+
+/* Footstrap-style config rows: captions above values, with the actions below. */
+@container argon-network-list (max-width: 62rem) {
+  :is(#cbi-network-interface, #cbi-network-device) > .cbi-section-table,
+  :is(#cbi-network-interface, #cbi-network-device) > .cbi-section-table > :is(tbody, tfoot) {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) > .cbi-section-table > thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) .cbi-section-table-row:not(.placeholder) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-width: 0;
+    margin-block-end: .75rem;
+    padding: .55rem .875rem .75rem;
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-radius: .625rem;
+  }
+
+  #cbi-network-interface .cbi-section-table-row:not(.placeholder) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: .5rem;
+  }
+
+  #cbi-network :is(#cbi-network-interface, #cbi-network-device) .cbi-section-table-row > .td {
+    display: block;
+    width: auto;
+    min-width: 0;
+    margin: 0;
+    padding: .375rem 0;
+    border: 0;
+    border-block-end: 1px solid rgba(128, 128, 128, .2);
+    align-self: stretch;
+    text-align: start !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  #cbi-network-device .td[data-name="mtu"] {
+    grid-column: 1 / -1;
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) .td[data-title]:not([data-title=""]):not(.cbi-section-actions)::before {
+    content: attr(data-title);
+    content: attr(data-title) / "";
+    display: block;
+    padding: 0;
+    margin-block-end: .125rem;
+    font-size: .8rem;
+    font-weight: 600;
+    opacity: .85;
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) .td .ifacebadge {
+    max-inline-size: 100%;
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) .td .cbi-tooltip-container:not(:hover) > .cbi-tooltip {
+    display: none;
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) .td .cbi-tooltip-container > .cbi-tooltip {
+    max-inline-size: min(60vw, 14rem);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) .td .cbi-tooltip .nowrap {
+    white-space: normal;
+  }
+
+  #cbi-network-interface .cbi-section-table-row > .td[data-name="_ifacebox"] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #cbi-network-interface .cbi-section-table-row > .td[data-name="_ifacebox"] > .ifacebox {
+    min-inline-size: min(100px, 100%);
+    max-inline-size: 100%;
+    margin: 0;
+    /* Match the desktop badge instead of inheriting the smaller table text. */
+    font-size: .975rem;
+    text-align: center;
+    white-space: normal;
+  }
+
+  #cbi-network #cbi-network-interface .cbi-section-table-row > .td[data-name="_ifacestat"] {
+    text-align: center !important;
+  }
+
+  #cbi-network-interface .td[data-name="_ifacestat"] .nowrap {
+    white-space: normal;
+  }
+
+  #cbi-network :is(#cbi-network-interface, #cbi-network-device) .cbi-section-table-row > .cbi-section-actions {
+    /* LuCI pins this cell to the native table's action-column width. */
+    width: auto !important;
+    min-width: 0 !important;
+    grid-column: 1 / -1;
+    padding-block: .5rem .375rem;
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) .cbi-section-table-row > .cbi-section-actions > div {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .4rem .75rem;
+    width: 100%;
+  }
+
+  #cbi-network-interface .cbi-section-table-row > .cbi-section-actions > div {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: .375rem;
+  }
+
+  :is(#cbi-network-interface, #cbi-network-device) .cbi-section-table-row .cbi-section-actions :is(.btn, .cbi-button) {
+    margin: 0;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  #cbi-network-interface .cbi-section-table-row .cbi-section-actions :is(.btn, .cbi-button) {
+    padding-inline: .25rem;
+  }
 }
 
 @media screen and (max-width: 1280px) {
