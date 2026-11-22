@@ -840,7 +840,8 @@ html[data-darkmode="true"] .vt-app {
 .vt-app .vt-path-mesh .vt-leaf-sig.vt-lvl-crit { color: var(--vt-err); }
 .vt-app .vt-path-mesh .vt-leaf-rate { white-space: nowrap; }
 .vt-app .vt-path-mesh .vt-leaf-ip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--vt-text-3); }
-.vt-app .vt-path-mesh .vt-leaf-more { grid-column: 1 / -1; font-size: var(--vt-fs-sm); color: var(--vt-text-3); }
+.vt-app .vt-path-mesh .vt-leaf-more { grid-column: 1 / -1; font-size: var(--vt-fs-sm); color: var(--vt-text-3); cursor: pointer; }
+.vt-app .vt-path-mesh .vt-leaf-more:hover { color: var(--vt-text-2); text-decoration: underline; }
 .vt-app .vt-path-mesh .vt-node-peer { padding: 10px 12px; border-color: color-mix(in oklab, var(--vt-accent-line) 40%, var(--vt-line)); }
 .vt-app .vt-path-mesh .vt-node-peer .vt-node-ico { background: var(--vt-accent-fill); color: var(--vt-accent-fill-ink); }
 .vt-app .vt-path-mesh .vt-node-peer .vt-node-title { font-size: var(--vt-fs-md); }
