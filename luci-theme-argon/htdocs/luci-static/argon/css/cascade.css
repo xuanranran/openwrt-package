@@ -8514,3 +8514,24 @@ input.argon-color-swatch[type="color"] {
   }
 
 }
+
+@media screen and (768px < width <= 1280px) and ((width > 1024px) or (not (pointer: coarse))) {
+  [data-page="admin-network-network"] #cbi-network-interface .cbi-section-table-row > .td {
+    align-self: center;
+  }
+
+  [data-page="admin-network-network"] #cbi-network-interface .td[data-name="_ifacebox"] {
+    flex: 0 1 9rem;
+  }
+
+  [data-page="admin-network-network"] #cbi-network-interface .td[data-name="_ifacestat"] .nowrap {
+    white-space: normal;
+  }
+
+  [data-page="admin-network-network"] #cbi-network-interface .td.cbi-section-actions {
+    flex: 0 1 auto;
+    width: max-content !important;
+    margin-inline-start: auto;
+    text-align: right !important;
+  }
+}
