@@ -1,0 +1,695 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "bandix-plus"
+msgstr "bandix-plus"
+
+msgid "Bandix Plus"
+msgstr "Bandix Plus"
+
+msgid "Rate limit & policy"
+msgstr "Ограничения скорости и стратегии"
+
+msgid "Cumulative: all (live only)"
+msgstr "Накопление: Все (только текущий курс и накопление в реальном времени)"
+
+msgid "Cumulative: today"
+msgstr "Итого: Сегодня"
+
+msgid "Cumulative: this week"
+msgstr "Совокупно: на этой неделе"
+
+msgid "Cumulative: this month"
+msgstr "Совокупно: в этом месяце"
+
+msgid "Cumulative: this year"
+msgstr "Совокупно: в этом году"
+
+msgid "Name / zone"
+msgstr "Сетевая карта/домен"
+
+msgid "Refresh now"
+msgstr "Обновить сейчас"
+
+msgid "Cumulative (bytes) for period"
+msgstr "Суммарное количество байт за выбранный период времени"
+
+msgid "L4 bps (sum v4/v6, both dirs)"
+msgstr "Общая скорость в направлении L4 (двусторонняя связь v4/v6)"
+
+msgid "Cumulative: all (live)"
+msgstr "Совокупно: все (в реальном времени)"
+
+msgid "HTTP API 端口与 bandix-plus --api-bind 的端口段一致，默认 8787。"
+msgstr ""
+"Порт на этой странице должен соответствовать порту --api-bind Bandix-plus. "
+"Значение по умолчанию — 8787."
+
+msgid "General"
+msgstr "Базовый"
+
+msgid "Enable traffic persistence storage"
+msgstr "Включить постоянное хранилище трафика"
+
+msgid "Persist traffic histogram/ring data to disk. Disabled by default."
+msgstr ""
+"Сохранять данные гистограммы трафика/кольца на диск, по умолчанию отключено."
+
+msgid "TC backend"
+msgstr "Бэкенд TC"
+
+msgid "Select TC attach backend."
+msgstr "Выберите бэкенд подключения TC."
+
+msgid ""
+"Select TC attach backend. Recommendation: use auto by default; tcx is "
+"preferred on kernel >= 6.6; netlink is safer on older kernels."
+msgstr ""
+"Выберите TC, чтобы смонтировать серверную часть. Рекомендация: используйте "
+"авто по умолчанию; сначала используйте tcx для ядра >= 6.6; используйте "
+"netlink для старых ядер, что более надежно."
+
+msgid "TC netlink priority"
+msgstr "Приоритет TC netlink"
+
+msgid "Only used when backend is netlink. Range: 0..65535 (0 means default)."
+msgstr ""
+"Используется только при backend=netlink. Диапазон: 0..65535 (0 — значение по"
+" умолчанию)."
+
+msgid "Netlink priority"
+msgstr "Приоритет сетевых ссылок"
+
+msgid "TCX anchor program id"
+msgstr "ID якорной программы TCX"
+
+msgid "Required when tc_order is before/after."
+msgstr "Обязательно, когда tc_order равен before/after."
+
+msgid "TCX ingress anchor program id"
+msgstr "Идентификатор входной привязки TCX"
+
+msgid "TCX egress anchor program id"
+msgstr "Идентификатор выходной привязки TCX"
+
+msgid ""
+"Used when tc_order is before/after. Must be a valid ingress program id on "
+"the same interface."
+msgstr ""
+"Используется, когда tc_order находится до/после. Должен быть действительным "
+"идентификатором входной программы на том же интерфейсе."
+
+msgid ""
+"Used when tc_order is before/after. Must be a valid egress program id on the"
+" same interface."
+msgstr ""
+"Используется, когда tc_order находится до/после. Должен быть действительным "
+"идентификатором исходящей программы на том же интерфейсе."
+
+msgid "Port"
+msgstr "порт"
+
+msgid "Info"
+msgstr "информация"
+
+msgid "add schedule"
+msgstr "Добавить план"
+
+msgid "set"
+msgstr "приложение"
+
+msgid "set default"
+msgstr "Установить гостя по умолчанию"
+
+msgid "add to whitelist"
+msgstr "Добавить в белый список"
+
+msgid "Online Devices"
+msgstr "онлайн-устройство"
+
+msgid "Online devices"
+msgstr "онлайн-устройство"
+
+msgid "Upload Rate"
+msgstr "Скорость восходящей линии связи"
+
+msgid "Download Rate"
+msgstr "Скорость нисходящей линии связи"
+
+msgid "Upload bytes"
+msgstr "Восходящие байты"
+
+msgid "Download bytes"
+msgstr "Нисходящий байт"
+
+msgid "Display mode"
+msgstr "режим отображения"
+
+msgid "Simple Mode"
+msgstr "Простой режим"
+
+msgid "Detailed Mode"
+msgstr "подробный режим"
+
+msgid "Upload"
+msgstr "загрузить"
+
+msgid "Download"
+msgstr "скачать"
+
+msgid "Inbound"
+msgstr "Входящий"
+
+msgid "Outbound"
+msgstr "исходящий"
+
+msgid "Y axis: B/s (bps÷8). Wheel zooms; hover for values."
+msgstr ""
+"Вертикальная ось — байт/секунда (бит/с÷8). Используйте колесо прокрутки, "
+"чтобы увеличить масштаб окна времени, и наведите указатель мыши, чтобы "
+"увидеть значение."
+
+msgid "Today"
+msgstr "сегодня"
+
+msgid "This Week"
+msgstr "На этой неделе"
+
+msgid "Last Week"
+msgstr "на прошлой неделе"
+
+msgid "This Month"
+msgstr "в этом месяце"
+
+msgid "Last Month"
+msgstr "в прошлом месяце"
+
+msgid "Last 7 Days"
+msgstr "последние 7 дней"
+
+msgid "Last 30 Days"
+msgstr "Последние 30 дней"
+
+msgid "Last 90 Days"
+msgstr "Последние 90 дней"
+
+msgid "Last Year"
+msgstr "в прошлом году"
+
+msgid "Histogram"
+msgstr "Гистограмма"
+
+msgid "Query"
+msgstr "Запрос"
+
+msgid "Start Date"
+msgstr "Дата начала"
+
+msgid "End Date"
+msgstr "дата окончания"
+
+msgid "Reset"
+msgstr "перезагрузить"
+
+msgid "Aggregation:"
+msgstr "Метод агрегирования:"
+
+msgid "Device:"
+msgstr "оборудование:"
+
+msgid "entries"
+msgstr "полоска"
+
+msgid "Iface"
+msgstr "интерфейс"
+
+msgid "All devices"
+msgstr "Все устройства"
+
+msgid "IPv4"
+msgstr "IPv4"
+
+msgid "IPv6"
+msgstr "IPv6"
+
+msgid "Upload Statistics"
+msgstr "Восходящая статистика"
+
+msgid "Download Statistics"
+msgstr "Нисходящая статистика"
+
+msgid "Average"
+msgstr "средний"
+
+msgid "Maximum"
+msgstr "максимум"
+
+msgid "Minimum"
+msgstr "самый маленький"
+
+msgid "P95"
+msgstr "P95"
+
+msgid "Total Upload"
+msgstr "общая загрузка"
+
+msgid "Total Download"
+msgstr "общее количество загрузок"
+
+msgid "Total"
+msgstr "все"
+
+msgid "No data"
+msgstr "Данных пока нет"
+
+msgid "Interface Overview"
+msgstr "Обзор интерфейса"
+
+msgid "Traffic Timeline"
+msgstr "График движения трафика"
+
+msgid "Device List"
+msgstr "Список устройств"
+
+msgid "All interfaces already have rules"
+msgstr "У всех интерфейсов уже есть правила"
+
+msgid "Rule already exists for iface"
+msgstr "Правила для этого интерфейса уже существуют"
+
+msgid "Total Upload Usage"
+msgstr "Общий объем загрузки"
+
+msgid "Total Download Usage"
+msgstr "общее количество загрузок"
+
+msgid "Total Usage"
+msgstr "все"
+
+msgid "Set iface limit"
+msgstr "Ограничение скорости интерфейса"
+
+msgid "Tip: 0 means unlimited"
+msgstr "Совет: 0 означает отсутствие ограничений."
+
+msgid "Trend samples"
+msgstr "Тенденции трафика в реальном времени"
+
+msgid "Device MAC"
+msgstr "Выберите устройство"
+
+msgid "Traffic Type"
+msgstr "тип протокола"
+
+msgid "Guest control"
+msgstr "Гостевой контроль"
+
+msgid "Guest rules"
+msgstr "Правила для гостей"
+
+msgid "IPv4 Upload"
+msgstr "загрузка IPv4"
+
+msgid "IPv4 Download"
+msgstr "IPv4 скачать"
+
+msgid "IPv6 Upload"
+msgstr "загрузка IPv6"
+
+msgid "IPv6 Download"
+msgstr "IPv6 скачать"
+
+msgid "Whitelist"
+msgstr "белый список"
+
+msgid "Actions"
+msgstr "действовать"
+
+msgid "Guest rule"
+msgstr "Правила для гостей"
+
+msgid "Schedule rules"
+msgstr "Правила ограничения скорости по времени"
+
+msgid "Set hostname for this device."
+msgstr "Установить имя хоста"
+
+msgid "Scheduled rate limits"
+msgstr "Правила ограничения скорости"
+
+msgid "No scheduled rules yet; click Add rule."
+msgstr "Правил нет, нажмите Добавить"
+
+msgid "Add rule"
+msgstr "Добавить правила"
+
+msgid "Select MAC"
+msgstr "Выберите устройство"
+
+msgid "Limit Rule"
+msgstr "Правила ограничения скорости"
+
+msgid "No rule"
+msgstr "Никаких правил"
+
+msgid "Active"
+msgstr "Вступает в силу"
+
+msgid "Inactive"
+msgstr "Не эффективен"
+
+msgid "Update schedule"
+msgstr "Обновить правила"
+
+msgid "Loading..."
+msgstr "загрузка..."
+
+msgid "Loading in chunks, please wait... (%d/%d)"
+msgstr "Загрузка частями, подождите... (%d/%d)"
+
+msgid "Runtime options for openwrt-bandix-plus service."
+msgstr "Параметры времени выполнения службы openwrt-bandix-plus."
+
+msgid "This page edits /etc/config/bandix_plus general options."
+msgstr ""
+"На этой странице редактируется общий раздел файла /etc/config/bandix_plus."
+
+msgid "Enable traffic collection"
+msgstr "Включить сбор трафика"
+
+msgid "When disabled, bandix-plus service will not start."
+msgstr "Служба Bandix-Plus не запускается при выключении."
+
+msgid "Interface to monitor"
+msgstr "Интерфейс мониторинга"
+
+msgid "Select one or more interfaces to monitor."
+msgstr "Выберите один или несколько сетевых интерфейсов для мониторинга."
+
+msgid "Log level"
+msgstr "Log level"
+
+msgid "TC order"
+msgstr "Последовательность монтажа ТК"
+
+msgid "Host"
+msgstr "адрес прослушивания"
+
+msgid "Data directory"
+msgstr "каталог данных"
+
+msgid "Service"
+msgstr "Служить"
+
+msgid "Restart bandix-plus (init if present)"
+msgstr ""
+"Перезапустите Bandix-Plus (через init, если есть скрипт инициализации)"
+
+msgid "Add"
+msgstr "добавить в"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Close"
+msgstr "закрытие"
+
+msgid "Delete"
+msgstr "удалить"
+
+msgid "Edit"
+msgstr "редактировать"
+
+msgid "Save"
+msgstr "сохранять"
+
+msgid "Unlimited"
+msgstr "Безлимитный"
+
+msgid "Rate unit"
+msgstr "единица тарифа"
+
+msgid "Mon"
+msgstr "в понедельник"
+
+msgid "Tue"
+msgstr "Вторник"
+
+msgid "Wed"
+msgstr "Среда"
+
+msgid "Thu"
+msgstr "Четверг"
+
+msgid "Fri"
+msgstr "Пятница"
+
+msgid "Sat"
+msgstr "Суббота"
+
+msgid "Sun"
+msgstr "Воскресенье"
+
+msgid "Show Top %d"
+msgstr "Показать только первые имена %d"
+
+msgid "Show All"
+msgstr "Показать все"
+
+msgid "Showing all %d devices"
+msgstr "Показаны все устройства %d"
+
+msgid "Showing top %d of %d devices"
+msgstr "Показаны %d устройств (всего %d)"
+
+msgid "Failed to refresh status"
+msgstr "Не удалось обновить статус"
+
+msgid "Failed to refresh trend"
+msgstr "Не удалось обновить данные тренда."
+
+msgid "Failed to refresh rate-limit data"
+msgstr "Не удалось обновить данные об ограничении скорости."
+
+msgid "Failed to save guest rule"
+msgstr "Не удалось сохранить гостевые правила."
+
+msgid "Failed to delete schedule"
+msgstr "Не удалось удалить запланированные правила."
+
+msgid "Failed to delete iface limit"
+msgstr "Не удалось удалить ограничение скорости интерфейса."
+
+msgid "Failed to delete guest default"
+msgstr "Не удалось удалить правила по умолчанию для гостей."
+
+msgid "Failed to remove whitelist entry"
+msgstr "Не удалось удалить запись из белого списка."
+
+msgid "Failed to submit schedule"
+msgstr "Не удалось отправить правила синхронизации."
+
+msgid "Failed to save iface limit"
+msgstr "Не удалось сохранить ограничение скорости интерфейса."
+
+msgid "Failed to query statistics"
+msgstr "Не удалось запросить статистику"
+
+msgid "Failed to query usage ranking"
+msgstr "Не удалось запросить рейтинг использования."
+
+msgid "Failed to save hostname"
+msgstr "Не удалось сохранить имя хоста"
+
+msgid "All interfaces"
+msgstr "Все интерфейсы"
+
+msgid "All Devices"
+msgstr "Все оборудование"
+
+msgid "All"
+msgstr "все"
+
+msgid "Hostname"
+msgstr "имя хоста"
+
+msgid "MAC"
+msgstr "MAC"
+
+msgid "No devices"
+msgstr "Еще нет оборудования"
+
+msgid "Settings"
+msgstr "настраивать"
+
+msgid "Other Rates"
+msgstr "Другие тарифы"
+
+msgid "Cumulative"
+msgstr "общий итог"
+
+msgid "Uploaded"
+msgstr "Загружено"
+
+msgid "Downloaded"
+msgstr "Скачано"
+
+msgid "Total Uploaded"
+msgstr "Всего загрузить"
+
+msgid "Total Downloaded"
+msgstr "Всего скачать"
+
+msgid "(empty)"
+msgstr "(нулевой)"
+
+msgid "Enabled"
+msgstr "Включено"
+
+msgid "Disabled"
+msgstr "Неполноценный"
+
+msgid "Invalid MAC address"
+msgstr "Invalid MAC address"
+
+msgid "Add schedule rule"
+msgstr "Add schedule rule"
+
+msgid "Edit schedule rule"
+msgstr "Edit schedule rule"
+
+msgid "Device hostname"
+msgstr "Имя хоста устройства"
+
+msgid "Delete schedule rule"
+msgstr "Удалить правила тайминга"
+
+msgid "Are you sure you want to delete this schedule rule?"
+msgstr "Вы уверены, что хотите удалить это запланированное правило?"
+
+msgid "Open a device from the device table and use Settings to manage rules."
+msgstr ""
+"Откройте устройство из списка устройств и управляйте правилами через "
+"«Настройки»."
+
+msgid "Delete iface limit?"
+msgstr ""
+"Вы уверены, что хотите удалить ограничение скорости на этом интерфейсе?"
+
+msgid "Delete guest default?"
+msgstr "Вы уверены, что хотите удалить правило по умолчанию для гостей?"
+
+msgid "Remove this whitelist entry?"
+msgstr "Вы уверены, что хотите удалить эту запись из белого списка?"
+
+msgid "Invalid days"
+msgstr "Неверный выбор дня недели."
+
+msgid "No device context"
+msgstr "Нет контекста устройства"
+
+msgid "Iface and MAC are required"
+msgstr "Нужно заполнить интерфейс и MAC"
+
+msgid "Please choose an interface"
+msgstr "Пожалуйста, выберите интерфейс"
+
+msgid "Invalid date range"
+msgstr "Неверный диапазон дат."
+
+msgid "No statistics data"
+msgstr "Статистики пока нет"
+
+msgid "No trend data"
+msgstr "Данных о тенденциях пока нет"
+
+msgid "Hourly"
+msgstr "ежечасно"
+
+msgid "Daily"
+msgstr "днем"
+
+msgid "This Year"
+msgstr "в этом году"
+
+msgid "Device Usage Ranking"
+msgstr "Рейтинг использования оборудования"
+
+msgid "Period"
+msgstr "статистический период"
+
+msgid "Hostname is required"
+msgstr "Необходимо заполнить имя хоста"
+
+msgid "Iface is required"
+msgstr "Нужно заполнить интерфейс"
+
+msgid "Feedback"
+msgstr "Обратная связь"
+
+msgid "Version"
+msgstr "Версия"
+
+msgid "Unknown"
+msgstr "Неизвестно"
+
+msgid "Restart Service"
+msgstr "Перезапустить службу"
+
+msgid "Restart Bandix Plus Service"
+msgstr "Перезапустить службу Bandix Plus"
+
+msgid "Are you sure you want to restart the Bandix Plus service?"
+msgstr "Вы уверены, что хотите перезапустить службу Bandix Plus?"
+
+msgid "Confirm"
+msgstr "Подтвердить"
+
+msgid "Failed to restart service: "
+msgstr "Не удалось перезапустить службу: "
+
+msgid "Check for Updates"
+msgstr "Проверить обновления"
+
+msgid "Checking..."
+msgstr "Проверка..."
+
+msgid "Failed to check for updates"
+msgstr "Не удалось проверить обновления"
+
+msgid "Failed to check LuCI App updates"
+msgstr "Не удалось проверить обновления приложения LuCI"
+
+msgid "LuCI App has update: "
+msgstr "Для приложения LuCI доступно обновление: "
+
+msgid "LuCI App is up to date: "
+msgstr "Приложение LuCI актуально: "
+
+msgid "Failed to check Bandix Plus updates"
+msgstr "Не удалось проверить обновления Bandix Plus"
+
+msgid "Bandix Plus has update: "
+msgstr "Для Bandix Plus доступно обновление: "
+
+msgid "Bandix Plus is up to date: "
+msgstr "Bandix Plus актуален: "
+
+msgid "Updates Available"
+msgstr "Доступны обновления"
+
+msgid "No Updates Available"
+msgstr "Нет доступных обновлений"
+
+msgid "Update Check Failed"
+msgstr "Не удалось проверить обновления"
+
+msgid "Manual Download"
+msgstr "Ручная загрузка"
+
+msgid "Update available"
+msgstr "Доступно обновление"
+
+msgid "Update available, click to go to settings"
+msgstr "Доступно обновление, нажмите, чтобы перейти к настройкам"

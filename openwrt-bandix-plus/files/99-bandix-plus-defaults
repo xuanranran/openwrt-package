@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Ensure base section exists.
+uci -q get bandix_plus.general >/dev/null 2>&1 || uci -q set bandix_plus.general='bandix_plus'
+
+# Fill only missing keys; never overwrite user-modified values.
+uci -q get bandix_plus.general.enable_traffic >/dev/null 2>&1 || uci -q set bandix_plus.general.enable_traffic='1'
+uci -q get bandix_plus.general.log_level >/dev/null 2>&1 || uci -q set bandix_plus.general.log_level='info'
+uci -q get bandix_plus.general.tc_backend >/dev/null 2>&1 || uci -q set bandix_plus.general.tc_backend='auto'
+uci -q get bandix_plus.general.tc_order >/dev/null 2>&1 || uci -q set bandix_plus.general.tc_order='default'
+uci -q get bandix_plus.general.netlink_priority >/dev/null 2>&1 || uci -q set bandix_plus.general.netlink_priority='0'
+uci -q get bandix_plus.general.tcx_anchor_ingress_id >/dev/null 2>&1 || uci -q set bandix_plus.general.tcx_anchor_ingress_id=''
+uci -q get bandix_plus.general.tcx_anchor_egress_id >/dev/null 2>&1 || uci -q set bandix_plus.general.tcx_anchor_egress_id=''
+uci -q get bandix_plus.general.traffic_enable_storage >/dev/null 2>&1 || uci -q set bandix_plus.general.traffic_enable_storage='0'
+uci -q get bandix_plus.general.port >/dev/null 2>&1 || uci -q set bandix_plus.general.port='8787'
+uci -q get bandix_plus.general.host >/dev/null 2>&1 || uci -q set bandix_plus.general.host='127.0.0.1'
+uci -q get bandix_plus.general.history_window_minutes >/dev/null 2>&1 || uci -q set bandix_plus.general.history_window_minutes='10'
+uci -q get bandix_plus.general.data_dir >/dev/null 2>&1 || uci -q set bandix_plus.general.data_dir='/usr/share/bandix-plus'
+
+uci -q commit bandix_plus
+
+exit 0

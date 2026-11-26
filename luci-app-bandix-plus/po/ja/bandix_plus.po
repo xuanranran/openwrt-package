@@ -1,0 +1,682 @@
+#
+msgid ""
+msgstr ""
+"Language: ja\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "bandix-plus"
+msgstr "bandix-plus"
+
+msgid "Bandix Plus"
+msgstr "Bandix Plus"
+
+msgid "Rate limit & policy"
+msgstr "制限速度と戦略"
+
+msgid "Cumulative: all (live only)"
+msgstr "累積: すべて (現在のレートとリアルタイム累積のみ)"
+
+msgid "Cumulative: today"
+msgstr "合計: 今日"
+
+msgid "Cumulative: this week"
+msgstr "累計: 今週"
+
+msgid "Cumulative: this month"
+msgstr "累計: 今月"
+
+msgid "Cumulative: this year"
+msgstr "累計：今年"
+
+msgid "Name / zone"
+msgstr "NIC/ドメイン"
+
+msgid "Refresh now"
+msgstr "今すぐ更新してください"
+
+msgid "Cumulative (bytes) for period"
+msgstr "選択した期間の累積バイト数"
+
+msgid "L4 bps (sum v4/v6, both dirs)"
+msgstr "L4 方向の合計レート (v4/v6 双方向)"
+
+msgid "Cumulative: all (live)"
+msgstr "累積: すべて (リアルタイム)"
+
+msgid "HTTP API 端口与 bandix-plus --api-bind 的端口段一致，默认 8787。"
+msgstr ""
+"このページのポートは、bandix-plus の --api-bind ポートと一致している必要があります。デフォルト値は 8787 です。"
+
+msgid "General"
+msgstr "基本"
+
+msgid "Enable traffic persistence storage"
+msgstr "トラフィック永続ストレージを有効にする"
+
+msgid "Persist traffic histogram/ring data to disk. Disabled by default."
+msgstr "トラフィック ヒストグラム/リング データをディスクに保存します。デフォルトではオフになっています。"
+
+msgid "TC backend"
+msgstr "TC バックエンド"
+
+msgid "Select TC attach backend."
+msgstr "TC アタッチのバックエンドを選択します。"
+
+msgid ""
+"Select TC attach backend. Recommendation: use auto by default; tcx is "
+"preferred on kernel >= 6.6; netlink is safer on older kernels."
+msgstr ""
+"バックエンドをマウントするには TC を選択します。推奨事項: デフォルトでは自動を使用します。カーネル 6.6 以上の場合は最初に tcx "
+"を使用します。より信頼性の高い古いカーネルには netlink を使用してください。"
+
+msgid "TC netlink priority"
+msgstr "TC netlink 優先度"
+
+msgid "Only used when backend is netlink. Range: 0..65535 (0 means default)."
+msgstr "バックエンドが netlink の場合のみ使用されます。範囲: 0..65535（0 はデフォルト）。"
+
+msgid "Netlink priority"
+msgstr "ネットリンクの優先順位"
+
+msgid "TCX anchor program id"
+msgstr "TCX アンカープログラム ID"
+
+msgid "Required when tc_order is before/after."
+msgstr "tc_order が before/after の場合に必須です。"
+
+msgid "TCX ingress anchor program id"
+msgstr "TCX イングレス アンカー プログラム ID"
+
+msgid "TCX egress anchor program id"
+msgstr "TCX 出力アンカー プログラム ID"
+
+msgid ""
+"Used when tc_order is before/after. Must be a valid ingress program id on "
+"the same interface."
+msgstr ""
+"tc_order が before/after の場合に使用されます。同じインターフェイス上の有効なイングレス プログラム ID である必要があります。"
+
+msgid ""
+"Used when tc_order is before/after. Must be a valid egress program id on the"
+" same interface."
+msgstr ""
+"tc_order が before/after の場合に使用されます。同じインターフェイス上の有効な出力プログラム ID である必要があります。"
+
+msgid "Port"
+msgstr "ポート"
+
+msgid "Info"
+msgstr "情報"
+
+msgid "add schedule"
+msgstr "プランの追加"
+
+msgid "set"
+msgstr "応用"
+
+msgid "set default"
+msgstr "ゲストのデフォルトを設定する"
+
+msgid "add to whitelist"
+msgstr "ホワイトリストに追加"
+
+msgid "Online Devices"
+msgstr "オンラインデバイス"
+
+msgid "Online devices"
+msgstr "オンラインデバイス"
+
+msgid "Upload Rate"
+msgstr "アップリンク速度"
+
+msgid "Download Rate"
+msgstr "ダウンリンク速度"
+
+msgid "Upload bytes"
+msgstr "アップストリームバイト"
+
+msgid "Download bytes"
+msgstr "ダウンストリームバイト"
+
+msgid "Display mode"
+msgstr "表示モード"
+
+msgid "Simple Mode"
+msgstr "イージーモード"
+
+msgid "Detailed Mode"
+msgstr "冗長モード"
+
+msgid "Upload"
+msgstr "アップロード"
+
+msgid "Download"
+msgstr "ダウンロード"
+
+msgid "Inbound"
+msgstr "インバウンド"
+
+msgid "Outbound"
+msgstr "アウトバウンド"
+
+msgid "Y axis: B/s (bps÷8). Wheel zooms; hover for values."
+msgstr "縦軸はバイト/秒 (bps ÷ 8) です。スクロール ホイールを使用して時間ウィンドウを拡大し、マウスを移動して値を確認します。"
+
+msgid "Today"
+msgstr "今日"
+
+msgid "This Week"
+msgstr "今週"
+
+msgid "Last Week"
+msgstr "先週"
+
+msgid "This Month"
+msgstr "今月"
+
+msgid "Last Month"
+msgstr "先月"
+
+msgid "Last 7 Days"
+msgstr "過去7日間"
+
+msgid "Last 30 Days"
+msgstr "過去 30 日間"
+
+msgid "Last 90 Days"
+msgstr "過去90日間"
+
+msgid "Last Year"
+msgstr "去年"
+
+msgid "Histogram"
+msgstr "ヒストグラム"
+
+msgid "Query"
+msgstr "クエリ"
+
+msgid "Start Date"
+msgstr "開始日"
+
+msgid "End Date"
+msgstr "終了日"
+
+msgid "Reset"
+msgstr "リセット"
+
+msgid "Aggregation:"
+msgstr "集計方法:"
+
+msgid "Device:"
+msgstr "装置："
+
+msgid "entries"
+msgstr "ストリップ"
+
+msgid "Iface"
+msgstr "インタフェース"
+
+msgid "All devices"
+msgstr "すべてのデバイス"
+
+msgid "IPv4"
+msgstr "IPv4"
+
+msgid "IPv6"
+msgstr "IPv6"
+
+msgid "Upload Statistics"
+msgstr "上昇傾向の統計"
+
+msgid "Download Statistics"
+msgstr "下方統計"
+
+msgid "Average"
+msgstr "平均"
+
+msgid "Maximum"
+msgstr "最大"
+
+msgid "Minimum"
+msgstr "最小"
+
+msgid "P95"
+msgstr "P95"
+
+msgid "Total Upload"
+msgstr "合計アップロード"
+
+msgid "Total Download"
+msgstr "総ダウンロード数"
+
+msgid "Total"
+msgstr "全て"
+
+msgid "No data"
+msgstr "まだデータがありません"
+
+msgid "Interface Overview"
+msgstr "インターフェースの概要"
+
+msgid "Traffic Timeline"
+msgstr "交通タイムライン"
+
+msgid "Device List"
+msgstr "デバイスリスト"
+
+msgid "All interfaces already have rules"
+msgstr "すべてのインターフェースにはすでにルールがあります"
+
+msgid "Rule already exists for iface"
+msgstr "このインターフェースにはルールがすでに存在します"
+
+msgid "Total Upload Usage"
+msgstr "総アップロード量"
+
+msgid "Total Download Usage"
+msgstr "総ダウンロード数"
+
+msgid "Total Usage"
+msgstr "全て"
+
+msgid "Set iface limit"
+msgstr "インターフェース速度制限"
+
+msgid "Tip: 0 means unlimited"
+msgstr "ヒント: 0 は制限がないことを意味します"
+
+msgid "Trend samples"
+msgstr "リアルタイムのトラフィック傾向"
+
+msgid "Device MAC"
+msgstr "デバイスの選択"
+
+msgid "Traffic Type"
+msgstr "プロトコルの種類"
+
+msgid "Guest control"
+msgstr "ゲストコントロール"
+
+msgid "Guest rules"
+msgstr "ゲストルール"
+
+msgid "IPv4 Upload"
+msgstr "IPv4アップロード"
+
+msgid "IPv4 Download"
+msgstr "IPv4ダウンロード"
+
+msgid "IPv6 Upload"
+msgstr "IPv6アップロード"
+
+msgid "IPv6 Download"
+msgstr "IPv6ダウンロード"
+
+msgid "Whitelist"
+msgstr "ホワイトリスト"
+
+msgid "Actions"
+msgstr "操作する"
+
+msgid "Guest rule"
+msgstr "ゲストルール"
+
+msgid "Schedule rules"
+msgstr "時限速度制限ルール"
+
+msgid "Set hostname for this device."
+msgstr "ホスト名の設定"
+
+msgid "Scheduled rate limits"
+msgstr "速度制限ルール"
+
+msgid "No scheduled rules yet; click Add rule."
+msgstr "ルールはありません。「追加」をクリックします"
+
+msgid "Add rule"
+msgstr "ルールの追加"
+
+msgid "Select MAC"
+msgstr "デバイスの選択"
+
+msgid "Limit Rule"
+msgstr "速度制限ルール"
+
+msgid "No rule"
+msgstr "ルールなし"
+
+msgid "Active"
+msgstr "発効中"
+
+msgid "Inactive"
+msgstr "効果がない"
+
+msgid "Update schedule"
+msgstr "更新ルール"
+
+msgid "Loading..."
+msgstr "読み込み中..."
+
+msgid "Loading in chunks, please wait... (%d/%d)"
+msgstr "セクションをロードしています。お待ちください... (%d/%d)"
+
+msgid "Runtime options for openwrt-bandix-plus service."
+msgstr "openwrt-bandix-plus サービスのランタイム オプション。"
+
+msgid "This page edits /etc/config/bandix_plus general options."
+msgstr "このページは、/etc/config/bandix_plus の一般セクションを編集します。"
+
+msgid "Enable traffic collection"
+msgstr "トラフィック収集を有効にする"
+
+msgid "When disabled, bandix-plus service will not start."
+msgstr "シャットダウンすると、bandix-plus サービスが開始されません。"
+
+msgid "Interface to monitor"
+msgstr "監視インターフェース"
+
+msgid "Select one or more interfaces to monitor."
+msgstr "監視するネットワーク インターフェイスを 1 つ以上選択します。"
+
+msgid "Log level"
+msgstr "ログレベル"
+
+msgid "TC order"
+msgstr "TCの取り付け順序"
+
+msgid "Host"
+msgstr "リスニングアドレス"
+
+msgid "Data directory"
+msgstr "データディレクトリ"
+
+msgid "Service"
+msgstr "仕える"
+
+msgid "Restart bandix-plus (init if present)"
+msgstr "Bandix-plus を再起動します (init スクリプトがある場合は init を介して)"
+
+msgid "Add"
+msgstr "に追加"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "Close"
+msgstr "閉鎖"
+
+msgid "Delete"
+msgstr "消去"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Unlimited"
+msgstr "無制限"
+
+msgid "Rate unit"
+msgstr "料金単位"
+
+msgid "Mon"
+msgstr "月曜日に"
+
+msgid "Tue"
+msgstr "火曜日"
+
+msgid "Wed"
+msgstr "水曜日"
+
+msgid "Thu"
+msgstr "木曜日"
+
+msgid "Fri"
+msgstr "金曜日"
+
+msgid "Sat"
+msgstr "土曜日"
+
+msgid "Sun"
+msgstr "日曜日"
+
+msgid "Show Top %d"
+msgstr "最初の %d 名のみを表示"
+
+msgid "Show All"
+msgstr "すべて表示"
+
+msgid "Showing all %d devices"
+msgstr "すべての %d デバイスを表示しています"
+
+msgid "Showing top %d of %d devices"
+msgstr "%d 台のデバイスを表示中 (合計 %d)"
+
+msgid "Failed to refresh status"
+msgstr "ステータスの更新に失敗しました"
+
+msgid "Failed to refresh trend"
+msgstr "トレンドデータの更新に失敗しました"
+
+msgid "Failed to refresh rate-limit data"
+msgstr "制限速度データの更新に失敗しました"
+
+msgid "Failed to save guest rule"
+msgstr "ゲストルールの保存に失敗しました"
+
+msgid "Failed to delete schedule"
+msgstr "スケジュールされたルールの削除に失敗しました"
+
+msgid "Failed to delete iface limit"
+msgstr "インターフェイスのレート制限を削除できませんでした"
+
+msgid "Failed to delete guest default"
+msgstr "ゲストのデフォルトルールを削除できませんでした"
+
+msgid "Failed to remove whitelist entry"
+msgstr "ホワイトリストのエントリを削除できませんでした"
+
+msgid "Failed to submit schedule"
+msgstr "タイミングルールの送信に失敗しました"
+
+msgid "Failed to save iface limit"
+msgstr "インターフェイスのレート制限を保存できませんでした"
+
+msgid "Failed to query statistics"
+msgstr "統計のクエリに失敗しました"
+
+msgid "Failed to query usage ranking"
+msgstr "使用率ランキングのクエリに失敗しました"
+
+msgid "Failed to save hostname"
+msgstr "ホスト名の保存に失敗しました"
+
+msgid "All interfaces"
+msgstr "すべてのインターフェース"
+
+msgid "All Devices"
+msgstr "すべての装備"
+
+msgid "All"
+msgstr "全て"
+
+msgid "Hostname"
+msgstr "ホスト名"
+
+msgid "MAC"
+msgstr "MAC"
+
+msgid "No devices"
+msgstr "まだ装備がありません"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Other Rates"
+msgstr "その他の料金"
+
+msgid "Cumulative"
+msgstr "総計"
+
+msgid "Uploaded"
+msgstr "アップロードされました"
+
+msgid "Downloaded"
+msgstr "ダウンロード済み"
+
+msgid "Total Uploaded"
+msgstr "アップロード合計"
+
+msgid "Total Downloaded"
+msgstr "ダウンロード合計"
+
+msgid "(empty)"
+msgstr "(ヌル)"
+
+msgid "Enabled"
+msgstr "有効"
+
+msgid "Disabled"
+msgstr "無効"
+
+msgid "Invalid MAC address"
+msgstr "無効なMACアドレス"
+
+msgid "Add schedule rule"
+msgstr "タイミングルールを追加する"
+
+msgid "Edit schedule rule"
+msgstr "タイミングルールを編集する"
+
+msgid "Device hostname"
+msgstr "デバイスのホスト名"
+
+msgid "Delete schedule rule"
+msgstr "タイミングルールの削除"
+
+msgid "Are you sure you want to delete this schedule rule?"
+msgstr "このスケジュールされたルールを削除してもよろしいですか?"
+
+msgid "Open a device from the device table and use Settings to manage rules."
+msgstr "デバイスリストからデバイスを開き、「設定」からルールを管理してください。"
+
+msgid "Delete iface limit?"
+msgstr "このインターフェイスのレート制限を削除してもよろしいですか?"
+
+msgid "Delete guest default?"
+msgstr "ゲストのデフォルト ルールを削除してもよろしいですか?"
+
+msgid "Remove this whitelist entry?"
+msgstr "このエントリをホワイトリストから削除してもよろしいですか?"
+
+msgid "Invalid days"
+msgstr "曜日の選択が無効です"
+
+msgid "No device context"
+msgstr "デバイスコンテキストがありません"
+
+msgid "Iface and MAC are required"
+msgstr "インターフェースとMACを入力する必要があります"
+
+msgid "Please choose an interface"
+msgstr "インターフェースを選択してください"
+
+msgid "Invalid date range"
+msgstr "無効な日付範囲です"
+
+msgid "No statistics data"
+msgstr "まだ統計はありません"
+
+msgid "No trend data"
+msgstr "トレンドデータはまだありません"
+
+msgid "Hourly"
+msgstr "毎時"
+
+msgid "Daily"
+msgstr "日によって"
+
+msgid "This Year"
+msgstr "今年"
+
+msgid "Device Usage Ranking"
+msgstr "装備使用ランキング"
+
+msgid "Period"
+msgstr "統計期間"
+
+msgid "Hostname is required"
+msgstr "ホスト名を入力する必要があります"
+
+msgid "Iface is required"
+msgstr "インターフェースに記入する必要があります"
+
+msgid "Feedback"
+msgstr "フィードバック"
+
+msgid "Version"
+msgstr "バージョン"
+
+msgid "Unknown"
+msgstr "不明"
+
+msgid "Restart Service"
+msgstr "サービス再起動"
+
+msgid "Restart Bandix Plus Service"
+msgstr "Bandix Plus サービスを再起動"
+
+msgid "Are you sure you want to restart the Bandix Plus service?"
+msgstr "Bandix Plus サービスを再起動してもよろしいですか？"
+
+msgid "Confirm"
+msgstr "確認"
+
+msgid "Failed to restart service: "
+msgstr "サービスの再起動に失敗しました："
+
+msgid "Check for Updates"
+msgstr "更新を確認"
+
+msgid "Checking..."
+msgstr "確認中..."
+
+msgid "Failed to check for updates"
+msgstr "更新の確認に失敗しました"
+
+msgid "Failed to check LuCI App updates"
+msgstr "LuCI アプリの更新確認に失敗しました"
+
+msgid "LuCI App has update: "
+msgstr "LuCI アプリに更新があります："
+
+msgid "LuCI App is up to date: "
+msgstr "LuCI アプリは最新です："
+
+msgid "Failed to check Bandix Plus updates"
+msgstr "Bandix Plus の更新確認に失敗しました"
+
+msgid "Bandix Plus has update: "
+msgstr "Bandix Plus に更新があります："
+
+msgid "Bandix Plus is up to date: "
+msgstr "Bandix Plus は最新です："
+
+msgid "Updates Available"
+msgstr "利用可能な更新"
+
+msgid "No Updates Available"
+msgstr "利用可能な更新なし"
+
+msgid "Update Check Failed"
+msgstr "更新の確認に失敗しました"
+
+msgid "Manual Download"
+msgstr "手動ダウンロード"
+
+msgid "Update available"
+msgstr "更新あり"
+
+msgid "Update available, click to go to settings"
+msgstr "更新があります。クリックして設定を開きます"

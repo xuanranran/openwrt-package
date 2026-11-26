@@ -1,0 +1,684 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "bandix-plus"
+msgstr "bandix-plus"
+
+msgid "Bandix Plus"
+msgstr "Bandix Plus"
+
+msgid "Rate limit & policy"
+msgstr "限速與策略"
+
+msgid "Cumulative: all (live only)"
+msgstr "累計：全部（僅當前速率與實時累積）"
+
+msgid "Cumulative: today"
+msgstr "累計：本日"
+
+msgid "Cumulative: this week"
+msgstr "累計：本周"
+
+msgid "Cumulative: this month"
+msgstr "累計：本月"
+
+msgid "Cumulative: this year"
+msgstr "累計：本年"
+
+msgid "Name / zone"
+msgstr "網卡 / 域"
+
+msgid "Refresh now"
+msgstr "立即刷新"
+
+msgid "Cumulative (bytes) for period"
+msgstr "所選時間段的累計字節"
+
+msgid "L4 bps (sum v4/v6, both dirs)"
+msgstr "L4 方向合計速率（v4/v6 雙向）"
+
+msgid "Cumulative: all (live)"
+msgstr "累計：全部（實時）"
+
+msgid "HTTP API 端口与 bandix-plus --api-bind 的端口段一致，默认 8787。"
+msgstr "本頁端口須與 bandix-plus 的 --api-bind 端口一致，默認可填 8787。"
+
+msgid "General"
+msgstr "基本"
+
+msgid "Enable traffic persistence storage"
+msgstr "啓用流量持久化存儲"
+
+msgid "Persist traffic histogram/ring data to disk. Disabled by default."
+msgstr "將流量直方圖/環形數據持久化到磁盤，默認關閉。"
+
+msgid "TC backend"
+msgstr "TC 後端"
+
+msgid "Select TC attach backend."
+msgstr "選擇 TC 掛載後端。"
+
+msgid "Select TC attach backend. Recommendation: use auto by default; tcx is preferred on kernel >= 6.6; netlink is safer on older kernels."
+msgstr "選擇 TC 掛載後端。建議：默認使用 auto；內核 >= 6.6 優先使用 tcx；較老內核使用 netlink 更穩妥。"
+
+msgid "TC netlink priority"
+msgstr "TC netlink 優先級"
+
+msgid "Only used when backend is netlink. Range: 0..65535 (0 means default)."
+msgstr "僅在後端爲 netlink 時生效，範圍：0..65535（0 表示默認）。"
+
+msgid "Netlink priority"
+msgstr "Netlink 優先級"
+
+msgid "TCX anchor program id"
+msgstr "TCX 錨點程序 ID"
+
+msgid "Required when tc_order is before/after."
+msgstr "當 tc_order 爲 before/after 時必填。"
+
+msgid "TCX ingress anchor program id"
+msgstr "TCX ingress 錨點程序 ID"
+
+msgid "TCX egress anchor program id"
+msgstr "TCX egress 錨點程序 ID"
+
+msgid "Used when tc_order is before/after. Must be a valid ingress program id on the same interface."
+msgstr "在 tc_order 爲 before/after 時使用。必須是同一接口上的有效 ingress 程序 ID。"
+
+msgid "Used when tc_order is before/after. Must be a valid egress program id on the same interface."
+msgstr "在 tc_order 爲 before/after 時使用。必須是同一接口上的有效 egress 程序 ID。"
+
+msgid "Port"
+msgstr "端口"
+
+msgid "Info"
+msgstr "信息"
+
+msgid "add schedule"
+msgstr "添加計劃"
+
+msgid "set"
+msgstr "應用"
+
+msgid "set default"
+msgstr "設訪客默認"
+
+msgid "add to whitelist"
+msgstr "加入白名單"
+
+msgid "Online Devices"
+msgstr "在線設備"
+
+msgid "Online devices"
+msgstr "在線設備"
+
+msgid "Upload Rate"
+msgstr "上行速率"
+
+msgid "Download Rate"
+msgstr "下行速率"
+
+msgid "Upload bytes"
+msgstr "上行字節"
+
+msgid "Download bytes"
+msgstr "下行字節"
+
+msgid "Display mode"
+msgstr "顯示模式"
+
+msgid "Simple Mode"
+msgstr "簡易模式"
+
+msgid "Detailed Mode"
+msgstr "詳細模式"
+
+msgid "Upload"
+msgstr "上傳"
+
+msgid "Download"
+msgstr "下載"
+
+msgid "Inbound"
+msgstr "入站"
+
+msgid "Outbound"
+msgstr "出站"
+
+msgid "Y axis: B/s (bps÷8). Wheel zooms; hover for values."
+msgstr "縱軸爲字節/秒（bps÷8）。滾輪縮放時間窗，懸停查看數值。"
+
+msgid "Today"
+msgstr "今天"
+
+msgid "This Week"
+msgstr "本周"
+
+msgid "Last Week"
+msgstr "上周"
+
+msgid "This Month"
+msgstr "本月"
+
+msgid "Last Month"
+msgstr "上月"
+
+msgid "Last 7 Days"
+msgstr "最近 7 天"
+
+msgid "Last 30 Days"
+msgstr "最近 30 天"
+
+msgid "Last 90 Days"
+msgstr "最近 90 天"
+
+msgid "Last Year"
+msgstr "最近一年"
+
+msgid "Histogram"
+msgstr "直方圖"
+
+msgid "Query"
+msgstr "查詢"
+
+msgid "Start Date"
+msgstr "開始日期"
+
+msgid "End Date"
+msgstr "結束日期"
+
+msgid "Reset"
+msgstr "復位"
+
+msgid "Aggregation:"
+msgstr "聚合方式："
+
+msgid "Device:"
+msgstr "設備："
+
+msgid "entries"
+msgstr "條"
+
+msgid "Iface"
+msgstr "接口"
+
+msgid "All devices"
+msgstr "所有設備"
+
+msgid "IPv4"
+msgstr "IPv4"
+
+msgid "IPv6"
+msgstr "IPv6"
+
+msgid "Upload Statistics"
+msgstr "上行統計"
+
+msgid "Download Statistics"
+msgstr "下行統計"
+
+msgid "Average"
+msgstr "平均"
+
+msgid "Maximum"
+msgstr "最大"
+
+msgid "Minimum"
+msgstr "最小"
+
+msgid "P95"
+msgstr "P95"
+
+msgid "Total Upload"
+msgstr "總上傳"
+
+msgid "Total Download"
+msgstr "總下載"
+
+msgid "Total"
+msgstr "全部"
+
+msgid "No data"
+msgstr "暫無數據"
+
+msgid "Interface Overview"
+msgstr "接口概覽"
+
+msgid "Traffic Timeline"
+msgstr "流量時間線"
+
+msgid "Device List"
+msgstr "設備列表"
+
+msgid "All interfaces already have rules"
+msgstr "所有接口都已有規則"
+
+msgid "Rule already exists for iface"
+msgstr "該接口已存在規則"
+
+msgid "Total Upload Usage"
+msgstr "總上傳量"
+
+msgid "Total Download Usage"
+msgstr "總下載量"
+
+msgid "Total Usage"
+msgstr "全部"
+
+msgid "Set iface limit"
+msgstr "接口限速"
+
+msgid "Tip: 0 means unlimited"
+msgstr "提示: 0 代表無限制"
+
+msgid "Trend samples"
+msgstr "實時流量趨勢"
+
+msgid "Device MAC"
+msgstr "選擇設備"
+
+msgid "Traffic Type"
+msgstr "協議類型"
+
+msgid "Guest control"
+msgstr "來賓控制"
+
+msgid "Guest rules"
+msgstr "來賓規則"
+
+msgid "IPv4 Upload"
+msgstr "IPv4 上傳"
+
+msgid "IPv4 Download"
+msgstr "IPv4 下載"
+
+msgid "IPv6 Upload"
+msgstr "IPv6 上傳"
+
+msgid "IPv6 Download"
+msgstr "IPv6 下載"
+
+msgid "Whitelist"
+msgstr "白名單"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "Guest rule"
+msgstr "來賓規則"
+
+msgid "Schedule rules"
+msgstr "定時限速規則"
+
+msgid "Set hostname for this device."
+msgstr "設置主機名"
+
+msgid "Scheduled rate limits"
+msgstr "限速規則"
+
+msgid "No scheduled rules yet; click Add rule."
+msgstr "沒有規則，點擊添加"
+
+msgid "Add rule"
+msgstr "添加規則"
+
+msgid "Select MAC"
+msgstr "選擇設備"
+
+msgid "Limit Rule"
+msgstr "限速規則"
+
+msgid "No rule"
+msgstr "無規則"
+
+msgid "Active"
+msgstr "生效中"
+
+msgid "Inactive"
+msgstr "未生效"
+
+msgid "Update schedule"
+msgstr "更新規則"
+
+msgid "Loading..."
+msgstr "加載中..."
+
+msgid "Loading in chunks, please wait... (%d/%d)"
+msgstr "分段加載中，請稍候...（%d/%d）"
+
+msgid "Runtime options for openwrt-bandix-plus service."
+msgstr "openwrt-bandix-plus 服務的運行時選項。"
+
+msgid "This page edits /etc/config/bandix_plus general options."
+msgstr "本頁編輯 /etc/config/bandix_plus 的 general 段。"
+
+msgid "Enable traffic collection"
+msgstr "啓用流量採集"
+
+msgid "When disabled, bandix-plus service will not start."
+msgstr "關閉時 bandix-plus 服務不會啓動。"
+
+msgid "Interface to monitor"
+msgstr "監控接口"
+
+msgid "Select one or more interfaces to monitor."
+msgstr "選擇一個或多個要監控的網絡接口。"
+
+msgid "Log level"
+msgstr "日誌級別"
+
+msgid "TC order"
+msgstr "TC 掛載順序"
+
+msgid "Host"
+msgstr "監聽地址"
+
+msgid "Data directory"
+msgstr "數據目錄"
+
+msgid "Service"
+msgstr "服務"
+
+msgid "Restart bandix-plus (init if present)"
+msgstr "重啓 bandix-plus（若存在 init 腳本則通過 init）"
+
+msgid "Add"
+msgstr "添加"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Close"
+msgstr "關閉"
+
+msgid "Delete"
+msgstr "刪除"
+
+msgid "Delete this device, its traffic data, and its rate-limit configurations?"
+msgstr "確定刪除此裝置、裝置流量資料及對應的限速設定嗎？"
+
+msgid "Delete device"
+msgstr "刪除裝置"
+
+msgid "Deleting..."
+msgstr "正在刪除..."
+
+msgid "This device is online and may be discovered again."
+msgstr "此裝置目前在線，之後可能會被重新發現。"
+
+msgid "Failed to delete device"
+msgstr "刪除裝置失敗"
+
+msgid "Edit"
+msgstr "編輯"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Unlimited"
+msgstr "無限制"
+
+msgid "Rate unit"
+msgstr "速率單位"
+
+msgid "Mon"
+msgstr "周一"
+
+msgid "Tue"
+msgstr "周二"
+
+msgid "Wed"
+msgstr "周三"
+
+msgid "Thu"
+msgstr "周四"
+
+msgid "Fri"
+msgstr "周五"
+
+msgid "Sat"
+msgstr "周六"
+
+msgid "Sun"
+msgstr "周日"
+
+msgid "Show Top %d"
+msgstr "僅顯示前 %d 名"
+
+msgid "Show All"
+msgstr "顯示全部"
+
+msgid "Showing all %d devices"
+msgstr "正在顯示全部 %d 臺設備"
+
+msgid "Showing top %d of %d devices"
+msgstr "正在顯示 %d 臺設備（共 %d 臺）"
+
+msgid "Failed to refresh status"
+msgstr "刷新狀態失敗"
+
+msgid "Failed to refresh trend"
+msgstr "刷新趨勢數據失敗"
+
+msgid "Failed to refresh rate-limit data"
+msgstr "刷新限速數據失敗"
+
+msgid "Failed to save guest rule"
+msgstr "保存來賓規則失敗"
+
+msgid "Failed to delete schedule"
+msgstr "刪除定時規則失敗"
+
+msgid "Failed to delete iface limit"
+msgstr "刪除接口限速失敗"
+
+msgid "Failed to delete guest default"
+msgstr "刪除訪客默認規則失敗"
+
+msgid "Failed to remove whitelist entry"
+msgstr "移除白名單條目失敗"
+
+msgid "Failed to submit schedule"
+msgstr "提交定時規則失敗"
+
+msgid "Failed to save iface limit"
+msgstr "保存接口限速失敗"
+
+msgid "Failed to query statistics"
+msgstr "查詢統計數據失敗"
+
+msgid "Failed to query usage ranking"
+msgstr "查詢用量排行失敗"
+
+msgid "Failed to save hostname"
+msgstr "保存主機名失敗"
+
+msgid "All interfaces"
+msgstr "全部接口"
+
+msgid "All Devices"
+msgstr "全部設備"
+
+msgid "All"
+msgstr "全部"
+
+msgid "Hostname"
+msgstr "主機名"
+
+msgid "MAC"
+msgstr "MAC"
+
+msgid "No devices"
+msgstr "暫無設備"
+
+msgid "Settings"
+msgstr "設置"
+
+msgid "Other Rates"
+msgstr "其他速率"
+
+msgid "Cumulative"
+msgstr "累計"
+
+msgid "Uploaded"
+msgstr "已上傳"
+
+msgid "Downloaded"
+msgstr "已下載"
+
+msgid "Total Uploaded"
+msgstr "上傳合計"
+
+msgid "Total Downloaded"
+msgstr "下載合計"
+
+msgid "(empty)"
+msgstr "（空）"
+
+msgid "Enabled"
+msgstr "已啓用"
+
+msgid "Disabled"
+msgstr "已禁用"
+
+msgid "Invalid MAC address"
+msgstr "MAC 地址無效"
+
+msgid "Add schedule rule"
+msgstr "添加定時規則"
+
+msgid "Edit schedule rule"
+msgstr "編輯定時規則"
+
+msgid "Device hostname"
+msgstr "設備主機名"
+
+msgid "Delete schedule rule"
+msgstr "刪除定時規則"
+
+msgid "Are you sure you want to delete this schedule rule?"
+msgstr "確定要刪除這條定時規則嗎？"
+
+msgid "Open a device from the device table and use Settings to manage rules."
+msgstr "請從設備列表打開某臺設備，通過「設置」管理規則。"
+
+msgid "Delete iface limit?"
+msgstr "確定刪除該接口的限速嗎？"
+
+msgid "Delete guest default?"
+msgstr "確定刪除訪客默認規則嗎？"
+
+msgid "Remove this whitelist entry?"
+msgstr "確定從白名單移除此條目嗎？"
+
+msgid "Invalid days"
+msgstr "星期選擇無效"
+
+msgid "No device context"
+msgstr "無設備上下文"
+
+msgid "Iface and MAC are required"
+msgstr "需要填寫接口與 MAC"
+
+msgid "Please choose an interface"
+msgstr "請選擇接口"
+
+msgid "Invalid date range"
+msgstr "日期範圍無效"
+
+msgid "No statistics data"
+msgstr "暫無統計數據"
+
+msgid "No trend data"
+msgstr "暫無趨勢數據"
+
+msgid "Hourly"
+msgstr "按小時"
+
+msgid "Daily"
+msgstr "按天"
+
+msgid "This Year"
+msgstr "本年"
+
+msgid "Device Usage Ranking"
+msgstr "設備用量排行"
+
+msgid "Period"
+msgstr "統計周期"
+
+msgid "Hostname is required"
+msgstr "需要填寫主機名"
+
+msgid "Iface is required"
+msgstr "需要填寫接口"
+
+msgid "Feedback"
+msgstr "意見回饋"
+
+msgid "Version"
+msgstr "版本"
+
+msgid "Unknown"
+msgstr "未知"
+
+msgid "Restart Service"
+msgstr "重啟服務"
+
+msgid "Restart Bandix Plus Service"
+msgstr "重啟 Bandix Plus 服務"
+
+msgid "Are you sure you want to restart the Bandix Plus service?"
+msgstr "確定要重啟 Bandix Plus 服務嗎？"
+
+msgid "Confirm"
+msgstr "確認"
+
+msgid "Failed to restart service: "
+msgstr "重啟服務失敗："
+
+msgid "Check for Updates"
+msgstr "檢查更新"
+
+msgid "Checking..."
+msgstr "檢查中..."
+
+msgid "Failed to check for updates"
+msgstr "檢查更新失敗"
+
+msgid "Failed to check LuCI App updates"
+msgstr "檢查 LuCI 應用更新失敗"
+
+msgid "LuCI App has update: "
+msgstr "LuCI 應用有更新："
+
+msgid "LuCI App is up to date: "
+msgstr "LuCI 應用已是最新版本："
+
+msgid "Failed to check Bandix Plus updates"
+msgstr "檢查 Bandix Plus 更新失敗"
+
+msgid "Bandix Plus has update: "
+msgstr "Bandix Plus 有更新："
+
+msgid "Bandix Plus is up to date: "
+msgstr "Bandix Plus 已是最新版本："
+
+msgid "Updates Available"
+msgstr "有可用更新"
+
+msgid "No Updates Available"
+msgstr "無可用更新"
+
+msgid "Update Check Failed"
+msgstr "更新檢查失敗"
+
+msgid "Manual Download"
+msgstr "手動下載"
+
+msgid "Update available"
+msgstr "有更新"
+
+msgid "Update available, click to go to settings"
+msgstr "有更新，點擊前往設定"

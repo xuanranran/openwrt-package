@@ -1,0 +1,686 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "bandix-plus"
+msgstr "bandix-plus"
+
+msgid "Bandix Plus"
+msgstr "Bandix Plus"
+
+msgid "Rate limit & policy"
+msgstr "Limit stawek i zasady"
+
+msgid "Cumulative: all (live only)"
+msgstr "Łącznie: wszystkie (tylko na żywo)"
+
+msgid "Cumulative: today"
+msgstr "Łącznie: dzisiaj"
+
+msgid "Cumulative: this week"
+msgstr "Łącznie: w tym tygodniu"
+
+msgid "Cumulative: this month"
+msgstr "Łącznie: w tym miesiącu"
+
+msgid "Cumulative: this year"
+msgstr "Łącznie: w tym roku"
+
+msgid "Name / zone"
+msgstr "Nazwa / strefa"
+
+msgid "Refresh now"
+msgstr "Odśwież teraz"
+
+msgid "Cumulative (bytes) for period"
+msgstr "Skumulowane (w bajtach) dla okresu"
+
+msgid "L4 bps (sum v4/v6, both dirs)"
+msgstr "L4 bps (suma v4/v6, oba katalogi)"
+
+msgid "Cumulative: all (live)"
+msgstr "Łącznie: wszystkie (na żywo)"
+
+msgid "HTTP API 端口与 bandix-plus --api-bind 的端口段一致，默认 8787。"
+msgstr "HTTP API 端口与 bandix-plus --api-bind 的端口段一致,默认 8787."
+
+msgid "General"
+msgstr "Ogólny"
+
+msgid "Enable traffic persistence storage"
+msgstr "Włącz magazyn trwałości ruchu"
+
+msgid "Persist traffic histogram/ring data to disk. Disabled by default."
+msgstr ""
+"Utrwalaj dane histogramu/pierścienia ruchu na dysku. Domyślnie wyłączone."
+
+msgid "TC backend"
+msgstr "Backend TC"
+
+msgid "Select TC attach backend."
+msgstr "Wybierz backend podpinania TC."
+
+msgid ""
+"Select TC attach backend. Recommendation: use auto by default; tcx is "
+"preferred on kernel >= 6.6; netlink is safer on older kernels."
+msgstr ""
+"Wybierz opcję Dołącz zaplecze dla współtwórców. Zalecenie: domyślnie używaj "
+"opcji auto; tcx jest preferowany w jądrze >= 6.6; netlink jest "
+"bezpieczniejszy na starszych jądrach."
+
+msgid "TC netlink priority"
+msgstr "Priorytet TC netlink"
+
+msgid "Only used when backend is netlink. Range: 0..65535 (0 means default)."
+msgstr ""
+"Używane tylko, gdy backend to netlink. Zakres: 0..65535 (0 oznacza "
+"domyślne)."
+
+msgid "Netlink priority"
+msgstr "Priorytet łącza sieciowego"
+
+msgid "TCX anchor program id"
+msgstr "Identyfikator programu kotwiczącego TCX"
+
+msgid "Required when tc_order is before/after."
+msgstr "Wymagane, gdy tc_order to before/after."
+
+msgid "TCX ingress anchor program id"
+msgstr "Identyfikator programu zakotwiczenia ruchu przychodzącego TCX"
+
+msgid "TCX egress anchor program id"
+msgstr "Identyfikator programu zakotwiczenia ruchu wyjściowego TCX"
+
+msgid ""
+"Used when tc_order is before/after. Must be a valid ingress program id on "
+"the same interface."
+msgstr ""
+"Używane, gdy tc_order jest przed/po. Musi to być prawidłowy identyfikator "
+"programu przychodzącego w tym samym interfejsie."
+
+msgid ""
+"Used when tc_order is before/after. Must be a valid egress program id on the"
+" same interface."
+msgstr ""
+"Używane, gdy tc_order jest przed/po. Musi to być prawidłowy identyfikator "
+"programu wychodzącego w tym samym interfejsie."
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Info"
+msgstr "Informacje"
+
+msgid "add schedule"
+msgstr "dodaj harmonogram"
+
+msgid "set"
+msgstr "ustawić"
+
+msgid "set default"
+msgstr "ustaw domyślny"
+
+msgid "add to whitelist"
+msgstr "dodaj do białej listy"
+
+msgid "Online Devices"
+msgstr "Urządzenia internetowe"
+
+msgid "Online devices"
+msgstr "Urządzenia internetowe"
+
+msgid "Upload Rate"
+msgstr "Szybkość przesyłania"
+
+msgid "Download Rate"
+msgstr "Szybkość pobierania"
+
+msgid "Upload bytes"
+msgstr "Prześlij bajty"
+
+msgid "Download bytes"
+msgstr "Pobierz bajty"
+
+msgid "Display mode"
+msgstr "Tryb wyświetlania"
+
+msgid "Simple Mode"
+msgstr "Tryb prosty"
+
+msgid "Detailed Mode"
+msgstr "Tryb szczegółowy"
+
+msgid "Upload"
+msgstr "Wgrywać"
+
+msgid "Download"
+msgstr "Pobierać"
+
+msgid "Inbound"
+msgstr "Przychodzące"
+
+msgid "Outbound"
+msgstr "Wychodzące"
+
+msgid "Y axis: B/s (bps÷8). Wheel zooms; hover for values."
+msgstr "Oś Y: B/s (bps 8). Zoomy kołowe; najedź kursorem na wartości."
+
+msgid "Today"
+msgstr "Dzisiaj"
+
+msgid "This Week"
+msgstr "W tym tygodniu"
+
+msgid "Last Week"
+msgstr "Ostatni tydzień"
+
+msgid "This Month"
+msgstr "W tym miesiącu"
+
+msgid "Last Month"
+msgstr "Ostatni miesiąc"
+
+msgid "Last 7 Days"
+msgstr "Ostatnie 7 dni"
+
+msgid "Last 30 Days"
+msgstr "Ostatnie 30 dni"
+
+msgid "Last 90 Days"
+msgstr "Ostatnie 90 dni"
+
+msgid "Last Year"
+msgstr "W ubiegłym roku"
+
+msgid "Histogram"
+msgstr "Histogram"
+
+msgid "Query"
+msgstr "Zapytanie"
+
+msgid "Start Date"
+msgstr "Data rozpoczęcia"
+
+msgid "End Date"
+msgstr "Data zakończenia"
+
+msgid "Reset"
+msgstr "Nastawić"
+
+msgid "Aggregation:"
+msgstr "Zbiór:"
+
+msgid "Device:"
+msgstr "Urządzenie:"
+
+msgid "entries"
+msgstr "wpisy"
+
+msgid "Iface"
+msgstr "Iface"
+
+msgid "All devices"
+msgstr "Wszystkie urządzenia"
+
+msgid "IPv4"
+msgstr "IPv4"
+
+msgid "IPv6"
+msgstr "IPv6"
+
+msgid "Upload Statistics"
+msgstr "Prześlij statystyki"
+
+msgid "Download Statistics"
+msgstr "Pobierz statystyki"
+
+msgid "Average"
+msgstr "Przeciętny"
+
+msgid "Maximum"
+msgstr "Maksymalny"
+
+msgid "Minimum"
+msgstr "Minimum"
+
+msgid "P95"
+msgstr "P95"
+
+msgid "Total Upload"
+msgstr "Całkowite przesłanie"
+
+msgid "Total Download"
+msgstr "Całkowite pobranie"
+
+msgid "Total"
+msgstr "Całkowity"
+
+msgid "No data"
+msgstr "Brak danych"
+
+msgid "Interface Overview"
+msgstr "Przegląd interfejsu"
+
+msgid "Traffic Timeline"
+msgstr "Oś czasu ruchu"
+
+msgid "Device List"
+msgstr "Lista urządzeń"
+
+msgid "All interfaces already have rules"
+msgstr "Wszystkie interfejsy mają już reguły"
+
+msgid "Rule already exists for iface"
+msgstr "Reguła już istnieje dla iface"
+
+msgid "Total Upload Usage"
+msgstr "Całkowite wykorzystanie przesyłania"
+
+msgid "Total Download Usage"
+msgstr "Całkowite wykorzystanie pobierania"
+
+msgid "Total Usage"
+msgstr "Całkowite wykorzystanie"
+
+msgid "Set iface limit"
+msgstr "Ustaw limit iface"
+
+msgid "Tip: 0 means unlimited"
+msgstr "Wskazówka: 0 oznacza nieograniczone"
+
+msgid "Trend samples"
+msgstr "Próbki trendów"
+
+msgid "Device MAC"
+msgstr "Urządzenie MAC"
+
+msgid "Traffic Type"
+msgstr "Typ ruchu"
+
+msgid "Guest control"
+msgstr "Kontrola gości"
+
+msgid "Guest rules"
+msgstr "Regulamin gościa"
+
+msgid "IPv4 Upload"
+msgstr "Przesyłanie IPv4"
+
+msgid "IPv4 Download"
+msgstr "Pobieranie IPv4"
+
+msgid "IPv6 Upload"
+msgstr "Przesyłanie IPv6"
+
+msgid "IPv6 Download"
+msgstr "Pobieranie IPv6"
+
+msgid "Whitelist"
+msgstr "Biała lista"
+
+msgid "Actions"
+msgstr "Działania"
+
+msgid "Guest rule"
+msgstr "Zasada gościa"
+
+msgid "Schedule rules"
+msgstr "Zasady harmonogramu"
+
+msgid "Set hostname for this device."
+msgstr "Ustaw nazwę hosta dla tego urządzenia."
+
+msgid "Scheduled rate limits"
+msgstr "Zaplanowane limity stawek"
+
+msgid "No scheduled rules yet; click Add rule."
+msgstr "Nie ma jeszcze zaplanowanych zasad; kliknij Dodaj regułę."
+
+msgid "Add rule"
+msgstr "Dodaj regułę"
+
+msgid "Select MAC"
+msgstr "Wybierz MAC"
+
+msgid "Limit Rule"
+msgstr "Zasada limitu"
+
+msgid "No rule"
+msgstr "Żadnej reguły"
+
+msgid "Active"
+msgstr "Aktywny"
+
+msgid "Inactive"
+msgstr "Nieaktywny"
+
+msgid "Update schedule"
+msgstr "Aktualizuj harmonogram"
+
+msgid "Loading..."
+msgstr "Załadunek..."
+
+msgid "Loading in chunks, please wait... (%d/%d)"
+msgstr "Ładowanie fragmentami, proszę czekać... (%d/%d)"
+
+msgid "Runtime options for openwrt-bandix-plus service."
+msgstr "Opcje wykonawcze dla usługi openwrt-bandix-plus."
+
+msgid "This page edits /etc/config/bandix_plus general options."
+msgstr "Ta strona edytuje opcje ogólne /etc/config/bandix_plus."
+
+msgid "Enable traffic collection"
+msgstr "Włącz zbieranie ruchu"
+
+msgid "When disabled, bandix-plus service will not start."
+msgstr "Po wyłączeniu usługa Bandix-plus nie zostanie uruchomiona."
+
+msgid "Interface to monitor"
+msgstr "Interfejsy"
+
+msgid "Select one or more interfaces to monitor."
+msgstr "Wybierz jeden lub więcej interfejsów do monitorowania."
+
+msgid "Log level"
+msgstr "日志级别"
+
+msgid "TC order"
+msgstr "Zamówienie TC"
+
+msgid "Host"
+msgstr "Gospodarz"
+
+msgid "Data directory"
+msgstr "Katalog danych"
+
+msgid "Service"
+msgstr "Praca"
+
+msgid "Restart bandix-plus (init if present)"
+msgstr "Uruchom ponownie Bandix-plus (init, jeśli jest obecny)"
+
+msgid "Add"
+msgstr "Dodać"
+
+msgid "Cancel"
+msgstr "Anulować"
+
+msgid "Close"
+msgstr "Zamknąć"
+
+msgid "Delete"
+msgstr "Usuwać"
+
+msgid "Edit"
+msgstr "Redagować"
+
+msgid "Save"
+msgstr "Ratować"
+
+msgid "Unlimited"
+msgstr "Nieograniczony"
+
+msgid "Rate unit"
+msgstr "Jednostka stawki"
+
+msgid "Mon"
+msgstr "pon"
+
+msgid "Tue"
+msgstr "wt"
+
+msgid "Wed"
+msgstr "Poślubić"
+
+msgid "Thu"
+msgstr "czw"
+
+msgid "Fri"
+msgstr "piątek"
+
+msgid "Sat"
+msgstr "sob"
+
+msgid "Sun"
+msgstr "Słoneczny"
+
+msgid "Show Top %d"
+msgstr "Pokaż górę %d"
+
+msgid "Show All"
+msgstr "Pokaż wszystko"
+
+msgid "Showing all %d devices"
+msgstr "Wyświetlanie wszystkich %d urządzeń"
+
+msgid "Showing top %d of %d devices"
+msgstr "Wyświetlam górne %d z %d urządzeń"
+
+msgid "Failed to refresh status"
+msgstr "Nie udało się odświeżyć statusu"
+
+msgid "Failed to refresh trend"
+msgstr "Nie udało się odświeżyć trendu"
+
+msgid "Failed to refresh rate-limit data"
+msgstr "Nie udało się odświeżyć danych dotyczących limitów szybkości"
+
+msgid "Failed to save guest rule"
+msgstr "Nie udało się zapisać reguły gościa"
+
+msgid "Failed to delete schedule"
+msgstr "Nie udało się usunąć harmonogramu"
+
+msgid "Failed to delete iface limit"
+msgstr "Nie udało się usunąć limitu iface"
+
+msgid "Failed to delete guest default"
+msgstr "Nie udało się usunąć wartości domyślnej gościa"
+
+msgid "Failed to remove whitelist entry"
+msgstr "Nie udało się usunąć wpisu z białej listy"
+
+msgid "Failed to submit schedule"
+msgstr "Nie udało się przesłać harmonogramu"
+
+msgid "Failed to save iface limit"
+msgstr "Nie udało się zapisać limitu iface"
+
+msgid "Failed to query statistics"
+msgstr "Nie udało się sprawdzić statystyk"
+
+msgid "Failed to query usage ranking"
+msgstr "Nie udało się zapytać o ranking wykorzystania"
+
+msgid "Failed to save hostname"
+msgstr "Nie udało się zapisać nazwy hosta"
+
+msgid "All interfaces"
+msgstr "Wszystkie interfejsy"
+
+msgid "All Devices"
+msgstr "Wszystkie urządzenia"
+
+msgid "All"
+msgstr "Wszystko"
+
+msgid "Hostname"
+msgstr "Nazwa hosta"
+
+msgid "MAC"
+msgstr "MAC"
+
+msgid "No devices"
+msgstr "Brak urządzeń"
+
+msgid "Settings"
+msgstr "Ustawienia"
+
+msgid "Other Rates"
+msgstr "Inne stawki"
+
+msgid "Cumulative"
+msgstr "Łączny"
+
+msgid "Uploaded"
+msgstr "Załadowany"
+
+msgid "Downloaded"
+msgstr "Pobrano"
+
+msgid "Total Uploaded"
+msgstr "Łącznie przesłano"
+
+msgid "Total Downloaded"
+msgstr "Łącznie pobrano"
+
+msgid "(empty)"
+msgstr "(pusty)"
+
+msgid "Enabled"
+msgstr "Włączony"
+
+msgid "Disabled"
+msgstr "Wyłączony"
+
+msgid "Invalid MAC address"
+msgstr "Nieprawidłowy adres MAC"
+
+msgid "Add schedule rule"
+msgstr "Dodaj regułę harmonogramu"
+
+msgid "Edit schedule rule"
+msgstr "Edytuj regułę harmonogramu"
+
+msgid "Device hostname"
+msgstr "Nazwa hosta urządzenia"
+
+msgid "Delete schedule rule"
+msgstr "Usuń regułę harmonogramu"
+
+msgid "Are you sure you want to delete this schedule rule?"
+msgstr "Czy na pewno chcesz usunąć tę regułę harmonogramu?"
+
+msgid "Open a device from the device table and use Settings to manage rules."
+msgstr ""
+"Otwórz urządzenie z tabeli urządzeń i użyj Ustawień, aby zarządzać regułami."
+
+msgid "Delete iface limit?"
+msgstr "Usunąć limit iface?"
+
+msgid "Delete guest default?"
+msgstr "Usunąć domyślne ustawienie gościa?"
+
+msgid "Remove this whitelist entry?"
+msgstr "Usunąć ten wpis z białej listy?"
+
+msgid "Invalid days"
+msgstr "Nieprawidłowe dni"
+
+msgid "No device context"
+msgstr "Brak kontekstu urządzenia"
+
+msgid "Iface and MAC are required"
+msgstr "Wymagane są Iface i MAC"
+
+msgid "Please choose an interface"
+msgstr "Proszę wybrać interfejs"
+
+msgid "Invalid date range"
+msgstr "Nieprawidłowy zakres dat"
+
+msgid "No statistics data"
+msgstr "Brak danych statystycznych"
+
+msgid "No trend data"
+msgstr "Brak danych trendów"
+
+msgid "Hourly"
+msgstr "Cogodzinny"
+
+msgid "Daily"
+msgstr "Codziennie"
+
+msgid "This Year"
+msgstr "W tym roku"
+
+msgid "Device Usage Ranking"
+msgstr "Ranking wykorzystania urządzeń"
+
+msgid "Period"
+msgstr "Okres"
+
+msgid "Hostname is required"
+msgstr "Nazwa hosta jest wymagana"
+
+msgid "Iface is required"
+msgstr "Iface jest wymagany"
+
+msgid "Feedback"
+msgstr "Opinie"
+
+msgid "Version"
+msgstr "Wersja"
+
+msgid "Unknown"
+msgstr "Nieznana"
+
+msgid "Restart Service"
+msgstr "Uruchom ponownie usługę"
+
+msgid "Restart Bandix Plus Service"
+msgstr "Uruchom ponownie usługę Bandix Plus"
+
+msgid "Are you sure you want to restart the Bandix Plus service?"
+msgstr "Czy na pewno chcesz uruchomić ponownie usługę Bandix Plus?"
+
+msgid "Confirm"
+msgstr "Potwierdź"
+
+msgid "Failed to restart service: "
+msgstr "Nie udało się uruchomić ponownie usługi: "
+
+msgid "Check for Updates"
+msgstr "Sprawdź aktualizacje"
+
+msgid "Checking..."
+msgstr "Sprawdzanie..."
+
+msgid "Failed to check for updates"
+msgstr "Nie udało się sprawdzić aktualizacji"
+
+msgid "Failed to check LuCI App updates"
+msgstr "Nie udało się sprawdzić aktualizacji aplikacji LuCI"
+
+msgid "LuCI App has update: "
+msgstr "Aplikacja LuCI ma aktualizację: "
+
+msgid "LuCI App is up to date: "
+msgstr "Aplikacja LuCI jest aktualna: "
+
+msgid "Failed to check Bandix Plus updates"
+msgstr "Nie udało się sprawdzić aktualizacji Bandix Plus"
+
+msgid "Bandix Plus has update: "
+msgstr "Bandix Plus ma aktualizację: "
+
+msgid "Bandix Plus is up to date: "
+msgstr "Bandix Plus jest aktualny: "
+
+msgid "Updates Available"
+msgstr "Dostępne aktualizacje"
+
+msgid "No Updates Available"
+msgstr "Brak dostępnych aktualizacji"
+
+msgid "Update Check Failed"
+msgstr "Sprawdzanie aktualizacji nie powiodło się"
+
+msgid "Manual Download"
+msgstr "Pobieranie ręczne"
+
+msgid "Update available"
+msgstr "Dostępna aktualizacja"
+
+msgid "Update available, click to go to settings"
+msgstr "Dostępna aktualizacja, kliknij, aby przejść do ustawień"

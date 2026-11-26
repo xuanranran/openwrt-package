@@ -1,0 +1,738 @@
+#!/bin/sh
+# ubus: luci.bandix_plus — 代理到本机 bandix-plus HTTP API（见 bandix-plus/src/api.rs）
+. /usr/share/libubox/jshn.sh
+
+bplus_base() {
+	local p
+	p="$(uci -q get bandix_plus.general.port)"
+	[ -z "$p" ] && p="8787"
+	printf 'http://127.0.0.1:%s' "$p"
+}
+
+bplus_get() {
+	curl -s -g --connect-timeout 2 --max-time 15 -X GET "$1"
+}
+
+# 设备列表 RPC 响应安全上限。
+# ubus 单条消息上限约为 1 MiB；这里将原始 JSON 限制在 256 KiB，
+# 为 rpcd 转换成带类型和对齐的 BLOB 预留充足余量。
+BPLUS_MAX_DEVICE_RESPONSE_BYTES=262144
+bplus_get_devices_bounded() {
+	local url="$1"
+	local tmp
+	local size
+
+	tmp="$(mktemp /tmp/bplus-devices.XXXXXX 2>/dev/null)" || {
+		printf '%s\n' \
+			'{"ok":false,"data":[],"error":"getDevices: cannot create temporary file"}'
+		return 0
+	}
+
+	# 先写入临时文件，不允许 curl 将完整响应直接输出给 rpcd。
+	if ! curl -sS -g \
+		--connect-timeout 2 \
+		--max-time 15 \
+		-X GET "$url" \
+		-o "$tmp"; then
+		rm -f "$tmp"
+		printf '%s\n' \
+			'{"ok":false,"data":[],"error":"getDevices: API request failed"}'
+		return 0
+	fi
+
+	size="$(wc -c < "$tmp" | tr -d '[:space:]')"
+
+	case "$size" in
+		''|*[!0-9]*) size=0 ;;
+	esac
+
+	if [ "$size" -gt "$BPLUS_MAX_DEVICE_RESPONSE_BYTES" ]; then
+		rm -f "$tmp"
+		printf '%s\n' \
+			'{"ok":false,"data":[],"error":"getDevices: response exceeds 256 KiB; check backend pagination"}'
+		return 0
+	fi
+
+	cat "$tmp"
+	rm -f "$tmp"
+	return 0
+}
+
+bplus_put_json() {
+	curl -s -g --connect-timeout 2 --max-time 20 -X PUT -H "Content-Type: application/json" -d "$1" "$2"
+}
+
+bplus_post_json() {
+	curl -s -g --connect-timeout 2 --max-time 20 -X POST -H "Content-Type: application/json" -d "$1" "$2"
+}
+
+bplus_delete() {
+	curl -s -g --connect-timeout 2 --max-time 20 -X DELETE "$1"
+}
+
+bplus_delete_json() {
+	curl -s -g --connect-timeout 2 --max-time 20 -X DELETE -H "Content-Type: application/json" -d "$1" "$2"
+}
+
+uripart() { printf %s "$1" | sed 's/+/%2B/g'; }
+
+# LuCI rpc.declare(..., params: ['payload']) sends {"payload": <API JSON>} — curl must use inner body only.
+bplus_unwrap_payload() {
+	local raw="$1"
+	local inner
+	inner="$(echo "$raw" | jsonfilter -e '$.payload' 2>/dev/null)"
+	if [ -n "$inner" ]; then
+		printf '%s' "$inner"
+	else
+		printf '%s' "$raw"
+	fi
+}
+
+# params: ['pair'] → {"pair": [ id, body ]}
+bplus_unwrap_pair() {
+	local raw="$1"
+	local inner
+	inner="$(echo "$raw" | jsonfilter -e '$.pair' 2>/dev/null)"
+	if [ -n "$inner" ]; then
+		printf '%s' "$inner"
+	else
+		printf '%s' "$raw"
+	fi
+}
+
+bplus_package_version() {
+	local package_name="$1"
+	local package_version=""
+	local apk_name=""
+
+	if command -v apk >/dev/null 2>&1; then
+		apk_name=$(apk list --installed "$package_name" 2>/dev/null | awk 'NR == 1 { print $1 }')
+		[ -n "$apk_name" ] && package_version="${apk_name#$package_name-}"
+	elif command -v opkg >/dev/null 2>&1; then
+		package_version=$(opkg status "$package_name" 2>/dev/null | awk '/^Version:/ { print $2; exit }')
+	fi
+
+	if [ -z "$package_version" ]; then
+		package_version=$(grep -h "^Version:" \
+			"/usr/lib/opkg/info/$package_name.control" \
+			"/usr/lib/info/$package_name.control" 2>/dev/null | awk 'NR == 1 { print $2 }')
+	fi
+
+	printf '%s' "$package_version"
+}
+
+bplus_core_version() {
+	local core_version
+	core_version=$(bplus_package_version bandix-plus)
+	if [ -z "$core_version" ] && command -v bandix-plus >/dev/null 2>&1; then
+		core_version=$(bandix-plus --version 2>/dev/null | awk 'NR == 1 { print $NF }')
+	fi
+	printf '%s' "$core_version"
+}
+
+bplus_version_is_newer() {
+	local current_version="${1#v}"
+	local latest_version="${2#v}"
+	local oldest_version
+
+	current_version="${current_version%%-r[0-9]*}"
+	latest_version="${latest_version%%-r[0-9]*}"
+	if [ -z "$current_version" ] || [ -z "$latest_version" ]; then
+		return 1
+	fi
+	[ "$current_version" = "$latest_version" ] && return 1
+
+	oldest_version=$(printf '%s\n%s\n' "$current_version" "$latest_version" | sort -V | head -n 1)
+	[ "$oldest_version" = "$current_version" ]
+}
+
+case "$1" in
+	list)
+		json_init
+		json_add_object "getHealth"
+		json_close_object
+		json_add_object "getSnapshot"
+		json_close_object
+		json_add_object "getOverview"
+		json_add_string "period"
+		json_close_object
+		json_add_object "getDevices"
+		json_add_string "iface"
+		json_add_string "period"
+		json_add_string "offset"
+		json_add_string "limit"
+		json_close_object
+		json_add_object "deleteDevice"
+		json_add_string "iface"
+		json_add_string "mac"
+		json_close_object
+		json_add_object "getTrend"
+		json_add_string "iface"
+		json_add_string "mac"
+		json_add_string "traffic_type"
+		json_add_string "direction"
+		json_close_object
+		json_add_object "getHistogram"
+		json_add_string "iface"
+		json_add_string "mac"
+		json_add_string "traffic_type"
+		json_add_string "start_ms"
+		json_add_string "end_ms"
+		json_add_string "bucket"
+		json_close_object
+		json_add_object "getUsageRanking"
+		json_add_string "iface"
+		json_add_string "traffic_type"
+		json_add_string "start_ms"
+		json_add_string "end_ms"
+		json_add_string "limit"
+		json_close_object
+		json_add_object "getPolicy"
+		json_close_object
+		json_add_object "getSchedules"
+		json_close_object
+		json_add_object "createSchedule"
+		json_add_string "payload"
+		json_close_object
+		json_add_object "updateSchedule"
+		json_add_string "pair"
+		json_close_object
+		json_add_object "deleteSchedule"
+		json_add_string "id"
+		json_close_object
+		json_add_object "getIfaceLimits"
+		json_close_object
+		json_add_object "setIfaceLimit"
+		json_add_string "payload"
+		json_close_object
+		json_add_object "deleteIfaceLimit"
+		json_add_string "iface"
+		json_close_object
+		json_add_object "getGuestDefaults"
+		json_close_object
+		json_add_object "setGuestDefault"
+		json_add_string "payload"
+		json_close_object
+		json_add_object "setGuestDefaultEnabled"
+		json_add_string "payload"
+		json_close_object
+		json_add_object "deleteGuestDefault"
+		json_add_string "iface"
+		json_close_object
+		json_add_object "getGuestWhitelist"
+		json_close_object
+		json_add_object "addGuestWhitelist"
+		json_add_string "payload"
+		json_close_object
+		json_add_object "removeGuestWhitelist"
+		json_add_string "payload"
+		json_close_object
+		json_add_object "setDeviceHostname"
+		json_add_string "iface"
+		json_add_string "mac"
+		json_add_string "hostname"
+		json_close_object
+		json_add_object "getVersion"
+		json_close_object
+		json_add_object "checkUpdate"
+		json_close_object
+		json_add_object "getStatus"
+		json_close_object
+		json_add_object "restartService"
+		json_close_object
+		json_dump
+		json_cleanup
+		;;
+	call)
+		BASE="$(bplus_base)"
+		case "$2" in
+			getHealth) bplus_get "$BASE/api/health" ;;
+			getSnapshot) bplus_get "$BASE/api/snapshot" ;;
+			getOverview)
+				input=""
+				read -t 1 -r input || true
+				period="${3:-}"
+				if [ -n "$input" ]; then
+					[ -z "$period" ] && period="$(echo "$input" | jsonfilter -e '$.period' 2>/dev/null)"
+					[ -z "$period" ] && period="$(echo "$input" | jsonfilter -e '$[0]' 2>/dev/null)"
+				fi
+				if [ -n "$period" ]; then
+					bplus_get "$BASE/api/overview?period=$(printf %s "$period" | sed 's/ /%20/g')"
+				else
+					bplus_get "$BASE/api/overview"
+				fi
+				;;
+			getDevices)
+				input=""
+				read -t 1 -r input || true
+
+				iface="${3:-}"
+				pperiod="${4:-}"
+				offset="${5:-}"
+				limit="${6:-}"
+
+				if [ -n "$input" ]; then
+					[ -z "$iface" ] && \
+						iface="$(echo "$input" | jsonfilter -e '$.iface' 2>/dev/null)"
+
+					[ -z "$pperiod" ] && \
+						pperiod="$(echo "$input" | jsonfilter -e '$.period' 2>/dev/null)"
+
+					[ -z "$offset" ] && \
+						offset="$(echo "$input" | jsonfilter -e '$.offset' 2>/dev/null)"
+
+					[ -z "$limit" ] && \
+						limit="$(echo "$input" | jsonfilter -e '$.limit' 2>/dev/null)"
+
+					# 兼容位置参数形式。
+					[ -z "$iface" ] && \
+						iface="$(echo "$input" | jsonfilter -e '$[0]' 2>/dev/null)"
+
+					[ -z "$pperiod" ] && \
+						pperiod="$(echo "$input" | jsonfilter -e '$[1]' 2>/dev/null)"
+
+					[ -z "$offset" ] && \
+						offset="$(echo "$input" | jsonfilter -e '$[2]' 2>/dev/null)"
+
+					[ -z "$limit" ] && \
+						limit="$(echo "$input" | jsonfilter -e '$[3]' 2>/dev/null)"
+				fi
+
+				# offset 和 limit 只能是非负十进制整数。
+				case "$offset" in
+					'' ) offset=0 ;;
+					*[!0-9]* )
+						printf '%s\n' \
+							'{"ok":false,"data":[],"error":"getDevices: invalid offset"}'
+						exit 0
+						;;
+				esac
+
+				case "$limit" in
+					'' ) limit=100 ;;
+					*[!0-9]* )
+						printf '%s\n' \
+							'{"ok":false,"data":[],"error":"getDevices: invalid limit"}'
+						exit 0
+						;;
+				esac
+
+				# 避免无意义地请求 0 条，具体上限仍由 Rust API 限制。
+				[ "$limit" -eq 0 ] 2>/dev/null && limit=100
+
+				qs=""
+
+				[ -n "$iface" ] && \
+					qs="${qs}iface=$(printf %s "$iface" | sed 's/ /%20/g')&"
+
+				[ -n "$pperiod" ] && \
+					qs="${qs}period=$(printf %s "$pperiod" | sed 's/ /%20/g')&"
+
+				qs="${qs}offset=${offset}&limit=${limit}"
+				qs="${qs%&}"
+
+				bplus_get_devices_bounded "$BASE/api/devices?$qs"
+				;;
+			deleteDevice)
+				input=""
+				read -r -t 5 input || true
+				iface="${3:-}"; mac="${4:-}"
+				if [ -n "$input" ]; then
+					[ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$.iface' 2>/dev/null)"
+					[ -z "$mac" ] && mac="$(echo "$input" | jsonfilter -e '$.mac' 2>/dev/null)"
+					[ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$[0]' 2>/dev/null)"
+					[ -z "$mac" ] && mac="$(echo "$input" | jsonfilter -e '$[1]' 2>/dev/null)"
+				fi
+				if [ -z "$iface" ] || [ -z "$mac" ]; then
+					printf '%s\n' '{"ok":false,"data":null,"error":"deleteDevice: iface and mac required"}'
+					exit 0
+				fi
+				json_init
+				json_add_string iface "$iface"
+				json_add_string mac "$mac"
+				js="$(json_dump)"
+				json_cleanup
+				bplus_delete_json "$js" "$BASE/api/devices"
+				;;
+			getTrend)
+				input=""
+				read -t 1 -r input || true
+				iface="${3:-}"; mac="${4:-}"; ttype="${5:-}"; ddir="${6:-}"
+				if [ -n "$input" ]; then
+					[ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$.iface' 2>/dev/null)"
+					[ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$[0]' 2>/dev/null)"
+					[ -z "$mac" ] && mac="$(echo "$input" | jsonfilter -e '$.mac' 2>/dev/null)"
+					[ -z "$mac" ] && mac="$(echo "$input" | jsonfilter -e '$[1]' 2>/dev/null)"
+					[ -z "$ttype" ] && ttype="$(echo "$input" | jsonfilter -e '$.traffic_type' 2>/dev/null)"
+					[ -z "$ttype" ] && ttype="$(echo "$input" | jsonfilter -e '$[2]' 2>/dev/null)"
+					[ -z "$ddir" ] && ddir="$(echo "$input" | jsonfilter -e '$.direction' 2>/dev/null)"
+					[ -z "$ddir" ] && ddir="$(echo "$input" | jsonfilter -e '$[3]' 2>/dev/null)"
+				fi
+				qs=""
+				[ -n "$iface" ] && qs="iface=$(printf %s "$iface" | sed 's/ /%20/g')"
+				[ -n "$mac" ] && qs="${qs}${qs:+&}mac=$(printf %s "$mac" | sed 's/ /%20/g')"
+				[ -n "$ttype" ] && qs="${qs}${qs:+&}traffic_type=$(printf %s "$ttype" | sed 's/ /%20/g')"
+				[ -n "$ddir" ] && qs="${qs}${qs:+&}direction=$(printf %s "$ddir" | sed 's/ /%20/g')"
+				[ -n "$qs" ] && bplus_get "$BASE/api/trend?$qs" || bplus_get "$BASE/api/trend"
+				;;
+			getHistogram)
+				input=""
+				read -t 1 -r input || true
+				iface="${3:-}"; mac="${4:-}"; ttype="${5:-}"; s_ms="${6:-}"; e_ms="${7:-}"; bucket="${8:-}"
+				if [ -n "$input" ]; then
+					[ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$.iface' 2>/dev/null)"
+					[ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$[0]' 2>/dev/null)"
+					[ -z "$mac" ] && mac="$(echo "$input" | jsonfilter -e '$.mac' 2>/dev/null)"
+					[ -z "$ttype" ] && ttype="$(echo "$input" | jsonfilter -e '$.traffic_type' 2>/dev/null)"
+					[ -z "$s_ms" ] && s_ms="$(echo "$input" | jsonfilter -e '$.start_ms' 2>/dev/null)"
+					[ -z "$e_ms" ] && e_ms="$(echo "$input" | jsonfilter -e '$.end_ms' 2>/dev/null)"
+					[ -z "$bucket" ] && bucket="$(echo "$input" | jsonfilter -e '$.bucket' 2>/dev/null)"
+				fi
+				qs=""
+				[ -n "$iface" ] && qs="iface=$(printf %s "$iface" | sed 's/ /%20/g')"
+				[ -n "$mac" ] && qs="${qs}${qs:+&}mac=$(printf %s "$mac" | sed 's/ /%20/g')"
+				[ -n "$ttype" ] && qs="${qs}${qs:+&}traffic_type=$(printf %s "$ttype" | sed 's/ /%20/g')"
+				[ -n "$s_ms" ] && qs="${qs}${qs:+&}start_ms=$s_ms"
+				[ -n "$e_ms" ] && qs="${qs}${qs:+&}end_ms=$e_ms"
+				[ -n "$bucket" ] && qs="${qs}${qs:+&}bucket=$bucket"
+				[ -n "$qs" ] && bplus_get "$BASE/api/histogram?$qs" || bplus_get "$BASE/api/histogram"
+				;;
+			getUsageRanking)
+				input=""
+				read -t 1 -r input || true
+				iface="${3:-}"; ttype="${4:-}"; s_ms="${5:-}"; e_ms="${6:-}"; lim="${7:-}"
+				if [ -n "$input" ]; then
+					[ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$.iface' 2>/dev/null)"
+					[ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$[0]' 2>/dev/null)"
+					[ -z "$ttype" ] && ttype="$(echo "$input" | jsonfilter -e '$.traffic_type' 2>/dev/null)"
+					[ -z "$s_ms" ] && s_ms="$(echo "$input" | jsonfilter -e '$.start_ms' 2>/dev/null)"
+					[ -z "$e_ms" ] && e_ms="$(echo "$input" | jsonfilter -e '$.end_ms' 2>/dev/null)"
+					[ -z "$lim" ] && lim="$(echo "$input" | jsonfilter -e '$.limit' 2>/dev/null)"
+				fi
+				qs=""
+				[ -n "$iface" ] && qs="iface=$(printf %s "$iface" | sed 's/ /%20/g')"
+				[ -n "$ttype" ] && qs="${qs}${qs:+&}traffic_type=$(printf %s "$ttype" | sed 's/ /%20/g')"
+				[ -n "$s_ms" ] && qs="${qs}${qs:+&}start_ms=$s_ms"
+				[ -n "$e_ms" ] && qs="${qs}${qs:+&}end_ms=$e_ms"
+				[ -n "$lim" ] && qs="${qs}${qs:+&}limit=$lim"
+				[ -n "$qs" ] && bplus_get "$BASE/api/usage_ranking?$qs" || bplus_get "$BASE/api/usage_ranking"
+				;;
+			getPolicy) bplus_get "$BASE/api/policy" ;;
+			getSchedules) bplus_get "$BASE/api/rate_limit/schedules" ;;
+			createSchedule)
+				input=""
+				read -r -t 5 input || true
+				js="${3:-}"
+				if [ -n "$input" ]; then
+					js="$(bplus_unwrap_payload "$input")"
+				elif [ -n "$js" ]; then
+					js="$(bplus_unwrap_payload "$js")"
+				fi
+				[ -z "$js" ] && {
+					printf '%s\n' '{"ok":false,"data":null,"error":"createSchedule: empty body"}'
+					exit 0
+				}
+				bplus_post_json "$js" "$BASE/api/rate_limit/schedules"
+				;;
+			updateSchedule)
+				input=""
+				read -r -t 5 input || true
+				pair="${3:-}"
+				if [ -n "$input" ]; then
+					pair="$(bplus_unwrap_pair "$input")"
+				elif [ -n "$pair" ]; then
+					pair="$(bplus_unwrap_pair "$pair")"
+				fi
+				rid="$(echo "$pair" | jsonfilter -e '$[0]' 2>/dev/null)"
+				body="$(echo "$pair" | jsonfilter -e '$[1]' 2>/dev/null)"
+				[ -n "$rid" ] && [ -n "$body" ] && bplus_put_json "$body" "$BASE/api/rate_limit/schedules/$(uripart "$rid")" && exit 0
+				printf '%s' '{"ok":false,"data":null,"error":"updateSchedule: 参数为 JSON 数组 [id, 体对象]"}'
+				;;
+			deleteSchedule)
+				input=""
+				read -r -t 5 input || true
+				rid="${3:-}"
+				if [ -z "$rid" ] && [ -n "$input" ]; then
+					rid="$(echo "$input" | jsonfilter -e '$.id' 2>/dev/null)"
+					[ -z "$rid" ] && rid="$(echo "$input" | jsonfilter -e '$[0]' 2>/dev/null)"
+				fi
+				bplus_delete "$BASE/api/rate_limit/schedules/$(uripart "$rid")"
+				;;
+			getIfaceLimits) bplus_get "$BASE/api/rate_limit/iface_limits" ;;
+			setIfaceLimit)
+				input=""
+				read -r -t 5 input || true
+				js="${3:-}"
+				if [ -n "$input" ]; then
+					js="$(bplus_unwrap_payload "$input")"
+				elif [ -n "$js" ]; then
+					js="$(bplus_unwrap_payload "$js")"
+				fi
+				[ -z "$js" ] && {
+					printf '%s\n' '{"ok":false,"data":null,"error":"setIfaceLimit: empty body"}'
+					exit 0
+				}
+				bplus_post_json "$js" "$BASE/api/rate_limit/iface_limits"
+				;;
+			deleteIfaceLimit)
+				iface="${3:-}"
+				[ -z "$iface" ] && { read -t 1 -r input || true; iface="$(echo "$input" | jsonfilter -e '$[0]')"; [ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$.iface' 2>/dev/null)"; }
+				bplus_delete "$BASE/api/rate_limit/iface_limits/$(uripart "$iface")"
+				;;
+			getGuestDefaults) bplus_get "$BASE/api/rate_limit/guest_defaults" ;;
+			setGuestDefault)
+				input=""
+				read -r -t 5 input || true
+				js="${3:-}"
+				if [ -n "$input" ]; then
+					js="$(bplus_unwrap_payload "$input")"
+				elif [ -n "$js" ]; then
+					js="$(bplus_unwrap_payload "$js")"
+				fi
+				[ -z "$js" ] && {
+					printf '%s\n' '{"ok":false,"data":null,"error":"setGuestDefault: empty body"}'
+					exit 0
+				}
+				bplus_post_json "$js" "$BASE/api/rate_limit/guest_defaults"
+				;;
+			setGuestDefaultEnabled)
+				input=""
+				read -r -t 5 input || true
+				js="${3:-}"
+				if [ -n "$input" ]; then
+					js="$(bplus_unwrap_payload "$input")"
+				elif [ -n "$js" ]; then
+					js="$(bplus_unwrap_payload "$js")"
+				fi
+				iface="$(echo "$js" | jsonfilter -e '$.iface' 2>/dev/null)"
+				enabled="$(echo "$js" | jsonfilter -e '$.enabled' 2>/dev/null)"
+				[ -z "$iface" ] && {
+					printf '%s\n' '{"ok":false,"data":null,"error":"setGuestDefaultEnabled: iface required"}'
+					exit 0
+				}
+				# jsonfilter boolean -> "true"/"false"; jshn expects 1/0 for boolean values.
+				case "$enabled" in
+					1|true|TRUE|True) enabled=1 ;;
+					0|false|FALSE|False|"") enabled=0 ;;
+					*) enabled=0 ;;
+				esac
+				json_init
+				json_add_boolean enabled "$enabled"
+				body="$(json_dump)"
+				json_cleanup
+				bplus_put_json "$body" "$BASE/api/rate_limit/guest_defaults/$(uripart "$iface")/enable"
+				;;
+			deleteGuestDefault)
+				iface="${3:-}"
+				[ -z "$iface" ] && { read -t 1 -r input || true; iface="$(echo "$input" | jsonfilter -e '$[0]')"; [ -z "$iface" ] && iface="$(echo "$input" | jsonfilter -e '$.iface' 2>/dev/null)"; }
+				bplus_delete "$BASE/api/rate_limit/guest_defaults/$(uripart "$iface")"
+				;;
+			getGuestWhitelist) bplus_get "$BASE/api/rate_limit/guest_whitelist" ;;
+			addGuestWhitelist)
+				input=""
+				read -r -t 5 input || true
+				js="${3:-}"
+				if [ -n "$input" ]; then
+					js="$(bplus_unwrap_payload "$input")"
+				elif [ -n "$js" ]; then
+					js="$(bplus_unwrap_payload "$js")"
+				fi
+				[ -z "$js" ] && {
+					printf '%s\n' '{"ok":false,"data":null,"error":"addGuestWhitelist: empty body"}'
+					exit 0
+				}
+				bplus_post_json "$js" "$BASE/api/rate_limit/guest_whitelist"
+				;;
+			removeGuestWhitelist)
+				input=""
+				read -r -t 5 input || true
+				js="${3:-}"
+				if [ -n "$input" ]; then
+					js="$(bplus_unwrap_payload "$input")"
+				elif [ -n "$js" ]; then
+					js="$(bplus_unwrap_payload "$js")"
+				fi
+				[ -z "$js" ] && {
+					printf '%s\n' '{"ok":false,"data":null,"error":"removeGuestWhitelist: empty body"}'
+					exit 0
+				}
+				bplus_delete_json "$js" "$BASE/api/rate_limit/guest_whitelist"
+				;;
+			setDeviceHostname)
+				# LuCI RPC 与 luci.bandix setHostname 一致：stdin 为 JSON 数组 [iface,mac,hostname] 或对象 {iface,mac,hostname}
+				input=""
+				read -r -t 5 input || true
+				iface="${3:-}"; mac="${4:-}"; hn="${5:-}"
+				if [ -n "$input" ]; then
+					iobj="$(echo "$input" | jsonfilter -e '$.iface' 2>/dev/null)"
+					mobj="$(echo "$input" | jsonfilter -e '$.mac' 2>/dev/null)"
+					hobj="$(echo "$input" | jsonfilter -e '$.hostname' 2>/dev/null)"
+					if [ -n "$mobj" ]; then
+						iface="$iobj"; mac="$mobj"; hn="$hobj"
+					else
+						iface="$(echo "$input" | jsonfilter -e '$[0]' 2>/dev/null)"
+						mac="$(echo "$input" | jsonfilter -e '$[1]' 2>/dev/null)"
+						hn="$(echo "$input" | jsonfilter -e '$[2]' 2>/dev/null)"
+					fi
+				fi
+				if [ -z "$iface" ] || [ -z "$mac" ] || [ -z "$hn" ]; then
+					printf '%s\n' '{"ok":false,"data":"error","error":"setDeviceHostname: iface, mac and hostname required"}'
+					exit 0
+				fi
+				json_init
+				json_add_string iface "$iface"
+				json_add_string mac "$mac"
+				json_add_string hostname "$hn"
+				js="$(json_dump)"
+				json_cleanup
+				bplus_put_json "$js" "$BASE/api/devices/hostname"
+				;;
+			getVersion)
+				luci_version=$(bplus_package_version luci-app-bandix-plus)
+				bandix_plus_version=$(bplus_core_version)
+
+				hb=$(bplus_get "$BASE/api/health")
+				api_ok=""; echo "$hb" | grep -q '"ok":true' && api_ok=1
+				json_init
+				json_add_string "luci_app_version" "${luci_version:-Unknown}"
+				json_add_string "bandix_plus_version" "${bandix_plus_version:-Unknown}"
+				json_add_string "bandix_plus_pkg" "${luci_version:-unknown}"
+				json_add_string "api_health_ok" "${api_ok:-0}"
+				json_dump
+				json_cleanup
+				;;
+			checkUpdate)
+				current_luci_version=$(bplus_package_version luci-app-bandix-plus)
+				current_bandix_plus_version=$(bplus_core_version)
+
+				luci_api_result=$(curl -fsSL --connect-timeout 10 --max-time 30 \
+					-H "Accept: application/vnd.github+json" \
+					-H "User-Agent: luci-app-bandix-plus" \
+					"https://api.github.com/repos/timsaya/luci-app-bandix-plus/releases/latest" 2>/dev/null)
+				luci_api_status=$?
+				luci_latest_version=""
+				luci_update_url=""
+				luci_release_body=""
+				luci_error=""
+				luci_has_update=0
+				if [ "$luci_api_status" -eq 0 ] && [ -n "$luci_api_result" ]; then
+					luci_latest_version=$(echo "$luci_api_result" | jsonfilter -e '$.tag_name' 2>/dev/null)
+					luci_latest_version="${luci_latest_version#v}"
+					luci_update_url=$(echo "$luci_api_result" | jsonfilter -e '$.html_url' 2>/dev/null)
+					luci_release_body=$(echo "$luci_api_result" | jsonfilter -e '$.body' 2>/dev/null)
+				fi
+				if [ -z "$luci_latest_version" ]; then
+					luci_error="Failed to query the latest luci-app-bandix-plus release"
+				elif bplus_version_is_newer "$current_luci_version" "$luci_latest_version"; then
+					luci_has_update=1
+				fi
+
+				bandix_api_result=$(curl -fsSL --connect-timeout 10 --max-time 30 \
+					-H "Accept: application/vnd.github+json" \
+					-H "User-Agent: luci-app-bandix-plus" \
+					"https://api.github.com/repos/timsaya/openwrt-bandix-plus/releases/latest" 2>/dev/null)
+				bandix_api_status=$?
+				bandix_plus_latest_version=""
+				bandix_plus_update_url=""
+				bandix_plus_release_body=""
+				bandix_plus_error=""
+				bandix_plus_has_update=0
+				if [ "$bandix_api_status" -eq 0 ] && [ -n "$bandix_api_result" ]; then
+					bandix_plus_latest_version=$(echo "$bandix_api_result" | jsonfilter -e '$.tag_name' 2>/dev/null)
+					bandix_plus_latest_version="${bandix_plus_latest_version#v}"
+					bandix_plus_update_url=$(echo "$bandix_api_result" | jsonfilter -e '$.html_url' 2>/dev/null)
+					bandix_plus_release_body=$(echo "$bandix_api_result" | jsonfilter -e '$.body' 2>/dev/null)
+				fi
+				if [ -z "$bandix_plus_latest_version" ]; then
+					bandix_plus_error="Failed to query the latest openwrt-bandix-plus release"
+				elif bplus_version_is_newer "$current_bandix_plus_version" "$bandix_plus_latest_version"; then
+					bandix_plus_has_update=1
+				fi
+
+				json_init
+				json_add_string "current_luci_version" "${current_luci_version:-Unknown}"
+				json_add_string "current_bandix_plus_version" "${current_bandix_plus_version:-Unknown}"
+				json_add_string "latest_luci_version" "$luci_latest_version"
+				json_add_string "latest_bandix_plus_version" "$bandix_plus_latest_version"
+				json_add_boolean "luci_has_update" "$luci_has_update"
+				json_add_boolean "bandix_plus_has_update" "$bandix_plus_has_update"
+				json_add_string "luci_update_url" "$luci_update_url"
+				json_add_string "bandix_plus_update_url" "$bandix_plus_update_url"
+				json_add_string "luci_release_body" "$luci_release_body"
+				json_add_string "bandix_plus_release_body" "$bandix_plus_release_body"
+				json_add_string "luci_error" "$luci_error"
+				json_add_string "bandix_plus_error" "$bandix_plus_error"
+				json_dump
+				json_cleanup
+				;;
+			getStatus)
+				# enabled: /etc/init.d/bandix-plus enabled exit code (0=enabled)
+				enabled=0
+				if [ -x /etc/init.d/bandix-plus ]; then
+					/etc/init.d/bandix-plus enabled 2>/dev/null && enabled=1
+				fi
+
+				# running/pid: ask procd via ubus
+				running=0
+				pid=0
+				svc_json="$(ubus call service list '{"name":"bandix-plus"}' 2>/dev/null)"
+				if [ -n "$svc_json" ]; then
+					pid="$(echo "$svc_json" | jsonfilter -e '$["bandix-plus"].instances["bandix-plus"].pid' 2>/dev/null)"
+					case "$pid" in
+						''|*[!0-9]*) pid=0 ;;
+					esac
+					[ "$pid" -gt 0 ] 2>/dev/null && running=1
+				fi
+				if [ "$running" -eq 0 ] && [ -f /var/run/bandix-plus.pid ]; then
+					p="$(cat /var/run/bandix-plus.pid 2>/dev/null)"
+					case "$p" in
+						''|*[!0-9]*) ;;
+						*)
+							if [ -d "/proc/$p" ]; then
+								running=1
+								pid="$p"
+							fi
+							;;
+					esac
+				fi
+
+				# uci enable_traffic flag (1 means user wants service running)
+				enable_traffic="$(uci -q get bandix_plus.general.enable_traffic)"
+				[ -z "$enable_traffic" ] && enable_traffic=0
+
+				# api health probe
+				hb=$(bplus_get "$BASE/api/health")
+				api_ok=0
+				echo "$hb" | grep -q '"ok":true' && api_ok=1
+
+				# package version
+				pkgv=""
+				if command -v apk >/dev/null 2>&1; then
+					apk_raw=$(apk list --installed "luci-app-bandix-plus" 2>/dev/null | awk '{print $1}')
+					if [ -n "$apk_raw" ]; then
+						pkgv="${apk_raw#luci-app-bandix-plus-}"
+					fi
+				elif command -v opkg >/dev/null 2>&1; then
+					pkgv=$(opkg status luci-app-bandix-plus 2>/dev/null | grep "^Version:" | cut -d' ' -f2)
+				fi
+				if [ -z "$pkgv" ]; then
+					pkgv=$(grep -h "^Version:" /lib/apk/db/installed /usr/lib/info/luci-app-bandix-plus.control /usr/lib/opkg/info/bandix-plus.control 2>/dev/null | head -n 1 | cut -d' ' -f2)
+				fi
+
+				json_init
+				json_add_int    "enabled"         "$enabled"
+				json_add_int    "running"         "$running"
+				json_add_int    "pid"             "$pid"
+				json_add_int    "enable_traffic"  "$enable_traffic"
+				json_add_int    "api_health_ok"   "$api_ok"
+				json_add_string "bandix_plus_pkg" "${pkgv:-unknown}"
+				json_dump
+				json_cleanup
+				;;
+			restartService)
+				( sleep 1; /etc/init.d/bandix-plus restart ) >/dev/null 2>&1 &
+				json_init; json_add_string ok "1"; json_add_boolean success 1; json_dump; json_cleanup
+				;;
+		esac
+		;;
+esac
