@@ -1,0 +1,176 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Device Access"
+msgstr "设备上网控制"
+
+msgid "Restrict internet access by device MAC address. Schedules use the router’s local time."
+msgstr "按设备 MAC 地址限制上网，时段以路由器本地时间为准。"
+
+msgid "Internet destination"
+msgstr "外网出口"
+
+msgid "Firewall zone"
+msgstr "防火墙区域"
+
+msgid "Only routed traffic to this zone is restricted. Flow offloading and transparent proxies can bypass forwarding rules."
+msgstr "规则限制转发到此区域的流量。流量卸载或透明代理可能绕过转发规则。"
+
+msgid "Access rules"
+msgstr "上网规则"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Device name"
+msgstr "设备名称"
+
+msgid "Device MAC address"
+msgstr "设备 MAC 地址"
+
+msgid "Policy"
+msgstr "上网策略"
+
+msgid "Always block"
+msgstr "始终断网"
+
+msgid "Block during schedule"
+msgstr "时段内断网"
+
+msgid "Allow only during schedule"
+msgstr "仅时段内允许上网"
+
+msgid "Days"
+msgstr "星期"
+
+msgid "Start time"
+msgstr "开始时间"
+
+msgid "End time"
+msgstr "结束时间"
+
+msgid "An end time before the start continues into the next day."
+msgstr "结束时间早于开始时间时，时段延续至次日。"
+
+msgid "Use 24-hour HH:MM format."
+msgstr "请输入 24 小时制时间，例如 08:00。"
+
+msgid "Start and end must differ."
+msgstr "开始和结束时间必须不同。"
+
+msgid "Mon"
+msgstr "周一"
+
+msgid "Tue"
+msgstr "周二"
+
+msgid "Wed"
+msgstr "周三"
+
+msgid "Thu"
+msgstr "周四"
+
+msgid "Fri"
+msgstr "周五"
+
+msgid "Sat"
+msgstr "周六"
+
+msgid "Sun"
+msgstr "周日"
+
+msgid "IP address"
+msgstr "IP 地址"
+
+msgid "Connection"
+msgstr "连接状态"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "Reachable"
+msgstr "在线"
+
+msgid "Connection unconfirmed"
+msgstr "连接待确认"
+
+msgid "Block internet"
+msgstr "禁止联网"
+
+msgid "Set internet schedule"
+msgstr "设置联网时段"
+
+msgid "No connected devices detected."
+msgstr "未检测到已连接的设备。"
+
+msgid "Could not load connected devices."
+msgstr "无法读取已连接设备列表。"
+
+msgid "Connected devices"
+msgstr "已连接设备"
+
+msgid "Refresh"
+msgstr "刷新"
+
+msgid "Other rules for this device will still apply."
+msgstr "该设备的其他规则仍会生效。"
+
+msgid "Upload speed"
+msgstr "上传速率"
+
+msgid "Download speed"
+msgstr "下载速率"
+
+msgid "Speeds show traffic forwarded through the selected internet zone."
+msgstr "速率统计所选外网区域的转发流量。"
+
+msgid "Device settings"
+msgstr "设备设置"
+
+msgid "Link to device"
+msgstr "关联已有设备"
+
+msgid "Possible private MAC"
+msgstr "疑似随机 MAC"
+
+msgid "Device profiles"
+msgstr "设备档案"
+
+msgid "Linked MAC addresses share a device name, speed limits and access rules."
+msgstr "关联的 MAC 地址共用设备名称、限速和上网规则。"
+
+msgid "Device MAC addresses"
+msgstr "设备 MAC 地址列表"
+
+msgid "Use a valid unicast MAC address."
+msgstr "请输入有效的单播 MAC 地址。"
+
+msgid "This MAC address is already linked to another device."
+msgstr "此 MAC 地址已关联到另一台设备。"
+
+msgid "Upload limit (kbit/s)"
+msgstr "上传限速（kbit/s）"
+
+msgid "Download limit (kbit/s)"
+msgstr "下载限速（kbit/s）"
+
+msgid "Leave blank or use 0 for unlimited."
+msgstr "留空或填写 0 表示不限速。"
+
+msgid "Enter a whole number."
+msgstr "请输入整数。"
+
+msgid "Choose an existing device"
+msgstr "请选择已有设备"
+
+msgid "Continue"
+msgstr "继续"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "A matching hostname was found. Confirm only if both MAC addresses belong to the same device."
+msgstr "找到主机名相同的设备。请确认两个 MAC 地址属于同一台设备后再关联。"
+
+msgid "Select the existing device if this is one of its MAC addresses."
+msgstr "如果该 MAC 地址属于已有设备，请选择对应设备。"

@@ -1,0 +1,18 @@
+{
+	"admin/network/device-access": {
+		"title": "Device Access",
+		"order": 92,
+		"action": {
+			"type": "view",
+			"path": "device_access/index"
+		},
+		"depends": {
+			"acl": [
+				"luci-app-device-access"
+			],
+			"uci": {
+				"device_access": true
+			}
+		}
+	}
+}

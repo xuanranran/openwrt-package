@@ -1,0 +1,24 @@
+{
+	"luci-app-device-access": {
+		"description": "Manage device internet access",
+		"read": {
+			"uci": [
+				"device_access",
+				"firewall"
+			],
+			"ubus": {
+				"luci-rpc": [
+					"getHostHints"
+				],
+				"luci.device_access": [
+					"clients"
+				]
+			}
+		},
+		"write": {
+			"uci": [
+				"device_access"
+			]
+		}
+	}
+}
