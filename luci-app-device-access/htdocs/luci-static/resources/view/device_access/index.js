@@ -60,18 +60,39 @@ function setModalDefaults(section, defaults) {
 }
 
 function renderClients(map, rules, profiles, hosts, traffic) {
+	const columns = {
+		name: _('Device name'),
+		ip: _('IP address'),
+		mac: _('Device MAC address'),
+		connection: _('Connection'),
+		upload: _('Upload speed'),
+		download: _('Download speed'),
+		actions: _('Actions')
+	};
+	const cell = (key, contents, showLabel = false) => E('td', {
+		'class': 'device-access-cell device-access-' + key, 'role': 'cell'
+	}, [
+		showLabel ? E('span', { 'class': 'device-access-label', 'aria-hidden': 'true' }, columns[key]) : null,
+		contents
+	]);
 	const button = (label, fn) => E('button', {
 		'type': 'button',
-		'class': 'btn cbi-button',
+		'class': 'btn cbi-button device-access-button',
 		'disabled': map.readonly || null,
 		'click': ui.createHandlerFn(null, fn)
 	}, [ label ]);
-	const table = E('table', { 'class': 'table' }, [
-		E('tr', { 'class': 'tr table-titles' }, [
-			_('Device name'), _('IP address'), _('Device MAC address'), _('Connection'),
-			_('Upload speed'), _('Download speed'), _('Actions')
-		].map(label => E('th', { 'class': 'th' }, [ label ])))
+	const body = E('tbody', { 'class': 'device-access-devices', 'role': 'rowgroup' });
+	const table = E('table', {
+		'class': 'device-access-table', 'role': 'table', 'aria-label': _('Connected devices')
+	}, [
+		E('thead', { 'class': 'device-access-head', 'role': 'rowgroup' }, [
+			E('tr', { 'role': 'row' }, Object.values(columns).map(label => E('th', {
+				'scope': 'col', 'role': 'columnheader'
+			}, label)))
+		]),
+		body
 	]);
+	const empty = E('p', { 'class': 'device-access-empty' });
 	const speedCells = new Map();
 	function paintRates() {
 		for (const [ mac, cells ] of speedCells) {
@@ -91,28 +112,34 @@ function renderClients(map, rules, profiles, hosts, traffic) {
 		}).sort((a, b) => Number(b.client.reachable) - Number(a.client.reachable) ||
 			a.name.localeCompare(b.name) || a.client.mac.localeCompare(b.client.mac));
 		speedCells.clear();
-		cbi_update_table(table, rows.map(({ client, name, hostname, profile }) => {
-			const up = E('span');
-			const down = E('span');
+		body.replaceChildren(...rows.map(({ client, name, hostname, profile }) => {
+			const up = E('span', { 'class': 'device-access-rate' });
+			const down = E('span', { 'class': 'device-access-rate' });
 			speedCells.set(client.mac, { up, down });
 			const actions = [
-				button(_('Block internet'), () => rules.editClient(client, name, 'always')), ' ',
-				button(_('Set internet schedule'), () => rules.editClient(client, name, 'outside')), ' ',
+				button(_('Block internet'), () => rules.editClient(client, name, 'always')),
+				button(_('Set internet schedule'), () => rules.editClient(client, name, 'outside')),
 				button(_('Device settings'), () => profiles.editClient(client, hostname, profile))
 			];
 			if (client.privateMac && !profile && clientProfiles().length)
-				actions.push(' ', button(_('Link to device'), () => profiles.linkClient(client, hostname)));
-			return [
-				E('span', {}, [ name || '–' ]),
-				E('span', {}, [ (client.ipv4.length ? client.ipv4 : client.ipv6).join(', ') ]),
-				E('div', {}, [
-					E('code', {}, [ client.mac ]),
-					client.privateMac ? E('small', { 'class': 'nowrap' }, [ ' ', _('Possible private MAC') ]) : ''
-				]),
-				E('span', {}, [ client.reachable ? _('Reachable') : _('Connection unconfirmed') ]),
-				up, down, E('div', {}, actions)
-			];
-		}), E('em', {}, [ clients ? _('No connected devices detected.') : _('Could not load connected devices.') ]));
+				actions.push(button(_('Link to device'), () => profiles.linkClient(client, hostname)));
+			return E('tr', { 'class': 'device-access-device', 'role': 'row' }, [
+				cell('name', E('strong', {}, name || '–')),
+				cell('ip', E('span', {}, (client.ipv4.length ? client.ipv4 : client.ipv6).join(', ') || '–'), true),
+				cell('mac', E('div', { 'class': 'device-access-address' }, [
+					E('code', {}, client.mac),
+					client.privateMac ? E('small', {}, _('Possible private MAC')) : null
+				]), true),
+				cell('connection', E('span', { 'class': 'device-access-status' },
+					client.reachable ? _('Reachable') : _('Connection unconfirmed'))),
+				cell('upload', up, true),
+				cell('download', down, true),
+				cell('actions', E('div', { 'class': 'device-access-action-buttons' }, actions))
+			]);
+		}));
+		table.hidden = !rows.length;
+		empty.hidden = !!rows.length;
+		empty.textContent = clients ? _('No connected devices detected.') : _('Could not load connected devices.');
 		paintRates();
 	}
 	traffic.paint = paintRates;
@@ -123,6 +150,7 @@ function renderClients(map, rules, profiles, hosts, traffic) {
 			_('Speeds show traffic forwarded through the selected internet zone.')
 		]),
 		table,
+		empty,
 		E('div', { 'class': 'cbi-section-actions' }, [
 			button(_('Refresh'), async () => {
 				const result = await fetchClients();
@@ -227,7 +255,7 @@ function addProfiles(map, hints) {
 				E('button', { 'type': 'button', 'class': 'btn cbi-button', 'click': () => ui.hideModal() }, [ _('Cancel') ]),
 				' ', confirm
 			])
-		]);
+		], 'device-access-dialog');
 	};
 	return profiles;
 }
@@ -353,6 +381,16 @@ return view.extend({
 			updateRates(traffic, clients || [], performance.now());
 			traffic.paint?.();
 		}, 3);
-		return map.render();
+		if (!document.getElementById('device-access-styles'))
+			document.head.appendChild(E('link', {
+				'id': 'device-access-styles',
+				'rel': 'stylesheet',
+				'href': L.resource('view/device_access/device-access.css') + '?v=2'
+			}));
+
+		return map.render().then(node => {
+			node.classList.add('device-access-page');
+			return node;
+		});
 	}
 });

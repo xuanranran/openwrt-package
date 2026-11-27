@@ -1,0 +1,297 @@
+/* SPDX-License-Identifier: GPL-2.0-only */
+
+.device-access-page {
+	container: device-access / inline-size;
+	--device-access-border: rgba(128, 128, 128, .28);
+}
+
+.device-access-table {
+	display: block;
+	inline-size: 100%;
+	border-collapse: collapse;
+	margin-block: .75rem;
+}
+
+.device-access-table[hidden],
+.device-access-empty[hidden] {
+	display: none;
+}
+
+.device-access-head {
+	position: absolute;
+	inline-size: 1px;
+	block-size: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.device-access-devices {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+	gap: .75rem;
+}
+
+.device-access-page .device-access-table .device-access-device {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(min(55%, 8rem), 1fr);
+	grid-template-areas:
+		"name connection"
+		"ip mac"
+		"upload download"
+		"actions actions";
+	align-content: start;
+	gap: .65rem .75rem;
+	min-inline-size: 0;
+	padding: .8rem;
+	border: 1px solid var(--device-access-border);
+	border-radius: .65rem;
+}
+
+.device-access-cell {
+	display: block;
+	min-inline-size: 0;
+	padding: 0;
+	overflow-wrap: anywhere;
+}
+
+.device-access-name { grid-area: name; }
+.device-access-ip { grid-area: ip; }
+.device-access-mac { grid-area: mac; }
+.device-access-connection { grid-area: connection; text-align: end; }
+.device-access-upload { grid-area: upload; }
+.device-access-download { grid-area: download; }
+.device-access-actions { grid-area: actions; }
+
+.device-access-cell.device-access-actions {
+	padding-block-start: .6rem;
+	border-block-start: 1px solid var(--device-access-border);
+}
+
+.device-access-label {
+	display: block;
+	margin-block-end: .15rem;
+	font-size: .875em;
+}
+
+.device-access-address,
+.device-access-action-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: .35rem .5rem;
+	min-inline-size: 0;
+}
+
+.device-access-address code {
+	max-inline-size: 100%;
+	white-space: normal;
+}
+
+.device-access-status {
+	font-size: .9em;
+}
+
+.device-access-rate {
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+.device-access-page .device-access-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	margin: 0;
+	min-block-size: 44px;
+	max-inline-size: 100%;
+	block-size: auto;
+	padding: .35rem .6rem;
+	line-height: 1.3;
+	white-space: normal;
+	text-align: center;
+}
+
+@container device-access (width < 62rem) {
+	.device-access-address code {
+		font-size: .875em;
+	}
+
+	.device-access-action-buttons {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: .35rem;
+	}
+
+	.device-access-page .device-access-action-buttons .device-access-button {
+		min-inline-size: 0;
+		min-block-size: 26px;
+		padding: .15rem .25rem;
+		line-height: 1.2;
+	}
+
+	.device-access-action-buttons > :nth-child(4) {
+		grid-column: 1 / -1;
+	}
+}
+
+@container device-access (max-width: 20rem) {
+	.device-access-action-buttons {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+	}
+}
+
+@container device-access (min-width: 62rem) {
+	.device-access-table {
+		display: table;
+	}
+
+	.device-access-head {
+		display: table-header-group;
+		position: static;
+		inline-size: auto;
+		block-size: auto;
+		overflow: visible;
+		clip-path: none;
+		white-space: normal;
+	}
+
+	.device-access-head th {
+		padding: .55rem;
+		text-align: start;
+	}
+
+	.device-access-devices {
+		display: table-row-group;
+	}
+
+	.device-access-page .device-access-table .device-access-device {
+		display: table-row;
+		border: 0;
+		border-block-start: 1px solid var(--device-access-border);
+	}
+
+	.device-access-device .device-access-cell {
+		display: table-cell;
+		padding: .55rem;
+		border: 0;
+		text-align: start;
+		vertical-align: middle;
+	}
+
+	.device-access-label {
+		display: none;
+	}
+
+	.device-access-table .device-access-button {
+		min-block-size: 2.25rem;
+	}
+}
+
+/* Keep the labels of the native LuCI rule and profile grids visible in cards. */
+@container device-access (max-width: 49rem) {
+	.device-access-page .cbi-tblsection .cbi-section-table {
+		display: block;
+		inline-size: 100%;
+	}
+
+	.device-access-page .cbi-tblsection .cbi-section-thead {
+		display: none;
+	}
+
+	.device-access-page .cbi-tblsection .cbi-section-tbody {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+		gap: .75rem;
+	}
+
+	.device-access-page .cbi-tblsection .cbi-section-table-row:not(.placeholder) {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: .55rem .75rem;
+		padding: .7rem;
+		margin: 0;
+		border: 1px solid var(--device-access-border);
+		border-radius: .65rem;
+	}
+
+	.device-access-page .cbi-tblsection .cbi-section-table-row > .td {
+		display: block;
+		min-inline-size: 0;
+		inline-size: auto;
+		padding: 0;
+		margin: 0;
+		white-space: normal;
+		overflow-wrap: anywhere;
+		text-align: start;
+	}
+
+	.device-access-page .cbi-tblsection .cbi-section-table-row > [data-title]::before {
+		content: attr(data-title);
+		display: block;
+		margin-block-end: .15rem;
+		font-size: .875em;
+		font-weight: 600;
+	}
+
+	.device-access-page .cbi-tblsection .cbi-section-table-row > [data-description]::after {
+		display: none;
+	}
+
+	.device-access-page .cbi-tblsection .cbi-section-table-row >
+	:is([data-name="macs"], .cbi-section-actions) {
+		grid-column: 1 / -1;
+	}
+
+	.device-access-page .cbi-tblsection .cbi-section-table-row .cbi-button {
+		min-block-size: 44px;
+	}
+}
+
+@media (max-width: 62rem) {
+	#modal_overlay > .device-access-dialog,
+	#modal_overlay > .cbi-modal:has(> [id="cbi-device_access"]) {
+		box-sizing: border-box;
+		inline-size: min(42rem, calc(100% - 1rem));
+		min-inline-size: 0;
+		max-inline-size: calc(100% - 1rem);
+		max-block-size: calc(100dvh - 1rem);
+		overflow: auto;
+	}
+
+	#modal_overlay > .device-access-dialog select,
+	#modal_overlay [id="cbi-device_access"] :is(input, select, .cbi-dropdown, .cbi-dynlist) {
+		box-sizing: border-box;
+		max-inline-size: 100%;
+	}
+
+	#modal_overlay > .device-access-dialog .button-row,
+	#modal_overlay > .cbi-modal:has(> [id="cbi-device_access"]) .button-row {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: .5rem;
+	}
+
+	#modal_overlay > .device-access-dialog .button-row .btn,
+	#modal_overlay > .cbi-modal:has(> [id="cbi-device_access"]) .button-row .btn {
+		min-block-size: 44px;
+	}
+}
+
+@media (max-width: 36rem) {
+	#modal_overlay [id="cbi-device_access"] .cbi-value {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: .25rem;
+	}
+
+	#modal_overlay [id="cbi-device_access"] :is(.cbi-value-title, .cbi-value-field) {
+		display: block;
+		inline-size: auto;
+		min-inline-size: 0;
+		margin-inline: 0;
+		padding-inline: 0;
+		text-align: start;
+	}
+}
