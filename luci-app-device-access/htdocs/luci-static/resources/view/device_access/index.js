@@ -280,7 +280,7 @@ return view.extend({
 			_('Restrict internet access by device MAC address. Schedules use the router’s local time.'));
 		const settings = map.section(form.NamedSection, 'main', 'defaults', _('Internet destination'));
 		const zone = settings.option(form.ListValue, 'zone', _('Firewall zone'),
-			_('Only routed traffic to this zone is restricted. Flow offloading and transparent proxies can bypass forwarding rules.'));
+			_('Internet blocks apply before transparent proxy redirection when the destination routes to this zone. Speeds and speed limits apply to forwarded traffic.'));
 		zone.rmempty = false;
 		zone.default = 'wan';
 		for (const section of uci.sections('firewall', 'zone'))

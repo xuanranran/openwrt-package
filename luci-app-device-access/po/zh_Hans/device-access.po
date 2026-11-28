@@ -13,8 +13,8 @@ msgstr "外网出口"
 msgid "Firewall zone"
 msgstr "防火墙区域"
 
-msgid "Only routed traffic to this zone is restricted. Flow offloading and transparent proxies can bypass forwarding rules."
-msgstr "规则限制转发到此区域的流量。流量卸载或透明代理可能绕过转发规则。"
+msgid "Internet blocks apply before transparent proxy redirection when the destination routes to this zone. Speeds and speed limits apply to forwarded traffic."
+msgstr "目标地址走此区域时，断网规则会在透明代理接管前拦截。速率统计和限速适用于转发流量。"
 
 msgid "Access rules"
 msgstr "上网规则"

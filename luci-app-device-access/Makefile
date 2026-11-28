@@ -2,8 +2,8 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_VERSION:=0.3.0
-PKG_RELEASE:=5
+PKG_VERSION:=0.3.1
+PKG_RELEASE:=1
 PKG_LICENSE:=GPL-2.0-only
 
 LUCI_TITLE:=Per-device internet access schedules

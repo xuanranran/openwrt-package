@@ -135,6 +135,15 @@ render() {
 table inet $table
 flush table inet $table
 table inet $table {
+	chain block_before_proxy {
+		type filter hook prerouting priority -160; policy accept;
+EOF
+	if [ -n "$clients" ] && [ -n "$ports" ]; then
+		# Look up the original destination before proxy marking or redirection.
+		printf '\t\tiifname != { %s } ether saddr { %s } fib daddr oifname { %s } counter drop;\n' "$ports" "$clients" "$ports"
+	fi
+	cat <<EOF
+	}
 	chain block_wan {
 		type filter hook forward priority -10; policy accept;
 EOF
